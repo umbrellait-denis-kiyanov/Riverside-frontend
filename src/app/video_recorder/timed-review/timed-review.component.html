@@ -1,12 +1,12 @@
 <app-loading [hidden]="status != statusEnum.CREATE_SOURCE_START"></app-loading>
 
-<ng-container [ngSwitch]="status">
+<ng-container>
   <timed-review-iframe
-    *ngSwitchCase="status == statusEnum.SOURCE_READY"
+    *ngIf="status == statusEnum.SOURCE_READY"
     [iframe]="iframe"
     (finish)="onFinished($event)"
   ></timed-review-iframe>
-  <div *ngSwitchCase="status == statusEnum.SUBMIT_START">
+  <div *ngIf="status == statusEnum.SUBMIT_START">
     Submitting...
   </div>
 </ng-container>
