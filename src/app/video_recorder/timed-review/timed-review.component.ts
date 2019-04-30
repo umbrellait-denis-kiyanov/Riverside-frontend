@@ -70,7 +70,7 @@ export class TimedReviewComponent implements OnInit {
         return {
           time_limit: prompt.time_limit || this.time_limit,
           time_pause: prompt.time_pause || this.time_pause,
-          time_to_prepare: this.time_prepare,
+          time_to_prepare: prompt.time_prepare || this.time_prepare,
           prompt: prompt.prompt,
           videoUrl: prompt.videoFile,
           videoThumbnailUrl: prompt.videoThumbnailFile,
