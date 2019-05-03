@@ -19,7 +19,7 @@ export class TimedReviewComponent implements OnInit {
   @Input() pageData: any;
   @Input() time_pause?: number;
   @Input() time_prepare?: number;
-  @Input() user: any;
+  @Input() user: {fname: string, lname: string, id: string};
   @Output() finish: EventEmitter<any> = new EventEmitter();
 
   status: Status = Status.NOT_STARTED;
