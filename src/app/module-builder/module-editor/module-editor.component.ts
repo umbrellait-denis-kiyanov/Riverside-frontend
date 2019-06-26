@@ -1,9 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Module, LearningElementTypes, Step, LearningElement } from './module.interface';
-import { modules } from '../mockData';
+import { Module, LearningElementTypes, Step, LearningElement } from '../../common/interfaces/module.interface';
 import { ActivatedRoute, ParamMap } from '@angular/router';
-import { of } from 'rxjs';
-import { ModuleService } from '../module.service';
+import { ModuleService } from '../../common/services/module.service';
 
 @Component({
   selector: 'app-module-editor',

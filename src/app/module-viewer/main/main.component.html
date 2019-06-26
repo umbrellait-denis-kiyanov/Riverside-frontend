@@ -1,0 +1,22 @@
+<ng-container *ngIf="ready; else elseTemplate">
+  <ng-container *ngIf="expanded">
+    <app-left-menu [width]="500" [module]="moduleData" (collapse)="expanded = false"></app-left-menu>
+  </ng-container>
+  <ng-container *ngIf="!expanded">
+    <span class="expand-wrapper">
+      <button class="menu-btn bg-color" (click)="expanded = true"><span class="fa fa-bars"></span></button>
+    </span>
+
+  </ng-container>
+
+  <router-outlet></router-outlet>
+</ng-container>
+<ng-template #elseTemplate>
+  <app-loading></app-loading>
+</ng-template>
+
+
+
+
+
+

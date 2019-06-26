@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Module } from '../module-editor/module.interface';
-import { modules } from '../mockData';
+
 import { Router, ActivatedRoute, ParamMap, RouterState, NavigationEnd, Event } from '@angular/router';
-import { ModuleService } from '../module.service';
-import { Observable } from 'rxjs';
+import { ModuleService } from '../../common/services/module.service';
+
 
 @Component({
   selector: 'app-module-selector',

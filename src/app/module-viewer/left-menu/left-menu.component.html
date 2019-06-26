@@ -1,0 +1,63 @@
+<div class="container" [ngStyle]="{'width.px': width}">
+  <div class="left-menu-header">
+      <button class="menu-btn bg-color" (click)="onExpand()"><span class="fa fa-bars"></span></button>
+      <div class="header-title">
+        Build Sales / Marketing Strategy
+      </div>
+  </div>
+  <div class="left-menu-summary paper">
+    <div class="summary-title">{{module.name}}</div>
+    <div class="summary-body">
+      <div class="summary-row">
+        <div class="summary-label">
+          TARGET DATE
+        </div>
+        <div class="summary-content">
+          <input class="site-tbox" />
+        </div>
+      </div>
+      <div class="summary-row">
+          <div class="summary-label">
+            % Complete
+          </div>
+          <div class="summary-content">
+              <input class="site-tbox" disabled [ngModel]="module.percComplete + '%'" />
+          </div>
+        </div>
+    </div>
+  </div>
+
+  <div class="left-menu-actions paper">
+    <table>
+      <tr>
+        <th> KEY ACTIONS </th>
+        <th class="learning-center"> LEARNING CENTER </th>
+      </tr>
+      <tr *ngFor="let step of module.steps; let s = index">
+          <td >
+              <div class="key-action">
+                  <e3-checkbox [(checked)]="step.isChecked" (checkedChange)="updateProgress()"></e3-checkbox>
+                  <a *ngIf="step.google_doc_url" [routerLink]="[ '/module', module.id]" [queryParams]="{step: s}">
+                    <span>{{s + 1}}. {{step.description}}</span>
+                  </a>
+                  <span *ngIf="!step.google_doc_url">
+                    <span>{{s + 1}}. {{step.description}}</span>
+                  </span>
+              </div>
+            </td>
+        <td class="learning-center">
+          <span  *ngFor="let element of step.elements">
+              <span [ngSwitch]="element.type">
+                  <span  *ngSwitchCase="'youtube'" class="fa fa-youtube-play"></span>
+                  <span  *ngSwitchCase="'pdf'" class="fa fa-file-pdf-o"></span>
+                  <!-- <span  *ngSwitchDefault class="fa fa-tasks"></span> -->
+              </span>
+          </span>
+
+        </td>
+      </tr>
+    </table>
+  </div>
+
+</div>
+

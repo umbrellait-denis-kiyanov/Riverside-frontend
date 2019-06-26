@@ -3,10 +3,13 @@ export interface Module {
   id: number;
   name: string;
   google_doc_url: string;
+  percComplete?: number;
   steps: Step[];
 }
 export interface Step {
   description: string;
+  google_doc_url?: string;
+  isChecked?: boolean;
   elements: LearningElement[];
 }
 

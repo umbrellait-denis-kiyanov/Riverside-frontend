@@ -11,7 +11,7 @@ import { ModuleEditorComponent } from './module-editor/module-editor.component';
 import { RouterModule } from '@angular/router';
 import { MatcherComponent } from './matcher/matcher.component';
 import { ModuleSelectorComponent } from './module-selector/module-selector.component';
-import { ModuleService } from './module.service';
+import { ModuleService } from '../common/services/module.service';
 
 
 @NgModule({

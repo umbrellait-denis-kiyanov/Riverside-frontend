@@ -29,7 +29,7 @@
   </div>
 
   <div class="form-group">
-    <label class="control-label">Google doc url</label>
+    <label class="control-label">Google Doc Url</label>
 
     <input
       type="text"
@@ -63,9 +63,23 @@
               placeholder="Step Description"
             />
           </div>
+
         </div>
 
         <div class="steps-right">
+          <div class="step-input-wrapper">
+            <div class="form-group full-width">
+              <label class="control-label ">Bookmark Url (optional)</label>
+
+              <input
+                type="text"
+                class="site-tbox margin_0"
+                [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="step.google_doc_url"
+                required="required"
+              />
+            </div>
+          </div>
           <div
             class="step-input-wrapper"
             *ngFor="let element of step.elements; let i = index"

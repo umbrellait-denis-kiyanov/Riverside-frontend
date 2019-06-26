@@ -1,4 +1,5 @@
 import { Module } from '../common/interfaces/module.interface';
+
 export const modules: Module[] = [createDemoSteps(1, 'Buying Personas'), createDemoSteps(2, 'Another module')];
 export function createDemoSteps(id: number, name: string): Module {
   return {

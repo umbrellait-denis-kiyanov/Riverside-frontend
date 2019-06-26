@@ -8,6 +8,7 @@ import { TimedReviewComponent } from './video_recorder/timed-review/timed-review
 import { TimedReviewIframeComponent } from './video_recorder/timed-review/timed-review-iframe/timed-review-iframe.component';
 import { SafeurlPipe } from './common/pipes/safeurl.pipe';
 import { LoadingComponent } from './common/components/loading/loading.component';
+import { E3CheckboxComponent } from './common/components/e3-checkbox/e3-checkbox.component';
 
 
 
@@ -22,7 +23,8 @@ import { LoadingComponent } from './common/components/loading/loading.component'
     TimedReviewIframeComponent,
     TimedReviewComponent,
     SafeurlPipe,
-    LoadingComponent
+    LoadingComponent,
+    E3CheckboxComponent
   ],
   entryComponents: [
     LoadingComponent,
