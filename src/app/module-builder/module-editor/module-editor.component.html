@@ -1,0 +1,120 @@
+<ng-container *ngIf="ready">
+  <div class="float-btn-group-wrapper">
+    <div class="float-group">
+      <button
+        class="floating-btn bg-save flt-btn-group"
+        (click)="onClickSave()"
+      >
+        <ng-container *ngIf="!saving; else elseTemplate">
+          <img src="/public/img/page builder icons/save-filled.png">
+        </ng-container>
+
+        <ng-template #elseTemplate>
+          <span class="fa fa-pulse fa-spinner"></span>
+        </ng-template>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-group">
+    <label class="control-label module-title">Module Name</label>
+
+    <input
+      type="text"
+      class="site-tbox margin_0"
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="moduleData.name"
+      required="required"
+    />
+  </div>
+
+  <div class="form-group">
+    <label class="control-label">Google doc url</label>
+
+    <input
+      type="text"
+      class="site-tbox margin_0"
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="moduleData.google_doc_url"
+      required="required"
+    />
+  </div>
+
+  <div class="steps-wrapper">
+    <div class="steps-header steps-row">
+      <div class="steps-left">Steps</div>
+
+      <div class="steps-right">Learning Center</div>
+    </div>
+
+    <div *ngFor="let step of moduleData.steps; let s = index">
+      <div class="step steps-row">
+        <div class="steps-left">
+          <div class="step-input-wrapper">
+            <span
+              class="fa fa-trash"
+              (click)="onClickRemoveStep(s)"
+            ></span>
+
+            <input
+              class="site-tbox"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="step.description"
+              placeholder="Step Description"
+            />
+          </div>
+        </div>
+
+        <div class="steps-right">
+          <div
+            class="step-input-wrapper"
+            *ngFor="let element of step.elements; let i = index"
+          >
+            <div class="input-group input-group-md">
+              <span class="input-group-addon">
+                <select
+                  [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="element.type"
+                >
+                  <option
+                    *ngFor="let t of elementTypes"
+                    [value]="t"
+                  >{{t}}</option>
+                </select>
+              </span>
+
+              <input
+                [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="element.data"
+                placeholder="Learning Resource"
+                class="site-tbox"
+                required="required"
+              />
+            </div>
+
+            <span
+              class="fa fa-trash"
+              (click)="onClickRemoveElement(step,i)"
+            ></span>
+          </div>
+
+          <div
+            class="btn-flat btn-flat-primary"
+            (click)="onClickAddElement(step)"
+          >
+            Add Element: (text) (youtube video) (graphic file) (pdf)
+          </div>
+        </div>
+      </div>
+
+      <div class="divider"></div>
+    </div>
+
+    <div class="add-new">
+      <button
+        class="btn btn-primary btn-lg"
+        (click)="onClickAddStep()"
+      >Add new step</button>
+    </div>
+  </div>
+</ng-container>
