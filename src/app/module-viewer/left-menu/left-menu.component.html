@@ -50,7 +50,7 @@
               <span [ngSwitch]="element.type">
                   <a  *ngSwitchCase="'youtube'" (click)="openElement(element)" class="fa fa-youtube-play"></a>
                   <a  *ngSwitchCase="'pdf'"   (click)="openElement(element)" class="fa fa-file-pdf-o"></a>
-                  <a  *ngSwitchDefault  [href]="element.data | safeurl" target="_blank" class="fa fa-file"></a>
+                  <a  *ngSwitchDefault  (click)="openElement(element)"  class="fa fa-file"></a>
               </span>
           </span>
 
