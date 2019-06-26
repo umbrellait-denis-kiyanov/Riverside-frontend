@@ -48,9 +48,9 @@
         <td class="learning-center">
           <span  *ngFor="let element of step.elements">
               <span [ngSwitch]="element.type">
-                  <span  *ngSwitchCase="'youtube'" class="fa fa-youtube-play"></span>
-                  <span  *ngSwitchCase="'pdf'" class="fa fa-file-pdf-o"></span>
-                  <!-- <span  *ngSwitchDefault class="fa fa-tasks"></span> -->
+                  <a  *ngSwitchCase="'youtube'" [href]="element.data | safeurl" target="_blank" class="fa fa-youtube-play"></a>
+                  <a  *ngSwitchCase="'pdf'"  [href]="element.data | safeurl" target="_blank" class="fa fa-file-pdf-o"></a>
+                  <a  *ngSwitchDefault  [href]="element.data | safeurl" target="_blank" class="fa fa-file"></a>
               </span>
           </span>
 
