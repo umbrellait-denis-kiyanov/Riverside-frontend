@@ -8,10 +8,13 @@
         <span *ngSwitchCase="'youtube'">
             <iframe width="100%" height="100%" [src]="element.data | safeurl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </span>
-        <span *ngSwitchDefault">
-          <object [data]="element.data | safeurl" type="application/pdf">
-            <iframe [src]="pdfUrl | safeurl" allowfullscreen></iframe>
-          </object>
+        <span *ngSwitchCase="'pdf'">
+            <object [data]="element.data | safeurl">
+              <iframe [src]="pdfUrl | safeurl" allowfullscreen></iframe>
+            </object>
+          </span>
+        <span *ngSwitchDefault>
+            <iframe [src]="element.data | safeurl" allowfullscreen></iframe>
         </span>
 
       </span>
