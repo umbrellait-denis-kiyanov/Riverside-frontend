@@ -50,7 +50,7 @@
     <div *ngFor="let step of moduleData.steps; let s = index">
       <div class="step steps-row">
         <div class="steps-left">
-          <div class="step-input-wrapper">
+          <div class="step-input-wrapper step-name">
             <span
               class="fa fa-trash"
               (click)="onClickRemoveStep(s)"
@@ -63,23 +63,21 @@
               placeholder="Step Description"
             />
           </div>
-
-        </div>
-
-        <div class="steps-right">
           <div class="step-input-wrapper">
-            <div class="form-group full-width">
-              <label class="control-label ">Bookmark Url (optional)</label>
-
+            <span class="fa"></span>
               <input
                 type="text"
                 class="site-tbox margin_0"
                 [ngModelOptions]="{standalone: true}"
                 [(ngModel)]="step.google_doc_url"
+                placeholder="Bookmark Url (optional)"
                 required="required"
               />
-            </div>
           </div>
+        </div>
+
+        <div class="steps-right">
+
           <div
             class="step-input-wrapper"
             *ngFor="let element of step.elements; let i = index"
