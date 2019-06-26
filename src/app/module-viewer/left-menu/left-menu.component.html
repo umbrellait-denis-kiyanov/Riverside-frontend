@@ -38,10 +38,10 @@
               <div class="key-action">
                   <e3-checkbox [(checked)]="step.isChecked" (checkedChange)="updateProgress()"></e3-checkbox>
                   <a *ngIf="step.google_doc_url" [routerLink]="[ '/module', module.id]" [queryParams]="{step: s}">
-                    <span>{{s + 1}}. {{step.description}}</span>
+                    <span>{{step.description}}</span>
                   </a>
                   <span *ngIf="!step.google_doc_url">
-                    <span>{{s + 1}}. {{step.description}}</span>
+                    <span>{{step.description}}</span>
                   </span>
               </div>
             </td>
