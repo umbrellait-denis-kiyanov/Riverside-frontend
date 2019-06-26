@@ -14,6 +14,8 @@ import { ContentComponent } from './content/content.component';
 import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbox.component';
 import { LoadingComponent } from '../common/components/loading/loading.component';
 import { SafeurlPipe } from '../common/pipes/safeurl.pipe';
+import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
+import { LearningElementComponent } from './modals/learning-element/learning-element.component';
 
 
 
@@ -25,6 +27,7 @@ import { SafeurlPipe } from '../common/pipes/safeurl.pipe';
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
+    NgbModalModule,
     AppRoutingModule
 
   ],
@@ -35,10 +38,12 @@ import { SafeurlPipe } from '../common/pipes/safeurl.pipe';
     ContentComponent,
     E3CheckboxComponent,
     LoadingComponent,
-    SafeurlPipe
+    SafeurlPipe,
+    LearningElementComponent
   ],
   entryComponents: [
-    ModuleViewerRootComponent
+    ModuleViewerRootComponent,
+    LearningElementComponent
   ],
   providers: [
     ModuleService,

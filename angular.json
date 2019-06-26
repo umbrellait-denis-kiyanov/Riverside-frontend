@@ -46,7 +46,8 @@
               "src/assets"
             ],
             "styles": [
-              "src/styles.sass"
+              "src/styles.sass",
+              "node_modules/ng-bootstrap-to-bootstrap-3/dist/ng-bootstrap-to-bootstrap-3.min.css"
             ],
             "scripts": [
             ],

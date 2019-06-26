@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Module } from 'src/app/common/interfaces/module.interface';
+import { Module, Step } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { LearningElementComponent } from '../modals/learning-element/learning-element.component';
 
 declare global {
   interface Window { $: any; }
@@ -18,7 +20,8 @@ export class LeftMenuComponent implements OnInit {
   @Output() collapse = new EventEmitter();
 
   constructor(
-    private moduleService: ModuleService
+    private moduleService: ModuleService,
+    private modalService: NgbModal
   ) { }
 
   ngOnInit() {
@@ -34,5 +37,10 @@ export class LeftMenuComponent implements OnInit {
 
   updateProgress() {
     this.moduleService.updateProgress(this.module);
+  }
+
+  openElement(element: Step['elements'][number]) {
+    const modalRef = this.modalService.open(LearningElementComponent, {windowClass: 'learning-element-modal'});
+    modalRef.componentInstance.element = element;
   }
 }

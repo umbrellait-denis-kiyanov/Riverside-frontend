@@ -1,0 +1,19 @@
+<div class="modal-header">
+    <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="modal-body">
+      <span [ngSwitch]="element.type">
+        <span *ngSwitchCase="'youtube'">
+            <iframe width="100%" height="100%" [src]="element.data | safeurl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+        </span>
+        <span *ngSwitchCase="'pdf'">
+          <object [data]="element.data | safeurl" type="application/pdf">
+            <iframe [src]="pdfUrl | safeurl" allowfullscreen></iframe>
+          </object>
+        </span>
+
+      </span>
+
+  </div>
