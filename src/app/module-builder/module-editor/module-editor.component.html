@@ -102,6 +102,13 @@
                 class="site-tbox"
                 required="required"
               />
+              <input
+                [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="element.tooltip"
+                placeholder="Add tooltip text (optional)"
+                class="site-tbox"
+                required="required"
+              />
             </div>
 
             <span

@@ -47,13 +47,29 @@
             </td>
         <td class="learning-center">
           <span  *ngFor="let element of step.elements">
-              <span [ngSwitch]="element.type">
-                  <a  *ngSwitchCase="'youtube'" (click)="openElement(element)" class="fa fa-youtube-play"></a>
-                  <a  *ngSwitchCase="'pdf'"   (click)="openElement(element)" class="fa fa-file-pdf-o"></a>
-                  <a  *ngSwitchDefault  (click)="openElement(element)"  class="fa fa-file"></a>
+              <span [ngSwitch]="element.type" (click)="openElement(element)"  >
+                  <span  *ngSwitchCase="'youtube'"  class="fa fa-youtube-play" e3-tooltip="{{element.tooltip}}"></span>
+                  <span  *ngSwitchCase="'pdf'"  class="fa fa-file-pdf-o" e3-tooltip="{{element.tooltip}}"></span>
+                  <span  *ngSwitchDefault  class="fa fa-file" e3-tooltip="{{element.tooltip}}"></span>
               </span>
           </span>
 
+        </td>
+      </tr>
+      <tr *ngIf="module.percComplete == 100" class="request-feedback">
+
+          <td >
+              <div class="key-action">
+                  <span>REQUEST FEEDBACK </span>
+              </div>
+            </td>
+        <td class="learning-center">
+          <span >
+              <span>
+                  <span *ngIf="!sending" class="fa fa-phone" (click)="sendRequest()"></span>
+                  <span *ngIf="sending" class="fa fa-pulse fa-spinner"></span>
+              </span>
+          </span>
         </td>
       </tr>
     </table>

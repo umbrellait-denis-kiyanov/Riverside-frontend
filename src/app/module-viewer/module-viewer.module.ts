@@ -16,6 +16,7 @@ import { LoadingComponent } from '../common/components/loading/loading.component
 import { SafeurlPipe } from '../common/pipes/safeurl.pipe';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import { LearningElementComponent } from './modals/learning-element/learning-element.component';
+import { E3TooltipDirective } from '../common/components/e3-tooltip/e3-tooltip.directive';
 
 
 
@@ -39,7 +40,8 @@ import { LearningElementComponent } from './modals/learning-element/learning-ele
     E3CheckboxComponent,
     LoadingComponent,
     SafeurlPipe,
-    LearningElementComponent
+    LearningElementComponent,
+    E3TooltipDirective
   ],
   entryComponents: [
     ModuleViewerRootComponent,

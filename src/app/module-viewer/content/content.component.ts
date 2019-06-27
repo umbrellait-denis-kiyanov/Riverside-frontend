@@ -11,6 +11,7 @@ import { ModuleService } from 'src/app/common/services/module.service';
 export class ContentComponent implements OnInit {
   iframeUrl: string;
   module: Module;
+  ready = false;
 
   constructor(
     private route: ActivatedRoute,
@@ -19,6 +20,9 @@ export class ContentComponent implements OnInit {
 
   ngOnInit() {
     this.module = this.moduleService.module;
+    if (Array.isArray(this.module)) {
+      return;
+    }
     this.route.queryParams.subscribe(params => {
       if (params.step) {
         const step = this.module.steps[Number(params.step)];
@@ -29,6 +33,7 @@ export class ContentComponent implements OnInit {
       }
 
       this.iframeUrl = this.module.google_doc_url;
+      this.ready = true;
     });
   }
 

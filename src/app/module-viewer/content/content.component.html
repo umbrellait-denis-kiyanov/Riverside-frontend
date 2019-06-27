@@ -1,1 +1,1 @@
-<iframe [src]="iframeUrl | safeurl"></iframe>
+<iframe *ngIf="ready" [src]="iframeUrl | safeurl"></iframe>

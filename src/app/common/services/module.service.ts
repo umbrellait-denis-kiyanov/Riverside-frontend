@@ -35,7 +35,7 @@ export class ModuleService {
   }
 
   async loadModules(params?: LoadModuleParams, refresh = false) {
-    if (this.modules && ! refresh) {
+    if (this.modules && !refresh) {
       return this.modules;
     }
     this.modules = await this.httpClient.get(this.baseUrl).toPromise().then(async (res: any) => {
@@ -46,6 +46,10 @@ export class ModuleService {
 
   async saveModule(module: Module): Promise<object> {
     return this.httpClient.post(`${this.baseUrl}/${module.id}`, module).toPromise();
+  }
+
+  async requestFeedback(module: Module): Promise<object> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback`, module).toPromise();
   }
 
   updateProgress(module: Module) {

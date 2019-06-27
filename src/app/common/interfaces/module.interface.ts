@@ -21,4 +21,5 @@ export const LearningElementTypes = literalArray(['pdf', 'txt', 'youtube', 'gdoc
 export interface LearningElement {
   type: typeof LearningElementTypes[number];
   data: string;
+  tooltip?: string;
 }

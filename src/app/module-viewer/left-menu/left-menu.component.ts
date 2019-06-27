@@ -3,6 +3,7 @@ import { Module, Step } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearningElementComponent } from '../modals/learning-element/learning-element.component';
+import toastr from 'src/app/common/lib/toastr';
 
 declare global {
   interface Window { $: any; }
@@ -18,6 +19,7 @@ export class LeftMenuComponent implements OnInit {
   @Input() width: number;
   @Input() module: Module;
   @Output() collapse = new EventEmitter();
+  sending = false;
 
   constructor(
     private moduleService: ModuleService,
@@ -40,7 +42,15 @@ export class LeftMenuComponent implements OnInit {
   }
 
   openElement(element: Step['elements'][number]) {
-    const modalRef = this.modalService.open(LearningElementComponent, {windowClass: 'learning-element-modal'});
+    const modalRef = this.modalService.open(LearningElementComponent, { windowClass: 'learning-element-modal' });
     modalRef.componentInstance.element = element;
+  }
+
+  sendRequest() {
+    this.sending = true;
+    this.moduleService.requestFeedback(this.module).then(() => {
+      this.sending = false;
+      toastr.success('An email has been sent with your request');
+    });
   }
 }
