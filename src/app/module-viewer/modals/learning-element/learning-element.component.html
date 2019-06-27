@@ -4,19 +4,18 @@
     </button>
   </div>
   <div class="modal-body">
-      <span [ngSwitch]="element.type">
-        <span *ngSwitchCase="'youtube'">
-            <iframe width="100%" height="100%" [src]="element.data | safeurl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
+      <span [ngSwitch]="element.type" >
+        <span *ngSwitchCase="'youtube'" class="wrapper">
+            <iframe class="youtube" width="858px" height="480px" [src]="element.data | safeurl" frameborder="0" allow="accelerometer; autoplay; encrypted-media; gyroscope; picture-in-picture" allowfullscreen></iframe>
         </span>
-        <span *ngSwitchCase="'pdf'">
+        <span *ngSwitchCase="'pdf'" class="wrapper">
             <object [data]="element.data | safeurl">
               <iframe [src]="pdfUrl | safeurl" allowfullscreen></iframe>
             </object>
           </span>
-        <span *ngSwitchDefault>
+        <span *ngSwitchDefault class="wrapper">
             <iframe [src]="element.data | safeurl" allowfullscreen></iframe>
         </span>
 
       </span>
-
   </div>
