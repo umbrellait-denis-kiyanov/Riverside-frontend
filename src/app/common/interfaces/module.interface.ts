@@ -16,7 +16,7 @@ export interface Step {
 function literalArray<T extends string>(array: T[]): T[] {
   return array;
 }
-export const LearningElementTypes = literalArray(['pdf', 'txt', 'youtube', 'gdoc']);
+export const LearningElementTypes = literalArray(['pdf', 'activity', 'youtube', 'gdoc']);
 
 export interface LearningElement {
   type: typeof LearningElementTypes[number];

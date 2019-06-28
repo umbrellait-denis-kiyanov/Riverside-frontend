@@ -50,6 +50,9 @@
               <span [ngSwitch]="element.type" (click)="openElement(element)"  >
                   <span  *ngSwitchCase="'youtube'"  class="fa fa-youtube-play" e3-tooltip="{{element.tooltip}}"></span>
                   <span  *ngSwitchCase="'pdf'"  class="fa fa-file-pdf-o" e3-tooltip="{{element.tooltip}}"></span>
+                  <span  *ngSwitchCase="'activity'"  class="users-icon" e3-tooltip="{{element.tooltip}}">
+                    <img src='/public/img/users.png'>
+                  </span>
                   <span  *ngSwitchDefault  class="fa fa-file" e3-tooltip="{{element.tooltip}}"></span>
               </span>
           </span>
