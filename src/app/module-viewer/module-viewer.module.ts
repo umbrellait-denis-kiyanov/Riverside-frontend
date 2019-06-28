@@ -17,6 +17,7 @@ import { SafeurlPipe } from '../common/pipes/safeurl.pipe';
 import {NgbModalModule} from '@ng-bootstrap/ng-bootstrap';
 import { LearningElementComponent } from './modals/learning-element/learning-element.component';
 import { E3TooltipDirective } from '../common/components/e3-tooltip/e3-tooltip.directive';
+import { UserService } from '../common/services/user.service';
 
 
 
@@ -49,6 +50,7 @@ import { E3TooltipDirective } from '../common/components/e3-tooltip/e3-tooltip.d
   ],
   providers: [
     ModuleService,
+    UserService
   ],
   bootstrap: [ModuleViewerRootComponent]
 })

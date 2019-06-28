@@ -13,7 +13,7 @@
           TARGET DATE
         </div>
         <div class="summary-content">
-          <input class="site-tbox" id="datepicker" />
+          <input class="site-tbox" [disabled]="!canEdit()" id="datepicker" />
         </div>
       </div>
       <div class="summary-row">
@@ -36,7 +36,7 @@
       <tr *ngFor="let step of module.steps; let s = index">
           <td >
               <div class="key-action">
-                  <e3-checkbox [(checked)]="step.isChecked" (checkedChange)="updateProgress()"></e3-checkbox>
+                  <e3-checkbox [(checked)]="step.isChecked" (checkedChange)="updateProgress()" [disabled]="!canEdit()"></e3-checkbox>
                   <a *ngIf="step.google_doc_url" [routerLink]="[ '/module', module.id]" [queryParams]="{step: s}">
                     <span>{{step.description}}</span>
                   </a>

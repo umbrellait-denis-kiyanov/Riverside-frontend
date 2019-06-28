@@ -7,6 +7,7 @@ import { Component, OnInit, Output, EventEmitter, Input } from '@angular/core';
 })
 export class E3CheckboxComponent implements OnInit {
   @Input() checked: boolean;
+  @Input() disabled: boolean;
   @Output() checkedChange = new EventEmitter();
 
   constructor() { }
@@ -15,6 +16,8 @@ export class E3CheckboxComponent implements OnInit {
   }
 
   check() {
+    if (this.disabled) { return; }
+
     this.checked = !this.checked;
     this.checkedChange.emit(this.checked);
   }

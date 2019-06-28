@@ -1,4 +1,4 @@
-<span class="box" (click)="check()">
+<span class="box" (click)="check()" [ngClass]="{disabled: disabled}">
   <span *ngIf="checked" class="fa fa-check"> </span>
 </span>
-<input type="checkbox"/>
+<input type="checkbox" [disabled]="disabled"/>

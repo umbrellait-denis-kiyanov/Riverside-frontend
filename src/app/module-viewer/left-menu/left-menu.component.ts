@@ -4,6 +4,8 @@ import { ModuleService } from 'src/app/common/services/module.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearningElementComponent } from '../modals/learning-element/learning-element.component';
 import toastr from 'src/app/common/lib/toastr';
+import { UserService } from 'src/app/common/services/user.service';
+import User from 'src/app/common/interfaces/user.model';
 
 declare global {
   interface Window { $: any; }
@@ -20,14 +22,17 @@ export class LeftMenuComponent implements OnInit {
   @Input() module: Module;
   @Output() collapse = new EventEmitter();
   sending = false;
+  me: User;
 
   constructor(
     private moduleService: ModuleService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
     this.module.percComplete = this.module.percComplete || 0;
+    this.me = this.userService.me;
     window.$('#datepicker').datepicker({
       dateFormat: 'dd M yy'
     });
@@ -52,5 +57,10 @@ export class LeftMenuComponent implements OnInit {
       this.sending = false;
       toastr.success('An email has been sent with your request');
     });
+  }
+
+  canEdit() {
+    const { riverside_facilitator, riverside_se, super_admin } = this.me.roles;
+    return riverside_facilitator || riverside_se || super_admin;
   }
 }
