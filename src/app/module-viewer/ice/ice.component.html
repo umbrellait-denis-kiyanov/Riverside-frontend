@@ -1,0 +1,50 @@
+<div
+  id="textbody"
+  attr.disabled={{disabled}}
+  attr.contenteditable={{!disabled}}
+  [ngClass]="{'CT-hide': hideChanges, hasComment: comment.hasComment, showComment: comment.show}"
+  [innerHTML]="data.content | safehtml"
+  title="{{'Press Ctrl + Alt + M for adding a comment'}}"
+  (keydown.control.alt.m)="addComment()"
+  (mouseenter)="onMouseEnter($event)"
+></div>
+<div  class="add-comment" *ngIf="user.roles.riverside_se">
+    <button mat-icon-button (click)="addComment($event)" id="addComment">
+        <mat-icon>add_comment</mat-icon>
+     </button>
+</div>
+
+<ng-template #commentOverlay>
+  <div class="comment-wrapper"  *ngIf="comment.adding">
+      <ice-user [user]="user" [className]="'b' + tracker.getUserStyle(user.id)"></ice-user>
+  <textarea autofocus [(ngModel)]="comment.content" class="form-control" id="newComment"></textarea>
+  <div class="btn-wrapper">
+      <button class="btn btn-sm btn-primary" (click)="saveComment()">Comment</button>
+      <button class="btn btn-sm btn-default" (click)="cancelComment()">Cancel</button>
+    </div>
+  </div>
+
+  <div *ngIf="!comment.adding" class="comment-wrapper">
+    <div *ngFor="let c of comment.list; let i=index" >
+      <div *ngIf="tracker">
+          <ice-user [user]="c.user" [time]="c.formattedTime" [className]="'b' + tracker.getUserStyle(c.user.id)"></ice-user>
+      </div>
+      <div class="comment-content">
+          <div>{{c.content}}</div>
+          <button
+            *ngIf="user.roles.riverside_se"
+            mat-icon-button
+            #menuTrigger="matMenuTrigger"
+            (click)="menuComment=c;menuIndex=i"
+            [matMenuTriggerFor]="menu">
+              <mat-icon>more_vert</mat-icon>
+           </button>
+      </div>
+    </div>
+    <mat-menu #menu="matMenu">
+			<button mat-menu-item (click)="editClicked($event)">Edit</button>
+			<button mat-menu-item  (click)="deleteClicked($event)">Remove</button>
+		</mat-menu>
+  </div>
+</ng-template>
+

@@ -1,0 +1,202 @@
+import {
+  Component, OnInit, ElementRef, Renderer2, Input, SimpleChanges, OnChanges, ViewChild, TemplateRef, HostListener, ViewContainerRef, Inject
+} from '@angular/core';
+import User from 'src/app/common/interfaces/user.model';
+import { Overlay, OverlayRef } from '@angular/cdk/overlay';
+import { TemplatePortal } from '@angular/cdk/portal';
+import { Subscription, fromEvent } from 'rxjs';
+import { filter, take } from 'rxjs/operators';
+import { IceService } from './ice.service';
+import { DOCUMENT } from '@angular/common';
+
+@Component({
+  selector: 'ice',
+  templateUrl: './ice.component.html',
+  styleUrls: ['./ice.component.sass']
+})
+export class IceComponent implements OnInit {
+  @Input() hideChanges: boolean;
+  @Input() user: User;
+  @Input() box: number;
+  @Input() disabled: boolean;
+  @Input() data: {
+    content: string,
+    comments_json: any[]
+  };
+
+  @ViewChild('commentOverlay') commentOverlay: TemplateRef<any>;
+
+  tracker: any;
+  overlayRef: OverlayRef | null;
+  sub: Subscription | null;
+  comment: {[key: string]: any, index: false | number} = {
+    adding: false,
+    content: '',
+    list: [],
+    editingIndex: 0,
+    hasComment: false,
+    show: false,
+    index: false
+  };
+  menuComment: any;
+  menuIndex: number;
+
+  constructor(
+    private el: ElementRef,
+    public overlay: Overlay,
+    public viewContainerRef: ViewContainerRef,
+    private iceService: IceService
+  ) { }
+
+  ngOnInit() {
+    this.data = this.data || { content: '', comments_json: [] };
+    this.data.content = this.data.content || '';
+    this.iceService.allComponents.push(this);
+
+    if (this.data.comments_json.length) {
+      this.comment.list = this.data.comments_json;
+      this.comment.hasComment = true;
+    }
+    const text = this.el.nativeElement.querySelector('#textbody');
+    setTimeout(() => {
+      const tracker = new window.ice.InlineChangeEditor({
+        element: text,
+        handleEvents: true,
+        currentUser: this.user,
+        plugins: ['IceAddTitlePlugin', 'IceSmartQuotesPlugin', 'IceEmdashPlugin', {
+          name: 'IceCopyPastePlugin',
+          settings: {
+            pasteType: 'formattedClean',
+            preserve: 'p,a[href],i,em,b,span,ul,ol,li,hr'
+          }
+        }
+        ]
+      }).startTracking();
+
+      this.tracker = tracker;
+
+    });
+  }
+
+  addComment($event: MouseEvent) {
+    $event.stopPropagation();
+    $event.preventDefault();
+    this.comment.adding = true;
+    this.closeComment();
+    this.openComment(this.commentPosition());
+
+  }
+
+  cancelComment() {
+    this.comment.adding = false;
+    this.comment.content = '';
+    this.comment.index = false;
+    this.closeComment();
+  }
+
+  saveComment(index: false | number = false) {
+    this.comment.adding = false;
+    if (this.comment.index !== false) {
+      this.comment.list[this.comment.index].content = this.comment.content;
+    } else {
+      const time = (new Date()).getTime();
+      this.comment.list.push({
+        content: this.comment.content,
+        user: this.user,
+        time,
+        formattedTime: window.moment(time).format('MM/DD/YYYY h:mma')
+      });
+    }
+
+    this.comment.hasComment = !!this.comment.list.length;
+    this.data.comments_json = this.comment.list;
+    this.comment.index = false;
+    this.comment.content = '';
+    this.closeComment();
+  }
+
+  onMouseEnter() {
+    if (this.comment.hasComment) {
+      this.openComment(this.commentPosition());
+    }
+  }
+
+  private commentPosition() {
+    const rect = this.el.nativeElement.querySelector('#textbody').getBoundingClientRect();
+    return {
+      x: rect.left,
+      y: rect.bottom
+    };
+  }
+
+  private openComment({ x, y }) {
+    this.iceService.closeAll();
+    const positionStrategy = this.overlay.position()
+      .flexibleConnectedTo({ x, y })
+      .withPositions([
+        {
+          originX: 'end',
+          originY: 'bottom',
+          overlayX: 'end',
+          overlayY: 'top',
+        }
+      ]);
+
+    this.overlayRef = this.overlay.create({
+      positionStrategy,
+      scrollStrategy: this.overlay.scrollStrategies.close()
+    });
+
+    this.overlayRef.attach(new TemplatePortal(this.commentOverlay, this.viewContainerRef, {
+      $implicit: this.comment
+    }));
+
+    this.sub = fromEvent<MouseEvent>(document, 'click')
+      .pipe(
+        filter(event => {
+          const clickTarget = event.target as HTMLElement;
+          return !!this.overlayRef &&
+          !(
+            this.overlayRef.overlayElement.contains(clickTarget) ||
+            clickTarget.classList.contains('cdk-overlay-transparent-backdrop') ||
+            clickTarget.id === 'addComment'
+          );
+        }),
+        take(1)
+      ).subscribe(() => this.closeComment());
+    this.comment.show = true;
+  }
+
+  closeComment() {
+    this.sub && this.sub.unsubscribe();
+    this.comment.show = false;
+    if (this.overlayRef) {
+      this.overlayRef.dispose();
+      this.overlayRef = null;
+    }
+  }
+
+  @HostListener('mouseleave')
+  onMouseLeave() {
+    this.comment.show = false;
+  }
+
+  editClicked(event: MouseEvent) {
+    this.menuClicked(event);
+    this.comment.content = this.menuComment.content;
+    this.comment.index = this.menuIndex;
+    this.comment.adding = true;
+  }
+
+  deleteClicked(event: MouseEvent) {
+    this.menuClicked(event);
+    this.comment.list.splice(this.menuIndex, 1);
+    this.data.comments_json = this.comment.list;
+  }
+
+  menuClicked(event: MouseEvent) {
+    event.preventDefault();
+    event.stopPropagation();
+  }
+}
+

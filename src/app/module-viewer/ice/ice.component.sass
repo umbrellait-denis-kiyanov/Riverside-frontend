@@ -1,0 +1,87 @@
+$padding: 20px;
+$triangleSize: 10px;
+$triangleColor: orange;
+\:host
+  display: block
+  padding: 0 $padding
+  width: 100%
+  position: relative
+  &:hover .add-comment
+    display: inline-flex
+
+.add-comment
+  display: none
+  position: absolute
+  right: 20px
+  top: 5px
+  color: orange
+
+#textbody
+  margin: 0 auto;
+  border: solid 2px #BFBFBF;
+  background: white;
+  padding: 15px 30px 30px;
+  outline: none;
+
+  &[disabled="true"]
+
+    &:before
+      content: "";
+      position: absolute;
+      width: calc(100% - 40px);
+      height: 100%;
+      background: white;
+      opacity: 0.4;
+      top: 0;
+      left: 20px;
+
+
+
+  &.hasComment:after
+    content: "";
+    width: 0;
+    height: 0;
+    border-top: $triangleSize solid transparent;
+    border-bottom: $triangleSize solid transparent;
+
+    border-left: $triangleSize solid $triangleColor;
+    position: absolute;
+    top: $padding/-4;
+    right: $padding;
+    transform: rotate(-45deg);
+
+  &.showComment
+    border-color: $triangleColor
+
+
+// .comment-triangle.hasComment
+
+
+
+.comment-wrapper
+
+  padding: 20px;
+  background: white;
+  /* border: 1px solid #ccc; */
+  border-radius: 4px;
+  width: 300px;
+  /* border-color: orange; */
+  position: absolute;
+  /* box-shadow: 0px 0px 4px 0px rgba(0, 0, 0, 0.5); */
+  box-shadow: 0 3px 4px rgba(0,0,0,0.2);
+  z-index: 1000;
+
+.comment-content
+
+  margin-bottom: 10px;
+  padding-bottom: 10px;
+  display: flex;
+  justify-content: space-between;
+
+textarea
+  margin: 10px 0;
+
+.btn-wrapper
+  text-align: right;
+  button
+    margin-left: 5px;
