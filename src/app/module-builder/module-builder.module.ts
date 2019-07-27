@@ -12,6 +12,8 @@ import { RouterModule } from '@angular/router';
 import { MatcherComponent } from './matcher/matcher.component';
 import { ModuleSelectorComponent } from './module-selector/module-selector.component';
 import { ModuleService } from '../common/services/module.service';
+import { RiversideStepTemplateComponent } from '../common/components/riverside-step-template/riverside-step-template.component';
+import { Template1Component } from '../common/components/riverside-step-template/templates/template1/template1.component';
 
 
 @NgModule({
@@ -30,6 +32,8 @@ import { ModuleService } from '../common/services/module.service';
     MainComponent,
     MatcherComponent,
     ModuleSelectorComponent,
+    RiversideStepTemplateComponent,
+    Template1Component,
   ],
   entryComponents: [
     ModuleBuilderRootComponent

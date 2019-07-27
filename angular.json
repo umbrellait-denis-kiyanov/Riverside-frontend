@@ -41,15 +41,27 @@
             "main": "src/main.ts",
             "polyfills": "src/polyfills.ts",
             "tsConfig": "src/tsconfig.app.json",
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ],
+            "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
               "src/styles.sass",
+              "src/assets/styles/ice.css",
               "node_modules/ng-bootstrap-to-bootstrap-3/dist/ng-bootstrap-to-bootstrap-3.min.css"
             ],
             "scripts": [
+              "src/assets/scripts/jqueryBrowser.js",
+              "node_modules/ice/lib/rangy/rangy-core.js",
+              "node_modules/ice/src/polyfills.js",
+              "node_modules/ice/src/ice.js",
+              "node_modules/ice/src/dom.js",
+              "node_modules/ice/src/icePlugin.js",
+              "node_modules/ice/src/icePluginManager.js",
+              "node_modules/ice/src/bookmark.js",
+              "node_modules/ice/src/selection.js",
+              "node_modules/ice/src/plugins/IceAddTitlePlugin/IceAddTitlePlugin.js",
+              "node_modules/ice/src/plugins/IceCopyPastePlugin/IceCopyPastePlugin.js",
+              "node_modules/ice/src/plugins/IceEmdashPlugin/IceEmdashPlugin.js",
+              "node_modules/ice/src/plugins/IceSmartQuotesPlugin/IceSmartQuotesPlugin.js",
+              "node_modules/ice/lib/tinymce/jscripts/tiny_mce/tiny_mce.js"
             ],
             "es5BrowserSupport": true
           },
@@ -104,26 +116,16 @@
             "polyfills": "src/polyfill.ts",
             "tsConfig": "src/tsconfig.spec.json",
             "karmaConfig": "src/karma.conf.js",
-            "styles": [
-              "src/styles.sass"
-            ],
+            "styles": ["src/styles.sass"],
             "scripts": [],
-            "assets": [
-              "src/favicon.ico",
-              "src/assets"
-            ]
+            "assets": ["src/favicon.ico", "src/assets"]
           }
         },
         "lint": {
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
-            "tsConfig": [
-              "src/tsconfig.app.json",
-              "src/tsconfig.spec.json"
-            ],
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "tsConfig": ["src/tsconfig.app.json", "src/tsconfig.spec.json"],
+            "exclude": ["**/node_modules/**"]
           }
         }
       }
@@ -149,9 +151,7 @@
           "builder": "@angular-devkit/build-angular:tslint",
           "options": {
             "tsConfig": "e2e/tsconfig.e2e.json",
-            "exclude": [
-              "**/node_modules/**"
-            ]
+            "exclude": ["**/node_modules/**"]
           }
         }
       }

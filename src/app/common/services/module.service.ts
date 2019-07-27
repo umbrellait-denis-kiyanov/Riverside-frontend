@@ -48,8 +48,16 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${module.id}`, module).toPromise();
   }
 
-  async requestFeedback(module: Module): Promise<object> {
+  async requestFeedback(module: Partial<Module>): Promise<object> {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback`, module).toPromise();
+  }
+
+  async feedbackStarted(module: Partial<Module> & {orgId?: number}): Promise<object> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/start`, module).toPromise();
+  }
+
+  async finalizeFeedback(module: Partial<Module> & {orgId?: number}): Promise<object> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/finish`, module).toPromise();
   }
 
   updateProgress(module: Module) {

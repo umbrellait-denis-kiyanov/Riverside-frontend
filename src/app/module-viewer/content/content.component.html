@@ -1,1 +1,6 @@
-<iframe *ngIf="ready" [src]="iframeUrl | safeurl"></iframe>
+
+<button (click)="toggleChanges()">Show/hide changes</button>
+<button (click)="save()">Save</button>
+<button (click)="requestFeedback()" *ngIf="me.roles.riverside_facilitator">Request feedback</button>
+<button (click)="finishFeedback()" *ngIf="showFinishFeedback">Finalize feedback</button>
+<riverside-step-template *ngIf="templateData" [template]="'template1'" [data]="templateData"></riverside-step-template>

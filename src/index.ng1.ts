@@ -14,13 +14,12 @@ import { TimedReviewComponent } from './app/video_recorder/timed-review/timed-re
 import { ModuleBuilderRootComponent } from './app/module-builder/module-builder-root.component';
 import { ModuleViewerModule } from './app/module-viewer/module-viewer.module';
 import { ModuleViewerRootComponent } from './app/module-viewer/module-viewer-root.component';
+import { environment } from './environments/environment';
+import './globals';
 
 
 
-
-declare global {
-  interface Window { app: any; }
-}
+window.CONSTANTS = environment;
 
 // if (environment.production) {
 //   enableProdMode();

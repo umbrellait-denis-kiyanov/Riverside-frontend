@@ -10,6 +10,9 @@ class User extends BaseModel {
     riverside_se: false,
     super_admin: false
   };
+  org = {
+    id: 0
+  };
 
   protected transform() {
     return {
