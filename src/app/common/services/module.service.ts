@@ -26,7 +26,7 @@ export class ModuleService {
 
   async getModule(id: number): Promise<Module | false> {
     if (this.modules) {
-      return this.modules.find(m => Number(m.id) === id);
+      return this.modules.find(m => Number(m.id) === Number(id));
     } else {
       return await this.httpClient.get(`${this.baseUrl}/${id}`).toPromise().then(async (res: any) => {
         return res;

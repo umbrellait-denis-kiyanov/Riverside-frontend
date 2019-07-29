@@ -1,6 +1,6 @@
-<div class="container" [ngStyle]="{'width.px': width}">
+<div  [ngStyle]="{'width.px': width}" *ngIf="ready">
   <div class="left-menu-header">
-      <button class="menu-btn bg-color" (click)="onExpand()"><span class="fa fa-bars"></span></button>
+      <button class="menu-btn bg-color" (click)="collapse()"><span class="fa fa-bars"></span></button>
       <div class="header-title">
         Build Sales / Marketing Strategy
       </div>

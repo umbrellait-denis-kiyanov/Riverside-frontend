@@ -1,0 +1,41 @@
+@import "src/app/common/sass/variables.sass";
+\:host
+  position: fixed
+  width: $left-sidebar-width
+  height: 100vh
+  background: white
+  border-right: 1px solid #ccc
+
+ul
+  list-style-type: none
+  list-style: none
+  padding-left: 0
+
+  li
+
+    list-style: none;
+    a
+      padding: 5px
+      color: inherit
+      text-decoration: none
+  .menu-item
+    min-height: 80px
+    text-align: center;
+    display: flex
+    flex-direction: column
+    justify-content: center
+    cursor: pointer
+    .mat-icon
+      font-size: 35px
+      height: 35px
+      width: 35px
+    .active
+      background: #00529f
+      color: white
+    .menu-item-counter
+      position: absolute
+      right: 10px;
+      padding: 0 5px;
+      border-radius: 10px;
+      background: #e89600
+      color: white

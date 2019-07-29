@@ -1,0 +1,57 @@
+<ul>
+  <li class="logo">
+    <img src="/public/img/riverside_logo.png">
+  </li>
+
+  <li
+    class="menu-item"
+    *ngIf="showMenu"
+  >
+    <a (click)="expandMenu()">
+      <div class="menu-item-icon">
+        <mat-icon>menu</mat-icon>
+      </div>
+
+      <div class="menu-item-label">MENU</div>
+    </a>
+  </li>
+
+  <li
+    class="menu-item"
+    *ngFor="let menu of menus"
+  >
+    <ng-container *ngIf="showMenuItem(menu)">
+      <a
+        [routerLink]="menu.link"
+        routerLinkActive="active"
+        *ngIf="menu.link"
+      >
+        <ng-container *ngTemplateOutlet="menuItem"></ng-container>
+      </a>
+
+      <a
+        [href]="menu.href"
+        routerLinkActive="active"
+        *ngIf="menu.href"
+      >
+        <ng-container *ngTemplateOutlet="menuItem"></ng-container>
+      </a>
+      <a
+        (click)="openModal(menu.modalComponent)"
+        *ngIf="menu.modalComponent"
+      >
+        <ng-container *ngTemplateOutlet="menuItem"></ng-container>
+      </a>
+
+      <ng-template #menuItem>
+        <div class="menu-item-icon">
+          <mat-icon [ngClass]="menu.className">{{menu['mat-icon']}}</mat-icon>
+
+          <span class="menu-item-counter">{{menu.counter}}</span>
+        </div>
+
+        <div class="menu-item-label">{{menu.label}}</div>
+      </ng-template>
+    </ng-container>
+  </li>
+</ul>

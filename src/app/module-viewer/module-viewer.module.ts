@@ -9,7 +9,7 @@ import { MainComponent } from './main/main.component';
 import { AppRoutingModule } from './module-viewer-routing.module';
 import { RouterModule } from '@angular/router';
 import { ModuleService } from '../common/services/module.service';
-import { LeftMenuComponent } from './left-menu/left-menu.component';
+import { LeftMenuComponent } from './left-menu/module/module-left-menu.component';
 import { ContentComponent } from './content/content.component';
 import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbox.component';
 import { LoadingComponent } from '../common/components/loading/loading.component';
@@ -30,6 +30,15 @@ import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
 import { UserComponent } from './ice/user/user.component';
 import { IceService } from './ice/ice.service';
+import { LeftSidebarComponent } from '../common/components/left-sidebar/left-sidebar.component';
+import { InboxComponent } from './inbox/inbox.component';
+import { LeftMenuService } from '../common/services/left-menu.service';
+import { InboxLeftMenuComponent } from './left-menu/inbox/inbox-left-menu.component';
+import { AccountLeftMenuComponent } from './left-menu/account/account-left-menu.component';
+import { E3TableComponent } from '../common/components/e3-table/e3-table.component';
+import { InboxService } from './inbox/inbox.service';
+import { ModuleBuilderModule } from '../module-builder/module-builder.module';
+import { RequestFeedbackComponent } from '../common/components/request-feedback/request-feedback.component';
 
 @NgModule({
   imports: [
@@ -43,12 +52,15 @@ import { IceService } from './ice/ice.service';
     AppRoutingModule,
     MatMenuModule,
     MatButtonModule,
-    MatIconModule
+    MatIconModule,
+    ModuleBuilderModule
   ],
   declarations: [
     ModuleViewerRootComponent,
     MainComponent,
     LeftMenuComponent,
+    InboxLeftMenuComponent,
+    AccountLeftMenuComponent,
     ContentComponent,
     E3CheckboxComponent,
     LoadingComponent,
@@ -61,19 +73,26 @@ import { IceService } from './ice/ice.service';
     RTemplateDirective,
     Template1Component,
     LetterImageComponent,
-    UserComponent
+    UserComponent,
+    LeftSidebarComponent,
+    InboxComponent,
+    E3TableComponent,
+    RequestFeedbackComponent,
 
   ],
   entryComponents: [
     ModuleViewerRootComponent,
     LearningElementComponent,
+    RequestFeedbackComponent,
     Template1Component
   ],
   providers: [
     ModuleService,
     ModuleContentService,
     UserService,
-    IceService
+    IceService,
+    LeftMenuService,
+    InboxService
   ],
   bootstrap: [ModuleViewerRootComponent]
 })

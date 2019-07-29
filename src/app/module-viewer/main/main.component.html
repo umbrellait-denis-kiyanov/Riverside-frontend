@@ -1,14 +1,15 @@
 <ng-container *ngIf="ready; else elseTemplate">
-  <ng-container *ngIf="expanded">
-    <app-left-menu [width]="500" [module]="moduleData" (collapse)="expanded = false"></app-left-menu>
-  </ng-container>
+  <left-sidebar></left-sidebar>
+
+      <!-- <router-outlet name="left-menu"></router-outlet> -->
+      <div  *ngIf="expanded">
+          <router-outlet name="left-menu"></router-outlet>
+      </div>
+    <!-- <module-left-menu [width]="500" [module]="moduleData" (collapse)="expanded = false"></module-left-menu> -->
   <ng-container *ngIf="!expanded">
-    <span class="expand-wrapper">
-      <button class="menu-btn bg-color" (click)="expanded = true"><span class="fa fa-bars"></span></button>
-    </span>
+    <span class="expand-wrapper"></span>
 
   </ng-container>
-
   <router-outlet></router-outlet>
 </ng-container>
 <ng-template #elseTemplate>

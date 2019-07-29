@@ -1,0 +1,56 @@
+<div
+  class="page-container"
+  *ngIf="ready"
+>
+  <div class="header-wrapper">
+    <div class="header-title">INBOX</div>
+  </div>
+
+  <div
+    class="buttons-wrapper"
+    *ngIf="!message"
+  >
+    <div>
+      Select a message from the menu on the left.
+    </div>
+  </div>
+
+  <div
+    class="buttons-wrapper"
+    *ngIf="message"
+  >
+    <a [routerLink]="['/module', message.moduleId]">
+      <button
+        mat-raised-button="mat-raised-button"
+        color="primary"
+      >Go to module</button>
+    </a>
+  </div>
+
+  <div
+    class="page-content"
+    *ngIf="message"
+  >
+    <h3>{{message.subject}}</h3>
+
+    <div class="sender">
+      <div>
+        <letter-image
+          [letter]="senderLetter"
+          className="bcts-1"
+        ></letter-image>
+
+        {{message.sender}}
+      </div>
+
+      <div>{{message.time}}</div>
+    </div>
+
+    <div class="content">
+      <div
+        *ngIf="messageResource.ready"
+        [innerHtml]="message.message | safehtml"
+      ></div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,19 @@
+<div [ngStyle]="{'width.px': width}" *ngIf="messagesResource.ready">
+  <div class="left-menu-header">
+    <button
+      class="menu-btn bg-color"
+      (click)="collapse()"
+    >
+      <span class="fa fa-bars"></span>
+    </button>
+
+    <div class="header-title">Inbox</div>
+  </div>
+
+  <e3-table
+    [header]="header"
+    [data]="messagesResource.data"
+    [sortable]="true"
+    class="centered"
+  ></e3-table>
+</div>

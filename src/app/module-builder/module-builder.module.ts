@@ -32,8 +32,8 @@ import { Template1Component } from '../common/components/riverside-step-template
     MainComponent,
     MatcherComponent,
     ModuleSelectorComponent,
-    RiversideStepTemplateComponent,
-    Template1Component,
+
+
   ],
   entryComponents: [
     ModuleBuilderRootComponent

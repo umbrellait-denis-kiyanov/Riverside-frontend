@@ -4,6 +4,7 @@ import { of, timer } from 'rxjs';
 import { delay } from 'rxjs/operators';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Module } from 'src/app/common/interfaces/module.interface';
+import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 
 
 
@@ -12,27 +13,20 @@ import { Module } from 'src/app/common/interfaces/module.interface';
   styleUrls: ['./main.component.sass']
 })
 export class MainComponent implements OnInit {
-  ready = false;
+  ready = true;
   moduleData: Module;
   expanded = true;
 
   constructor(
-    private moduleService: ModuleService,
-    private route: ActivatedRoute
+    private leftMenuService: LeftMenuService
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.moduleService.getModule(params.moduleId).then(moduleData => {
-        if (moduleData) {
-          this.moduleData = moduleData;
-          this.moduleService.module = moduleData;
-        }
-        this.ready = true;
-      });
+    this.leftMenuService.onExpand.subscribe((expanded) => this.expanded = expanded);
+  }
 
-    });
-
+  expand() {
+    this.leftMenuService.expand = true;
   }
 
   onClickTab(tabKey: string) {
