@@ -1,0 +1,19 @@
+<span>
+  <button
+    mat-button="mat-button"
+    color="primary"
+    *ngIf="showPrevious"
+    (click)="previous()"
+  >Previous</button>
+</span>
+
+<button mat-raised-button="mat-raised-button">Mark as done</button>
+
+<span>
+  <button
+    mat-button="mat-button"
+    color="primary"
+    *ngIf="showNext"
+    (click)="next()"
+  >Next</button>
+</span>

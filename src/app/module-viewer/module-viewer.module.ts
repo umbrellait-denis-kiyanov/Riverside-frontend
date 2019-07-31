@@ -19,9 +19,9 @@ import { LearningElementComponent } from './modals/learning-element/learning-ele
 import { E3TooltipDirective } from '../common/components/e3-tooltip/e3-tooltip.directive';
 import { UserService } from '../common/services/user.service';
 import { IceComponent } from './ice/ice.component';
-import { RiversideStepTemplateComponent } from '../common/components/riverside-step-template/riverside-step-template.component';
-import { RTemplateDirective } from '../common/components/riverside-step-template/riverside-step-template-host.directive';
-import { Template1Component } from '../common/components/riverside-step-template/templates/template1/template1.component';
+import { RiversideStepTemplateComponent } from './riverside-step-template/riverside-step-template.component';
+import { RTemplateDirective } from './riverside-step-template/riverside-step-template-host.directive';
+import { Template1Component } from './riverside-step-template/templates/template1/template1.component';
 import { SafehtmlPipe } from '../common/pipes/safehtml.pipe';
 import { ModuleContentService } from '../common/services/module-content.service';
 import { LetterImageComponent } from './ice/letter-image/letter-image.component';
@@ -30,7 +30,7 @@ import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
 import { UserComponent } from './ice/user/user.component';
 import { IceService } from './ice/ice.service';
-import { LeftSidebarComponent } from '../common/components/left-sidebar/left-sidebar.component';
+import { LeftSidebarComponent } from './left-sidebar/left-sidebar.component';
 import { InboxComponent } from './inbox/inbox.component';
 import { LeftMenuService } from '../common/services/left-menu.service';
 import { InboxLeftMenuComponent } from './left-menu/inbox/inbox-left-menu.component';
@@ -38,7 +38,12 @@ import { AccountLeftMenuComponent } from './left-menu/account/account-left-menu.
 import { E3TableComponent } from '../common/components/e3-table/e3-table.component';
 import { InboxService } from './inbox/inbox.service';
 import { ModuleBuilderModule } from '../module-builder/module-builder.module';
-import { RequestFeedbackComponent } from '../common/components/request-feedback/request-feedback.component';
+import { RequestFeedbackComponent } from './request-feedback/request-feedback.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
+import { E3CommonModule } from '../common/e3-common.module';
+import { ModuleNavComponent } from './content/module-nav/module-nav.component';
+import { ModuleNavService } from '../common/services/module-nav.service';
+
 
 @NgModule({
   imports: [
@@ -53,7 +58,9 @@ import { RequestFeedbackComponent } from '../common/components/request-feedback/
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
-    ModuleBuilderModule
+    ModuleBuilderModule,
+    CKEditorModule,
+    E3CommonModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -62,7 +69,7 @@ import { RequestFeedbackComponent } from '../common/components/request-feedback/
     InboxLeftMenuComponent,
     AccountLeftMenuComponent,
     ContentComponent,
-    E3CheckboxComponent,
+    // E3CheckboxComponent,
     LoadingComponent,
     SafeurlPipe,
     SafehtmlPipe,
@@ -78,6 +85,7 @@ import { RequestFeedbackComponent } from '../common/components/request-feedback/
     InboxComponent,
     E3TableComponent,
     RequestFeedbackComponent,
+    ModuleNavComponent,
 
   ],
   entryComponents: [
@@ -88,6 +96,7 @@ import { RequestFeedbackComponent } from '../common/components/request-feedback/
   ],
   providers: [
     ModuleService,
+    ModuleNavService,
     ModuleContentService,
     UserService,
     IceService,

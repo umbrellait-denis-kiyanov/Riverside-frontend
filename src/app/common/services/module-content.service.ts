@@ -23,11 +23,19 @@ export class ModuleContentService {
     return this.moduleContent.load(
       this.httpClient.get(`${this.baseUrl}/${moduleId}/step/${stepId}`, { params: { org_id } })
         .toPromise()
-        .then(async (res: any) => ModuleContent.fromObject(res.content || {
-          module_id: moduleId,
-          step_id: stepId,
-          template_id: res.template_id
-        }))
+        .then(async (res: any) => {
+          let object;
+          if (res.content) {
+            object = Object.assign(res.content, {template_params_json: res.template_params_json});
+          } else {
+             object = {
+              module_id: moduleId,
+              step_id: stepId,
+              template_id: res.template_id
+            };
+          }
+          return ModuleContent.fromObject(object);
+        })
     );
   }
 }

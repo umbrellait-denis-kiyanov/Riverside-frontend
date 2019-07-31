@@ -10,11 +10,11 @@ export interface TemplateComponentInterface {
 
 
 export interface TemplateContentDataBase {
-  inputs: {[key: string]: {
+  inputs?: {[key: string]: {
     comments: any[],
     content: string
   }};
-  disabled: boolean;
+  disabled?: boolean;
 }
 
 

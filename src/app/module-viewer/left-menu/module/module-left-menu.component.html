@@ -1,13 +1,17 @@
-<div  [ngStyle]="{'width.px': width}" *ngIf="ready">
-  <div class="left-menu-header">
-      <button class="menu-btn bg-color" (click)="collapse()"><span class="fa fa-bars"></span></button>
-      <div class="header-title">
-        Build Sales / Marketing Strategy
-      </div>
-  </div>
-  <div class="left-menu-summary paper">
+<div
+  [ngStyle]="{'width.px': width}"
+  *ngIf="ready"
+>
+  <div class="left-menu-header"></div>
+
+  <div class="left-menu-summary">
     <div class="summary-title">{{module.name}}</div>
-    <div class="summary-body">
+
+    <div>
+      -------------------------------PROGRESS BAR---------------------------------------
+    </div>
+
+    <!-- <div class="summary-body">
       <div class="summary-row">
         <div class="summary-label">
           TARGET DATE
@@ -24,59 +28,71 @@
               <input class="site-tbox" disabled [ngModel]="module.percComplete + '%'" />
           </div>
         </div>
-    </div>
+    </div> -->
   </div>
 
-  <div class="left-menu-actions paper">
-    <table>
-      <tr>
-        <th> KEY ACTIONS </th>
-        <th class="learning-center"> LEARNING CENTER </th>
-      </tr>
-      <tr *ngFor="let step of module.steps; let s = index">
-          <td >
-              <div class="key-action">
-                  <e3-checkbox [(checked)]="step.isChecked" (checkedChange)="updateProgress()" [disabled]="!canEdit()"></e3-checkbox>
-                  <a *ngIf="step.google_doc_url" [routerLink]="[ '/module', module.id]" [queryParams]="{step: s}">
-                    <span>{{step.description}}</span>
-                  </a>
-                  <span *ngIf="!step.google_doc_url">
-                    <span>{{step.description}}</span>
-                  </span>
-              </div>
-            </td>
-        <td class="learning-center">
-          <span  *ngFor="let element of step.elements">
-              <span [ngSwitch]="element.type" (click)="openElement(element)"  >
-                  <span  *ngSwitchCase="'youtube'"  class="fa fa-youtube-play" e3-tooltip="{{element.tooltip}}"></span>
-                  <span  *ngSwitchCase="'pdf'"  class="fa fa-file-pdf-o" e3-tooltip="{{element.tooltip}}"></span>
-                  <span  *ngSwitchCase="'activity'"  class="users-icon" e3-tooltip="{{element.tooltip}}">
-                    <img src='/public/img/users.png'>
-                  </span>
-                  <span  *ngSwitchDefault  class="fa fa-file" e3-tooltip="{{element.tooltip}}"></span>
-              </span>
+  <!-- <div class="left-menu-actions">
+    <ul class="step-list">
+      <li class="step-list-item section-break">
+        Section One
+      </li>
+      <li class="step-list-item">
+        <span class="checkmark checked">
+          <span class="fa fa-check"></span>
+        </span>
+        <span class="step-number">1</span>
+        <span class="step-title">Introduction</span>
+      </li>
+      <li class="step-list-item">
+        <span class="checkmark">
+            <span class="fa fa-check"></span>
+        </span>
+        <span class="step-number">2</span>
+        <span class="step-title">Examples</span>
+      </li>
+      <li class="step-list-item section-break">
+          Section Two
+        </li>
+        <li class="step-list-item">
+          <span class="checkmark checked">
+            <span class="fa fa-check"></span>
+          </span>
+          <span class="step-number">3</span>
+          <span class="step-title">Brainstorm Buyer Personas</span>
+        </li>
+        <li class="step-list-item">
+          <span class="checkmark">
+              <span class="fa fa-check"></span>
+          </span>
+          <span class="step-number">4</span>
+          <span class="step-title">Narrow Down Personas</span>
+        </li>
+    </ul> -->
+
+  <div class="left-menu-actions">
+    <ul class="step-list">
+      <li
+        class="step-list-item"
+        *ngFor="let step of module.steps"
+        [ngClass]="{'section-break': step.is_section_break}"
+        routerLinkActive="active"
+      >
+        <span *ngIf="step.is_section_break">{{step.description}}</span>
+
+        <a
+          [routerLink]="[ '/module', module.id , 'step', step.id ]"
+
+          *ngIf="!step.is_section_break"
+        >
+          <span class="checkmark" [ngClass]="{'checked': step.is_checked}">
+            <span class="fa fa-check"></span>
           </span>
 
-        </td>
-      </tr>
-      <tr *ngIf="module.percComplete == 100" class="request-feedback">
+          <span class="step-number">{{step.position}}</span>
 
-          <td >
-              <div class="key-action">
-                  <span>REQUEST FEEDBACK </span>
-              </div>
-            </td>
-        <td class="learning-center">
-          <span >
-              <span>
-                  <span *ngIf="!sending" class="fa fa-envelope" (click)="sendRequest()"></span>
-                  <span *ngIf="sending" class="fa fa-pulse fa-spinner"></span>
-              </span>
-          </span>
-        </td>
-      </tr>
-    </table>
+          <span class="step-title">{{step.description}}</span>
+        </a>
+      </li>
+    </ul>
   </div>
-
 </div>
-

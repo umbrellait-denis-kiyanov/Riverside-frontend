@@ -2,14 +2,16 @@
 export interface Module {
   id: number;
   name: string;
-  google_doc_url: string;
   percComplete?: number;
   steps: Step[];
 }
 export interface Step {
+  id: number;
   description: string;
-  google_doc_url?: string;
-  isChecked?: boolean;
+  is_checked?: boolean;
+  is_section_break: boolean;
+  require_feedback: boolean;
+  template_component: string;
   elements: LearningElement[];
 }
 

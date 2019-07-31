@@ -1,8 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { menus } from './menus';
-import { LeftMenuService } from '../../services/left-menu.service';
-import { UserService } from '../../services/user.service';
-import User from '../../interfaces/user.model';
+import { LeftMenuService } from '../../common/services/left-menu.service';
+import { UserService } from '../../common/services/user.service';
+import User from '../../common/interfaces/user.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 
 

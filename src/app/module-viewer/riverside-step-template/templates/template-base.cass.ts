@@ -28,7 +28,7 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
 
     Object.keys(this.inputs).forEach(key => {
       data.inputs[key] = {
-        comments_json: data.inputs[key].comments_json,
+        comments: data.inputs[key].comments,
         content: this.el.nativeElement.querySelector(`#${key} #textbody`).innerHTML,
       };
     });

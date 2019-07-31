@@ -58,7 +58,8 @@ export class ModuleEditorComponent implements OnInit {
   private newStep(): Step {
     return {
       description: '',
-      elements: []
+      elements: [],
+      is_section_break: false
     };
   }
 

@@ -7,7 +7,8 @@ import toastr from 'src/app/common/lib/toastr';
 import { UserService } from 'src/app/common/services/user.service';
 import User from 'src/app/common/interfaces/user.model';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 declare global {
   interface Window { $: any; }
@@ -21,7 +22,8 @@ declare global {
 export class LeftMenuComponent implements OnInit {
 
   @Input() width: number = 500;
-  @Input() module: Module;
+
+  module: Module;
 
   sending = false;
   me: User;
@@ -32,24 +34,31 @@ export class LeftMenuComponent implements OnInit {
     private modalService: NgbModal,
     private userService: UserService,
     private leftMenuService: LeftMenuService,
-    private route: ActivatedRoute
+    private navService: ModuleNavService,
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
+    this.me = this.userService.me;
     this.route.params.subscribe((params) => {
       if (params.moduleId) {
-        this.moduleService.getModule(params.moduleId).then(moduleData => {
+        this.moduleService.getModule(params.moduleId, String(this.me.org.id)).then(moduleData => {
           if (moduleData) {
             this.module = moduleData;
-            this.moduleService.module = moduleData;
+            this.navService.module.current = moduleData;
           }
           this.module.percComplete = this.module.percComplete || 0;
           this.ready = true;
         });
+        if (!this.router.routerState.snapshot.url.includes('step')) {
+          this.router.navigate(['module', params.moduleId, 'step', 1]);
+        }
       }
+
     });
 
-    this.me = this.userService.me;
+
     window.$('#datepicker').datepicker({
       dateFormat: 'dd M yy'
     });
@@ -60,7 +69,7 @@ export class LeftMenuComponent implements OnInit {
   }
 
   updateProgress() {
-    this.moduleService.updateProgress(this.module);
+    this.navService.updateProgress(this.module);
   }
 
   openElement(element: Step['elements'][number]) {

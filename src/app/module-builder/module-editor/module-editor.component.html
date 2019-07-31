@@ -28,17 +28,6 @@
     />
   </div>
 
-  <div class="form-group">
-    <label class="control-label">Google Doc Url</label>
-
-    <input
-      type="text"
-      class="site-tbox margin_0"
-      [ngModelOptions]="{standalone: true}"
-      [(ngModel)]="moduleData.google_doc_url"
-      required="required"
-    />
-  </div>
 
   <div class="steps-wrapper">
     <div class="steps-header steps-row">
@@ -63,16 +52,9 @@
               placeholder="Step Description"
             />
           </div>
-          <div class="step-input-wrapper">
-            <span class="fa"></span>
-              <input
-                type="text"
-                class="site-tbox margin_0"
-                [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="step.google_doc_url"
-                placeholder="Bookmark Url (optional)"
-                required="required"
-              />
+          <div>
+              <e3-checkbox [(checked)]="step.is_section_break"></e3-checkbox>
+              <span>Section Break</span>
           </div>
         </div>
 

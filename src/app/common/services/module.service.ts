@@ -11,7 +11,6 @@ export class ModuleService {
 
   modules: Module[];
   selectedModule: number = null;
-  module: Module;
   baseUrl = '/api/modules';
 
   constructor(private httpClient: HttpClient) { }
@@ -24,11 +23,11 @@ export class ModuleService {
     }
   }
 
-  async getModule(id: number): Promise<Module | false> {
+  async getModule(id: number, org_id?: string): Promise<Module | false> {
     if (this.modules) {
       return this.modules.find(m => Number(m.id) === Number(id));
     } else {
-      return await this.httpClient.get(`${this.baseUrl}/${id}`).toPromise().then(async (res: any) => {
+      return await this.httpClient.get(`${this.baseUrl}/${id}`, {params: {org_id}}).toPromise().then(async (res: any) => {
         return res;
       });
     }
@@ -60,9 +59,4 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/finish`, module).toPromise();
   }
 
-  updateProgress(module: Module) {
-    const numerator = module.steps.map(s => Number(!!s.isChecked)).reduce((prev, curr) => prev + curr);
-    const denominator = module.steps.length;
-    module.percComplete = Math.round(100 * numerator / denominator);
-  }
 }

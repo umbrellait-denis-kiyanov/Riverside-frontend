@@ -12,8 +12,10 @@ import { RouterModule } from '@angular/router';
 import { MatcherComponent } from './matcher/matcher.component';
 import { ModuleSelectorComponent } from './module-selector/module-selector.component';
 import { ModuleService } from '../common/services/module.service';
-import { RiversideStepTemplateComponent } from '../common/components/riverside-step-template/riverside-step-template.component';
-import { Template1Component } from '../common/components/riverside-step-template/templates/template1/template1.component';
+import { RiversideStepTemplateComponent } from '../module-viewer/riverside-step-template/riverside-step-template.component';
+import { Template1Component } from '../module-viewer/riverside-step-template/templates/template1/template1.component';
+import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbox.component';
+import { E3CommonModule } from '../common/e3-common.module';
 
 
 @NgModule({
@@ -25,6 +27,7 @@ import { Template1Component } from '../common/components/riverside-step-template
     HttpClientModule,
     RouterModule,
     AppRoutingModule,
+    E3CommonModule
   ],
   declarations: [
     ModuleBuilderRootComponent,
@@ -32,7 +35,7 @@ import { Template1Component } from '../common/components/riverside-step-template
     MainComponent,
     MatcherComponent,
     ModuleSelectorComponent,
-
+    // E3CheckboxComponent
 
   ],
   entryComponents: [

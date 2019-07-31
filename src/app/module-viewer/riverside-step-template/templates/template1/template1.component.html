@@ -1,0 +1,43 @@
+<!-- <h3>Input box 1</h3>
+
+<ice
+  id="box1"
+  [hideChanges]="hideChanges"
+  [user]="me"
+  [disabled]="disabled"
+  [(data)]="inputs.box1"
+></ice>
+
+<h3>Input box 2</h3>
+
+<ice
+  id="box2"
+  [hideChanges]="hideChanges"
+  [user]="me"
+  [disabled]="disabled"
+  [(data)]="inputs.box2"
+></ice>
+
+<ckeditor [editor]="Editor"></ckeditor> -->
+
+<h2
+  class="template-title"
+  [innerHtml]="contentData.title | safehtml"
+></h2>
+
+<div
+  class="template-description"
+  [innerHtml]="contentData.description | safehtml"
+></div>
+
+<p
+  class="template-resource"
+  [innerHtml]="contentData.resource | safehtml"
+></p>
+
+<div
+  class="template-footer"
+  [innerHtml]="contentData.footer | safehtml"
+></div>
+
+<module-nav></module-nav>

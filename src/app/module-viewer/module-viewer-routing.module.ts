@@ -24,7 +24,7 @@ const routes: Routes = [
     component: MainComponent,
     children: [
       {
-        path: '',
+        path: 'step/:stepId',
         component: ContentComponent
       },
       {

@@ -1,0 +1,14 @@
+<div class="modal-header">
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss('Cross click')">
+    <span aria-hidden="true">&times;</span>
+  </button>
+  <h3>Request feedback</h3>
+</div>
+<div class="modal-body">
+    <p *ngIf="module">You are requesting feedback for the module <b>{{module.name}}</b>. <a class="pointer">(Change module)</a></p>
+    <p>What help would you like to get from your Managing Director?</p>
+    <ckeditor class="ckeditor" [editor]="Editor"  [(ngModel)]="message"  *ngIf="ready"></ckeditor>
+</div>
+<div class="modal-footer">
+  <button mat-raised-button color="accent">Submit</button>
+</div>

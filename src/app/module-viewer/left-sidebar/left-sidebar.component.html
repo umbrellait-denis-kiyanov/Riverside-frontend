@@ -5,7 +5,7 @@
 
   <li
     class="menu-item"
-    *ngIf="showMenu"
+
   >
     <a (click)="expandMenu()">
       <div class="menu-item-icon">
@@ -19,6 +19,7 @@
   <li
     class="menu-item"
     *ngFor="let menu of menus"
+    [hidden]="!showMenuItem(menu)"
   >
     <ng-container *ngIf="showMenuItem(menu)">
       <a

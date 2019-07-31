@@ -13,6 +13,7 @@ class ModuleContent extends BaseModel {
   inputs: any = {};
   feedback_requested: boolean = false;
   feedback_started: boolean = false;
+  template_params_json: any = {};
 
   protected transform() {
     return {

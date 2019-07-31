@@ -5,7 +5,8 @@
   height: 100vh
   background: white
   border-right: 1px solid #ccc
-
+  background: #00529f
+  color: white
 ul
   list-style-type: none
   list-style: none
@@ -19,6 +20,8 @@ ul
       color: inherit
       text-decoration: none
   .menu-item
+    &[hidden]
+      display: none
     min-height: 80px
     text-align: center;
     display: flex
@@ -30,8 +33,8 @@ ul
       height: 35px
       width: 35px
     .active
-      background: #00529f
-      color: white
+      background: white
+      color: #00529f
     .menu-item-counter
       position: absolute
       right: 10px;

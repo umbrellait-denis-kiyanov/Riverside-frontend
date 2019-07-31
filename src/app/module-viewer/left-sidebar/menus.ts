@@ -1,4 +1,4 @@
-import User from '../../interfaces/user.model';
+import User from '../../common/interfaces/user.model';
 import { RequestFeedbackComponent } from '../request-feedback/request-feedback.component';
 
 export const menus = [
