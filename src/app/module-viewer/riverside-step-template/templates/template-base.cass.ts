@@ -2,6 +2,7 @@ import { TemplateContentData } from './template-data.class';
 import { OnInit, ElementRef, Component } from '@angular/core';
 import { TemplateComponentInterface, TemplateContentDataType } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
+import { ModuleContentService } from 'src/app/common/services/module-content.service';
 
 @Component({})
 export class TemplateComponent implements TemplateComponentInterface, OnInit {
@@ -11,7 +12,10 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   disabled: boolean;
   me: User;
 
-  constructor(private el: ElementRef) {}
+  constructor(
+      private el: ElementRef,
+      private moduleContentService: ModuleContentService
+    ) {}
 
   ngOnInit() {
     this.data.onHideChanges.subscribe((val: boolean) => this.hideChanges = val);
@@ -24,14 +28,19 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   protected init() {}
 
   prepareData() {
-    const data: TemplateContentDataType = JSON.parse(JSON.stringify(this.data.data));
+    const data: any = {inputs: {}};
 
     Object.keys(this.inputs).forEach(key => {
+      const iceElement = this.el.nativeElement.querySelector(`#${key} #textbody`);
       data.inputs[key] = {
-        comments: data.inputs[key].comments,
-        content: this.el.nativeElement.querySelector(`#${key} #textbody`).innerHTML,
+        comments_json: data.inputs[key] ? data.inputs[key].comments_json : [],
+        content: iceElement ? iceElement.innerHTML : '',
       };
     });
     return data;
+  }
+
+  contentChanged() {
+    this.moduleContentService.contentChanged.next(this.moduleContentService.contentChanged.getValue() + 1);
   }
 }

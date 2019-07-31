@@ -43,6 +43,8 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { E3CommonModule } from '../common/e3-common.module';
 import { ModuleNavComponent } from './content/module-nav/module-nav.component';
 import { ModuleNavService } from '../common/services/module-nav.service';
+import { Template2Component } from './riverside-step-template/templates/template2/template2.component';
+import { Template3Component } from './riverside-step-template/templates/template3/template3.component';
 
 
 @NgModule({
@@ -86,13 +88,16 @@ import { ModuleNavService } from '../common/services/module-nav.service';
     E3TableComponent,
     RequestFeedbackComponent,
     ModuleNavComponent,
+    Template2Component,
+    Template3Component,
 
   ],
   entryComponents: [
     ModuleViewerRootComponent,
     LearningElementComponent,
     RequestFeedbackComponent,
-    Template1Component
+    Template1Component,
+    Template2Component,
   ],
   providers: [
     ModuleService,

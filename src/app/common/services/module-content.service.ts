@@ -10,6 +10,7 @@ export class ModuleContentService {
 
   baseUrl = '/api/modules';
   moduleContent = new ResourceFromServer<ModuleContent>();
+  contentChanged = new BehaviorSubject<number>(0);
 
   constructor(private httpClient: HttpClient) { }
 
@@ -26,9 +27,12 @@ export class ModuleContentService {
         .then(async (res: any) => {
           let object;
           if (res.content) {
-            object = Object.assign(res.content, {template_params_json: res.template_params_json});
+            object = Object.assign(res.content, {
+              template_params_json: res.template_params_json,
+              template_component: res.template_component
+            });
           } else {
-             object = {
+            object = {
               module_id: moduleId,
               step_id: stepId,
               template_id: res.template_id

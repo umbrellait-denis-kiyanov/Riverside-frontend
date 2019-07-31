@@ -10,13 +10,9 @@ import { Template1Data } from './template1.interface';
   styleUrls: ['./template1.component.sass']
 })
 export class Template1Component extends TemplateComponent {
-  inputIds = ['box1', 'box2'];
   contentData: Template1Data['template_params_json'];
 
   protected init() {
-    this.inputIds.forEach(id => {
-      this.inputs[id] = this.inputs[id] || '';
-    });
-    this.contentData = this.data.data.template_params_json;
+    this.contentData = (this.data.data.template_params_json as Template1Data['template_params_json']);
   }
 }

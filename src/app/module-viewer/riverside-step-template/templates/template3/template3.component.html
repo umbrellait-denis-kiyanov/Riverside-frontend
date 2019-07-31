@@ -1,0 +1,29 @@
+<h2
+  class="template-title"
+  [innerHtml]="contentData.title | safehtml"
+></h2>
+
+<div
+  class="template-description"
+  [innerHtml]="contentData.description | safehtml"
+></div>
+
+<div class="inputs-wrapper">
+    <ice
+    *ngFor="let inputId of inputIds.personas"
+    id="{{inputId}}"
+    [hideChanges]="hideChanges"
+    [user]="me"
+    [disabled]="disabled"
+    (changed)="contentChanged()"
+    [(data)]="inputs[inputId]"
+  ></ice>
+</div>
+<div
+  class="template-footer"
+  [innerHtml]="contentData.instrictions | safehtml"
+></div>
+
+<ckeditor editor="Editor"></ckeditor>
+
+<module-nav></module-nav>

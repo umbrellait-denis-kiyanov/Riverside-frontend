@@ -7,9 +7,10 @@ import User from 'src/app/common/interfaces/user.model';
 import { TemplateContentData } from 'src/app/module-viewer/riverside-step-template/templates/template-data.class';
 import { RiversideStepTemplateComponent } from 'src/app/module-viewer/riverside-step-template/riverside-step-template.component';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
-import { first, filter } from 'rxjs/operators';
+import { first, filter, debounceTime, skip } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { combineLatest } from 'rxjs';
+import { Templates } from '../riverside-step-template/templates';
 
 
 @Component({
@@ -24,6 +25,7 @@ export class ContentComponent implements OnInit {
   me: User;
   showChanges: boolean;
   templateData: TemplateContentData;
+  templateComponentName: keyof typeof Templates;
   disableInputs: boolean = false;
   showFinishFeedback: boolean = false;
   stepId: number;
@@ -48,6 +50,7 @@ export class ContentComponent implements OnInit {
     });
     this.init();
 
+    this.moduleContentService.contentChanged.pipe(skip(1), debounceTime(500)).subscribe(this.save.bind(this));
   }
 
   async init() {
@@ -86,7 +89,7 @@ export class ContentComponent implements OnInit {
     this.ready = true;
     this.navService.setStepFromId(this.stepId);
     this.processFeedbackStatus();
-    const { moduleContent: { data: { content_json: data, inputs, template_params_json } } } = this.moduleContentService;
+    const { moduleContent: { data: { content_json: data, inputs, template_params_json, template_component } } } = this.moduleContentService;
     const templateData = {
       ...data,
       inputs,
@@ -94,6 +97,7 @@ export class ContentComponent implements OnInit {
       disabled: this.disableInputs
     };
     this.templateData = new TemplateContentData({ data: templateData, me: this.me });
+    this.templateComponentName = template_component as keyof typeof Templates;
 
   }
 
@@ -112,9 +116,10 @@ export class ContentComponent implements OnInit {
   save() {
     const { moduleContent: { data } } = this.moduleContentService;
     const templateData = this.templateComponent.prepareData();
-    // data.content_json = templateData;
+    data.content_json = templateData;
     data.inputs = templateData.inputs;
     this.moduleContentService.save(data);
+    window.toastr.success('Saved', '', {timeOut: 1000, positionClass: 'toast-top-right'});
   }
 
   requestFeedback() {

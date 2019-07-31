@@ -6,12 +6,12 @@ export interface Module {
   steps: Step[];
 }
 export interface Step {
-  id: number;
+  id?: number;
   description: string;
   is_checked?: boolean;
-  is_section_break: boolean;
-  require_feedback: boolean;
-  template_component: string;
+  is_section_break?: boolean;
+  require_feedback?: boolean;
+  template_component?: string;
   elements: LearningElement[];
 }
 

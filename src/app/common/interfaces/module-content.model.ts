@@ -9,11 +9,12 @@ class ModuleContent extends BaseModel {
   template_id: number = 0;
   step_id: number = 0;
   module_id: number = 0;
-  content_json: {inputs: any} = {inputs: {}};
+  content_json: any = {inputs: {}};
   inputs: any = {};
   feedback_requested: boolean = false;
   feedback_started: boolean = false;
   template_params_json: any = {};
+  template_component = '';
 
   protected transform() {
     return {

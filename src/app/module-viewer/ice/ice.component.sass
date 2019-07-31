@@ -1,4 +1,4 @@
-$padding: 20px;
+$padding: 5px;
 $triangleSize: 10px;
 $triangleColor: orange;
 \:host
@@ -12,15 +12,14 @@ $triangleColor: orange;
 .add-comment
   display: none
   position: absolute
-  right: 20px
-  top: 5px
+  right: $padding
+  top: 0px
   color: orange
 
 #textbody
   margin: 0 auto;
   border: solid 2px #BFBFBF;
   background: white;
-  padding: 15px 30px 30px;
   outline: none;
 
   &[disabled="true"]
@@ -46,7 +45,7 @@ $triangleColor: orange;
 
     border-left: $triangleSize solid $triangleColor;
     position: absolute;
-    top: $padding/-4;
+    top: -1*$padding;
     right: $padding;
     transform: rotate(-45deg);
 

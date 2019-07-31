@@ -1,5 +1,14 @@
 import {
-  Component, OnInit, ElementRef, Renderer2, Input, SimpleChanges, OnChanges, ViewChild, TemplateRef, HostListener, ViewContainerRef, Inject
+  Component,
+  OnInit,
+  ElementRef,
+  Input,
+  ViewChild,
+  TemplateRef,
+  HostListener,
+  ViewContainerRef,
+  EventEmitter,
+  Output
 } from '@angular/core';
 import User from 'src/app/common/interfaces/user.model';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
@@ -8,6 +17,7 @@ import { Subscription, fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { DOCUMENT } from '@angular/common';
+
 
 @Component({
   selector: 'ice',
@@ -23,13 +33,14 @@ export class IceComponent implements OnInit {
     content: string,
     comments_json: any[]
   };
+  @Output() changed = new EventEmitter();
 
   @ViewChild('commentOverlay') commentOverlay: TemplateRef<any>;
 
   tracker: any;
   overlayRef: OverlayRef | null;
   sub: Subscription | null;
-  comment: {[key: string]: any, index: false | number} = {
+  comment: { [key: string]: any, index: false | number } = {
     adding: false,
     content: '',
     list: [],
@@ -156,11 +167,11 @@ export class IceComponent implements OnInit {
         filter(event => {
           const clickTarget = event.target as HTMLElement;
           return !!this.overlayRef &&
-          !(
-            this.overlayRef.overlayElement.contains(clickTarget) ||
-            clickTarget.classList.contains('cdk-overlay-transparent-backdrop') ||
-            clickTarget.id === 'addComment'
-          );
+            !(
+              this.overlayRef.overlayElement.contains(clickTarget) ||
+              clickTarget.classList.contains('cdk-overlay-transparent-backdrop') ||
+              clickTarget.id === 'addComment'
+            );
         }),
         take(1)
       ).subscribe(() => this.closeComment());
@@ -197,6 +208,15 @@ export class IceComponent implements OnInit {
   menuClicked(event: MouseEvent) {
     event.preventDefault();
     event.stopPropagation();
+  }
+
+  @HostListener('keyup', ['$event'])
+  keyEvent(e: KeyboardEvent) {
+    if ((e.which < 65 && e.which !== 32 && e.which !== 8) || e.which > 90) {
+      console.log(event, 'Dont save');
+      return false;
+    }
+    this.changed.emit(e);
   }
 }
 
