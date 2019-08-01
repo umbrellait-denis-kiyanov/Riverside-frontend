@@ -17,7 +17,14 @@
   >
   Submit
 </button>
-<button *ngSwitchDefault mat-raised-button>Mark as done</button>
+<button
+  *ngSwitchDefault
+  mat-raised-button
+  [disabled]="is_done"
+  (click)="markAsDone()"
+  >
+  Mark as done
+</button>
 
 </span>
 

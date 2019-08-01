@@ -13,14 +13,16 @@ export class ModuleNavComponent implements OnInit {
   showNext = true;
   @Input() action: 'mark_as_done' | 'feedback';
   @Input() submitting: boolean;
+  @Input() is_done: boolean;
   @Output() feedback: EventEmitter<Partial<Message>> = new EventEmitter();
 
   constructor(
     private navService: ModuleNavService,
-    private userService: UserService
+    private userService: UserService,
   ) { }
 
   ngOnInit() {
+    this.is_done = this.navService.currentStep.is_checked;
   }
 
   next() {
@@ -41,4 +43,9 @@ export class ModuleNavComponent implements OnInit {
     this.feedback.emit(partialMessage);
   }
 
+  markAsDone() {
+    this.navService.markAsDone(this.navService.currentStep.id).then(() => {
+      this.is_done = true;
+    });
+  }
 }

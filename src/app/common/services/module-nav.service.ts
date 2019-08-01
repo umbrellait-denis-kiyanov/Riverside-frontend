@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Module } from '../interfaces/module.interface';
 import { Router } from '@angular/router';
 import { BehaviorSubject, from } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
 
 class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
@@ -54,7 +55,8 @@ export class ModuleNavService {
   }
 
   constructor(
-    private router: Router
+    private router: Router,
+    private http: HttpClient
   ) { }
 
   updateProgress(module: Module) {
@@ -65,6 +67,7 @@ export class ModuleNavService {
 
   setStepFromId(id: number) {
     this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
+    return this.stepIndex.current;
   }
 
   nextStep() {
@@ -87,5 +90,16 @@ export class ModuleNavService {
     } else {
       return offset === 1 ? this.nextStep() : this.previousStep();
     }
+  }
+
+  async markAsDone(stepId: number, is_checked: boolean = true) {
+    return this.http.post(`/api/modules/0/step/${stepId}/done`, {is_checked}).toPromise()
+      .then(() => {
+        const stepIndex = this.setStepFromId(stepId);
+        const step = this.module.current.steps[stepIndex];
+        if (step) {
+          step.is_checked = is_checked;
+        }
+      });
   }
 }

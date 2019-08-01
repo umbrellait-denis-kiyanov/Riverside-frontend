@@ -59,4 +59,5 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/finish`, module).toPromise();
   }
 
+
 }
