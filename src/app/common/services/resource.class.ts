@@ -1,11 +1,20 @@
 import { BehaviorSubject } from 'rxjs';
 
+const resourceOptions = {
+  saveMessage: null,
+  toastrOptions: {timeOut: 1000, positionClass: 'toast-top-right'}
+};
 export class ResourceFromServer<T> {
   data: T;
   loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   saving: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   ready: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   error: string = '';
+  options: Partial<typeof resourceOptions>;
+
+  constructor(options: Partial<typeof resourceOptions> = {}) {
+    this.options = {...resourceOptions, ...options};
+  }
 
   load(loadPromise: Promise<any>) {
     return this._request(loadPromise, 'loading').then(async (res: any) => {
@@ -16,7 +25,12 @@ export class ResourceFromServer<T> {
   }
 
   save(loadPromise: Promise<any>) {
-    return this._request(loadPromise, 'saving');
+    return this._request(loadPromise, 'saving').then(async (res) => {
+      const {saveMessage: msg, toastrOptions} = this.options;
+      if (msg) {
+        window.toastr.success(msg, '', toastrOptions);
+      }
+    });
   }
 
   private _request(loadPromise: Promise<any>, loadKey: 'saving' | 'loading') {
@@ -30,7 +44,7 @@ export class ResourceFromServer<T> {
         this.error = e.message;
       })
       .finally(() => {
-        this[loadKey].next(true);
+        this[loadKey].next(false);
       });
   }
 }

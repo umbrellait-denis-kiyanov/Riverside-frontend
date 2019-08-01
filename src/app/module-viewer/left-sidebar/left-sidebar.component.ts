@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
 import { menus } from './menus';
 import { LeftMenuService } from '../../common/services/left-menu.service';
 import { UserService } from '../../common/services/user.service';
@@ -15,20 +15,26 @@ export class LeftSidebarComponent implements OnInit {
   menus = menus;
   showMenu = false;
   me: User;
+  expand: boolean;
 
   constructor(
     private leftMenuService: LeftMenuService,
     private userService: UserService,
-    private modalService: NgbModal
+    private modalService: NgbModal,
+    private el: ElementRef,
+    private renderer: Renderer2
     ) { }
 
   ngOnInit() {
-    this.leftMenuService.onExpand.subscribe((expand) => this.showMenu = !expand);
+    this.leftMenuService.onExpand.subscribe((expand) => {
+      this.showMenu = !expand;
+      expand ? this.renderer.addClass(this.el.nativeElement, 'expanded'): this.renderer.removeClass(this.el.nativeElement, 'expanded')  ;
+    });
     this.me = this.userService.me;
   }
 
-  expandMenu() {
-    this.leftMenuService.expand = true;
+  toggleMenu() {
+    this.leftMenuService.expand = !this.leftMenuService.expand;
   }
 
   showMenuItem(menuItem: typeof menus[number]) {

@@ -7,7 +7,20 @@
   >Previous</button>
 </span>
 
-<button mat-raised-button="mat-raised-button">Mark as done</button>
+<span [ngSwitch]="action">
+<button
+  *ngSwitchCase="'feedback'"
+  mat-raised-button color="primary"
+  (click)="requestFeedbackClicked()"
+  e3-async-button
+  [running]="submitting"
+  >
+  Submit
+</button>
+<button *ngSwitchDefault mat-raised-button>Mark as done</button>
+
+</span>
+
 
 <span>
   <button

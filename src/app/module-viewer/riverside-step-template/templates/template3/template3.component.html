@@ -10,7 +10,7 @@
 
 <div class="inputs-wrapper">
     <ice
-    *ngFor="let inputId of inputIds.personas"
+    *ngFor="let inputId of inputIds.fromPreviousStep"
     id="{{inputId}}"
     [hideChanges]="hideChanges"
     [user]="me"
@@ -21,9 +21,14 @@
 </div>
 <div
   class="template-footer"
-  [innerHtml]="contentData.instrictions | safehtml"
+  [innerHtml]="contentData.instructions | safehtml"
 ></div>
 
-<ckeditor editor="Editor"></ckeditor>
+<ckeditor class="ckeditor" [editor]="Editor"></ckeditor>
 
-<module-nav></module-nav>
+<module-nav
+  action="feedback"
+  (feedback)="requestFeedbackClicked($event)"
+  [submitting]="submitting"
+  >
+</module-nav>

@@ -4,7 +4,8 @@ import { E3CheckboxComponent } from './components/e3-checkbox/e3-checkbox.compon
 import { BrowserModule } from '@angular/platform-browser';
 import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
-
+import { E3TooltipDirective } from '../common/components/e3-tooltip/e3-tooltip.directive';
+import { E3AsyncButtonDirective } from './components/e3-async-button/e3-async-button.directive';
 
 
 @NgModule({
@@ -14,7 +15,9 @@ import { CommonModule } from '@angular/common';
     CommonModule
   ],
   declarations: [
-    E3CheckboxComponent
+    E3CheckboxComponent,
+    E3TooltipDirective,
+    E3AsyncButtonDirective
   ],
   entryComponents: [
     // E3CheckboxComponent
@@ -23,7 +26,9 @@ import { CommonModule } from '@angular/common';
   ],
   bootstrap: [],
   exports: [
-    E3CheckboxComponent
+    E3CheckboxComponent,
+    E3TooltipDirective,
+    E3AsyncButtonDirective
   ]
 })
 export class E3CommonModule { }

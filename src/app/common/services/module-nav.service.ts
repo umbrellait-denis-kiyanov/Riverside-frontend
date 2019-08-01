@@ -1,18 +1,23 @@
 import { Injectable } from '@angular/core';
 import { Module } from '../interfaces/module.interface';
 import { Router } from '@angular/router';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, from } from 'rxjs';
 
-class ResourceFromStorage<T> {
+class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
   private storageKey: string;
+  private default: T;
+  private type: 'json' | 'string' | 'number';
   public onChange =  new BehaviorSubject<T>(null);
 
-  constructor(storageKey: string) {
+  constructor(storageKey: string,  defaultValue: T = null, type: 'json' | 'string' | 'number' = 'json') {
     this.storageKey = storageKey;
+    this.default = defaultValue;
+    this.type = type;
   }
   set current(value: T) {
     this._current = value;
+    window.localStorage.setItem(this.storageKey, value.toString());
     this.onChange.next(value);
   }
   get current() {
@@ -20,8 +25,19 @@ class ResourceFromStorage<T> {
       return this._current;
     } else {
       const fromStorage = window.localStorage.getItem(this.storageKey);
-      return fromStorage ? JSON.parse(fromStorage) : null;
+      return fromStorage ? this.processFromStorage(fromStorage) : this.default;
     }
+  }
+
+  processFromStorage(fromStorage: string) {
+    if (this.type === 'json') {
+      return JSON.parse(fromStorage);
+    }
+    if (this.type === 'number') {
+      return Number(fromStorage);
+    }
+    return fromStorage;
+
   }
 
   async getLast(): Promise<T | null> {
@@ -31,7 +47,11 @@ class ResourceFromStorage<T> {
 @Injectable()
 export class ModuleNavService {
   module = new ResourceFromStorage<Module>('last_module');
-  stepIndex = new ResourceFromStorage<number>('last_step');
+  stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
+
+  get currentStep() {
+    return this.module.current.steps[this.stepIndex.current];
+  }
 
   constructor(
     private router: Router

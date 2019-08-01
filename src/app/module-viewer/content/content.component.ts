@@ -9,7 +9,7 @@ import { RiversideStepTemplateComponent } from 'src/app/module-viewer/riverside-
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { first, filter, debounceTime, skip } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { combineLatest } from 'rxjs';
+import { combineLatest, Subscription } from 'rxjs';
 import { Templates } from '../riverside-step-template/templates';
 
 
@@ -29,6 +29,8 @@ export class ContentComponent implements OnInit {
   disableInputs: boolean = false;
   showFinishFeedback: boolean = false;
   stepId: number;
+  unsubNavChanged: Subscription;
+
   @ViewChild(RiversideStepTemplateComponent) templateComponent: RiversideStepTemplateComponent;
 
   constructor(
@@ -41,7 +43,8 @@ export class ContentComponent implements OnInit {
   ) { }
 
   async ngOnInit() {
-    this.router.events.pipe(
+    this.unsubNavChanged && this.unsubNavChanged.unsubscribe();
+    this.unsubNavChanged = this.router.events.pipe(
       filter(e => e instanceof NavigationEnd)
     ).subscribe(e => {
       this.ready = false;

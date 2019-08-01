@@ -13,8 +13,8 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   me: User;
 
   constructor(
-      private el: ElementRef,
-      private moduleContentService: ModuleContentService
+      protected el: ElementRef,
+      protected moduleContentService: ModuleContentService
     ) {}
 
   ngOnInit() {

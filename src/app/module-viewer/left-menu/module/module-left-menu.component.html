@@ -77,7 +77,10 @@
         [ngClass]="{'section-break': step.is_section_break}"
         routerLinkActive="active"
       >
-        <span *ngIf="step.is_section_break">{{step.description}}</span>
+        <a
+          *ngIf="step.is_section_break"
+          [routerLink]="[ '/module', module.id , 'step', step.id ]"
+        >{{step.description}}</a>
 
         <a
           [routerLink]="[ '/module', module.id , 'step', step.id ]"

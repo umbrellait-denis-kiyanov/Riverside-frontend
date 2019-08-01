@@ -16,7 +16,7 @@ import { LoadingComponent } from '../common/components/loading/loading.component
 import { SafeurlPipe } from '../common/pipes/safeurl.pipe';
 import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { LearningElementComponent } from './modals/learning-element/learning-element.component';
-import { E3TooltipDirective } from '../common/components/e3-tooltip/e3-tooltip.directive';
+
 import { UserService } from '../common/services/user.service';
 import { IceComponent } from './ice/ice.component';
 import { RiversideStepTemplateComponent } from './riverside-step-template/riverside-step-template.component';
@@ -76,7 +76,7 @@ import { Template3Component } from './riverside-step-template/templates/template
     SafeurlPipe,
     SafehtmlPipe,
     LearningElementComponent,
-    E3TooltipDirective,
+
     IceComponent,
     RiversideStepTemplateComponent,
     RTemplateDirective,
@@ -98,6 +98,7 @@ import { Template3Component } from './riverside-step-template/templates/template
     RequestFeedbackComponent,
     Template1Component,
     Template2Component,
+    Template3Component,
   ],
   providers: [
     ModuleService,

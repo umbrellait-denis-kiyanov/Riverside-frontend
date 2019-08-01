@@ -35,7 +35,7 @@ export class InboxComponent implements OnInit {
     this.inboxService.load({ id: 1 });
     this.messageResource = this.inboxService.message;
     this.messageResource.ready.pipe(filter(v => v)).pipe(first()).subscribe(() => {
-      this.senderLetter = this.messageResource.data.sender[0].toLocaleUpperCase();
+      // this.senderLetter = this.messageResource.data.sender[0].toLocaleUpperCase();
       this.message = this.messageResource.data;
       this.ready = true;
     });
