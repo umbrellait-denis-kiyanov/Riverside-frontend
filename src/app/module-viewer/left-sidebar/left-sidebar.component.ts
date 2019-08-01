@@ -28,7 +28,7 @@ export class LeftSidebarComponent implements OnInit {
   ngOnInit() {
     this.leftMenuService.onExpand.subscribe((expand) => {
       this.showMenu = !expand;
-      expand ? this.renderer.addClass(this.el.nativeElement, 'expanded'): this.renderer.removeClass(this.el.nativeElement, 'expanded')  ;
+      expand ? this.renderer.addClass(this.el.nativeElement, 'expanded') : this.renderer.removeClass(this.el.nativeElement, 'expanded')  ;
     });
     this.me = this.userService.me;
   }
