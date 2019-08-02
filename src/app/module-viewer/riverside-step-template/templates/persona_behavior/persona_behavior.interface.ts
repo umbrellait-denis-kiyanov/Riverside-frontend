@@ -7,5 +7,7 @@ export interface PersonaBehaviorTemplateData extends TemplateContentDataBase {
     example: string;
     instructions: string;
     title: string;
+    input_sufix: string;
+    behavior: string;
   };
 }

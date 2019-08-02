@@ -32,11 +32,13 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
 
     Object.keys(this.inputs).forEach(key => {
       const iceElement = this.el.nativeElement.querySelector(`#${key} #textbody`);
+      if (iceElement) {
       data.inputs[key] = {
         comments_json: this.data.data.inputs[key] ? this.data.data.inputs[key].comments_json : [],
         content_id: this.data.data.inputs[key] ? this.data.data.inputs[key].content_id : [],
         content: iceElement ? iceElement.innerHTML : '',
       };
+      }
     });
     return data;
   }

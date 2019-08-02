@@ -1,0 +1,64 @@
+<h2
+  class="template-title"
+  [innerHtml]="contentData.title | safehtml"
+></h2>
+
+<div
+  class="template-description"
+  [innerHtml]="contentData.description | safehtml"
+></div>
+
+
+<div class="persona-behavior-wrapper">
+  <div class="persona-row">
+      <div class="persona-name-column"></div>
+      <div class="persona-behavior-column behavior-title " *ngFor="let step of contentData.steps">
+        {{step.title}}
+      </div>
+  </div>
+  <div class="persona-row" *ngFor="let persona of inputIds.fromPreviousStep; let i=index">
+      <div class="persona-name-column CT-hide" *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)">
+        <div class="persona-picture"></div>
+        <div class="persona-name-title">
+          <div class="persona-name" >{{textContent(inputs[persona.name].content)}}</div>
+          <div class="persona-title">{{textContent(inputs[persona.title].content)}}</div>
+        </div>
+      </div>
+      <div class="persona-behavior-column" *ngFor="let step of contentData.steps">
+          <ice
+            *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)"
+            id="{{'persona_behavior_' + (i+1) + '_' + step.sufix}}"
+            [hideChanges]="hideChanges"
+            [user]="me"
+            [disabled]="disabled"
+            (changed)="contentChanged()"
+            [(data)]="inputs['persona_behavior_' + (i+1) + '_' + step.sufix]"
+          ></ice>
+      </div>
+  </div>
+</div>
+<!-- <div class="inputs-wrapper" style="flex-wrap: wrap">
+    <ice
+    *ngFor="let inputId of allIds"
+    id="{{inputId}}"
+    [hideChanges]="hideChanges"
+    [user]="me"
+    [disabled]="disabled"
+    (changed)="contentChanged()"
+    [(data)]="inputs[inputId]"
+  ></ice>
+</div>
+-->
+<div
+  class="template-footer"
+  [innerHtml]="contentData.instructions | safehtml"
+></div>
+
+<ckeditor class="ckeditor" [editor]="Editor" [(ngModel)]="message"></ckeditor>
+
+<module-nav
+  [action]="action"
+  (feedback)="feedbackClicked($event)"
+  [submitting]="submitting"
+  >
+</module-nav>

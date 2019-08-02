@@ -7,7 +7,8 @@ import { PersonaBehaviorTemplateData } from './persona_behavior.interface';
 @Component({
   selector: 'app-persona_behavior',
   templateUrl: './persona_behavior.component.html',
-  styleUrls: ['./persona_behavior.component.sass']
+  styleUrls: ['./persona_behavior.component.sass'],
+  preserveWhitespaces: true
 })
 
 export class PersonaBehaviorTemplateComponent extends TemplateComponent {
@@ -37,6 +38,14 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
         title: 'persona_6',
         name: 'persona_name_6'
       }
+    ],
+    personas: [
+      'persona_behavior_1',
+      'persona_behavior_2',
+      'persona_behavior_3',
+      'persona_behavior_4',
+      'persona_behavior_5',
+      'persona_behavior_6',
     ]
 
   };
@@ -47,15 +56,30 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
   // contentData = data;
 
   protected init() {
+    this.contentData = this.data.data.template_params_json as PersonaBehaviorTemplateData['template_params_json'];
+    const sufix = this.contentData.input_sufix || '';
     Object.keys(this.inputIds).forEach(key => {
-      this.inputIds[key].forEach(id => {
-        this.inputs[id] = this.inputs[id] || '';
+      this.inputIds[key].forEach((id, i) => {
+        if (typeof id === 'string') {
+          id = id + '_' + sufix;
+          this.inputIds[key][i] = id;
+          this.inputs[id] = this.inputs[id] || '';
+        } else {
+          Object.values(id).forEach((id2: string) => {
+            this.inputs[id2] = this.inputs[id2] || '';
+          });
+        }
       });
     });
-    this.contentData = this.data.data.template_params_json as PersonaBehaviorTemplateData['template_params_json'];
+
   }
 
-  private prepareIds() {
+  notEmpty(el: string) {
+    return !!this.textContent(el);
+  }
 
+  textContent(el: string) {
+    const _el: HTMLElement[] = window.$(el);
+    return _el.length ? _el[0].textContent.replace(/\&nbsp;/g, ' ') : '';
   }
 }

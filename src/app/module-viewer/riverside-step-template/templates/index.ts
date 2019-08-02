@@ -5,6 +5,7 @@ import { BrainstormTemplateComponent } from './brainstorm/brainstorm.component';
 import { GenericTemplateComponent } from './generic/generic.component';
 import { NamePersonasTemplateComponent } from './name_personas/name_personas.component';
 import { PersonaBehaviorTemplateComponent } from './persona_behavior/persona_behavior.component';
+import { FeedbackSectionTemplateComponent } from './feedback_section/feedback_section.component';
 
 export const Templates = {
   template1: Template1Component,
@@ -14,4 +15,5 @@ export const Templates = {
   generic: GenericTemplateComponent,
   name_personas: NamePersonasTemplateComponent,
   persona_behavior: PersonaBehaviorTemplateComponent,
+  feedback_section: FeedbackSectionTemplateComponent,
 };

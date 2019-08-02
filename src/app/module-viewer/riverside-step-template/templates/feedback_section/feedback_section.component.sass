@@ -1,5 +1,20 @@
 @import "src/app/module-viewer/riverside-step-template/templates/template.sass"
+\:host
+  max-width: fit-content
+  \::ng-deep
+    #textbody
+      padding: 5px;
+      p
+        margin-bottom: 0
 
+    .ck-editor__editable_inline
+      min-height: 300px;
+    .ck-content:not(.ck-focused)
+	    border: 1px solid rgba(0, 0, 0, 0.15);
+
+  .ckeditor
+    display: block
+    margin-top: 40px
 .persona-behavior-wrapper
   font-size: large
   margin-top: 40px
@@ -36,7 +51,7 @@
 
 
     .persona-behavior-column
-      flex-grow: 1
+      width: 200px
 
       &.behavior-title
         font-size: x-large

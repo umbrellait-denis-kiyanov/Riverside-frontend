@@ -49,6 +49,7 @@ import { BrainstormTemplateComponent } from './riverside-step-template/templates
 import { GenericTemplateComponent } from './riverside-step-template/templates/generic/generic.component';
 import { NamePersonasTemplateComponent } from './riverside-step-template/templates/name_personas/name_personas.component';
 import { PersonaBehaviorTemplateComponent } from './riverside-step-template/templates/persona_behavior/persona_behavior.component';
+import { FeedbackSectionTemplateComponent } from './riverside-step-template/templates/feedback_section/feedback_section.component';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { PersonaBehaviorTemplateComponent } from './riverside-step-template/temp
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
-    PersonaBehaviorTemplateComponent
+    PersonaBehaviorTemplateComponent,
+    FeedbackSectionTemplateComponent
 
   ],
   entryComponents: [
@@ -110,7 +112,8 @@ import { PersonaBehaviorTemplateComponent } from './riverside-step-template/temp
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
-    PersonaBehaviorTemplateComponent
+    PersonaBehaviorTemplateComponent,
+    FeedbackSectionTemplateComponent
   ],
   providers: [
     ModuleService,
