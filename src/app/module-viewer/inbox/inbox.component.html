@@ -16,22 +16,13 @@
   </div>
 
   <div
-    class="buttons-wrapper"
-    *ngIf="message"
-  >
-    <a [routerLink]="['/module', message.moduleId]">
-      <button
-        mat-raised-button="mat-raised-button"
-        color="primary"
-      >Go to module</button>
-    </a>
-  </div>
-
-  <div
     class="page-content"
     *ngIf="message"
+    style="margin-top: 20px"
   >
-    <h3>{{message.subject}}</h3>
+    <h3>{{message.moduleName}}
+      <span *ngIf="message.step_id"> - {{message.stepName}}</span>
+    </h3>
 
     <div class="sender">
       <div>
@@ -40,10 +31,10 @@
           className="bcts-1"
         ></letter-image>
 
-        {{message.sender}}
+        {{message.orgName}}
       </div>
 
-      <div>{{message.time}}</div>
+      <div>{{message.sent_on}}</div>
     </div>
 
     <div class="content">
@@ -51,6 +42,44 @@
         *ngIf="messageResource.ready"
         [innerHtml]="message.message | safehtml"
       ></div>
+    </div>
+  </div>
+
+  <div
+    class="buttons-wrapper"
+    *ngIf="message"
+  >
+    <a [routerLink]="routerLink">
+      <button
+        mat-flat-button="mat-stroked-button"
+        color="primary"
+      >Review module content</button>
+    </a>
+  </div>
+
+  <div
+    class="page-content"
+    *ngIf="message && !message.step_id && canProvideFeedback"
+  >
+    <div class="feedback">
+      <p class="instructions">
+        Provide feedback for the company
+      </p>
+
+      <ckeditor
+        [editor]="Editor"
+        [(ngModel)]="feedbackMessage"
+      ></ckeditor>
+    </div>
+
+    <div class="footer">
+      <button
+        mat-stroked-button="mat-stroked-button"
+        color="accent"
+        (click)="provideFeedback()"
+        e3-async-button
+        [running]="submitting"
+      >Submit Feedback</button>
     </div>
   </div>
 </div>

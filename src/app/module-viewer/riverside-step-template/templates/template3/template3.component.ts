@@ -7,6 +7,7 @@ import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import Message from 'src/app/module-viewer/inbox/message.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { InboxService } from 'src/app/module-viewer/inbox/inbox.service';
+import { UserService } from 'src/app/common/services/user.service';
 
 @Component({
   selector: 'app-template3',
@@ -25,15 +26,17 @@ export class Template3Component extends TemplateComponent implements OnInit {
     ]
   };
   Editor = InlineEditor;
-  message: string;
+  message: string = '';
   submitting: boolean = false;
   // contentData: Template3Data['template_params_json'];
   contentData = data;
+  action: string;
 
   constructor(
     protected el: ElementRef,
     protected moduleContentService: ModuleContentService,
-    private inboxService: InboxService
+    private inboxService: InboxService,
+    private userService: UserService
   ) {
     super(el, moduleContentService);
   }
@@ -41,6 +44,9 @@ export class Template3Component extends TemplateComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
+    if (this.userService.me.roles.riverside_se) {
+      this.action = 'provide_feedback';
+    } else { this.action = 'feedback'; }
   }
 
   protected init() {
@@ -52,7 +58,7 @@ export class Template3Component extends TemplateComponent implements OnInit {
     // this.contentData = this.data.data.template_params_json;
   }
 
-  requestFeedbackClicked(partialMessage: Partial<Message>) {
+  feedbackClicked(partialMessage: Partial<Message>) {
     const message = {
       message: this.message,
       ...partialMessage

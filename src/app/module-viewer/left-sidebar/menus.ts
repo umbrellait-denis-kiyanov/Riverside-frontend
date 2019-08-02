@@ -23,13 +23,14 @@ export const menus = [
     'mat-icon': 'feedback_outlined',
     className: 'material-icons-outlined',
     label: 'FEEDBACK',
-    modalComponent: RequestFeedbackComponent
+    modalComponent: RequestFeedbackComponent,
+    restrict: (user: User) => !user.roles.riverside_se
   },
   {
     'mat-icon': 'email',
     className: 'material-icons-outlined',
     label: 'INBOX',
     link: '/inbox',
-    counter: 3
+    counter: 0
   },
 ];

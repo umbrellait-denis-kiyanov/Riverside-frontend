@@ -5,14 +5,14 @@
 
   <li
     class="menu-item"
-
+    e3-tooltip="MENU"
+    placement="bottom"
   >
     <a (click)="toggleMenu()">
       <div class="menu-item-icon">
         <mat-icon>menu</mat-icon>
       </div>
 
-      <div class="menu-item-label">MENU</div>
     </a>
   </li>
 
@@ -20,6 +20,7 @@
     class="menu-item"
     *ngFor="let menu of menus"
     [hidden]="!showMenuItem(menu)"
+    e3-tooltip="{{menu.label}}"
   >
     <ng-container *ngIf="showMenuItem(menu)">
       <a
@@ -45,13 +46,13 @@
       </a>
 
       <ng-template #menuItem>
-        <div class="menu-item-icon">
+        <div class="menu-item-icon" >
           <mat-icon [ngClass]="menu.className">{{menu['mat-icon']}}</mat-icon>
 
-          <span class="menu-item-counter">{{menu.counter}}</span>
+          <span class="menu-item-counter" [hidden]="!menu.counter">{{menu.counter}}</span>
         </div>
 
-        <div class="menu-item-label">{{menu.label}}</div>
+
       </ng-template>
     </ng-container>
   </li>

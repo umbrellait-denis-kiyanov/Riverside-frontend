@@ -7,25 +7,50 @@
   >Previous</button>
 </span>
 
-<span [ngSwitch]="action">
 <button
-  *ngSwitchCase="'feedback'"
-  mat-raised-button color="primary"
-  (click)="requestFeedbackClicked()"
+  *ngIf="is_done"
+  mat-raised-button
+  color="accent"
+  (click)="buttonClicked()"
   e3-async-button
   [running]="submitting"
   >
-  Submit
+  {{actionButtonText()}}
+
 </button>
 <button
-  *ngSwitchDefault
-  mat-raised-button
-  (click)="markAsDone()"
+  *ngIf="!is_done"
+  mat-stroked-button
+  color="accent"
+  (click)="buttonClicked()"
+  e3-async-button
+  [running]="submitting"
   >
-  Mark as done
+  {{actionButtonText()}}
+
+</button>
+<!-- <span [ngSwitch]="action">
+<button
+  *ngSwitchCase="'feedback'"
+  mat-stroked-button
+  [color]="is_done?'accent':''"
+  (click)="feedbackClicked()"
+  e3-async-button
+  [running]="submitting"
+  >
+  Request Feedback
 </button>
 
-</span>
+<button
+  *ngSwitchDefault
+  mat-stroked-button
+  (click)="markAsDone()"
+  [color]="is_done?'accent':''"
+  >
+  {{is_done?'Done':'Mark as done'}}
+</button>
+
+</span> -->
 
 
 <span>

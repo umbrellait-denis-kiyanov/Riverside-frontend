@@ -24,11 +24,11 @@
   [innerHtml]="contentData.instructions | safehtml"
 ></div>
 
-<ckeditor class="ckeditor" [editor]="Editor"></ckeditor>
+<ckeditor class="ckeditor" [editor]="Editor" [(ngModel)]="message"></ckeditor>
 
 <module-nav
-  action="feedback"
-  (feedback)="requestFeedbackClicked($event)"
+  [action]="action"
+  (feedback)="feedbackClicked($event)"
   [submitting]="submitting"
   >
 </module-nav>

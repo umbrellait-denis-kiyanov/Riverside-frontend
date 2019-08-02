@@ -1,4 +1,5 @@
 @import "src/app/common/sass/variables.sass";
+$iconsize: 25px;
 \:host
   position: fixed
   width: $left-sidebar-width
@@ -26,16 +27,16 @@ ul
     &[hidden]
       display: none
 
-    min-height: 80px
+    min-height: 40px
     text-align: center;
     display: flex
     flex-direction: column
     justify-content: center
     cursor: pointer
     .mat-icon
-      font-size: 35px
-      height: 35px
-      width: 35px
+      font-size: $iconsize
+      height: $iconsize
+      width: $iconsize
     .active
       background: white
       color: #00529f

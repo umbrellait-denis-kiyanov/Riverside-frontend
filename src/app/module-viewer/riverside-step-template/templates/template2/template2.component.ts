@@ -23,8 +23,9 @@ export class Template2Component extends TemplateComponent {
   };
 
 
-  // contentData: Template2Data['template_params_json'];
-  contentData = data;
+  contentData: Template2Data['template_params_json'];
+
+  // contentData = data;
 
   protected init() {
     Object.keys(this.inputIds).forEach(key => {
@@ -32,6 +33,6 @@ export class Template2Component extends TemplateComponent {
         this.inputs[id] = this.inputs[id] || '';
       });
     });
-    // this.contentData = this.data.data.template_params_json;
+    this.contentData = this.data.data.template_params_json as Template2Data['template_params_json'];
   }
 }

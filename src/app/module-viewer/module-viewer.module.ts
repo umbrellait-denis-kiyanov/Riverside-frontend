@@ -45,6 +45,10 @@ import { ModuleNavComponent } from './content/module-nav/module-nav.component';
 import { ModuleNavService } from '../common/services/module-nav.service';
 import { Template2Component } from './riverside-step-template/templates/template2/template2.component';
 import { Template3Component } from './riverside-step-template/templates/template3/template3.component';
+import { BrainstormTemplateComponent } from './riverside-step-template/templates/brainstorm/brainstorm.component';
+import { GenericTemplateComponent } from './riverside-step-template/templates/generic/generic.component';
+import { NamePersonasTemplateComponent } from './riverside-step-template/templates/name_personas/name_personas.component';
+import { PersonaBehaviorTemplateComponent } from './riverside-step-template/templates/persona_behavior/persona_behavior.component';
 
 
 @NgModule({
@@ -90,6 +94,10 @@ import { Template3Component } from './riverside-step-template/templates/template
     ModuleNavComponent,
     Template2Component,
     Template3Component,
+    BrainstormTemplateComponent,
+    GenericTemplateComponent,
+    NamePersonasTemplateComponent,
+    PersonaBehaviorTemplateComponent
 
   ],
   entryComponents: [
@@ -99,6 +107,10 @@ import { Template3Component } from './riverside-step-template/templates/template
     Template1Component,
     Template2Component,
     Template3Component,
+    BrainstormTemplateComponent,
+    GenericTemplateComponent,
+    NamePersonasTemplateComponent,
+    PersonaBehaviorTemplateComponent
   ],
   providers: [
     ModuleService,

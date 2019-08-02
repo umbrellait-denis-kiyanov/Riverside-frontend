@@ -30,14 +30,14 @@ export const header = [
 
   {
     id: 'moduleName',
-    label: 'Module'
+    label: 'Module',
   },
   {
-    id: 'sender',
+    id: 'orgName',
     label: 'Sender'
   },
   {
-    id: 'time',
+    id: 'sent_on',
     label: 'Time'
   }
 ];

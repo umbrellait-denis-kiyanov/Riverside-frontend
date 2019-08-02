@@ -10,6 +10,7 @@ export class ResourceFromServer<T> {
   saving: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   ready: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
   error: string = '';
+  change: BehaviorSubject<number> = new BehaviorSubject<number> (0);
   options: Partial<typeof resourceOptions>;
 
   constructor(options: Partial<typeof resourceOptions> = {}) {

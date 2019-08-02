@@ -9,6 +9,8 @@ export interface Step {
   id?: number;
   description: string;
   is_checked?: boolean;
+  waiting_for_feedback?: boolean;
+  feedback_received?: boolean;
   is_section_break?: boolean;
   require_feedback?: boolean;
   template_component?: string;

@@ -1,0 +1,45 @@
+<h2
+  class="template-title"
+  [innerHtml]="contentData.title | safehtml"
+></h2>
+<div
+  class="template-description"
+  [innerHtml]="contentData.description | safehtml"
+  *ngIf="contentData.description"
+></div>
+
+  <div
+  class="template-resource"
+  [innerHtml]="contentData.resource | safehtml"
+  *ngIf="contentData.resource"
+></div>
+<div class="template-description">
+  <p>In the previous step, you narrowed the personas down these four - six titles</p>
+</div>
+<div class="inputs-wrapper">
+  <ice
+  *ngFor="let inputId of inputIds.fromPreviousStep"
+  id="{{inputId}}"
+  [hideChanges]="hideChanges"
+  [user]="me"
+  [disabled]="true"
+  (changed)="contentChanged()"
+  [(data)]="inputs[inputId]"
+></ice>
+</div>
+<div class="template-description">
+  <p>Based on the instructions in the video above, give each persona a name.</p>
+</div>
+<div class="inputs-wrapper">
+    <ice
+    *ngFor="let inputId of inputIds.personas"
+    id="{{inputId}}"
+    [hideChanges]="hideChanges"
+    [user]="me"
+    [disabled]="disabled"
+    (changed)="contentChanged()"
+    [(data)]="inputs[inputId]"
+  ></ice>
+</div>
+
+<module-nav></module-nav>

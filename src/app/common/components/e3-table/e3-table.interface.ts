@@ -13,6 +13,7 @@ export interface E3TableCell {
 export interface E3TableDataRow {
   onClick?: onClickFn;
   link?: string[];
+  tdClassName: string;
   [prop: string]: string | number | E3TableCell | onClickFn | string[];
 
 }

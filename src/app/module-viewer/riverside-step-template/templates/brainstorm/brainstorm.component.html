@@ -1,0 +1,22 @@
+<h2
+  class="template-title"
+  [innerHtml]="contentData.title | safehtml"
+></h2>
+
+<div
+  class="template-description"
+  [innerHtml]="contentData.description | safehtml"
+></div>
+
+<div class="inputs-wrapper">
+    <ice
+    id="brainstorm"
+    [hideChanges]="hideChanges"
+    [user]="me"
+    [disabled]="disabled"
+    (changed)="contentChanged()"
+    [(data)]="inputs.brainstorm"
+  ></ice>
+</div>
+
+<module-nav></module-nav>

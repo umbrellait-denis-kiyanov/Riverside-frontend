@@ -85,6 +85,9 @@ export class IceComponent implements OnInit {
       }).startTracking();
 
       this.tracker = tracker;
+      if (this.disabled) {
+        this.tracker.element.contentEditable = 'false';
+      }
 
     });
   }
@@ -124,6 +127,7 @@ export class IceComponent implements OnInit {
     this.comment.index = false;
     this.comment.content = '';
     this.closeComment();
+    this.changed.emit(null);
   }
 
   onMouseEnter() {

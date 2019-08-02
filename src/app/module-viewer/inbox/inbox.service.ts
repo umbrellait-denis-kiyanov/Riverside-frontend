@@ -8,26 +8,37 @@ import { HttpClient } from '@angular/common/http';
 @Injectable()
 export class InboxService {
 
-  allMessages = new ResourceFromServer<typeof messages>();
-  message = new ResourceFromServer<Message>({saveMessage: 'Message sent!'});
+  allMessages = new ResourceFromServer<Message[]>();
+  message = new ResourceFromServer<Message>({ saveMessage: 'Message sent!' });
 
   constructor(private http: HttpClient) { }
 
   loadAll() {
-    return this.allMessages.load(Promise.resolve(messages));
+    return this.allMessages.load(
+      this.http.get(`/api/modules/0/feedback`).toPromise()
+    );
   }
 
-  load({id}) {
-    return this.message.load(Promise.resolve(messages[0]));
+  loadCounter() {
+    return this.http.get(`/api/modules/0/feedback/counter`).toPromise();
   }
 
-  save(message: Partial<Message>) {
+  load({ id }) {
+    return this.message.load(
+      this.http.get(`/api/modules/0/feedback/${id}`).toPromise()
+    );
+  }
+
+  save(message: Partial<Message & { parent_id: number }>) {
     return this.message.save(
       this.http.post(
-          `/api/modules/${message.module_id}/feedback`,
-          message
-        ).toPromise()
-      );
+        `/api/modules/${message.module_id}/feedback`,
+        message
+      ).toPromise()
+    );
   }
 
+  markAsRead(id: number) {
+    return this.http.post(`/api/modules/0/feedback/${id}/read`, {}).toPromise();
+  }
 }

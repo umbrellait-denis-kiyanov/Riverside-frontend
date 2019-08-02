@@ -1,7 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { InboxService } from './inbox.service';
-import { filter, first } from 'rxjs/operators';
 import { ActivatedRoute } from '@angular/router';
+import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import { UserService } from 'src/app/common/services/user.service';
+
 
 @Component({
   selector: 'app-inbox',
@@ -14,16 +16,24 @@ export class InboxComponent implements OnInit {
   message: InboxService['message']['data'];
   senderLetter: string;
   ready: boolean = false;
+  feedbackMessage: string = '';
+  Editor = InlineEditor;
+  routerLink: string[];
+  submitting = false;
+  canProvideFeedback = false;
 
   constructor(
     private inboxService: InboxService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private userService: UserService
   ) { }
 
   ngOnInit() {
+    this.canProvideFeedback = this.userService.me.roles.riverside_se;
     this.route.params.subscribe((params) => {
       if (params.id) {
-        this.loadMessage();
+        this.ready = false;
+        this.loadMessage(params.id);
       } else {
         this.ready = true;
       }
@@ -31,13 +41,55 @@ export class InboxComponent implements OnInit {
 
   }
 
-  loadMessage() {
-    this.inboxService.load({ id: 1 });
+  loadMessage(id: string) {
     this.messageResource = this.inboxService.message;
-    this.messageResource.ready.pipe(filter(v => v)).pipe(first()).subscribe(() => {
-      // this.senderLetter = this.messageResource.data.sender[0].toLocaleUpperCase();
+    this.messageResource.saving.subscribe(s => this.submitting = s);
+    this.inboxService.load({ id }).then(res => {
+      this.senderLetter = this.messageResource.data.orgName[0].toLocaleUpperCase();
       this.message = this.messageResource.data;
+      this.markAsReadIfNeeded();
+      this.prepareData();
       this.ready = true;
+    });
+
+  }
+
+  private markAsReadIfNeeded() {
+    if (this.message.is_pending && this.message.to_org_id) {
+    this.inboxService.markAsRead(this.message.id).then(() => {
+      const resource = this.inboxService.allMessages;
+      const msg = resource.data.find(m => m.id === this.message.id);
+      if (msg) {
+        msg.is_pending = false;
+        resource.change.next(resource.change.getValue() + 1);
+      }
+    });
+    }
+  }
+
+  private prepareData() {
+    if (!this.message.message) {
+      this.message.message = `<p>No message was provided.</p>`;
+    }
+    this.routerLink = ['/module', String(this.message.module_id)];
+    if (this.message.step_id) {
+      this.routerLink = this.routerLink.concat(['step', String(this.message.step_id)]);
+    }
+  }
+
+  provideFeedback() {
+    this.inboxService.save({
+      to_org_id: this.message.from_org_id,
+      module_id: this.message.module_id,
+      parent_id: this.message.id,
+      message: this.feedbackMessage
+    }).then(() => {
+      const {allMessages: {change, data}} = this.inboxService;
+      const msg = data.find(m => m.id === this.message.id);
+      if (msg) {
+        msg.is_pending = false;
+        change.next(change.getValue() + 1);
+      }
     });
   }
 

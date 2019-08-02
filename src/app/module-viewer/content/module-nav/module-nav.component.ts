@@ -11,7 +11,7 @@ import { UserService } from 'src/app/common/services/user.service';
 export class ModuleNavComponent implements OnInit {
   showPrevious = true;
   showNext = true;
-  @Input() action: 'mark_as_done' | 'feedback';
+  @Input() action: 'mark_as_done' | 'feedback' | 'provide_feedback';
   @Input() submitting: boolean;
   @Input() is_done: boolean;
   @Output() feedback: EventEmitter<Partial<Message>> = new EventEmitter();
@@ -22,7 +22,19 @@ export class ModuleNavComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.is_done = this.navService.currentStep.is_checked;
+    const {currentStep: {is_checked, waiting_for_feedback, feedback_received}} = this.navService;
+    switch (this.action) {
+      case 'feedback':
+        this.is_done = waiting_for_feedback;
+        break;
+      case 'provide_feedback':
+        this.is_done = feedback_received;
+        break;
+      default:
+        this.is_done = is_checked;
+    }
+
+
   }
 
   next() {
@@ -33,19 +45,47 @@ export class ModuleNavComponent implements OnInit {
     this.navService.previousStep();
   }
 
-  requestFeedbackClicked() {
+  feedbackClicked() {
     const partialMessage: Partial<Message> = {
       module_id: this.navService.module.current.id,
-      from_org_id: this.userService.me.org.id,
       step_id: this.navService.currentStep.id
-
     };
+    if (this.action === 'feedback') {
+      partialMessage.from_org_id = this.userService.me.org.id;
+    } else {
+      partialMessage.to_org_id = this.userService.me.org.id;
+    }
     this.feedback.emit(partialMessage);
+    this.is_done = true;
+    this.navService.nextStep();
   }
 
   markAsDone() {
     this.navService.markAsDone(this.navService.currentStep.id, !this.is_done).then(() => {
       this.is_done = !this.is_done;
+      this.navService.nextStep();
     });
+  }
+
+  buttonClicked() {
+    switch (this.action) {
+      case 'feedback':
+      case 'provide_feedback':
+        this.feedbackClicked();
+        break;
+      default:
+        this.markAsDone();
+    }
+  }
+
+  actionButtonText() {
+    switch (this.action) {
+      case 'feedback':
+        return this.is_done ? 'Feedback Requested' : 'Request Feedback';
+      case 'provide_feedback':
+        return this.is_done ? 'Feedback Provided' : 'Provide Feedback';
+      default:
+        return this.is_done ? 'Done' : 'Mark as done';
+    }
   }
 }

@@ -4,8 +4,16 @@
 
 \:host
   width: 100%
-  // background: white;
-  // margin: 20px auto 0;
+  \::ng-deep
+    .ck-editor__editable_inline
+      min-height: 300px;
+    .ck-content:not(.ck-focused)
+	    border: 1px solid rgba(0, 0, 0, 0.15);
+
+.ckeditor
+  display: block
+  margin-top: 40px
+
 a, a:hover
   text-decoration: none
   color: inherit
@@ -37,7 +45,6 @@ a, a:hover
     transition: 0.3s ease;
     box-shadow: 0 0 30px rgba(0, 0, 0, 0.1);
     margin: 0px auto;
-    flex-grow: 1
     @include content-size;
 
 
@@ -47,3 +54,7 @@ a, a:hover
 
 .content
   margin-top: 20px
+
+.footer
+  text-align: center
+  margin-top: 30px

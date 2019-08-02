@@ -33,6 +33,16 @@ export class E3TableComponent implements OnInit {
       return row.onClick(cell, col, row, rowIndex, colIndex);
     }
   }
+
+  tdClassName(row, col) {
+    const classNames = {
+      pointer: row.onClick || (row[col.id] && row[col.id].onClick)
+    };
+    if (row.tdClassName) {
+      classNames[row.tdClassName] = true;
+    }
+    return classNames;
+  }
 }
 
 class SortBy {

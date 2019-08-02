@@ -2,12 +2,25 @@
   class="template-title"
   [innerHtml]="contentData.title | safehtml"
 ></h2>
-
 <div
   class="template-description"
   [innerHtml]="contentData.description | safehtml"
 ></div>
+<ice
+    class="brainstorm"
+    id="brainstorm"
+    [hideChanges]="hideChanges"
+    [user]="me"
+    [disabled]="true"
+    (changed)="contentChanged()"
+    [(data)]="inputs.brainstorm"
+    style="margin: 20px 0"
+  ></ice>
 
+  <div
+  class="template-footer"
+  [innerHtml]="contentData.instructions | safehtml"
+></div>
 <div class="inputs-wrapper">
     <ice
     *ngFor="let inputId of inputIds.personas"

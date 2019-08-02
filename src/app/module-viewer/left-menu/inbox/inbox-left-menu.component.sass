@@ -5,6 +5,13 @@
   box-shadow: -3px 0 5px 0 #555
   background: white
   margin-left: $left-sidebar-width;
+  \::ng-deep
+    .pending
+      font-weight: bold;
+      background: #e8e6e6
+    .active
+      background: #2a6496 !important
+      color: white;
 
 .site-tbox
   margin: 0
@@ -13,8 +20,21 @@
   display: flex
   align-items: center
 
+
+
+
+
 .header-title
   font-size: 21px
+  margin: 10px
+  color: white;
+  background: #00529f;
+  text-align: center;
+  margin-bottom: 15px;
+  text-transform: uppercase;
+  letter-spacing: 2px;
+  padding: 5px;
+  width: 100%;
 
 [disabled]
   background: white
