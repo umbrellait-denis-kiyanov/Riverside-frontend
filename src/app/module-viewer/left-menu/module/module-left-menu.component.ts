@@ -50,7 +50,9 @@ export class LeftMenuComponent implements OnInit {
           }
           this.module.percComplete = this.module.percComplete || 0;
           if (!this.router.routerState.snapshot.url.includes('step')) {
-            this.router.navigate(['module', params.moduleId, 'step', this.navService.currentStep.id]);
+            this.navService.stepIndex.current = -1;
+            this.navService.nextStep();
+            // this.router.navigate(['module', params.moduleId, 'step', this.navService.currentStep.id]);
           }
           this.ready = true;
         });

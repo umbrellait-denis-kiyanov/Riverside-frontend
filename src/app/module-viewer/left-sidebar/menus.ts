@@ -20,7 +20,7 @@ export const menus = [
   },
 
   {
-    'mat-icon': 'feedback_outlined',
+    'mat-icon': 'feedback',
     className: 'material-icons-outlined',
     label: 'FEEDBACK',
     modalComponent: RequestFeedbackComponent,
