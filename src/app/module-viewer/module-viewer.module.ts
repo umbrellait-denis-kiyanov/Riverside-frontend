@@ -50,6 +50,7 @@ import { GenericTemplateComponent } from './riverside-step-template/templates/ge
 import { NamePersonasTemplateComponent } from './riverside-step-template/templates/name_personas/name_personas.component';
 import { PersonaBehaviorTemplateComponent } from './riverside-step-template/templates/persona_behavior/persona_behavior.component';
 import { FeedbackSectionTemplateComponent } from './riverside-step-template/templates/feedback_section/feedback_section.component';
+import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 
 
 @NgModule({
@@ -80,6 +81,7 @@ import { FeedbackSectionTemplateComponent } from './riverside-step-template/temp
     LoadingComponent,
     SafeurlPipe,
     SafehtmlPipe,
+    FormatDatePipe,
     LearningElementComponent,
 
     IceComponent,

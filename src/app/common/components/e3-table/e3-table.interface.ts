@@ -1,6 +1,7 @@
 export interface E3TableHeaderCol {
   id: string;
   label: string;
+  transform?: (cell: any, col: E3TableHeaderCol, row: E3TableDataRow, rowIndex: number, colIndex: number) => string;
 }
 export type E3TableHeader = E3TableHeaderCol[];
 

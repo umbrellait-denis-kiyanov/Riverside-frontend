@@ -6,6 +6,7 @@ import { FormsModule } from '@angular/forms';
 import { CommonModule } from '@angular/common';
 import { E3TooltipDirective } from '../common/components/e3-tooltip/e3-tooltip.directive';
 import { E3AsyncButtonDirective } from './components/e3-async-button/e3-async-button.directive';
+import { FormatDatePipe } from './pipes/fomartdate.pipe';
 
 
 @NgModule({
@@ -17,7 +18,8 @@ import { E3AsyncButtonDirective } from './components/e3-async-button/e3-async-bu
   declarations: [
     E3CheckboxComponent,
     E3TooltipDirective,
-    E3AsyncButtonDirective
+    E3AsyncButtonDirective,
+
   ],
   entryComponents: [
     // E3CheckboxComponent
@@ -28,7 +30,8 @@ import { E3AsyncButtonDirective } from './components/e3-async-button/e3-async-bu
   exports: [
     E3CheckboxComponent,
     E3TooltipDirective,
-    E3AsyncButtonDirective
+    E3AsyncButtonDirective,
+
   ]
 })
 export class E3CommonModule { }

@@ -38,6 +38,7 @@ export const header = [
   },
   {
     id: 'sent_on',
-    label: 'Time'
+    label: 'Time',
+    transform: (date) => window.moment(date).format('MMM DD YYYY hh:mm:ss A')
   }
 ];
