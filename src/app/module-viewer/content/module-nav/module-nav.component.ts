@@ -57,7 +57,7 @@ export class ModuleNavComponent implements OnInit {
     }
     this.feedback.emit(partialMessage);
     this.is_done = true;
-    this.navService.nextStep();
+    // this.navService.nextStep();
   }
 
   markAsDone() {
