@@ -5,8 +5,11 @@ export const menus = [
   {
     render(user: User) {
       return `<img
-        src=${user.email === 'dan@riverside.com' ? 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dan+-+Riverside.jpg' : 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dave+-+Alice.png'}
-        style="width: 25px; height: 25px; border-radius: 25px">`;
+        src=${user.email === 'dan@riverside.com' ?
+          'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dan+-+Riverside.jpg' :
+          'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dave+-+Alice.png'
+        }
+        style="width: 45px; height: 45px; border-radius: 45px">`;
     },
     label: 'ACCOUNT',
     link: '/account',
