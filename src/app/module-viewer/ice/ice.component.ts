@@ -118,7 +118,7 @@ export class IceComponent implements OnInit {
         content: this.comment.content,
         user: this.user,
         time,
-        formattedTime: window.moment(time).format('MM/DD/YYYY h:mma')
+        formattedTime: window.moment(time).format('MMM DD YYYY hh:mma')
       });
     }
 
