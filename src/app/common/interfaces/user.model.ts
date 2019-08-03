@@ -4,6 +4,7 @@ class User extends BaseModel {
   name: string  = '';
   fname: string = '';
   lname: string = '';
+  email: string = '';
   id: string = '';
   roles = {
     riverside_facilitator: false,
