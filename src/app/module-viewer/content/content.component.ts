@@ -29,6 +29,8 @@ export class ContentComponent implements OnInit {
   disableInputs: boolean = false;
   showFinishFeedback: boolean = false;
   stepId: number;
+  orgId: number;
+  moduleId: number;
   unsubNavChanged: Subscription;
 
   @ViewChild(RiversideStepTemplateComponent) templateComponent: RiversideStepTemplateComponent;
@@ -74,6 +76,7 @@ export class ContentComponent implements OnInit {
     return new Promise(resolve => {
       this.route.params.subscribe(params => {
         this.stepId = params.stepId;
+        this.orgId = this.me.org.id;
         resolve();
       });
     });
@@ -83,6 +86,7 @@ export class ContentComponent implements OnInit {
   async waitForModule() {
     return new Promise(resolve => {
       this.navService.module.onChange.pipe(filter(v => v !== null)).subscribe(() => {
+        this.moduleId = this.navService.module.current.id;
         resolve();
       });
     });
@@ -121,9 +125,17 @@ export class ContentComponent implements OnInit {
     const { moduleContent: { data } } = this.moduleContentService;
     const templateData = this.templateComponent.prepareData();
     data.content_json = templateData;
-    data.inputs = templateData.inputs;
+    data.inputs = this.addIdsToInputs(templateData.inputs);
     this.moduleContentService.save(data);
     window.toastr.success('Saved', '', {timeOut: 1000, positionClass: 'toast-top-right'});
+  }
+
+  addIdsToInputs(inputs: any) {
+    Object.keys(inputs).forEach(k => {
+      inputs[k].org_id = inputs[k].org_id || this.orgId;
+      inputs[k].module_id = inputs[k].module_id || this.moduleId;
+    });
+    return inputs;
   }
 
   requestFeedback() {

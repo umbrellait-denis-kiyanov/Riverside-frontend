@@ -35,8 +35,10 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
       if (iceElement) {
       data.inputs[key] = {
         comments_json: this.data.data.inputs[key] ? this.data.data.inputs[key].comments_json : [],
-        content_id: this.data.data.inputs[key] ? this.data.data.inputs[key].content_id : [],
+        org_id: this.data.data.inputs[key] ? this.data.data.inputs[key].org_id : null,
+        module_id: this.data.data.inputs[key] ? this.data.data.inputs[key].module_id : null,
         content: iceElement ? iceElement.innerHTML : '',
+        element_key: key,
       };
       }
     });

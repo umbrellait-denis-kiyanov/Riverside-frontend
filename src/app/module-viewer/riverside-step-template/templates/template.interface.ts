@@ -23,9 +23,11 @@ export interface TemplateComponentInterface {
 
 export interface TemplateContentDataBase {
   inputs?: {[key: string]: {
-    content_id?: number,
+    org_id?: number,
     comments_json: any[],
-    content: string
+    content: string,
+    element_key: string;
+    module_id: number;
   }};
   disabled?: boolean;
 }
