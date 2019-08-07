@@ -16,27 +16,33 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
     fromPreviousStep: [
       {
         title: 'persona_1',
-        name: 'persona_name_1'
+        name: 'persona_name_1',
+        picture: 'persona_picture_1'
       },
       {
         title: 'persona_2',
-        name: 'persona_name_2'
+        name: 'persona_name_2',
+        picture: 'persona_picture_2'
       },
       {
         title: 'persona_3',
-        name: 'persona_name_3'
+        name: 'persona_name_3',
+        picture: 'persona_picture_3'
       },
       {
         title: 'persona_4',
-        name: 'persona_name_4'
+        name: 'persona_name_4',
+        picture: 'persona_picture_4'
       },
       {
         title: 'persona_5',
-        name: 'persona_name_5'
+        name: 'persona_name_5',
+        picture: 'persona_picture_5'
       },
       {
         title: 'persona_6',
-        name: 'persona_name_6'
+        name: 'persona_name_6',
+        picture: 'persona_picture_6'
       }
     ],
     personas: [

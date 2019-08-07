@@ -4,7 +4,7 @@
     color="primary"
     *ngIf="showPrevious"
     (click)="previous()"
-  >Previous</button>
+  >< Previous</button>
 </span>
 
 <button
@@ -29,28 +29,6 @@
   {{actionButtonText()}}
 
 </button>
-<!-- <span [ngSwitch]="action">
-<button
-  *ngSwitchCase="'feedback'"
-  mat-stroked-button
-  [color]="is_done?'accent':''"
-  (click)="feedbackClicked()"
-  e3-async-button
-  [running]="submitting"
-  >
-  Request Feedback
-</button>
-
-<button
-  *ngSwitchDefault
-  mat-stroked-button
-  (click)="markAsDone()"
-  [color]="is_done?'accent':''"
-  >
-  {{is_done?'Done':'Mark as done'}}
-</button>
-
-</span> -->
 
 
 <span>
@@ -59,5 +37,5 @@
     color="primary"
     *ngIf="showNext"
     (click)="next()"
-  >Next</button>
+  >Next ></button>
 </span>

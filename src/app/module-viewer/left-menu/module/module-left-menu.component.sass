@@ -5,6 +5,8 @@
   box-shadow: -3px 0 5px 0 #555
   background: white
   margin-left: $left-sidebar-width;
+  top: 0
+  position: sticky
 
 .site-tbox
   margin: 0
@@ -26,15 +28,13 @@
 .left-menu-summary
   padding: 10px
   .summary-title
-    color: white;
-    background: #00529f;
-    text-align: center;
-    font-size: 20px;
+
+    font-size: 30px;
     margin-bottom: 15px;
-    text-transform: uppercase;
     letter-spacing: 2px;
     padding: 5px;
-
+    color: #504f4f;
+    border-bottom: 2px solid #ccc;
   .summary-body
     .summary-row
       display: flex
@@ -69,11 +69,10 @@
       .checkmark
         color: white
     .step-list-item.section-break
-      background: #e0dcdc;
       color: #585858;
-      text-transform: uppercase;
       padding: 4px 20px;
       border-radius: 7px;
+      font-size: 22px;
 
     .step-list-item:not(.section-break)
       padding: 5px

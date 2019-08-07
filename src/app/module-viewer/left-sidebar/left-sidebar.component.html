@@ -6,7 +6,7 @@
   <li
     class="menu-item"
     e3-tooltip="MENU"
-    placement="bottom"
+    placement="right"
   >
     <a (click)="toggleMenu()">
       <div class="menu-item-icon">
@@ -21,12 +21,19 @@
     *ngFor="let menu of menus"
     [hidden]="!showMenuItem(menu)"
     e3-tooltip="{{menu.label}}"
+    placement="right"
   >
     <ng-container *ngIf="showMenuItem(menu)">
       <a
         [routerLink]="menu.link"
         routerLinkActive="active"
-        *ngIf="menu.link"
+        *ngIf="menu.link "
+      >
+        <ng-container *ngTemplateOutlet="menuItem"></ng-container>
+      </a>
+      <a
+        [routerLink]="menu.linkFn(navService)"
+        *ngIf="menu.linkFn"
       >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>

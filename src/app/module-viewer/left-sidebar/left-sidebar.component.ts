@@ -5,6 +5,7 @@ import { UserService } from '../../common/services/user.service';
 import User from '../../common/interfaces/user.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxService } from '../inbox/inbox.service';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 
 @Component({
@@ -23,6 +24,7 @@ export class LeftSidebarComponent implements OnInit {
     private userService: UserService,
     private modalService: NgbModal,
     private inboxService: InboxService,
+    public navService: ModuleNavService,
     private el: ElementRef,
     private renderer: Renderer2
   ) { }
@@ -41,7 +43,16 @@ export class LeftSidebarComponent implements OnInit {
   }
 
   showMenuItem(menuItem: typeof menus[number]) {
-    return menuItem.restrict ? menuItem.restrict(this.me) : true;
+    if (menuItem.restrict) {
+    console.log(menuItem.label, menuItem.restrict({
+      user: this.me,
+      nav: this.navService
+    }) );
+    }
+    return menuItem.restrict ? menuItem.restrict({
+      user: this.me,
+      nav: this.navService
+    }) : true;
   }
 
   openModal(component: any, params?: any) {

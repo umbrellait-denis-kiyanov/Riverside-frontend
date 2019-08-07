@@ -8,6 +8,8 @@ import Message from 'src/app/module-viewer/inbox/message.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { InboxService } from 'src/app/module-viewer/inbox/inbox.service';
 import { UserService } from 'src/app/common/services/user.service';
+import { PersonaInputs } from '../persona-ids.class';
+
 
 @Component({
   selector: 'app-feedback_section',
@@ -16,38 +18,12 @@ import { UserService } from 'src/app/common/services/user.service';
 })
 export class FeedbackSectionTemplateComponent extends TemplateComponent implements OnInit {
   allIds: string[] = [];
-  inputIds = {
-    fromPreviousStep: [
-      {
-        name: 'persona_name_1',
-        title: 'persona_1',
-      },
-      {
-        name: 'persona_name_2',
-        title: 'persona_2',
-      },
-      {
-        name: 'persona_name_3',
-        title: 'persona_3',
-      },
-      {
-        name: 'persona_name_4',
-        title: 'persona_4',
-      },
-      {
-        name: 'persona_name_5',
-        title: 'persona_5',
-      },
-      {
-        name: 'persona_name_6',
-        title: 'persona_6',
-      }
-    ]
-  };
+  inputIds: PersonaInputs;
+
   Editor = InlineEditor;
   message: string = '';
   submitting: boolean = false;
-  // contentData: FeedbackSectionTemplateData['template_params_json'];
+  // contentData: FinalFeedbackTemplateData['template_params_json'];
   contentData = data;
   action: string;
 
@@ -69,11 +45,9 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
   }
 
   protected init() {
-
-    Object.keys(this.inputIds).forEach(key => {
+    this.initIds();
+    ['fromPreviousSteps'].forEach(key => {
       this.inputIds[key].forEach((persona) => {
-        this.prepareBehaviors(persona);
-
         Object.values(persona).forEach((id2: string) => {
           this.inputs[id2] = this.inputs[id2] || '';
           this.allIds.push(id2);
@@ -83,12 +57,33 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
     // this.contentData = this.data.data.template_params_json;
   }
 
-  prepareBehaviors(persona: {title: string}) {
-    this.contentData.steps && this.contentData.steps.forEach(step => {
-      const idBehavior = persona.title.replace('persona', 'persona_behavior') + '_' + step.sufix;
-      this.inputs[idBehavior] = this.inputs[idBehavior] || '';
-      this.allIds.push(idBehavior);
+  initIds() {
+    this.inputIds = new PersonaInputs({
+      numberOfPersonas: 6,
+      previousSteps: {
+        title: {
+          prefix: 'persona'
+        },
+        name: {
+          prefix: 'persona_name'
+        },
+        picture: {
+          prefix: 'persona_picture'
+        },
+        ...this.behaviorInputs()
+      }
     });
+  }
+
+  behaviorInputs() {
+    const behaviorInputs = {};
+    this.contentData.steps.forEach(step => {
+      behaviorInputs[step.sufix] = {
+        prefix: 'persona_behavior',
+        sufix: step.sufix
+      };
+    });
+    return behaviorInputs;
   }
 
   feedbackClicked(partialMessage: Partial<Message>) {

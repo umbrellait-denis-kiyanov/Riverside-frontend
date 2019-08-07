@@ -1,5 +1,6 @@
 @import "src/app/common/sass/variables.sass";
 $iconsize: 25px;
+
 \:host
   position: fixed
   width: $left-sidebar-width
@@ -7,10 +8,28 @@ $iconsize: 25px;
   border-right: 1px solid #ccc
   background: white
   color: #00529f
+  \::ng-deep
+    svg
+      fill: #00529f
+    path
+      stroke: #00529f
+
   &.expanded
     background: #00529f
     color: white
+    \::ng-deep
+      svg
+        fill: white
+      path
+        stroke: white
 
+.logo
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  height: 50px;
+  img
+    width: 80%
 ul
   list-style-type: none
   list-style: none
@@ -40,6 +59,11 @@ ul
     .active
       background: white
       color: #00529f
+      \::ng-deep
+        svg
+          fill: #00529f
+        path
+          stroke: #00529f
     .menu-item-counter
       position: absolute
       right: 10px;

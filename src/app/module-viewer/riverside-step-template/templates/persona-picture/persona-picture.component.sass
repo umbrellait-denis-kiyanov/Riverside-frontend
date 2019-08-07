@@ -1,0 +1,61 @@
+$iconSize: 48px
+@import "src/app/module-viewer/riverside-step-template/templates/template.sass"
+
+.persona-behavior-wrapper
+  font-size: large
+  margin-top: 40px
+  .persona-row
+    display: flex
+    justify-content: center
+    align-items: center
+    margin-bottom: 15px
+
+    .persona-name-column
+      display: flex
+      align-items: center
+      margin-right: 20px
+      width: 250px;
+
+      .persona-name-title
+        min-width: 0px;
+
+      .persona-picture
+        width: 100px
+        height: 100px
+        border-radius: 100px
+        border: 1px solid #ccc
+        margin-right: 10px
+        flex-shrink: 0
+        display: flex
+        align-items: center
+        justify-content: center
+        cursor: pointer
+        \::ng-deep
+          .mat-icon, .mat-icon-button
+            height:$iconSize !important
+            width:$iconSize !important
+            font-size:$iconSize !important
+            line-height: #{$iconSize - 4}
+
+
+      .persona-name
+        font-size: x-large
+        color: blue !important
+        \::ng-deep span.ins
+          color: blue !important
+
+      .persona-title
+        overflow-wrap: break-word;
+
+
+    .persona-behavior-column
+      flex-grow: 1
+
+      &.behavior-title
+        font-size: x-large
+        text-align: center
+        margin-bottom: 20px
+
+\::ng-deep .persona-behavior-column
+  #textbody
+    min-height: 120px

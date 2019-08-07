@@ -40,6 +40,8 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
         content: iceElement ? iceElement.innerHTML : '',
         element_key: key,
       };
+      } else if (this.data.data.inputs[key]) {
+        data.inputs[key]  = {...this.data.data.inputs[key], element_key: key};
       }
     });
     return data;

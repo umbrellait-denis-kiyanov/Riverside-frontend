@@ -14,7 +14,7 @@ declare global {
 })
 export class AccountLeftMenuComponent implements OnInit {
 
-  @Input() width: number = 500;
+  @Input() width: number = 350;
 
   constructor(
     private leftMenuService: LeftMenuService,

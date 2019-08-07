@@ -1,22 +1,37 @@
-import { Directive, Input, ElementRef, HostListener, Renderer2 } from '@angular/core';
+import { Directive, Input, ElementRef, HostListener, Renderer2, OnInit } from '@angular/core';
+import { Router } from '@angular/router';
 
 @Directive({
   selector: '[e3-tooltip]'
 })
-export class E3TooltipDirective {
+export class E3TooltipDirective implements OnInit {
   @Input('e3-tooltip') tooltipTitle: string;
   @Input() placement: string = 'top';
   @Input() delay: string = '500';
   tooltip: HTMLElement;
   offset = 10;
 
-  constructor(private el: ElementRef, private renderer: Renderer2) { }
+  constructor(
+    private el: ElementRef,
+    private renderer: Renderer2,
+    private router: Router
+  ) { }
+
+  ngOnInit() {
+    this.router.events.subscribe(event => {
+      this.tooltip && this.hide();
+    });
+  }
 
   @HostListener('mouseenter') onMouseEnter() {
     if (!this.tooltip && this.tooltipTitle) { this.show(); }
   }
 
   @HostListener('mouseleave') onMouseLeave() {
+    if (this.tooltip) { this.hide(); }
+  }
+
+  @HostListener('click') onClick() {
     if (this.tooltip) { this.hide(); }
   }
 
@@ -29,7 +44,7 @@ export class E3TooltipDirective {
   hide() {
     this.renderer.removeClass(this.tooltip, 'ng-tooltip-show');
     window.setTimeout(() => {
-      this.renderer.removeChild(document.body, this.tooltip);
+      this.tooltip && this.renderer.removeChild(document.body, this.tooltip);
       this.tooltip = null;
     }, Number(this.delay));
   }

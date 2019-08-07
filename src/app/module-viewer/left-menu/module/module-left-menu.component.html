@@ -8,66 +8,15 @@
     <div class="summary-title">{{module.name}}</div>
 
     <div>
-      <img src="https://riverside-seagage.s3-us-west-2.amazonaws.com/Progress+bar.JPG" style="    width: 100%;height: 25px;">
+      <mat-progress-bar
+      style="height: 10px"
+        mode="determinate"
+        color="accent"
+        [value]="module.percComplete">
+      </mat-progress-bar>
     </div>
 
-    <!-- <div class="summary-body">
-      <div class="summary-row">
-        <div class="summary-label">
-          TARGET DATE
-        </div>
-        <div class="summary-content">
-          <input class="site-tbox" [disabled]="!canEdit()" id="datepicker" />
-        </div>
-      </div>
-      <div class="summary-row">
-          <div class="summary-label">
-            % Complete
-          </div>
-          <div class="summary-content">
-              <input class="site-tbox" disabled [ngModel]="module.percComplete + '%'" />
-          </div>
-        </div>
-    </div> -->
   </div>
-
-  <!-- <div class="left-menu-actions">
-    <ul class="step-list">
-      <li class="step-list-item section-break">
-        Section One
-      </li>
-      <li class="step-list-item">
-        <span class="checkmark checked">
-          <span class="fa fa-check"></span>
-        </span>
-        <span class="step-number">1</span>
-        <span class="step-title">Introduction</span>
-      </li>
-      <li class="step-list-item">
-        <span class="checkmark">
-            <span class="fa fa-check"></span>
-        </span>
-        <span class="step-number">2</span>
-        <span class="step-title">Examples</span>
-      </li>
-      <li class="step-list-item section-break">
-          Section Two
-        </li>
-        <li class="step-list-item">
-          <span class="checkmark checked">
-            <span class="fa fa-check"></span>
-          </span>
-          <span class="step-number">3</span>
-          <span class="step-title">Brainstorm Buyer Personas</span>
-        </li>
-        <li class="step-list-item">
-          <span class="checkmark">
-              <span class="fa fa-check"></span>
-          </span>
-          <span class="step-number">4</span>
-          <span class="step-title">Narrow Down Personas</span>
-        </li>
-    </ul> -->
 
   <div class="left-menu-actions">
     <ul class="step-list">

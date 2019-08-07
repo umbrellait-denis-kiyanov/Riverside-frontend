@@ -16,14 +16,13 @@
         {{step.title}}
       </div>
   </div>
-  <div class="persona-row" *ngFor="let persona of inputIds.fromPreviousStep; let i=index">
-      <div class="persona-name-column CT-hide" *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)">
-        <div class="persona-picture"></div>
-        <div class="persona-name-title">
-          <div class="persona-name" >{{textContent(inputs[persona.name].content)}}</div>
-          <div class="persona-title">{{textContent(inputs[persona.title].content)}}</div>
-        </div>
-      </div>
+  <div class="persona-row" *ngFor="let persona of inputIds.fromPreviousSteps; let i=index">
+      <riverside-persona
+        *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)"
+        [title]="textContent(inputs[persona.title].content)"
+        [name]="textContent(inputs[persona.name].content)"
+        [picture]="inputs[persona.picture].content"
+      ></riverside-persona>
       <div class="persona-behavior-column" *ngFor="let step of contentData.steps">
           <ice
             *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)"
