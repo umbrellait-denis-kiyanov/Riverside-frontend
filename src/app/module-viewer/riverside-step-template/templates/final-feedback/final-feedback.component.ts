@@ -71,4 +71,10 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
     });
     // setTimeout(()=>window.scrollBy(0, -75));
   }
+
+  protected initAction() {
+    if (this.userService.me.roles.riverside_se) {
+      this.action = 'provide_final_feedback';
+    } else { this.action = 'final_feedback'; }
+  }
 }

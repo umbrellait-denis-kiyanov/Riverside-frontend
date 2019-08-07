@@ -11,7 +11,7 @@ import { UserService } from 'src/app/common/services/user.service';
 export class ModuleNavComponent implements OnInit {
   showPrevious = true;
   showNext = true;
-  @Input() action: 'mark_as_done' | 'feedback' | 'provide_feedback';
+  @Input() action: 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedback' | 'provide_final_feedback';
   @Input() submitting: boolean;
   @Input() is_done: boolean;
   @Output() feedback: EventEmitter<Partial<Message>> = new EventEmitter();
@@ -25,9 +25,11 @@ export class ModuleNavComponent implements OnInit {
     const {currentStep: {is_checked, waiting_for_feedback, feedback_received}} = this.navService;
     switch (this.action) {
       case 'feedback':
+      case 'final_feedback':
         this.is_done = waiting_for_feedback;
         break;
       case 'provide_feedback':
+      case 'provide_final_feedback':
         this.is_done = feedback_received;
         break;
       default:
@@ -50,7 +52,7 @@ export class ModuleNavComponent implements OnInit {
       module_id: this.navService.module.current.id,
       step_id: this.navService.currentStep.id
     };
-    if (this.action === 'feedback') {
+    if (['feedback', 'final_feedback'].includes(this.action)) {
       partialMessage.from_org_id = this.userService.me.org.id;
     } else {
       partialMessage.to_org_id = this.userService.me.org.id;
@@ -71,6 +73,8 @@ export class ModuleNavComponent implements OnInit {
     switch (this.action) {
       case 'feedback':
       case 'provide_feedback':
+      case 'final_feedback':
+      case 'provide_final_feedback':
         this.feedbackClicked();
         break;
       default:
@@ -83,7 +87,10 @@ export class ModuleNavComponent implements OnInit {
       case 'feedback':
         return this.is_done ? 'Feedback Requested' : 'Request Feedback';
       case 'provide_feedback':
+      case 'provide_final_feedback':
         return this.is_done ? 'Feedback Provided' : 'Provide Feedback';
+      case 'final_feedback':
+        return this.is_done ? 'Submitted' : 'Submit';
       default:
         return this.is_done ? 'Done' : 'Mark as done';
     }

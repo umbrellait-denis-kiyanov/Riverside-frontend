@@ -43,12 +43,6 @@ export class LeftSidebarComponent implements OnInit {
   }
 
   showMenuItem(menuItem: typeof menus[number]) {
-    if (menuItem.restrict) {
-    console.log(menuItem.label, menuItem.restrict({
-      user: this.me,
-      nav: this.navService
-    }) );
-    }
     return menuItem.restrict ? menuItem.restrict({
       user: this.me,
       nav: this.navService

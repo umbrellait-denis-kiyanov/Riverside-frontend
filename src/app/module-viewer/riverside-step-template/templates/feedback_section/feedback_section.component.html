@@ -50,6 +50,7 @@
 -->
 <div
   class="template-footer"
+  *ngIf="contentData.instructions"
   [innerHtml]="contentData.instructions | safehtml"
 ></div>
 

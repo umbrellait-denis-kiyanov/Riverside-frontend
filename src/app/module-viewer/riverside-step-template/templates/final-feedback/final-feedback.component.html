@@ -46,11 +46,11 @@
               <div class="behavior-title" style="padding-left: 0px;" >Demographics</div>
               <div class="previous-behavior">
                 <div class="behavior-subtitle">Gender</div>
-                <div class="behavior-content">Male (95%) / Female (5%)</div>
+                <div class="behavior-content">Male ({{textContent(inputs[persona.perc_male].content)}}%) / Female ({{textContent(inputs[persona.perc_female].content)}}%)</div>
               </div>
               <div class="previous-behavior">
                 <div class="behavior-subtitle">Average Age</div>
-                <div class="behavior-content">40+</div>
+                <div class="behavior-content">{{textContent(inputs[persona.age].content)}}</div>
               </div>
               <div class="previous-behavior">
                 <div class="behavior-subtitle">How They Buy</div>
@@ -58,7 +58,7 @@
               </div>
               <div class="previous-behavior">
                 <div class="behavior-subtitle">How They Pay</div>
-                <div class="behavior-content" [innerHtml]="inputs[persona.how_they_buy].content || '<p></p>' | safehtml"></div>
+                <div class="behavior-content" [innerHtml]="inputs[persona.how_they_pay].content || '<p></p>' | safehtml"></div>
               </div>
               <div class="previous-behavior">
                 <div class="behavior-subtitle">Typical Titles</div>
@@ -118,3 +118,17 @@
 
 </div>
 
+<div
+  class="template-footer"
+  *ngIf="contentData.instructions"
+  [innerHtml]="contentData.instructions | safehtml"
+></div>
+
+<ckeditor class="ckeditor" [editor]="Editor" [(ngModel)]="message"></ckeditor>
+
+<module-nav
+  [action]="action"
+  (feedback)="feedbackClicked($event)"
+  [submitting]="submitting"
+  >
+</module-nav>

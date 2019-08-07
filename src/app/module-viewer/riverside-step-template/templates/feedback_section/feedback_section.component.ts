@@ -31,7 +31,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
     protected el: ElementRef,
     protected moduleContentService: ModuleContentService,
     private inboxService: InboxService,
-    private userService: UserService
+    protected userService: UserService
   ) {
     super(el, moduleContentService);
   }
@@ -39,6 +39,10 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
   ngOnInit() {
     super.ngOnInit();
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
+    this.initAction();
+  }
+
+  protected initAction() {
     if (this.userService.me.roles.riverside_se) {
       this.action = 'provide_feedback';
     } else { this.action = 'feedback'; }
@@ -69,6 +73,20 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
         },
         picture: {
           prefix: 'persona_picture'
+        },
+
+        age: {
+          prefix: 'persona_age'
+        },
+
+        perc_male: {
+          prefix: 'persona_perc_male'
+        },
+        perc_female: {
+          prefix: 'persona_perc_female'
+        },
+        education: {
+          prefix: 'persona_education'
         },
         ...this.behaviorInputs()
       }

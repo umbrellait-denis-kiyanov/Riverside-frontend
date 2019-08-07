@@ -216,7 +216,7 @@ export class IceComponent implements OnInit {
 
   @HostListener('keyup', ['$event'])
   keyEvent(e: KeyboardEvent) {
-    if ((e.which < 65 && e.which !== 32 && e.which !== 8) || e.which > 90) {
+    if ((e.which < 48 && e.which !== 32 && e.which !== 8) || e.which > 90) {
       console.log(event, 'Dont save');
       return false;
     }

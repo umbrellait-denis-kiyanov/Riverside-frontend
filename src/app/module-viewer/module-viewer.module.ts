@@ -56,6 +56,7 @@ import { PersonaPictureListComponent } from './riverside-step-template/templates
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
 import { PersonaComponent } from './riverside-step-template/persona/persona.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
 
 
 
@@ -112,7 +113,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     PersonaPictureTemplateComponent,
     PersonaPictureListComponent,
     FinalFeedbackComponent,
-    PersonaComponent
+    PersonaComponent,
+    AgeGenderComponent
 
   ],
   entryComponents: [
@@ -129,7 +131,8 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
     FeedbackSectionTemplateComponent,
     PersonaPictureTemplateComponent,
     PersonaPictureListComponent,
-    FinalFeedbackComponent
+    FinalFeedbackComponent,
+    AgeGenderComponent
   ],
   providers: [
     ModuleService,
