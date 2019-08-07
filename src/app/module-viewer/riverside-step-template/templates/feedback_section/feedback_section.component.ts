@@ -112,12 +112,4 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
     this.inboxService.save(message);
   }
 
-  notEmpty(el: string) {
-    return !!this.textContent(el);
-  }
-
-  textContent(el: string) {
-    const _el: HTMLElement[] = window.$(el);
-    return _el.length ? _el[0].textContent.replace(/\&nbsp;/g, ' ') : '';
-  }
 }

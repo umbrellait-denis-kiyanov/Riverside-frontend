@@ -14,8 +14,8 @@
 
       <div
         class="tabitem"
-        [ngClass]="{'active': currentSection == persona.name}"
-        (click)="scrollTo(persona.name)"
+        [ngClass]="{'active': currentSection == persona.name + '_wrapper'}"
+        (click)="scrollTo(persona.name + '_wrapper')"
         *ngFor="let persona of inputIds.fromPreviousSteps"
         [hidden]="!(notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content))"
       >
@@ -33,7 +33,7 @@
     [spiedClassNames]="['persona-wrapper']"
     (sectionChange)="onSectionChange($event)"
   >
-    <div class="persona-wrapper" id="{{persona.name}}" *ngFor="let persona of inputIds.fromPreviousSteps; let i=index">
+    <div class="persona-wrapper" id="{{persona.name+'_wrapper'}}" *ngFor="let persona of inputIds.fromPreviousSteps; let i=index">
       <div class="persona-content" *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)">
           <div class="column">
               <riverside-persona

@@ -50,4 +50,13 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   contentChanged() {
     this.moduleContentService.contentChanged.next(this.moduleContentService.contentChanged.getValue() + 1);
   }
+
+  notEmpty(el: string) {
+    return !!this.textContent(el);
+  }
+
+  textContent(el: string) {
+    const _el: HTMLElement[] = window.$(el);
+    return _el.length ? _el[0].textContent.replace(/\s/g, ' ') : '';
+  }
 }

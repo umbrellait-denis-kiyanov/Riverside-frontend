@@ -65,7 +65,7 @@ export class ModuleNavComponent implements OnInit {
   markAsDone() {
     this.navService.markAsDone(this.navService.currentStep.id, !this.is_done).then(() => {
       this.is_done = !this.is_done;
-      this.navService.nextStep();
+      this.is_done && this.navService.nextStep();
     });
   }
 
