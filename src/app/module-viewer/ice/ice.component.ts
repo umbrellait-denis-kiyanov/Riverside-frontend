@@ -78,7 +78,7 @@ export class IceComponent implements OnInit {
           name: 'IceCopyPastePlugin',
           settings: {
             pasteType: 'formattedClean',
-            preserve: 'p,a[href],i,em,b,span,ul,ol,li,hr'
+            preserve: 'ol,ul,li'
           }
         }
         ]
@@ -221,6 +221,11 @@ export class IceComponent implements OnInit {
       return false;
     }
     this.changed.emit(e);
+  }
+
+  @HostListener('paste', ['$event'])
+  onPaste(e: KeyboardEvent) {
+    console.log('pasting', e);
   }
 }
 
