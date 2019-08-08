@@ -20,7 +20,7 @@
     class="menu-item"
     *ngFor="let menu of menus"
     [hidden]="!showMenuItem(menu)"
-    e3-tooltip="{{menu.label}}"
+    e3-tooltip="{{menu.labelFn?menu.labelFn({nav: navService}):menu.label}}"
     placement="right"
   >
     <ng-container *ngIf="showMenuItem(menu)">

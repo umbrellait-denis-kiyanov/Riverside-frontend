@@ -16,7 +16,7 @@ export class TemplateContentData {
     this.me = me;
   }
 
-  onHideChanges: BehaviorSubject<boolean> = new BehaviorSubject(true);
+  onHideChanges: BehaviorSubject<boolean> = new BehaviorSubject(false);
   get hideChanges() {
     return this.onHideChanges.getValue();
   }

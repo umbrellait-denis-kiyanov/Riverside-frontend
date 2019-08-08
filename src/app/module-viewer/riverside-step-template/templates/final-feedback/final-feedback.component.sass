@@ -45,8 +45,25 @@
 
       ice
         flex-grow: 1
-      \::ng-deep #textbody
-        height: 100%
+      \::ng-deep
+        #textbody
+          height: 100%
+          border: none
+          &:focus
+            border: 2px solid #ccc
+    \::ng-deep
+      riverside-persona
+        width: 100%;
+        margin-top: -35px;
+        .persona-name-column
+          width: 100%;
+          .persona-name-title
+            font-size: 45px;
+            text-transform: uppercase;
+            .persona-name
+              font-size: 1em
+            .persona-title
+              font-size: 0.5em
 
 .behavior-title
   text-transform: uppercase

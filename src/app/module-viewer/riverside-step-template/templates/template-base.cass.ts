@@ -11,6 +11,7 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   inputs: any;
   disabled: boolean;
   me: User;
+  defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
 
   constructor(
       protected el: ElementRef,

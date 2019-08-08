@@ -9,5 +9,6 @@ export interface PersonaBehaviorTemplateData extends TemplateContentDataBase {
     title: string;
     input_sufix: string;
     behavior: string;
+    formatAsList: boolean;
   };
 }
