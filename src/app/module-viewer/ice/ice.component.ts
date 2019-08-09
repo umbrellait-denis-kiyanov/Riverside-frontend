@@ -64,7 +64,7 @@ export class IceComponent implements OnInit {
     this.data.content = this.data.content || '';
     this.iceService.allComponents.push(this);
 
-    if (this.data.comments_json.length) {
+    if (this.data.comments_json && this.data.comments_json.length) {
       this.comment.list = this.data.comments_json;
       this.comment.hasComment = true;
     }
