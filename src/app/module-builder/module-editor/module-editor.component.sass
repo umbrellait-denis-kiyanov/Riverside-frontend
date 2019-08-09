@@ -29,6 +29,10 @@ $maxWidth: 1000px
   span
     font-size: 22px
 
+.section-title
+  input
+    color: black
+
 .google-doc-url
   span
     font-size: 18px
@@ -36,17 +40,33 @@ $maxWidth: 1000px
 .steps-wrapper
   margin-top: 30px
 
+  .fa
+    padding: 0.5em
+    cursor: pointer
+    margin-right: 5px
+    border-radius: 100%
+    font-size: 18px;
+    display: inline-block;
+    max-height: 2em;
+    &:hover
+      background-color: #ecebeb
+  .fa-trash
+    color: #b94747
+
+  input, .input-group
+    width: calc(100% - 10px)
+    flex-grow: 1
+    margin: 2px auto
+    display: inline-block
+    vertical-align: middle;
+
+
 .steps-header
   font-size: 20px
 
 .steps-row
   display: flex
   margin-bottom: 10px
-  input, .input-group
-    width: calc(100% - 10px)
-    flex-grow: 1
-    margin: 2px auto
-
 
 .steps-left, .steps-right
   width: 50%
@@ -56,17 +76,6 @@ $maxWidth: 1000px
 .step-input-wrapper
   display: flex
   align-items: center
-  .fa
-    padding: 9px
-    cursor: pointer
-    margin-right: 5px
-    border-radius: 19px
-    min-width: 29px;
-    &:hover
-      background-color: #ecebeb
-  .fa-trash
-    color: #b94747
-
 
 .float-btn-group-wrapper
   position: absolute

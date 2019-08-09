@@ -17,6 +17,11 @@ export interface Step {
   elements: LearningElement[];
 }
 
+export interface Section {
+  section: Step,
+  steps: Step[];
+}
+
 function literalArray<T extends string>(array: T[]): T[] {
   return array;
 }
