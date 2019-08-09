@@ -21,7 +21,7 @@ declare global {
 })
 export class LeftMenuComponent implements OnInit {
 
-  @Input() width: number = 500;
+  @Input() width: number = 380;
 
   module: Module;
 
@@ -48,6 +48,7 @@ export class LeftMenuComponent implements OnInit {
             this.module = moduleData;
             this.navService.module.current = moduleData;
           }
+          this.updateProgress();
           this.module.percComplete = this.module.percComplete || 0;
           if (!this.router.routerState.snapshot.url.includes('step')) {
             this.navService.stepIndex.current = -1;

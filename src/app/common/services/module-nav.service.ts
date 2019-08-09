@@ -18,7 +18,7 @@ class ResourceFromStorage<T extends {toString: () => string}> {
   }
   set current(value: T) {
     this._current = value;
-    window.localStorage.setItem(this.storageKey, value.toString());
+    window.localStorage.setItem(this.storageKey, this.processToStorage());
     this.onChange.next(value);
   }
   get current() {
@@ -41,6 +41,14 @@ class ResourceFromStorage<T extends {toString: () => string}> {
 
   }
 
+  processToStorage() {
+    if (this.type !== 'json') {
+      return this._current.toString();
+    } else {
+      return JSON.stringify(this._current);
+    }
+  }
+
   async getLast(): Promise<T | null> {
     return this.current;
   }
@@ -60,8 +68,8 @@ export class ModuleNavService {
   ) { }
 
   updateProgress(module: Module) {
-    const numerator = module.steps.map(s => Number(!!s.is_checked)).reduce((prev, curr) => prev + curr);
-    const denominator = module.steps.length;
+    const numerator = module.steps.filter(s => !s.is_section_break).map(s => Number(!!s.is_checked)).reduce((prev, curr) => prev + curr);
+    const denominator = module.steps.filter(s => !s.is_section_break).length;
     module.percComplete = Math.round(100 * numerator / denominator);
   }
 
@@ -100,6 +108,7 @@ export class ModuleNavService {
         if (step) {
           step.is_checked = is_checked;
         }
+        this.updateProgress(this.module.current);
       });
   }
 }

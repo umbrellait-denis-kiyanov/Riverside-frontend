@@ -16,27 +16,33 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
     fromPreviousStep: [
       {
         title: 'persona_1',
-        name: 'persona_name_1'
+        name: 'persona_name_1',
+        picture: 'persona_picture_1'
       },
       {
         title: 'persona_2',
-        name: 'persona_name_2'
+        name: 'persona_name_2',
+        picture: 'persona_picture_2'
       },
       {
         title: 'persona_3',
-        name: 'persona_name_3'
+        name: 'persona_name_3',
+        picture: 'persona_picture_3'
       },
       {
         title: 'persona_4',
-        name: 'persona_name_4'
+        name: 'persona_name_4',
+        picture: 'persona_picture_4'
       },
       {
         title: 'persona_5',
-        name: 'persona_name_5'
+        name: 'persona_name_5',
+        picture: 'persona_picture_5'
       },
       {
         title: 'persona_6',
-        name: 'persona_name_6'
+        name: 'persona_name_6',
+        picture: 'persona_picture_6'
       }
     ],
     personas: [
@@ -57,16 +63,17 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.contentData = this.data.data.template_params_json as PersonaBehaviorTemplateData['template_params_json'];
+    const defaultContent = { content: this.contentData.formatAsList ? this.defaultListContent : '<p></p>' };
     const sufix = this.contentData.input_sufix || '';
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach((id, i) => {
         if (typeof id === 'string') {
           id = id + '_' + sufix;
           this.inputIds[key][i] = id;
-          this.inputs[id] = this.inputs[id] || '';
+          this.inputs[id] = this.inputs[id] || {...defaultContent};
         } else {
           Object.values(id).forEach((id2: string) => {
-            this.inputs[id2] = this.inputs[id2] || '';
+            this.inputs[id2] = this.inputs[id2] || {...defaultContent};
           });
         }
       });
@@ -74,12 +81,4 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
 
   }
 
-  notEmpty(el: string) {
-    return !!this.textContent(el);
-  }
-
-  textContent(el: string) {
-    const _el: HTMLElement[] = window.$(el);
-    return _el.length ? _el[0].textContent.replace(/\&nbsp;/g, ' ') : '';
-  }
 }

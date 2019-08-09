@@ -16,7 +16,7 @@ a.mceButton16 img.mceIcon { width: 16px; height: 16px; padding: 2px;}
 	text-decoration: line-through;
 }
 .ins {
-	text-decoration: underline;
+	/* text-decoration: underline; */
 }
 
 .cts-1 {

@@ -11,6 +11,7 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   inputs: any;
   disabled: boolean;
   me: User;
+  defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
 
   constructor(
       protected el: ElementRef,
@@ -40,6 +41,8 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
         content: iceElement ? iceElement.innerHTML : '',
         element_key: key,
       };
+      } else if (this.data.data.inputs[key]) {
+        data.inputs[key]  = {...this.data.data.inputs[key], element_key: key};
       }
     });
     return data;
@@ -47,5 +50,14 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
 
   contentChanged() {
     this.moduleContentService.contentChanged.next(this.moduleContentService.contentChanged.getValue() + 1);
+  }
+
+  notEmpty(el: string) {
+    return !!this.textContent(el);
+  }
+
+  textContent(el: string) {
+    const _el: HTMLElement[] = window.$(el);
+    return _el.length ? _el[0].textContent.replace(/\s/g, ' ') : '';
   }
 }

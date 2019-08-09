@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="modal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+  <h3>Select Persona Picture</h3>
+</div>
+
+<div class="modal-body">
+
+  <img *ngFor="let i of list" class="avatar"
+    [src]="i | safeurl"
+   [ngClass]="{'selected': i == selected}" (click)="select(i)">
+
+</div>
+
+<div class="modal-footer">
+  <button
+    mat-button
+    color="accent"
+    (click)="done()"
+  >Select</button>
+
+  <button
+    mat-button
+    (click)="modal.dismiss()"
+  >Cancel</button>
+</div>

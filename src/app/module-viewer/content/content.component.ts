@@ -104,7 +104,6 @@ export class ContentComponent implements OnInit {
       disabled: this.disableInputs
     };
     this.templateData = new TemplateContentData({ data: templateData, me: this.me });
-    this.templateData.hideChanges = !(this.userService.me.roles.riverside_se || this.navService.currentStep.feedback_received);
     this.templateComponentName = template_component as keyof typeof Templates;
 
   }
@@ -127,7 +126,6 @@ export class ContentComponent implements OnInit {
     data.content_json = templateData;
     data.inputs = this.addIdsToInputs(templateData.inputs);
     this.moduleContentService.save(data);
-    window.toastr.success('Saved', '', {timeOut: 1000, positionClass: 'toast-top-right'});
   }
 
   addIdsToInputs(inputs: any) {
