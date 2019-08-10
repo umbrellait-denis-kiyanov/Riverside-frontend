@@ -37,21 +37,21 @@ $maxWidth: 1000px
   span
     font-size: 18px
 
+.fa
+  padding: 0.5em
+  cursor: pointer
+  margin-right: 5px
+  border-radius: 100%
+  font-size: 18px;
+  display: inline-block;
+  max-height: 2em;
+  &:hover
+    background-color: #ecebeb
+.fa-trash
+  color: #b94747
+
 .steps-wrapper
   margin-top: 30px
-
-  .fa
-    padding: 0.5em
-    cursor: pointer
-    margin-right: 5px
-    border-radius: 100%
-    font-size: 18px;
-    display: inline-block;
-    max-height: 2em;
-    &:hover
-      background-color: #ecebeb
-  .fa-trash
-    color: #b94747
 
   input, .input-group
     width: calc(100% - 10px)
@@ -84,6 +84,9 @@ $maxWidth: 1000px
 
   .float-group
     position: fixed
+
+.cdk-drop-list-dragging
+  cursor: grabbing
 
 @media (max-width: $maxWidth)
   .float-btn-group

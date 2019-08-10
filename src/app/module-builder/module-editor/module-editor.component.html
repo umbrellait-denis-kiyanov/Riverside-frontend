@@ -28,10 +28,10 @@
     />
   </div>
 
+  <div cdkDropList (cdkDropListDropped)="onSectionDrop($event)">
+  <div class="steps-wrapper panel panel-default" *ngFor="let section of sections; index as sectionIndex" cdkDrag cdkDragLockAxis="y">
 
-  <div class="steps-wrapper panel panel-default" *ngFor="let section of sections; index as sectionIndex">
-
-    <div class="panel-heading section-title steps-row">
+    <div class="panel-heading section-title steps-row" cdkDragHandle>
       <span
         class="fa fa-trash"
         (click)="onClickRemoveSection(sectionIndex)"
@@ -53,7 +53,8 @@
         <div class="steps-right">Learning Center</div>
       </div>
 
-      <div *ngFor="let step of section.steps; index as s">
+      <div id="drop-{{ sectionIndex }}" cdkDropList [cdkDropListData]="section.steps" (cdkDropListDropped)="onStepDrop($event)" [cdkDropListConnectedTo]="getSortableListIDs()">
+      <div *ngFor="let step of section.steps; index as s" cdkDrag cdkDragLockAxis="y">
         <div class="step steps-row">
           <div class="steps-left">
             <div class="step-input-wrapper step-name">
@@ -123,6 +124,7 @@
 
         <div class="divider"></div>
       </div>
+      </div>
 
       <div class="add-new">
         <button
@@ -131,6 +133,7 @@
         >Add new step</button>
       </div>
     </div>
+  </div>
   </div>
 
   <div class="add-new">

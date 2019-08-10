@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Module, LearningElementTypes, Step, Section, LearningElement } from '../../common/interfaces/module.interface';
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ModuleService } from '../../common/services/module.service';
+import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-module-editor',
@@ -67,6 +68,21 @@ export class ModuleEditorComponent implements OnInit {
     .finally(() => {
       this.saving = false;
     });
+  }
+
+  onSectionDrop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.sections, event.previousIndex, event.currentIndex);
+  }
+
+  onStepDrop(event: CdkDragDrop<string[]>) {
+      transferArrayItem(event.previousContainer.data,
+                        event.container.data,
+                        event.previousIndex,
+                        event.currentIndex);
+  }
+
+  getSortableListIDs(): string[] {
+    return Array.from(this.sections.keys()).map(id => 'drop-' + id);
   }
 
   getSections(moduleData: Module): Section[] {
