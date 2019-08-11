@@ -5,6 +5,7 @@ import { ModuleService } from '../../common/services/module.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepTemplateEditorComponent } from './step-template-editor/step-template-editor.component';
+import { StepLinkEditorComponent } from './step-link-editor/step-link-editor.component';
 
 @Component({
   selector: 'app-module-editor',
@@ -56,7 +57,10 @@ export class ModuleEditorComponent implements OnInit {
   }
 
   onClickLinkStep(sectionIndex: number, index: number) {
-
+    const modalRef = this.modalService.open(StepLinkEditorComponent,
+      { windowClass: 'step-link-editor-modal', backdrop: 'static' });
+    modalRef.componentInstance.step = this.sections[sectionIndex].steps[index];
+    modalRef.componentInstance.module = this.moduleData;
   }
 
   onClickAddSection(sectionIndex: number) {

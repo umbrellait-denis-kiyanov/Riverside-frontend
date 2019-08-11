@@ -9,6 +9,7 @@ export interface Step {
   id?: number;
   module_id?: number;
   template_id?: number;
+  linked_ids?: number[];
   description: string;
   is_checked?: boolean;
   waiting_for_feedback?: boolean;

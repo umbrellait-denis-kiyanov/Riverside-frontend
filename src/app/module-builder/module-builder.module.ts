@@ -18,6 +18,7 @@ import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbo
 import { E3CommonModule } from '../common/e3-common.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
 import { StepTemplateEditorComponent } from './module-editor/step-template-editor/step-template-editor.component';
+import { StepLinkEditorComponent } from './module-editor/step-link-editor/step-link-editor.component';
 
 @NgModule({
   imports: [
@@ -38,12 +39,14 @@ import { StepTemplateEditorComponent } from './module-editor/step-template-edito
     MatcherComponent,
     ModuleSelectorComponent,
     StepTemplateEditorComponent,
+    StepLinkEditorComponent,
     // E3CheckboxComponent
 
   ],
   entryComponents: [
     ModuleBuilderRootComponent,
-    StepTemplateEditorComponent
+    StepTemplateEditorComponent,
+    StepLinkEditorComponent
   ],
   providers: [
     ModuleService,
