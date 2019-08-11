@@ -32,8 +32,15 @@
   <div class="steps-wrapper panel panel-default" *ngFor="let section of sections; index as sectionIndex" cdkDrag cdkDragLockAxis="y">
 
     <div class="panel-heading section-title steps-row" cdkDragHandle>
+
       <span
-        class="fa fa-trash"
+        class="fa fa-file-text-o"
+        (click)="onClickEditSectionTemplate(sectionIndex)"
+        title="Configure section template"
+      ></span>
+
+      <span
+        class="fa fa-trash-o"
         (click)="onClickRemoveSection(sectionIndex)"
       ></span>
 
@@ -72,7 +79,7 @@
               ></span>
 
               <span
-                class="fa fa-trash"
+                class="fa fa-trash-o"
                 (click)="onClickRemoveStep(sectionIndex, s)"
                 title="Delete step"
               ></span>
