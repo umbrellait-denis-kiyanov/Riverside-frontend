@@ -18,6 +18,12 @@ export class ModuleEditorComponent implements OnInit {
   elementTypes = LearningElementTypes;
   ready = false;
   saving = false;
+  lastSavedModule: string;
+
+  hasChanges = () => {
+    this.moduleData.steps = this.generateStepsData();
+    return this.lastSavedModule !== JSON.stringify(this.moduleData);
+  }
 
   constructor(
     private route: ActivatedRoute,
@@ -31,6 +37,7 @@ export class ModuleEditorComponent implements OnInit {
         this.moduleData = moduleData;
         this.sections = this.getSections(moduleData);
         this.ready = true;
+        this.setPristineState();
       }));
     });
   }
@@ -93,6 +100,7 @@ export class ModuleEditorComponent implements OnInit {
     this.moduleService.saveModule(this.moduleData)
     .finally(() => {
       this.saving = false;
+      this.setPristineState();
     });
   }
 
@@ -126,12 +134,16 @@ export class ModuleEditorComponent implements OnInit {
 
   generateStepsData(): Step[] {
     return this.sections.reduce((steps, section: Section) => {
-        steps.push(section.section);
+      steps.push(section.section);
 
-        section.steps.forEach(step => steps.push(step));
+      section.steps.forEach(step => steps.push(step));
 
-        return steps;
-      }, []);
+      return steps;
+    }, []);
+  }
+
+  setPristineState() {
+    this.lastSavedModule = JSON.stringify(this.moduleData);
   }
 
   private newStep(): Step {
