@@ -55,7 +55,7 @@ export const menus: MenusInterface = [
     render: () => review_svg,
     restrict: ({nav}) => !!nav.module.current,
     className: 'material-icons-outlined',
-    labelFn: ({nav}) => nav.module.current.name.toUpperCase(),
+    labelFn: ({nav}) => (nav.module.current || {name: ''}).name.toUpperCase(),
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
       const stepId = module.steps[module.steps.length - 1].id;

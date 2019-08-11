@@ -3,6 +3,8 @@ import { Module, LearningElementTypes, Step, Section, LearningElement } from '..
 import { ActivatedRoute, ParamMap } from '@angular/router';
 import { ModuleService } from '../../common/services/module.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { StepTemplateEditorComponent } from './step-template-editor/step-template-editor.component';
 
 @Component({
   selector: 'app-module-editor',
@@ -18,7 +20,8 @@ export class ModuleEditorComponent implements OnInit {
 
   constructor(
     private route: ActivatedRoute,
-    private moduleService: ModuleService
+    private moduleService: ModuleService,
+    private modalService: NgbModal,
   ) { }
 
   ngOnInit() {
@@ -40,6 +43,15 @@ export class ModuleEditorComponent implements OnInit {
     this.sections[sectionIndex].steps.splice(index, 1);
   }
 
+  onClickEditStepTemplate(sectionIndex: number, index: number) {
+    const modalRef = this.modalService.open(StepTemplateEditorComponent, { windowClass: 'step-template-editor-modal', backdrop: 'static' });
+    modalRef.componentInstance.step = this.sections[sectionIndex].steps[index];
+  }
+
+  onClickLinkStep(sectionIndex: number, index: number) {
+
+  }
+
   onClickAddSection(sectionIndex: number) {
     const newSection = { section: this.newStep(), steps: [] };
     newSection.section.is_section_break = true;
@@ -53,6 +65,9 @@ export class ModuleEditorComponent implements OnInit {
   }
 
   onClickAddElement(step: Step) {
+    if (!step.elements) {
+      step.elements = [];
+    }
     step.elements.push(this.newElement());
   }
 
@@ -114,6 +129,7 @@ export class ModuleEditorComponent implements OnInit {
       elements: [],
       is_section_break: false,
       id: 0,
+      module_id: this.moduleData.id,
       require_feedback: false,
       template_params_json: '',
       template_component: ''

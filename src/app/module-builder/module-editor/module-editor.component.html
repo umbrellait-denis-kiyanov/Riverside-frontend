@@ -54,13 +54,27 @@
       </div>
 
       <div id="drop-{{ sectionIndex }}" cdkDropList [cdkDropListData]="section.steps" (cdkDropListDropped)="onStepDrop($event)" [cdkDropListConnectedTo]="getSortableListIDs()">
-      <div *ngFor="let step of section.steps; index as s" cdkDrag cdkDragLockAxis="y">
+      <div *ngFor="let step of section.steps; index as s" cdkDrag cdkDragLockAxis="y" class="steps-item">
         <div class="step steps-row">
           <div class="steps-left">
             <div class="step-input-wrapper step-name">
+
+              <span
+                class="fa fa-file-text-o"
+                (click)="onClickEditStepTemplate(sectionIndex, s)"
+                title="Configure step template"
+              ></span>
+
+              <span
+                class="fa fa-link"
+                (click)="onClickLinkStep(sectionIndex, s)"
+                title="Link to another step"
+              ></span>
+
               <span
                 class="fa fa-trash"
                 (click)="onClickRemoveStep(sectionIndex, s)"
+                title="Delete step"
               ></span>
 
               <input

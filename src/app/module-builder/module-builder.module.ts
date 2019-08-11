@@ -17,6 +17,7 @@ import { Template1Component } from '../module-viewer/riverside-step-template/tem
 import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbox.component';
 import { E3CommonModule } from '../common/e3-common.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
+import { StepTemplateEditorComponent } from './module-editor/step-template-editor/step-template-editor.component';
 
 @NgModule({
   imports: [
@@ -36,11 +37,13 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
     MainComponent,
     MatcherComponent,
     ModuleSelectorComponent,
+    StepTemplateEditorComponent,
     // E3CheckboxComponent
 
   ],
   entryComponents: [
-    ModuleBuilderRootComponent
+    ModuleBuilderRootComponent,
+    StepTemplateEditorComponent
   ],
   providers: [
     ModuleService,

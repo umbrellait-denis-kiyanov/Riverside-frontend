@@ -7,6 +7,8 @@ export interface Module {
 }
 export interface Step {
   id?: number;
+  module_id?: number;
+  template_id?: number;
   description: string;
   is_checked?: boolean;
   waiting_for_feedback?: boolean;

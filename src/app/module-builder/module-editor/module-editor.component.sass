@@ -30,6 +30,7 @@ $maxWidth: 1000px
     font-size: 22px
 
 .section-title
+  cursor: grab
   input
     color: black
 
@@ -40,6 +41,7 @@ $maxWidth: 1000px
 .fa
   padding: 0.5em
   cursor: pointer
+  color: #3d67c8
   margin-right: 5px
   border-radius: 100%
   font-size: 18px;
@@ -47,8 +49,8 @@ $maxWidth: 1000px
   max-height: 2em;
   &:hover
     background-color: #ecebeb
-.fa-trash
-  color: #b94747
+  &.fa-trash
+    color: #b94747
 
 .steps-wrapper
   margin-top: 30px
@@ -63,6 +65,9 @@ $maxWidth: 1000px
 
 .steps-header
   font-size: 20px
+
+.steps-item
+  cursor: grab
 
 .steps-row
   display: flex
@@ -122,3 +127,9 @@ $maxWidth: 1000px
 
 .step-name
   margin-bottom: 2px
+
+::ng-deep .modal-header .close
+  margin-top: -2px;
+  position: absolute;
+  right: 1em;
+  top: 1em;

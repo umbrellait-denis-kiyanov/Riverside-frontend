@@ -1,0 +1,33 @@
+<div class="modal-header">
+  <h4 class="modal-title">Configure Step Template</h4>
+  <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body" *ngIf="step">
+  <div class="form-group">
+    <label>Template</label>
+    <select
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="stepEdit.template_id"
+      class="site-tbox"
+      required="required"
+    >
+      <option *ngFor="let template of (templates$ | async)" [ngValue]="template.id">{{ template.description }}</option>
+    </select>
+  </div>
+
+  <div class="form-group">
+    <label>Template Configuration</label>
+    <textarea
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="stepEdit.template_params_json"
+      class="site-tbox"
+    ></textarea>
+  </div>
+</div>
+
+<div class="modal-footer">
+  <button type="button" class="btn btn-outline-secondary" (click)="modal.dismiss()">Cancel</button>
+  <button type="button" class="btn btn-primary" (click)="save()">Ok</button>
+</div>
