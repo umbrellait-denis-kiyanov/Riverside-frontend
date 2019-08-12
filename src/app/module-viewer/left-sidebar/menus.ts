@@ -20,9 +20,9 @@ const hardCodePictures = (user: User) => {
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dan+-+Riverside.jpg';
     case 'dave@alice.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dave+-+Alice.png';
-    case 'don.flake@english3':
+    case 'don.flake@english3.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/donflake.jpg';
-    case 'moroni.flake@english3':
+    case 'moroni.flake@english3.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/moroniflake.jpg';
     default:
     return '';
