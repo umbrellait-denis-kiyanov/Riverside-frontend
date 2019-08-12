@@ -12,14 +12,28 @@ interface MenuItemType {
   restrict?(params: Partial<RestrictOptions>): boolean;
 }
 type MenusInterface = MenuItemType[];
+
+// For SUPER temporary use
+const hardCodePictures = (user: User) => {
+  switch (user.email) {
+    case 'dan@riverside.com':
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dan+-+Riverside.jpg';
+    case 'dave@alice.com':
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dave+-+Alice.png';
+    case 'don.flake@english3':
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/donflake.jpg';
+    case 'moroni.flake@english3':
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/moroniflake.jpg';
+    default:
+    return '';
+  }
+};
+
 export const menus: MenusInterface = [
   {
     render(user: User) {
       return `<img
-        src=${user.email === 'dan@riverside.com' ?
-          'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dan+-+Riverside.jpg' :
-          'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dave+-+Alice.png'
-        }
+        src=${hardCodePictures(user)}
         style="width: 35px; height: 35px; border-radius: 35px">`;
     },
     label: 'ACCOUNT',
