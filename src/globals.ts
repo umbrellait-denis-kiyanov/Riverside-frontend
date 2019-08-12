@@ -6,5 +6,6 @@ declare global {
     moment: any;
     ice: any;
     $: any;
+    tracker: any;
   }
 }
