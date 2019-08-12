@@ -227,7 +227,7 @@ export class IceComponent implements OnInit {
     // this.tracker.insert();
 
     // this.setEndOfContenteditable(element);
-    // this.changed.emit(e);
+    this.changed.emit(e);
 
   }
 
