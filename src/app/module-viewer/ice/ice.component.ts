@@ -217,10 +217,31 @@ export class IceComponent implements OnInit {
   @HostListener('keyup', ['$event'])
   keyEvent(e: KeyboardEvent) {
     if ((e.which < 48 && e.which !== 32 && e.which !== 8) || e.which > 90) {
-      console.log(event, 'Dont save');
       return false;
     }
+    // const { element } = this.tracker;
+    // const range = this.tracker.getCurrentRange();
+    // element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
+    // this.tracker._moveRangeToValidTrackingPos(range);
+
+    // this.tracker.insert();
+
+    // this.setEndOfContenteditable(element);
     this.changed.emit(e);
+
+  }
+
+  setEndOfContenteditable(contentEditableElement) {
+    let range: any;
+    let selection: any;
+    if (document.createRange) {
+      range = document.createRange(); // Create a range (a range is a like the selection but invisible)
+      range.selectNodeContents(contentEditableElement); // Select the entire contents of the element with the range
+      range.collapse(false); // collapse the range to the end point. false means collapse to end rather than the start
+      selection = window.getSelection(); // get the selection object (allows you to change selection)
+      selection.removeAllRanges(); // remove any selections already made
+      selection.addRange(range); // make the range you have just created the visible selection
+    }
   }
 
   @HostListener('paste', ['$event'])

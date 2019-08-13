@@ -83,7 +83,7 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
   }
 
   openModal(id: string) {
-    const modalRef = this.modalService.open(PersonaPictureListComponent);
+    const modalRef = this.modalService.open(PersonaPictureListComponent, {windowClass: 'picture-modal'});
 
     modalRef.result.then((src: string) => {
       this.inputs[id].content = src;
