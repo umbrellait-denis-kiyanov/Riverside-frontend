@@ -44,8 +44,8 @@ export class ModuleService {
     return this.modules;
   }
 
-  getTemplates(moduleId: number): Observable<object> {
-    return this.httpClient.get(`${this.baseUrl}/${moduleId}/templates`);
+  getTemplates(moduleId: number) {
+    return this.httpClient.get(`${this.baseUrl}/${moduleId}/templates`).toPromise();
   }
 
   async saveModule(module: Module): Promise<object> {

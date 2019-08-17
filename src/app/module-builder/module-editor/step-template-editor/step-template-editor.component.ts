@@ -15,19 +15,43 @@ export class StepTemplateEditorComponent implements OnInit {
 
   stepEdit: Step;
 
-  templates$: Observable<object>;
+  templates: any;
+
+  templateFields: any;
+
+  templateConfig: any;
 
   constructor(public modal: NgbActiveModal,
               private moduleService: ModuleService) {}
 
-  ngOnInit() {
+  async ngOnInit() {
     this.stepEdit = JSON.parse(JSON.stringify(this.step));
-    this.templates$ = this.moduleService.getTemplates(this.step.module_id);
+    this.templates = await this.moduleService.getTemplates(this.step.module_id);
+    this.onTemplateChange();
   }
 
   save() {
     this.step.template_id = this.stepEdit.template_id;
     this.step.template_params_json = this.stepEdit.template_params_json;
     this.modal.close();
+  }
+
+  onTemplateChange() {
+    const fields = this.templates.
+      filter(template => template.id === this.stepEdit.template_id).shift().params_json.
+      replace(/\s/g, '').
+      split(';').join(',').
+      split('Array<').join('[').
+      split('>').join(']').
+      replace(/([_a-zA-Z0-9]+)/g, '"$1"').
+      split(',}').join('}').
+      split('{').join('[').
+      split('}').join(']').
+      split(',').join('],[').
+      split(':').join(',').
+      split('?').join('')
+      ;
+
+    this.templateFields = JSON.parse('[' + fields + ']');
   }
 }
