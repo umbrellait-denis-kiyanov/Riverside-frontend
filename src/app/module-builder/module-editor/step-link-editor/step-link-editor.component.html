@@ -5,13 +5,15 @@
   </button>
 </div>
 <div class="modal-body" *ngIf="step">
-  <div class="form-group" [ngClass]="{section: step.is_section_break}" *ngFor="let step of allSteps">
+  <div class="form-group" [ngClass]="{section: linkedStep.is_section_break}" *ngFor="let linkedStep of module.steps">
     <label>
       <input type="checkbox"
         [ngModelOptions]="{standalone: true}"
-        [(ngModel)]="linked_ids[step.id]">
+        [(ngModel)]="linked_ids[linkedStep.id]"
+        [disabled]="step.id == linkedStep.id"
+      >
 
-      {{ step.description }}
+      {{ linkedStep.description }}
     </label>
   </div>
 

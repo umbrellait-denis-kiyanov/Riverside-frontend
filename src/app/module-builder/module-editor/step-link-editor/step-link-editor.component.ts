@@ -14,8 +14,6 @@ export class StepLinkEditorComponent implements OnInit {
 
   linked_ids = {};
 
-  allSteps: Step[] = [];
-
   constructor(public modal: NgbActiveModal) {}
 
   ngOnInit() {
@@ -23,8 +21,6 @@ export class StepLinkEditorComponent implements OnInit {
       ids[id] = true;
       return ids;
     }, {});
-
-    this.allSteps = this.module.steps.filter(step => step.id !== this.step.id);
   }
 
   save() {

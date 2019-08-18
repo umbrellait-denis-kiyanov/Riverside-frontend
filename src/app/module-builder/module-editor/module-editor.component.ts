@@ -66,7 +66,13 @@ export class ModuleEditorComponent implements OnInit {
   onClickLinkStep(sectionIndex: number, index: number) {
     const modalRef = this.modalService.open(StepLinkEditorComponent,
       { windowClass: 'step-link-editor-modal', backdrop: 'static' });
-    modalRef.componentInstance.step = this.sections[sectionIndex].steps[index];
+
+    if (index === undefined) {
+      modalRef.componentInstance.step = this.sections[sectionIndex].section;
+    } else {
+      modalRef.componentInstance.step = this.sections[sectionIndex].steps[index];
+    }
+
     modalRef.componentInstance.module = this.moduleData;
   }
 
