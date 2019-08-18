@@ -64,6 +64,10 @@ export class StepTemplateFieldComponent implements OnInit {
   valueChange() {
     const json = JSON.parse(this.json);
 
+    if ('input_sufix' === this.name) {
+      this.value = this.value.replace(/[\W]+/g, '');
+    }
+
     if (this.section) {
       if (!json[this.section]) {
         json[this.section] = [];
