@@ -17,6 +17,7 @@ type MenusInterface = MenuItemType[];
 const hardCodePictures = (user: User) => {
   switch (user.email) {
     case 'dan@riverside.com':
+    case 'dperry@riversidecompany.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dan+-+Riverside.jpg';
     case 'dave@alice.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dave+-+Alice.png';
@@ -24,8 +25,9 @@ const hardCodePictures = (user: User) => {
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/donflake.jpg';
     case 'moroni.flake@english3.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/moroniflake.jpg';
+    case 'facilitator@riversidecompany.com':
     default:
-    return '';
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
   }
 };
 
