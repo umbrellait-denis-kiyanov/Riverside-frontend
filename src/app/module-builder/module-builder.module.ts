@@ -16,7 +16,10 @@ import { RiversideStepTemplateComponent } from '../module-viewer/riverside-step-
 import { Template1Component } from '../module-viewer/riverside-step-template/templates/template1/template1.component';
 import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbox.component';
 import { E3CommonModule } from '../common/e3-common.module';
-
+import { DragDropModule } from '@angular/cdk/drag-drop';
+import { StepTemplateEditorComponent } from './module-editor/step-template-editor/step-template-editor.component';
+import { StepLinkEditorComponent } from './module-editor/step-link-editor/step-link-editor.component';
+import { StepTemplateFieldComponent } from './module-editor/step-template-editor/step-template-field/step-template-field.component';
 
 @NgModule({
   imports: [
@@ -27,7 +30,8 @@ import { E3CommonModule } from '../common/e3-common.module';
     HttpClientModule,
     RouterModule,
     AppRoutingModule,
-    E3CommonModule
+    E3CommonModule,
+    DragDropModule
   ],
   declarations: [
     ModuleBuilderRootComponent,
@@ -35,11 +39,17 @@ import { E3CommonModule } from '../common/e3-common.module';
     MainComponent,
     MatcherComponent,
     ModuleSelectorComponent,
+    StepTemplateEditorComponent,
+    StepLinkEditorComponent,
+    StepTemplateFieldComponent,
     // E3CheckboxComponent
 
   ],
   entryComponents: [
-    ModuleBuilderRootComponent
+    ModuleBuilderRootComponent,
+    StepTemplateEditorComponent,
+    StepLinkEditorComponent,
+    StepTemplateFieldComponent
   ],
   providers: [
     ModuleService,

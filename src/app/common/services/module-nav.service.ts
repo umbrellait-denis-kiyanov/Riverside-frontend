@@ -32,7 +32,11 @@ class ResourceFromStorage<T extends {toString: () => string}> {
 
   processFromStorage(fromStorage: string) {
     if (this.type === 'json') {
-      return JSON.parse(fromStorage);
+      try {
+        return JSON.parse(fromStorage);
+      } catch (e) {
+        return null;
+      }
     }
     if (this.type === 'number') {
       return Number(fromStorage);

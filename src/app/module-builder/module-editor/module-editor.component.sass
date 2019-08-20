@@ -29,24 +29,56 @@ $maxWidth: 1000px
   span
     font-size: 22px
 
+.section-title
+  cursor: grab
+
+  input
+    color: black
+
+  .fa
+    color: white
+    margin-top: 1em;
+    &.fa-trash-o
+      color: #ff4747
+
 .google-doc-url
   span
     font-size: 18px
 
+.fa
+  padding: 0.5em
+  cursor: pointer
+  color: #3d67c8
+  margin-right: 5px
+  border-radius: 100%
+  font-size: 18px;
+  display: inline-block;
+  max-height: 2em;
+  &:hover
+    background-color: #ecebeb
+  &.fa-trash-o
+    color: #b94747
+
 .steps-wrapper
   margin-top: 30px
 
-.steps-header
-  font-size: 20px
-
-.steps-row
-  display: flex
-  margin-bottom: 10px
   input, .input-group
     width: calc(100% - 10px)
     flex-grow: 1
     margin: 2px auto
+    display: inline-block
+    vertical-align: middle;
 
+
+.steps-header
+  font-size: 20px
+
+.steps-item
+  cursor: grab
+
+.steps-row
+  display: flex
+  margin-bottom: 10px
 
 .steps-left, .steps-right
   width: 50%
@@ -56,17 +88,6 @@ $maxWidth: 1000px
 .step-input-wrapper
   display: flex
   align-items: center
-  .fa
-    padding: 9px
-    cursor: pointer
-    margin-right: 5px
-    border-radius: 19px
-    min-width: 29px;
-    &:hover
-      background-color: #ecebeb
-  .fa-trash
-    color: #b94747
-
 
 .float-btn-group-wrapper
   position: absolute
@@ -75,6 +96,9 @@ $maxWidth: 1000px
 
   .float-group
     position: fixed
+
+.cdk-drop-list-dragging
+  cursor: grabbing
 
 @media (max-width: $maxWidth)
   .float-btn-group
@@ -110,3 +134,9 @@ $maxWidth: 1000px
 
 .step-name
   margin-bottom: 2px
+
+::ng-deep .modal-header .close
+  margin-top: -2px;
+  position: absolute;
+  right: 1em;
+  top: 1em;

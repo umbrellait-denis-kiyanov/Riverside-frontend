@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Module } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
 
 export interface LoadModuleParams {
   orgId?: string;
@@ -41,6 +42,10 @@ export class ModuleService {
       return res;
     });
     return this.modules;
+  }
+
+  getTemplates(moduleId: number) {
+    return this.httpClient.get(`${this.baseUrl}/${moduleId}/templates`).toPromise();
   }
 
   async saveModule(module: Module): Promise<object> {

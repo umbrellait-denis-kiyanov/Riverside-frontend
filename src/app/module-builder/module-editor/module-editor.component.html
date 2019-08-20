@@ -28,94 +28,146 @@
     />
   </div>
 
+  <div cdkDropList (cdkDropListDropped)="onSectionDrop($event)">
+  <div class="steps-wrapper panel panel-default" *ngFor="let section of sections; index as sectionIndex" cdkDrag cdkDragLockAxis="y">
 
-  <div class="steps-wrapper">
-    <div class="steps-header steps-row">
-      <div class="steps-left">Steps</div>
+    <div class="panel-heading section-title steps-row" cdkDragHandle>
 
-      <div class="steps-right">Learning Center</div>
+      <span
+        class="fa fa-file-text-o"
+        (click)="onClickEditSectionTemplate(sectionIndex)"
+        title="Configure section template"
+      ></span>
+
+      <span
+        class="fa fa-link"
+        (click)="onClickLinkStep(sectionIndex)"
+        title="Link to another step"
+      ></span>
+
+      <span
+        class="fa fa-trash-o"
+        (click)="onClickRemoveSection(sectionIndex)"
+      ></span>
+
+      <input
+        class="site-tbox"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="section.section.description"
+        placeholder="Section Description"
+      />
     </div>
 
-    <div *ngFor="let step of moduleData.steps; let s = index">
-      <div class="step steps-row">
-        <div class="steps-left">
-          <div class="step-input-wrapper step-name">
-            <span
-              class="fa fa-trash"
-              (click)="onClickRemoveStep(s)"
-            ></span>
+    <div class="panel-body">
 
-            <input
-              class="site-tbox"
-              [ngModelOptions]="{standalone: true}"
-              [(ngModel)]="step.description"
-              placeholder="Step Description"
-            />
-          </div>
-          <div>
-              <e3-checkbox [(checked)]="step.is_section_break"></e3-checkbox>
-              <span>Section Break</span>
-          </div>
-        </div>
+      <div class="steps-header steps-row">
+        <div class="steps-left">Steps</div>
 
-        <div class="steps-right">
-
-          <div
-            class="step-input-wrapper"
-            *ngFor="let element of step.elements; let i = index"
-          >
-            <div class="input-group input-group-md">
-              <span class="input-group-addon">
-                <select
-                  [ngModelOptions]="{standalone: true}"
-                  [(ngModel)]="element.type"
-                >
-                  <option
-                    *ngFor="let t of elementTypes"
-                    [value]="t"
-                  >{{t}}</option>
-                </select>
-              </span>
-
-              <input
-                [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="element.data"
-                placeholder="Learning Resource"
-                class="site-tbox"
-                required="required"
-              />
-              <input
-                [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="element.tooltip"
-                placeholder="Add tooltip text (optional)"
-                class="site-tbox"
-                required="required"
-              />
-            </div>
-
-            <span
-              class="fa fa-trash"
-              (click)="onClickRemoveElement(step,i)"
-            ></span>
-          </div>
-
-          <div
-            class="btn-flat btn-flat-primary"
-            (click)="onClickAddElement(step)"
-          >
-            Add Element: (text) (youtube video) (graphic file) (pdf)
-          </div>
-        </div>
+        <div class="steps-right">Learning Center</div>
       </div>
 
-      <div class="divider"></div>
-    </div>
+      <div id="drop-{{ sectionIndex }}" cdkDropList [cdkDropListData]="section.steps" (cdkDropListDropped)="onStepDrop($event)" [cdkDropListConnectedTo]="getSortableListIDs()">
+      <div *ngFor="let step of section.steps; index as s" cdkDrag cdkDragLockAxis="y" class="steps-item">
+        <div class="step steps-row">
+          <div class="steps-left">
+            <div class="step-input-wrapper step-name">
 
-    <div class="add-new">
-      <button
-        class="btn btn-primary btn-lg"
-        (click)="onClickAddStep()"
-      >Add new step</button>
+              <span
+                class="fa fa-file-text-o"
+                (click)="onClickEditStepTemplate(sectionIndex, s)"
+                title="Configure step template"
+              ></span>
+
+              <span
+                class="fa fa-link"
+                (click)="onClickLinkStep(sectionIndex, s)"
+                title="Link to another step"
+              ></span>
+
+              <span
+                class="fa fa-trash-o"
+                (click)="onClickRemoveStep(sectionIndex, s)"
+                title="Delete step"
+              ></span>
+
+              <input
+                class="site-tbox"
+                [ngModelOptions]="{standalone: true}"
+                [(ngModel)]="step.description"
+                placeholder="Step Description"
+              />
+            </div>
+          </div>
+
+          <div class="steps-right">
+
+            <div
+              class="step-input-wrapper"
+              *ngFor="let element of step.elements; let i = index"
+            >
+              <div class="input-group input-group-md">
+                <span class="input-group-addon">
+                  <select
+                    [ngModelOptions]="{standalone: true}"
+                    [(ngModel)]="element.type"
+                  >
+                    <option
+                      *ngFor="let t of elementTypes"
+                      [value]="t"
+                    >{{t}}</option>
+                  </select>
+                </span>
+
+                <input
+                  [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="element.data"
+                  placeholder="Learning Resource"
+                  class="site-tbox"
+                  required="required"
+                />
+                <input
+                  [ngModelOptions]="{standalone: true}"
+                  [(ngModel)]="element.tooltip"
+                  placeholder="Add tooltip text (optional)"
+                  class="site-tbox"
+                  required="required"
+                />
+              </div>
+
+              <span
+                class="fa fa-trash"
+                (click)="onClickRemoveElement(step,i)"
+              ></span>
+            </div>
+
+            <div
+              class="btn-flat btn-flat-primary"
+              (click)="onClickAddElement(step)"
+            >
+              Add Element: (text) (youtube video) (graphic file) (pdf)
+            </div>
+          </div>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+      </div>
+
+      <div class="add-new">
+        <button
+          class="btn btn-primary btn-lg"
+          (click)="onClickAddStep(sectionIndex)"
+        >Add new step</button>
+      </div>
     </div>
   </div>
+  </div>
+
+  <div class="add-new">
+    <button
+      class="btn btn-primary btn-lg"
+      (click)="onClickAddSection()"
+    >Add new section</button>
+  </div>
+
 </ng-container>

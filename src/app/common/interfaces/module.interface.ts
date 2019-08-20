@@ -7,6 +7,9 @@ export interface Module {
 }
 export interface Step {
   id?: number;
+  module_id?: number;
+  template_id?: number;
+  linked_ids?: number[];
   description: string;
   is_checked?: boolean;
   waiting_for_feedback?: boolean;
@@ -14,7 +17,13 @@ export interface Step {
   is_section_break?: boolean;
   require_feedback?: boolean;
   template_component?: string;
+  template_params_json: string;
   elements: LearningElement[];
+}
+
+export interface Section {
+  section: Step,
+  steps: Step[];
 }
 
 function literalArray<T extends string>(array: T[]): T[] {
