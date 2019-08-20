@@ -17,12 +17,18 @@
   class="template-example"
   *ngIf="contentData.example"
 >
-  <div class="row">
-    <div class="col-lg-6 col-sm-12" style="font-size: large;">
-        <div class="template-example-text" [innerHtml]="contentData.example.text | safehtml"></div>
+  <div class="row resource-row">
+    <div class="col-lg-6 col-sm-12" style="font-size: large;" *ngIf="contentData.example.text">
+        <div class="template-example-text"
+             [innerHtml]="contentData.example.text | safehtml"
+
+        ></div>
     </div>
-    <div class="col-lg-6 col-sm-12">
-        <div class="template-example-resource" [innerHtml]="contentData.example.resource | safehtml"></div>
+    <div class="col-lg-6 col-sm-12" *ngIf="contentData.example.resource">
+        <div class="template-example-resource"
+             [innerHtml]="contentData.example.resource | safehtml"
+
+        ></div>
 
       <!-- <iframe style="margin: auto;" allow="autoplay; fullscreen" allowfullscreen="" frameborder="0" height="202" src="https://player.vimeo.com/video/350492014" width="360"></iframe></div> -->
     </div>
@@ -63,4 +69,4 @@
   </div>
 </div>
 
-<module-nav></module-nav>
+<module-nav [action]="action"></module-nav>

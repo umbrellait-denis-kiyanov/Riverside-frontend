@@ -16,30 +16,34 @@
 <div class="template-description">
   <p>In the previous step, you narrowed the personas down these 4 to 6 titles</p>
 </div>
-<div class="inputs-wrapper">
-  <ice
-  *ngFor="let inputId of inputIds.fromPreviousStep"
-  id="{{inputId}}"
-  [hideChanges]="hideChanges"
-  [user]="me"
-  [disabled]="true"
-  (changed)="contentChanged()"
-  [(data)]="inputs[inputId]"
-></ice>
-</div>
 <div class="template-description">
   <p>Based on the instructions in the video above, give each persona a name.</p>
 </div>
 <div class="inputs-wrapper">
+  <div class="inputs-wrapper-column">
     <ice
-    *ngFor="let inputId of inputIds.personas"
+    *ngFor="let inputId of inputIds.fromPreviousStep"
     id="{{inputId}}"
     [hideChanges]="hideChanges"
     [user]="me"
-    [disabled]="disabled"
+    [disabled]="true"
     (changed)="contentChanged()"
     [(data)]="inputs[inputId]"
   ></ice>
+  </div>
+
+  <div class="inputs-wrapper-column">
+      <ice
+      *ngFor="let inputId of inputIds.personas"
+      id="{{inputId}}"
+      [hideChanges]="hideChanges"
+      [user]="me"
+      [disabled]="disabled"
+      (changed)="contentChanged()"
+      [(data)]="inputs[inputId]"
+    ></ice>
+  </div>
 </div>
+
 
 <module-nav></module-nav>

@@ -12,6 +12,7 @@ export interface Step {
   linked_ids?: number[];
   description: string;
   is_checked?: boolean;
+  is_approved?: boolean;
   waiting_for_feedback?: boolean;
   feedback_received?: boolean;
   is_section_break?: boolean;
@@ -22,7 +23,7 @@ export interface Step {
 }
 
 export interface Section {
-  section: Step,
+  section: Step;
   steps: Step[];
 }
 

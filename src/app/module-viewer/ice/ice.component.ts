@@ -39,7 +39,7 @@ export class IceComponent implements OnInit {
 
   tracker: any;
   overlayRef: OverlayRef | null;
-  sub: Subscription | null;
+  subs: Array<Subscription | null> = [];
   comment: { [key: string]: any, index: false | number } = {
     adding: false,
     content: '',
@@ -88,8 +88,11 @@ export class IceComponent implements OnInit {
       if (this.disabled) {
         this.tracker.element.contentEditable = 'false';
       }
-
+      this.iceService.onApprove.subscribe(() => {
+        this.tracker.acceptAll();
+      });
     });
+
   }
 
   addComment($event: MouseEvent) {
@@ -166,7 +169,7 @@ export class IceComponent implements OnInit {
       $implicit: this.comment
     }));
 
-    this.sub = fromEvent<MouseEvent>(document, 'click')
+    this.subs.push(fromEvent<MouseEvent>(document, 'click')
       .pipe(
         filter(event => {
           const clickTarget = event.target as HTMLElement;
@@ -174,16 +177,29 @@ export class IceComponent implements OnInit {
             !(
               this.overlayRef.overlayElement.contains(clickTarget) ||
               clickTarget.classList.contains('cdk-overlay-transparent-backdrop') ||
-              clickTarget.id === 'addComment'
+              clickTarget.id === 'addComment' ||
+              (this.el.nativeElement as HTMLElement).contains(clickTarget)
             );
         }),
         take(1)
-      ).subscribe(() => this.closeComment());
+      ).subscribe(() => this.closeComment())
+    );
+
+    this.subs.push(fromEvent<MouseEvent>(this.overlayRef.overlayElement, 'mouseleave')
+      .pipe(
+        filter(e => {
+          const target = e.toElement || e.relatedTarget as HTMLElement;
+          return !!this.overlayRef &&
+            !this.overlayRef.overlayElement.contains(target);
+        }),
+        take(1)
+      ).subscribe(() => this.closeComment())
+    );
     this.comment.show = true;
   }
 
   closeComment() {
-    this.sub && this.sub.unsubscribe();
+    this.subs && this.subs.forEach(sub => sub.unsubscribe());
     this.comment.show = false;
     if (this.overlayRef) {
       this.overlayRef.dispose();
@@ -191,9 +207,12 @@ export class IceComponent implements OnInit {
     }
   }
 
-  @HostListener('mouseleave')
-  onMouseLeave() {
-    this.comment.show = false;
+  @HostListener('mouseleave', ['$event'])
+  onMouseLeave(e) {
+    if (this.overlayRef && !this.overlayRef.overlayElement.contains(e.toElement || e.relatedTarget)) {
+      this.closeComment();
+    }
+
   }
 
   editClicked(event: MouseEvent) {

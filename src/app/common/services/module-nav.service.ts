@@ -1,6 +1,6 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import { Module } from '../interfaces/module.interface';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
@@ -61,6 +61,7 @@ class ResourceFromStorage<T extends {toString: () => string}> {
 export class ModuleNavService {
   module = new ResourceFromStorage<Module>('last_module');
   stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
+  onApprove = new EventEmitter<boolean>(false);
 
   get currentStep() {
     return this.module.current.steps[this.stepIndex.current];
@@ -68,6 +69,7 @@ export class ModuleNavService {
 
   constructor(
     private router: Router,
+    private route: ActivatedRoute,
     private http: HttpClient
   ) { }
 
@@ -81,6 +83,11 @@ export class ModuleNavService {
     this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
     return this.stepIndex.current;
   }
+
+  // setStepFromUrl() {
+  //   this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
+  //   return this.stepIndex.current;
+  // }
 
   nextStep() {
     this.moveToStep(1);
@@ -115,4 +122,19 @@ export class ModuleNavService {
         this.updateProgress(this.module.current);
       });
   }
+
+  async markAsApproved(stepId: number, is_approved: boolean = true) {
+    return this.http.post(`/api/modules/0/step/${stepId}/done`, {is_approved}).toPromise()
+      .then(() => {
+        const stepIndex = this.setStepFromId(stepId);
+        const step = this.module.current.steps[stepIndex];
+        if (step) {
+          step.is_approved = is_approved;
+          step.is_approved && this.onApprove.emit(true);
+        }
+        this.updateProgress(this.module.current);
+      });
+  }
 }
+
+

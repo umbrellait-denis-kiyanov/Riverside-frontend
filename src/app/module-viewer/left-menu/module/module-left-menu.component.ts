@@ -93,4 +93,8 @@ export class LeftMenuComponent implements OnInit {
     const { riverside_facilitator, riverside_se, super_admin } = this.me.roles;
     return riverside_facilitator || riverside_se || super_admin;
   }
+
+  isChecked(step: Step) {
+    return step.is_checked || step.is_approved || step.waiting_for_feedback || step.feedback_received;
+  }
 }

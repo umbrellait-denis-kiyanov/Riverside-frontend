@@ -26,6 +26,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
   // contentData: FinalFeedbackTemplateData['template_params_json'];
   contentData = data;
   action: string;
+  subaction: string;
 
   constructor(
     protected el: ElementRef,
@@ -45,6 +46,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
   protected initAction() {
     if (this.userService.me.roles.riverside_se) {
       this.action = 'provide_feedback';
+      this.subaction = 'approve';
     } else { this.action = 'feedback'; }
   }
 

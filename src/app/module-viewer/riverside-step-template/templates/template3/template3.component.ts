@@ -36,9 +36,9 @@ export class Template3Component extends TemplateComponent implements OnInit {
     protected el: ElementRef,
     protected moduleContentService: ModuleContentService,
     private inboxService: InboxService,
-    private userService: UserService
+    protected userService: UserService
   ) {
-    super(el, moduleContentService);
+    super(el, moduleContentService, userService);
   }
 
   ngOnInit() {

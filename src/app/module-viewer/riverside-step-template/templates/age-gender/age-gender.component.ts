@@ -37,9 +37,9 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
   constructor(
     protected el: ElementRef,
     protected moduleContentService: ModuleContentService,
-    private userService: UserService
+    protected userService: UserService
   ) {
-    super(el, moduleContentService);
+    super(el, moduleContentService, userService);
   }
 
   ngOnInit() {

@@ -6,6 +6,7 @@ import { PersonaPictureTemplateData } from './persona-picture.interface';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
+import { UserService } from 'src/app/common/services/user.service';
 
 @Component({
   selector: 'app-persona-picture',
@@ -61,9 +62,10 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
   constructor(
     protected el: ElementRef,
     protected moduleContentService: ModuleContentService,
-    protected modalService: NgbModal
+    protected modalService: NgbModal,
+    protected userService: UserService
   ) {
-    super(el, moduleContentService);
+    super(el, moduleContentService, userService);
   }
 
   protected init() {

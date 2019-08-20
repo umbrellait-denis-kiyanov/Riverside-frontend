@@ -28,7 +28,7 @@
       >
         <a
           *ngIf="step.is_section_break"
-          [routerLink]="[ '/module', module.id , 'step', step.id ]"
+
         >{{step.description}}</a>
 
         <a
@@ -36,8 +36,10 @@
 
           *ngIf="!step.is_section_break"
         >
-          <span class="checkmark" [ngClass]="{'checked': step.is_checked}">
-            <span class="fa fa-check"></span>
+
+          <span class="checkmark" [ngClass]="{'checked': isChecked(step)}">
+
+            <mat-icon [ngClass]="{'approved': step.is_approved}" >done</mat-icon>
           </span>
 
           <span class="step-number">{{step.position}}</span>

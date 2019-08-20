@@ -11,6 +11,7 @@ import { first, filter, debounceTime, skip } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { Templates } from '../riverside-step-template/templates';
+import { IceService } from '../ice/ice.service';
 
 
 @Component({
@@ -41,7 +42,8 @@ export class ContentComponent implements OnInit {
     private moduleService: ModuleService,
     private userService: UserService,
     private moduleContentService: ModuleContentService,
-    private navService: ModuleNavService
+    private navService: ModuleNavService,
+    private iceService: IceService
   ) { }
 
   async ngOnInit() {
@@ -67,9 +69,12 @@ export class ContentComponent implements OnInit {
       stepId: this.stepId,
       org_id: this.me.org.id
     }).then(this.render.bind(this));
-    // this.moduleContentService.moduleContent.ready
-    //   .pipe(filter(v => v))
-    //   .subscribe(this.render.bind(this));
+    this.navService.onApprove.subscribe(val => {
+      this.iceService.onApprove.emit(val);
+      setTimeout(() => {
+        this.save();
+      });
+    });
   }
 
   async waitForParams() {
@@ -77,6 +82,7 @@ export class ContentComponent implements OnInit {
       this.route.params.subscribe(params => {
         this.stepId = params.stepId;
         this.orgId = this.me.org.id;
+        this.navService.setStepFromId(this.stepId);
         resolve();
       });
     });

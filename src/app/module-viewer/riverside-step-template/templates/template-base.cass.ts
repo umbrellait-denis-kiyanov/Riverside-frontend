@@ -3,6 +3,7 @@ import { OnInit, ElementRef, Component } from '@angular/core';
 import { TemplateComponentInterface, TemplateContentDataType } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
+import { UserService } from 'src/app/common/services/user.service';
 
 @Component({})
 export class TemplateComponent implements TemplateComponentInterface, OnInit {
@@ -11,11 +12,13 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   inputs: any;
   disabled: boolean;
   me: User;
+  action: string;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
 
   constructor(
       protected el: ElementRef,
-      protected moduleContentService: ModuleContentService
+      protected moduleContentService: ModuleContentService,
+      protected userService?: UserService
     ) {}
 
   ngOnInit() {
@@ -24,6 +27,13 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
     this.init();
+    this.initAction();
+  }
+
+  protected initAction() {
+    if (this.userService.me.roles.riverside_se) {
+      this.action = 'approve';
+    } else { this.action = ''; }
   }
 
   protected init() {}
@@ -38,7 +48,7 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
         comments_json: this.data.data.inputs[key] ? this.data.data.inputs[key].comments_json : [],
         org_id: this.data.data.inputs[key] ? this.data.data.inputs[key].org_id : null,
         module_id: this.data.data.inputs[key] ? this.data.data.inputs[key].module_id : null,
-        content: iceElement ? iceElement.innerHTML : '',
+        content: iceElement ? iceElement.innerHTML.replace(/(\s)|(&nbsp;)/g, ' ') : '',
         element_key: key,
       };
       } else if (this.data.data.inputs[key]) {
@@ -57,7 +67,8 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   }
 
   textContent(el: string) {
-    const _el: HTMLElement[] = window.$(el);
+    const _el: any = window.$(el).clone();
+    _el.find('.del').remove();
     return _el.length ? _el[0].textContent.replace(/\s/g, ' ') : '';
   }
 }

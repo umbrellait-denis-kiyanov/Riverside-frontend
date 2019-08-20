@@ -7,7 +7,8 @@
   >< Previous</button>
 </span>
 
-<button
+<span class="middle-buttons">
+  <button
   *ngIf="is_done"
   mat-raised-button
   color="accent"
@@ -29,6 +30,31 @@
   {{actionButtonText()}}
 
 </button>
+
+<button
+  *ngIf="subaction && is_subaction_done"
+  mat-raised-button
+  color="accent"
+  (click)="buttonClicked(subaction,false)"
+  e3-async-button
+  [running]="submitting"
+  >
+  {{actionButtonText('is_subaction_done', subaction)}}
+
+</button>
+<button
+  *ngIf="subaction && !is_subaction_done"
+  mat-stroked-button
+  color="accent"
+  (click)="buttonClicked(subaction,false)"
+  e3-async-button
+  [running]="submitting"
+  >
+  {{actionButtonText('is_subaction_done', subaction)}}
+
+</button>
+</span>
+
 
 
 <span>

@@ -75,6 +75,7 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
   protected initAction() {
     if (this.userService.me.roles.riverside_se) {
       this.action = 'provide_final_feedback';
+      this.subaction = 'approve';
     } else { this.action = 'final_feedback'; }
   }
 }

@@ -9,10 +9,15 @@
   (mouseenter)="onMouseEnter($event)"
   (paste)="onPaste($event)"
 ></div>
-<div  class="add-comment" *ngIf="user.roles.riverside_se">
+<div  class="add-comment" >
     <button mat-icon-button (click)="addComment($event)" id="addComment">
         <mat-icon>add_comment</mat-icon>
      </button>
+</div>
+<div  class="has-comment" [hidden]="!comment.hasComment" >
+  <button mat-icon-button id="hasComment">
+      <mat-icon>comment</mat-icon>
+   </button>
 </div>
 
 <ng-template #commentOverlay>
@@ -33,7 +38,7 @@
       <div class="comment-content">
           <div>{{c.content}}</div>
           <button
-            *ngIf="user.roles.riverside_se"
+            *ngIf="user.id == c.user.id"
             mat-icon-button
             #menuTrigger="matMenuTrigger"
             (click)="menuComment=c;menuIndex=i"

@@ -6,11 +6,20 @@ $triangleColor: orange;
   padding: 0 $padding
   width: 100%
   position: relative
-  &:hover .add-comment
-    display: inline-flex
+  &:hover
+    .add-comment
+      display: inline-flex
+    .has-comment
+      display: none
 
 .add-comment
   display: none
+  position: absolute
+  right: $padding
+  top: 0px
+  color: orange
+
+.has-comment
   position: absolute
   right: $padding
   top: 0px
@@ -38,18 +47,18 @@ $triangleColor: orange;
 
 
 
-  &.hasComment:after
-    content: "";
-    width: 0;
-    height: 0;
-    border-top: $triangleSize solid transparent;
-    border-bottom: $triangleSize solid transparent;
+  // &.hasComment:after
+  //   content: "";
+  //   width: 0;
+  //   height: 0;
+  //   border-top: $triangleSize solid transparent;
+  //   border-bottom: $triangleSize solid transparent;
 
-    border-left: $triangleSize solid $triangleColor;
-    position: absolute;
-    top: -1*$padding;
-    right: $padding;
-    transform: rotate(-45deg);
+  //   border-left: $triangleSize solid $triangleColor;
+  //   position: absolute;
+  //   top: -1*$padding;
+  //   right: $padding;
+  //   transform: rotate(-45deg);
 
   &.showComment
     border-color: $triangleColor
