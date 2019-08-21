@@ -7,7 +7,7 @@ import User from 'src/app/common/interfaces/user.model';
 import { TemplateContentData } from 'src/app/module-viewer/riverside-step-template/templates/template-data.class';
 import { RiversideStepTemplateComponent } from 'src/app/module-viewer/riverside-step-template/riverside-step-template.component';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
-import { first, filter, debounceTime, skip } from 'rxjs/operators';
+import { first, filter, debounceTime, skip, take } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { Templates } from '../riverside-step-template/templates';
@@ -33,6 +33,8 @@ export class ContentComponent implements OnInit {
   orgId: number;
   moduleId: number;
   unsubNavChanged: Subscription;
+  unsubOnApprove: Subscription;
+  debounceSaveTime = 500;
 
   @ViewChild(RiversideStepTemplateComponent) templateComponent: RiversideStepTemplateComponent;
 
@@ -48,6 +50,7 @@ export class ContentComponent implements OnInit {
 
   async ngOnInit() {
     this.unsubNavChanged && this.unsubNavChanged.unsubscribe();
+    this.unsubOnApprove && this.unsubOnApprove.unsubscribe();
     this.unsubNavChanged = this.router.events.pipe(
       filter(e => e instanceof NavigationEnd)
     ).subscribe(e => {
@@ -57,7 +60,7 @@ export class ContentComponent implements OnInit {
     });
     this.init();
 
-    this.moduleContentService.contentChanged.pipe(skip(1), debounceTime(500)).subscribe(this.save.bind(this));
+    this.moduleContentService.contentChanged.pipe(skip(1), debounceTime(this.debounceSaveTime)).subscribe(this.save.bind(this));
   }
 
   async init() {
@@ -69,12 +72,7 @@ export class ContentComponent implements OnInit {
       stepId: this.stepId,
       org_id: this.me.org.id
     }).then(this.render.bind(this));
-    this.navService.onApprove.subscribe(val => {
-      this.iceService.onApprove.emit(val);
-      setTimeout(() => {
-        this.save();
-      });
-    });
+
   }
 
   async waitForParams() {
@@ -102,7 +100,11 @@ export class ContentComponent implements OnInit {
     this.ready = true;
     this.navService.setStepFromId(this.stepId);
     this.processFeedbackStatus();
-    const { moduleContent: { data: { content_json: data, inputs, template_params_json, template_component } } } = this.moduleContentService;
+    const { moduleContent: { data: { content_json: data,
+      inputs, template_params_json, template_component,
+      is_approved } } } = this.moduleContentService;
+
+    is_approved && (this.iceService.shouldShowWarning = true);
     const templateData = {
       ...data,
       inputs,
@@ -111,6 +113,22 @@ export class ContentComponent implements OnInit {
     };
     this.templateData = new TemplateContentData({ data: templateData, me: this.me });
     this.templateComponentName = template_component as keyof typeof Templates;
+    this.unsubOnApprove && this.unsubOnApprove.unsubscribe();
+    this.unsubOnApprove = this.navService.onApprove.pipe(debounceTime(100)).subscribe(val => {
+      this.iceService.onApprove.emit(val);
+      if (!this.iceService.allComponents.length) {
+        this.navService.nextStep();
+      } else {
+        this.moduleContentService.contentChanged.pipe(take(1)).subscribe(() => {
+          if (this.moduleContentService.moduleContent.data.is_section_break) {
+            setTimeout(() => this.navService.nextStep(), this.debounceSaveTime + 10);
+          } else {
+            this.navService.getModule(this.moduleId, String(this.userService.me.org.id));
+          }
+
+        });
+      }
+    });
 
   }
 
@@ -131,6 +149,7 @@ export class ContentComponent implements OnInit {
     const templateData = this.templateComponent.prepareData();
     data.content_json = templateData;
     data.inputs = this.addIdsToInputs(templateData.inputs);
+    delete data.is_approved;
     this.moduleContentService.save(data);
   }
 

@@ -17,7 +17,7 @@ import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_s
 })
 export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent implements OnInit  {
   contentData = data;
-  currentSection: string;
+
 
   columnBoxes = [
     [
@@ -59,18 +59,6 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
       }
     ]
   ];
-
-  onSectionChange(sectionId: string) {
-    this.currentSection = sectionId;
-  }
-
-  scrollTo(section: string ) {
-    window.scrollBy({
-      top: document.querySelector('#' + section).getBoundingClientRect().top - 75,
-      left: 0, behavior: 'smooth'
-    });
-    // setTimeout(()=>window.scrollBy(0, -75));
-  }
 
   protected initAction() {
     if (this.userService.me.roles.riverside_se) {

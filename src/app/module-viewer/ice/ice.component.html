@@ -4,9 +4,8 @@
   attr.contenteditable={{!disabled}}
   [ngClass]="{'CT-hide': hideChanges, hasComment: comment.hasComment, showComment: comment.show}"
   [innerHTML]="data.content | safehtml"
-  title="{{'Press Ctrl + Alt + M for adding a comment'}}"
-  (keydown.control.alt.m)="addComment()"
   (mouseenter)="onMouseEnter($event)"
+  (blur)="onBlur()"
   (paste)="onPaste($event)"
 ></div>
 <div  class="add-comment" >

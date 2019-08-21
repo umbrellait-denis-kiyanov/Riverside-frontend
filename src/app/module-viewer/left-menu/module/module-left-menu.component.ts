@@ -43,12 +43,14 @@ export class LeftMenuComponent implements OnInit {
     this.me = this.userService.me;
     this.route.params.subscribe((params) => {
       if (params.moduleId) {
-        this.moduleService.getModule(params.moduleId, String(this.me.org.id)).then(moduleData => {
+        this.navService.module.onChange.subscribe((module: Module) => {
+          this.module = module;
+        });
+        this.navService.getModule(params.moduleId, String(this.me.org.id)).then(moduleData => {
           if (moduleData) {
             this.module = moduleData;
-            this.navService.module.current = moduleData;
           }
-          this.updateProgress();
+
           this.module.percComplete = this.module.percComplete || 0;
           if (!this.router.routerState.snapshot.url.includes('step')) {
             this.navService.stepIndex.current = -1;

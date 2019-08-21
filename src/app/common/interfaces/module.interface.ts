@@ -19,6 +19,7 @@ export interface Step {
   require_feedback?: boolean;
   template_component?: string;
   template_params_json: string;
+  position?: number;
   elements: LearningElement[];
 }
 

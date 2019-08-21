@@ -17,6 +17,7 @@ import { Subscription, fromEvent } from 'rxjs';
 import { filter, take } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { DOCUMENT } from '@angular/common';
+import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 
 
 @Component({
@@ -33,7 +34,7 @@ export class IceComponent implements OnInit {
     content: string,
     comments_json: any[]
   };
-  @Output() changed = new EventEmitter();
+  @Output() changed = new EventEmitter(false);
 
   @ViewChild('commentOverlay') commentOverlay: TemplateRef<any>;
 
@@ -56,12 +57,14 @@ export class IceComponent implements OnInit {
     private el: ElementRef,
     public overlay: Overlay,
     public viewContainerRef: ViewContainerRef,
-    private iceService: IceService
+    private iceService: IceService,
+    private dialogService: E3ConfirmationDialogService
   ) { }
 
   ngOnInit() {
     this.data = this.data || { content: '', comments_json: [] };
     this.data.content = this.data.content || '';
+
     this.iceService.allComponents.push(this);
 
     if (this.data.comments_json && this.data.comments_json.length) {
@@ -88,8 +91,10 @@ export class IceComponent implements OnInit {
       if (this.disabled) {
         this.tracker.element.contentEditable = 'false';
       }
+      this.tracker.element.blur();
       this.iceService.onApprove.subscribe(() => {
         this.tracker.acceptAll();
+        this.changed.emit();
       });
     });
 
@@ -215,6 +220,23 @@ export class IceComponent implements OnInit {
 
   }
 
+  @HostListener('click', ['$event'])
+  onClick() {
+    if (this.iceService.shouldShowWarning) {
+
+      this.dialogService.open({
+        content: this.iceService.warningText,
+        onCancel: () => {
+          this.tracker.element.blur();
+        },
+        onClose: () => {
+          this.iceService.shouldShowWarning = false;
+          this.iceService.onUnapprove.emit();
+        }
+      });
+    }
+  }
+
   editClicked(event: MouseEvent) {
     this.menuClicked(event);
     this.comment.content = this.menuComment.content;
@@ -238,16 +260,14 @@ export class IceComponent implements OnInit {
     if ((e.which < 48 && e.which !== 32 && e.which !== 8) || e.which > 90) {
       return false;
     }
-    // const { element } = this.tracker;
-    // const range = this.tracker.getCurrentRange();
-    // element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
-    // this.tracker._moveRangeToValidTrackingPos(range);
 
-    // this.tracker.insert();
-
-    // this.setEndOfContenteditable(element);
     this.changed.emit(e);
 
+  }
+
+  onBlur() {
+    const { element } = this.tracker;
+    element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
   }
 
   setEndOfContenteditable(contentEditableElement) {

@@ -14,7 +14,6 @@ import { ContentComponent } from './content/content.component';
 import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbox.component';
 import { LoadingComponent } from '../common/components/loading/loading.component';
 import { SafeurlPipe } from '../common/pipes/safeurl.pipe';
-import { NgbModalModule } from '@ng-bootstrap/ng-bootstrap';
 import { LearningElementComponent } from './modals/learning-element/learning-element.component';
 
 import { UserService } from '../common/services/user.service';
@@ -22,7 +21,6 @@ import { IceComponent } from './ice/ice.component';
 import { RiversideStepTemplateComponent } from './riverside-step-template/riverside-step-template.component';
 import { RTemplateDirective } from './riverside-step-template/riverside-step-template-host.directive';
 import { Template1Component } from './riverside-step-template/templates/template1/template1.component';
-import { SafehtmlPipe } from '../common/pipes/safehtml.pipe';
 import { ModuleContentService } from '../common/services/module-content.service';
 import { LetterImageComponent } from './ice/letter-image/letter-image.component';
 import { MatMenuModule} from '@angular/material/menu';
@@ -68,7 +66,6 @@ import { AgeGenderComponent } from './riverside-step-template/templates/age-gend
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
-    NgbModalModule,
     AppRoutingModule,
     MatMenuModule,
     MatButtonModule,
@@ -88,7 +85,6 @@ import { AgeGenderComponent } from './riverside-step-template/templates/age-gend
     // E3CheckboxComponent,
     LoadingComponent,
     SafeurlPipe,
-    SafehtmlPipe,
     FormatDatePipe,
     LearningElementComponent,
 

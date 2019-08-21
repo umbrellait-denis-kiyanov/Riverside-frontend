@@ -3,6 +3,8 @@ import { Module } from '../interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { BehaviorSubject, from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { IceService } from 'src/app/module-viewer/ice/ice.service';
+import { ModuleService } from './module.service';
 
 class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
@@ -62,6 +64,7 @@ export class ModuleNavService {
   module = new ResourceFromStorage<Module>('last_module');
   stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
   onApprove = new EventEmitter<boolean>(false);
+  onUnapprove = new EventEmitter<boolean>(false);
 
   get currentStep() {
     return this.module.current.steps[this.stepIndex.current];
@@ -70,8 +73,12 @@ export class ModuleNavService {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private http: HttpClient
-  ) { }
+    private http: HttpClient,
+    private iceService: IceService,
+    private moduleService: ModuleService
+  ) {
+    iceService.onUnapprove.subscribe(val => this.onUnapprove.emit(val));
+   }
 
   updateProgress(module: Module) {
     const numerator = module.steps.filter(s => !s.is_section_break).map(s => Number(!!s.is_checked)).reduce((prev, curr) => prev + curr);
@@ -82,6 +89,14 @@ export class ModuleNavService {
   setStepFromId(id: number) {
     this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
     return this.stepIndex.current;
+  }
+
+  getModule(id: number, orgId: string) {
+    return this.moduleService.getModule(id, orgId).then(async (moduleData: Module) => {
+        this.module.current = moduleData;
+        this.updateProgress(this.module.current);
+        return moduleData;
+    });
   }
 
   // setStepFromUrl() {
@@ -104,7 +119,7 @@ export class ModuleNavService {
     }
     this.stepIndex.current = Number(index) + offset;
     const step = this.module.current.steps[this.stepIndex.current];
-    if (step.template_component) {
+    if (step.template_component && !step.is_section_break) {
       this.router.navigate(['module', this.module.current.id, 'step', step.id]);
     } else {
       return offset === 1 ? this.nextStep() : this.previousStep();

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Module } from '../interfaces/module.interface';
+import { Module, Step } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -29,6 +29,14 @@ export class ModuleService {
       return this.modules.find(m => Number(m.id) === Number(id));
     } else {
       return await this.httpClient.get(`${this.baseUrl}/${id}`, {params: {org_id}}).toPromise().then(async (res: any) => {
+        let i = 1;
+        for (const step of (res.steps as Step[])) {
+          step.position = i;
+          if (!step.is_section_break) {
+            i++;
+          }
+        }
+
         return res;
       });
     }

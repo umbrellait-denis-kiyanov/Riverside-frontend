@@ -27,6 +27,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
   contentData = data;
   action: string;
   subaction: string;
+  currentSection: string;
 
   constructor(
     protected el: ElementRef,
@@ -112,6 +113,18 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
       ...partialMessage
     };
     this.inboxService.save(message);
+  }
+
+  onSectionChange(sectionId: string) {
+    this.currentSection = sectionId;
+  }
+
+  scrollTo(section: string ) {
+    window.scrollBy({
+      top: document.querySelector('#' + section).getBoundingClientRect().top - 75,
+      left: 0, behavior: 'smooth'
+    });
+    // setTimeout(()=>window.scrollBy(0, -75));
   }
 
 }

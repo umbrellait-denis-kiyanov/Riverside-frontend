@@ -27,6 +27,10 @@ export class ModuleNavComponent implements OnInit {
   ngOnInit() {
     this.prepareActionFlag('is_done', this.action);
     this.subaction && this.prepareActionFlag('is_subaction_done', this.subaction);
+    this.navService.onUnapprove.subscribe(() => {
+      this.markAsApproved(!!this.subaction, false);
+      this.markAsDone(!!this.subaction, false);
+    });
   }
 
   prepareActionFlag(doneKey: string, action: actions) {
@@ -71,19 +75,21 @@ export class ModuleNavComponent implements OnInit {
     // this.navService.nextStep();
   }
 
-  markAsDone(isSubaction: boolean = false) {
+  markAsDone(isSubaction: boolean = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     this.navService.markAsDone(this.navService.currentStep.id, !this[key]).then(() => {
-      this[key] = !this[key];
+      this[key] = state !== null ? state : !this[key];
       this[key] && this.navService.nextStep();
     });
   }
 
-  markAsApproved(isSubaction: boolean = false) {
+  markAsApproved(isSubaction: boolean = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     this.navService.markAsApproved(this.navService.currentStep.id, !this[key]).then(() => {
-      this[key] = !this[key];
-      this.is_done && this.navService.nextStep();
+      this[key] = state !== null ? state : !this[key];
+      if (!this[key]) {
+        this.navService.getModule(this.navService.module.current.id, String(this.userService.me.org.id));
+      }
     });
   }
 
