@@ -20,6 +20,7 @@ import { DragDropModule } from '@angular/cdk/drag-drop';
 import { StepTemplateEditorComponent } from './module-editor/step-template-editor/step-template-editor.component';
 import { StepLinkEditorComponent } from './module-editor/step-link-editor/step-link-editor.component';
 import { StepTemplateFieldComponent } from './module-editor/step-template-editor/step-template-field/step-template-field.component';
+import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 
 @NgModule({
   imports: [
@@ -31,7 +32,8 @@ import { StepTemplateFieldComponent } from './module-editor/step-template-editor
     RouterModule,
     AppRoutingModule,
     E3CommonModule,
-    DragDropModule
+    DragDropModule,
+    CKEditorModule
   ],
   declarations: [
     ModuleBuilderRootComponent,

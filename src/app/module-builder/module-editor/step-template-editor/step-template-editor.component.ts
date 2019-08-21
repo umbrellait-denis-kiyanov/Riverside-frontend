@@ -2,7 +2,6 @@ import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Step } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from '../../../common/services/module.service';
-import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-step-template-editor',
@@ -21,6 +20,8 @@ export class StepTemplateEditorComponent implements OnInit {
 
   templateConfig: any;
 
+  initialized = false;
+
   constructor(public modal: NgbActiveModal,
               private moduleService: ModuleService) {}
 
@@ -28,6 +29,7 @@ export class StepTemplateEditorComponent implements OnInit {
     this.stepEdit = JSON.parse(JSON.stringify(this.step));
     this.templates = await this.moduleService.getTemplates(this.step.module_id);
     this.onTemplateChange();
+    this.initialized = true;
   }
 
   save() {
@@ -53,5 +55,6 @@ export class StepTemplateEditorComponent implements OnInit {
       ;
 
     this.templateFields = JSON.parse('[' + fields + ']');
+    this.templateFields.push(['number_of_inputs', 'number']);
   }
 }

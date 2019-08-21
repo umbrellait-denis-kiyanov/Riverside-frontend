@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 
 @Component({
   selector: 'app-step-template-field',
@@ -19,6 +20,7 @@ export class StepTemplateFieldComponent implements OnInit {
   value: any;
 
   hasSubFields = false;
+  rtEditor: any;
 
   constructor() { }
 
@@ -35,12 +37,14 @@ export class StepTemplateFieldComponent implements OnInit {
 
     if ('string' === this.type) {
       // in case we still have some JSON data
-      if (typeof this.value !== 'string') {
+      if (typeof this.value === 'object' && this.value !== null) {
         this.value = JSON.stringify(this.value);
-      }
-
-      if (['title', 'sufix', 'input_sufix'].includes(this.name)) {
+        this.type = 'json';
+      } else if (['title', 'sufix', 'input_sufix'].includes(this.name)) {
         this.type = 'text-input';
+      } else {
+        this.rtEditor = InlineEditor;
+        this.value = this.value || '';
       }
     }
 

@@ -4,7 +4,7 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" *ngIf="step">
+<div class="modal-body" *ngIf="initialized">
   <div class="form-group">
     <label>Template</label>
     <select
@@ -30,7 +30,10 @@
   <div class="form-group" *ngIf="templateFields">
     <app-step-template-field *ngFor="let field of templateFields" [field]="field" [(json)]="stepEdit.template_params_json"></app-step-template-field>
   </div>
+</div>
 
+<div class="modal-body initializing" *ngIf="!initialized">
+  <span class="fa fa-pulse fa-spinner"></span>
 </div>
 
 <div class="modal-footer">

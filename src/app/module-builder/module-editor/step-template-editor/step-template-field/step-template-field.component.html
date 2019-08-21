@@ -6,15 +6,31 @@
     [ngModelOptions]="{standalone: true}"
     [(ngModel)]="value"
     (change)="valueChange()"
+    type="text"
     class="site-tbox"
   />
 
-  <textarea *ngIf="type == 'string'"
+  <input *ngIf="type == 'number'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="value"
+    (change)="valueChange()"
+    type="number"
+    class="site-tbox"
+  />
+
+  <textarea *ngIf="type == 'json'"
     [ngModelOptions]="{standalone: true}"
     [(ngModel)]="value"
     (change)="valueChange()"
     class="site-tbox"
   ></textarea>
+
+  <ckeditor
+    *ngIf="type == 'string'"
+    class="ckeditor"
+    [editor]="rtEditor"
+    [(ngModel)]="value"
+  ></ckeditor>
 
   <label *ngIf="type == 'boolean'">
     <input
