@@ -18,12 +18,19 @@
     class="site-tbox"
   />
 
-  <textarea *ngIf="type == 'string'"
+  <textarea *ngIf="type == 'json'"
     [ngModelOptions]="{standalone: true}"
     [(ngModel)]="value"
     (change)="valueChange()"
     class="site-tbox"
   ></textarea>
+
+  <ckeditor
+    *ngIf="type == 'string'"
+    class="ckeditor"
+    [editor]="rtEditor"
+    [(ngModel)]="value"
+  ></ckeditor>
 
   <label *ngIf="type == 'boolean'">
     <input
