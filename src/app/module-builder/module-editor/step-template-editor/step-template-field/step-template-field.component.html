@@ -6,6 +6,15 @@
     [ngModelOptions]="{standalone: true}"
     [(ngModel)]="value"
     (change)="valueChange()"
+    type="text"
+    class="site-tbox"
+  />
+
+  <input *ngIf="type == 'number'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="value"
+    (change)="valueChange()"
+    type="number"
     class="site-tbox"
   />
 

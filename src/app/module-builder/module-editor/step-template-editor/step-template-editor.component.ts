@@ -53,5 +53,6 @@ export class StepTemplateEditorComponent implements OnInit {
       ;
 
     this.templateFields = JSON.parse('[' + fields + ']');
+    this.templateFields.push(['number_of_inputs', 'number']);
   }
 }
