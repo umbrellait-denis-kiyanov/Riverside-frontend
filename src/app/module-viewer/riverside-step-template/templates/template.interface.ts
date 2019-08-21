@@ -6,6 +6,7 @@ import { GenericTemplateData } from './generic/generic.interface';
 import { BrainstormTemplateData } from './brainstorm/brainstorm.interface';
 import { NamePersonasTemplateData } from './name_personas/name_personas.interface';
 import { PersonaBehaviorTemplateData } from './persona_behavior/persona_behavior.interface';
+import { FeedbackSectionTemplateData } from './feedback_section/feedback_section.interface';
 
 export type TemplateContentDataType =
   Template1Data |
@@ -13,7 +14,8 @@ export type TemplateContentDataType =
   GenericTemplateData |
   BrainstormTemplateData |
   NamePersonasTemplateData |
-  PersonaBehaviorTemplateData
+  PersonaBehaviorTemplateData |
+  FeedbackSectionTemplateData
   ;
 
 export interface TemplateComponentInterface {
