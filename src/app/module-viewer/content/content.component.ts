@@ -104,7 +104,7 @@ export class ContentComponent implements OnInit {
       inputs, template_params_json, template_component,
       is_approved } } } = this.moduleContentService;
 
-    is_approved && (this.iceService.shouldShowWarning = true);
+    is_approved && !this.userService.me.roles.riverside_se && (this.iceService.shouldShowWarning = true);
     const templateData = {
       ...data,
       inputs,

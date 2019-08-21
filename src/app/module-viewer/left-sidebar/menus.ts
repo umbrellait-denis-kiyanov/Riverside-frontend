@@ -57,7 +57,7 @@ export const menus: MenusInterface = [
 
   {
     render: () => feedback_svg,
-    label: 'FEEDBACK',
+    label: 'REQUEST FEEDBACK',
     modalComponent: RequestFeedbackComponent,
     restrict: ({ user }) => !user.roles.riverside_se
   },
