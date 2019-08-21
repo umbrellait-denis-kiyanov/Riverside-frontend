@@ -120,7 +120,7 @@ export class ContentComponent implements OnInit {
         this.navService.nextStep();
       } else {
         this.moduleContentService.contentChanged.pipe(take(1)).subscribe(() => {
-          if (this.moduleContentService.moduleContent.data.is_section_break) {
+          if (!this.moduleContentService.moduleContent.data.is_section_break) {
             setTimeout(() => this.navService.nextStep(), this.debounceSaveTime + 10);
           } else {
             this.navService.getModule(this.moduleId, String(this.userService.me.org.id));
