@@ -159,7 +159,7 @@ export class ModuleEditorComponent implements OnInit {
       is_section_break: false,
       id: 0,
       module_id: this.moduleData.id,
-      require_feedback: false,
+      requires_feedback: false,
       template_params_json: '',
       template_component: ''
     };

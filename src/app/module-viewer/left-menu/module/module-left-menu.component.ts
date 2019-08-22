@@ -46,6 +46,7 @@ export class LeftMenuComponent implements OnInit {
         this.navService.module.onChange.subscribe((module: Module) => {
           this.module = module;
         });
+        this.navService.orgId =  String(this.me.org.id);
         this.navService.getModule(params.moduleId, String(this.me.org.id)).then(moduleData => {
           if (moduleData) {
             this.module = moduleData;

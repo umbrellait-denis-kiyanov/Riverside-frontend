@@ -5,6 +5,7 @@ import { BehaviorSubject, from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IceService } from 'src/app/module-viewer/ice/ice.service';
 import { ModuleService } from './module.service';
+import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
 class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
@@ -65,6 +66,10 @@ export class ModuleNavService {
   stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
   onApprove = new EventEmitter<boolean>(false);
   onUnapprove = new EventEmitter<boolean>(false);
+  onSave = new EventEmitter(false);
+  shouldReloadModule = false;
+  shouldMoveToNext = false;
+  orgId: string;
 
   get currentStep() {
     return this.module.current.steps[this.stepIndex.current];
@@ -77,7 +82,29 @@ export class ModuleNavService {
     private iceService: IceService,
     private moduleService: ModuleService
   ) {
-    iceService.onUnapprove.subscribe(val => this.onUnapprove.emit(val));
+
+    this.onUnapprove.subscribe(() => {
+      if (this.currentStep.requires_feedback) {
+        this.shouldReloadModule = true;
+      }
+    });
+    this.onApprove.subscribe(() => {
+      if (this.currentStep.requires_feedback) {
+        this.shouldReloadModule = true;
+      } else {
+        this.shouldMoveToNext = true;
+      }
+    });
+    this.onSave.subscribe(() => {
+      if (this.shouldReloadModule) {
+        this.reloadModule();
+        this.shouldReloadModule = false;
+      }
+      if (this.shouldMoveToNext) {
+        this.nextStep();
+        this.shouldMoveToNext = false;
+      }
+    });
    }
 
   updateProgress(module: Module) {
@@ -89,6 +116,10 @@ export class ModuleNavService {
   setStepFromId(id: number) {
     this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
     return this.stepIndex.current;
+  }
+
+  reloadModule() {
+    this.getModule(this.module.current.id, this.orgId);
   }
 
   getModule(id: number, orgId: string) {
@@ -145,7 +176,18 @@ export class ModuleNavService {
         const step = this.module.current.steps[stepIndex];
         if (step) {
           step.is_approved = is_approved;
-          step.is_approved && this.onApprove.emit(true);
+          if (step.is_approved) {
+            this.onApprove.emit(true);
+            this.iceService.onApprove.emit();
+            if (!this.currentStep.requires_feedback) {
+              this.nextStep();
+            }
+          } else {
+            this.onUnapprove.emit();
+            if (!this.currentStep.requires_feedback) {
+              this.reloadModule();
+            }
+          }
         }
         this.updateProgress(this.module.current);
       });

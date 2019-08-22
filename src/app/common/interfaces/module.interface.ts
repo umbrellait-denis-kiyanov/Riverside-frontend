@@ -16,7 +16,7 @@ export interface Step {
   waiting_for_feedback?: boolean;
   feedback_received?: boolean;
   is_section_break?: boolean;
-  require_feedback?: boolean;
+  requires_feedback?: boolean;
   template_component?: string;
   template_params_json: string;
   position?: number;

@@ -16,6 +16,7 @@ class ModuleContent extends BaseModel {
   template_params_json: any = {};
   template_component = '';
   is_section_break: boolean = false;
+  requires_feedback: boolean = false;
   is_approved: boolean = false;
 
   protected transform() {
