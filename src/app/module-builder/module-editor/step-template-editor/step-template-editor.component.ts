@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Step } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from '../../../common/services/module.service';
@@ -6,7 +6,8 @@ import { ModuleService } from '../../../common/services/module.service';
 @Component({
   selector: 'app-step-template-editor',
   templateUrl: './step-template-editor.component.html',
-  styleUrls: ['./step-template-editor.component.sass']
+  styleUrls: ['./step-template-editor.component.sass'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class StepTemplateEditorComponent implements OnInit {
 
