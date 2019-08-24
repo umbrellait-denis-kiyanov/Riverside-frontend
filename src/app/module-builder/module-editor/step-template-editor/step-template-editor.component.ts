@@ -44,6 +44,7 @@ export class StepTemplateEditorComponent implements OnInit {
     const template = this.templates.filter(tpl => tpl.id === this.stepEdit.template_id).shift();
     const fields = template.params_json.
       replace(/\s/g, '').
+      split(/inputs\:\s{0,}\[\]/).join('inputs:Array<{key: string}>').
       split(';').join(',').
       split('Array<').join('[').
       split('>').join(']').
@@ -53,7 +54,8 @@ export class StepTemplateEditorComponent implements OnInit {
       split('}').join(']').
       split(',').join('],[').
       split(':').join(',').
-      split('?').join('')
+      split('?').join('').
+      split("'").join('')
       ;
 
     this.templateFields = JSON.parse('[' + fields + ']');
