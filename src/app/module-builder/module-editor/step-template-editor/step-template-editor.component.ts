@@ -22,6 +22,8 @@ export class StepTemplateEditorComponent implements OnInit {
 
   initialized = false;
 
+  description: '';
+
   constructor(public modal: NgbActiveModal,
               private moduleService: ModuleService) {}
 
@@ -39,8 +41,8 @@ export class StepTemplateEditorComponent implements OnInit {
   }
 
   onTemplateChange() {
-    const fields = this.templates.
-      filter(template => template.id === this.stepEdit.template_id).shift().params_json.
+    const template = this.templates.filter(tpl => tpl.id === this.stepEdit.template_id).shift();
+    const fields = template.params_json.
       replace(/\s/g, '').
       split(';').join(',').
       split('Array<').join('[').
@@ -56,5 +58,6 @@ export class StepTemplateEditorComponent implements OnInit {
 
     this.templateFields = JSON.parse('[' + fields + ']');
     this.templateFields.push(['number_of_inputs', 'number']);
+    this.description = template.description;
   }
 }
