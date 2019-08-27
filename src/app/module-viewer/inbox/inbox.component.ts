@@ -1,7 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { InboxService } from './inbox.service';
 import { ActivatedRoute } from '@angular/router';
-import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { UserService } from 'src/app/common/services/user.service';
 
 
@@ -17,10 +16,10 @@ export class InboxComponent implements OnInit {
   senderLetter: string;
   ready: boolean = false;
   feedbackMessage: string = '';
-  Editor = InlineEditor;
   routerLink: string[];
   submitting = false;
   canProvideFeedback = false;
+  currentTab = 'text';
 
   constructor(
     private inboxService: InboxService,
@@ -77,12 +76,12 @@ export class InboxComponent implements OnInit {
     }
   }
 
-  provideFeedback() {
+  provideFeedback(message: string) {
     this.inboxService.save({
       to_org_id: this.message.from_org_id,
       module_id: this.message.module_id,
       parent_id: this.message.id,
-      message: this.feedbackMessage
+      message
     }).then(() => {
       const {allMessages: {change, data}} = this.inboxService;
       const msg = data.find(m => m.id === this.message.id);

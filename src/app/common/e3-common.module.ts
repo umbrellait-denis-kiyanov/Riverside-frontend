@@ -13,6 +13,7 @@ import { E3ConfirmationDialogComponent } from './components/e3-confirmation-dial
 import { E3ConfirmationDialogService } from './components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 import { SafehtmlPipe } from './pipes/safehtml.pipe';
 import { MatButtonModule } from '@angular/material/button';
+import { SafeurlPipe } from './pipes/safeurl.pipe';
 
 const exports = [
   E3CheckboxComponent,
@@ -20,7 +21,8 @@ const exports = [
   E3AsyncButtonDirective,
   E3ScrollSpyDirective,
   E3ConfirmationDialogComponent,
-  SafehtmlPipe
+  SafehtmlPipe,
+  SafeurlPipe
 ];
 @NgModule({
   imports: [

@@ -11,7 +11,7 @@
   <h3>Request feedback</h3>
 </div>
 
-<div class="modal-body">
+<div class="modal-body" *ngIf="ready">
   <p *ngIf="module">
     You are requesting feedback for the module <b>{{module.name}}</b>.
     <a class="pointer">(Change module)</a>
@@ -20,22 +20,24 @@
   <p>
     What feedback would you like from your Managing Director?
   </p>
+  <feedback-source
+      (submit)="submit($event)"
+      (messageChanged)="message=$event"
+      (currentTabChanged)="currentTab=$event"
+      >
+  </feedback-source>
 
-  <ckeditor
-    class="ckeditor"
-    [editor]="Editor"
-    [(ngModel)]="message"
-    *ngIf="ready"
-  ></ckeditor>
 </div>
 
-<div class="modal-footer">
+<div class="modal-footer" [hidden]="currentTab == 'video'">
   <button
     mat-raised-button
     e3-async-button
     [running]="submitting"
     color="accent"
     [disabled]="!message"
-    (click)="submit()"
+    (click)="submit(message)"
   >Submit</button>
 </div>
+
+

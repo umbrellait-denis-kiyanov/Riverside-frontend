@@ -11,11 +11,8 @@ import { RouterModule } from '@angular/router';
 import { ModuleService } from '../common/services/module.service';
 import { LeftMenuComponent } from './left-menu/module/module-left-menu.component';
 import { ContentComponent } from './content/content.component';
-import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbox.component';
 import { LoadingComponent } from '../common/components/loading/loading.component';
-import { SafeurlPipe } from '../common/pipes/safeurl.pipe';
 import { LearningElementComponent } from './modals/learning-element/learning-element.component';
-
 import { UserService } from '../common/services/user.service';
 import { IceComponent } from './ice/ice.component';
 import { RiversideStepTemplateComponent } from './riverside-step-template/riverside-step-template.component';
@@ -26,6 +23,7 @@ import { LetterImageComponent } from './ice/letter-image/letter-image.component'
 import { MatMenuModule} from '@angular/material/menu';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
+import { MatTabsModule } from '@angular/material/tabs';
 import { UserComponent } from './ice/user/user.component';
 import { IceService } from './ice/ice.service';
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar.component';
@@ -55,6 +53,8 @@ import { FinalFeedbackComponent } from './riverside-step-template/templates/fina
 import { PersonaComponent } from './riverside-step-template/persona/persona.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
+import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
+import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
 
 
 
@@ -70,10 +70,12 @@ import { AgeGenderComponent } from './riverside-step-template/templates/age-gend
     MatMenuModule,
     MatButtonModule,
     MatIconModule,
+    MatTabsModule,
     MatProgressBarModule,
     ModuleBuilderModule,
     CKEditorModule,
-    E3CommonModule
+    E3CommonModule,
+    VideoRecorderModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -84,7 +86,6 @@ import { AgeGenderComponent } from './riverside-step-template/templates/age-gend
     ContentComponent,
     // E3CheckboxComponent,
     LoadingComponent,
-    SafeurlPipe,
     FormatDatePipe,
     LearningElementComponent,
 
@@ -110,7 +111,8 @@ import { AgeGenderComponent } from './riverside-step-template/templates/age-gend
     PersonaPictureListComponent,
     FinalFeedbackComponent,
     PersonaComponent,
-    AgeGenderComponent
+    AgeGenderComponent,
+    FeedbackSourceComponent
 
   ],
   entryComponents: [

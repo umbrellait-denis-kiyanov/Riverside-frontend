@@ -1,10 +1,10 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { Module } from '../../common/interfaces/module.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { InboxService } from '../inbox/inbox.service';
 import { UserService } from 'src/app/common/services/user.service';
+import { MatTabChangeEvent } from '@angular/material/tabs';
 
 @Component({
   selector: 'app-request-feedback',
@@ -15,11 +15,11 @@ export class RequestFeedbackComponent implements OnInit {
 
   @Input() params: any;
 
-  public Editor = InlineEditor;
   ready = false;
   module: Module;
-  message: string = '';
   submitting = false;
+  message: string = '';
+  currentTab: string = 'text';
 
   constructor(
     public modal: NgbActiveModal,
@@ -36,13 +36,14 @@ export class RequestFeedbackComponent implements OnInit {
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
   }
 
-  submit() {
+  submit(message: string) {
     this.inboxService.save({
-      message: this.message,
+      message,
       module_id: this.module.id,
       from_org_id: this.userService.me.org.id
     }).then(() => {
       this.modal.dismiss();
     });
   }
+
 }

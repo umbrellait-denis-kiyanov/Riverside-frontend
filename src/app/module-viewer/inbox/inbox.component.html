@@ -64,17 +64,20 @@
         Provide feedback for the company
       </p>
 
-      <ckeditor
-        [editor]="Editor"
-        [(ngModel)]="feedbackMessage"
-      ></ckeditor>
+      <feedback-source
+          (submit)="provideFeedback($event)"
+          (messageChanged)="feedbackMessage=$event"
+          (currentTabChanged)="currentTab=$event"
+          >
+      </feedback-source>
+
     </div>
 
-    <div class="footer">
+    <div class="footer" [hidden]="currentTab == 'video'">
       <button
         mat-stroked-button="mat-stroked-button"
         color="accent"
-        (click)="provideFeedback()"
+        (click)="provideFeedback(feedbackMessage)"
         e3-async-button
         [running]="submitting"
       >Submit Feedback</button>

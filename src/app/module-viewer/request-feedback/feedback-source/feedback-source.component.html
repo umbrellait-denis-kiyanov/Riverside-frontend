@@ -1,0 +1,21 @@
+<mat-tab-group mat-align-tabs="center" (selectedTabChange)="handleTabChange($event)">
+    <mat-tab>
+        <ng-template mat-tab-label>
+          <mat-icon class="tab-icon">post_add</mat-icon>
+        </ng-template>
+      <ckeditor
+        class="ckeditor"
+        [editor]="Editor"
+        [(ngModel)]="message"
+      ></ckeditor>
+    </mat-tab>
+    <mat-tab >
+      <ng-template mat-tab-label>
+        <mat-icon class="tab-icon">video_call</mat-icon>
+      </ng-template>
+      <div class="tab-video">
+          <standalone-recorder (finish)="submitVideo($event)"></standalone-recorder>
+      </div>
+
+    </mat-tab>
+  </mat-tab-group>

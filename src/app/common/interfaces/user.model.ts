@@ -23,7 +23,7 @@ class User extends BaseModel {
       roles: (val: any, data: any) => {
         return {
           riverside_facilitator: !!data.is_riverside_facilitator,
-          riverside_se: !!data.is_riverside_se,
+          riverside_se: !!data.is_riverside_managing_director,
           super_admin: !!data.is_super_admin,
         };
       }
