@@ -60,92 +60,35 @@
 
     <div class="panel-body">
 
-      <div class="steps-header steps-row">
-        <div class="steps-left">Steps</div>
-
-        <div class="steps-right">Learning Center</div>
-      </div>
-
       <div id="drop-{{ sectionIndex }}" cdkDropList [cdkDropListData]="section.steps" (cdkDropListDropped)="onStepDrop($event)" [cdkDropListConnectedTo]="getSortableListIDs()">
       <div *ngFor="let step of section.steps; index as s" cdkDrag cdkDragLockAxis="y" class="steps-item">
-        <div class="step steps-row">
-          <div class="steps-left">
-            <div class="step-input-wrapper step-name">
+        <div class="step">
+          <div class="step-input-wrapper step-name">
 
-              <span
-                class="fa fa-file-text-o"
-                (click)="onClickEditStepTemplate(sectionIndex, s)"
-                title="Configure step template"
-              ></span>
+            <span
+              class="fa fa-file-text-o"
+              (click)="onClickEditStepTemplate(sectionIndex, s)"
+              title="Configure step template"
+            ></span>
 
-              <span
-                class="fa fa-link"
-                (click)="onClickLinkStep(sectionIndex, s)"
-                title="Link to another step"
-              ></span>
+            <span
+              class="fa fa-link"
+              (click)="onClickLinkStep(sectionIndex, s)"
+              title="Link to another step"
+            ></span>
 
-              <span
-                class="fa fa-trash-o"
-                (click)="onClickRemoveStep(sectionIndex, s)"
-                title="Delete step"
-              ></span>
+            <span
+              class="fa fa-trash-o"
+              (click)="onClickRemoveStep(sectionIndex, s)"
+              title="Delete step"
+            ></span>
 
-              <input
-                class="site-tbox"
-                [ngModelOptions]="{standalone: true}"
-                [(ngModel)]="step.description"
-                placeholder="Step Description"
-              />
-            </div>
-          </div>
-
-          <div class="steps-right">
-
-            <div
-              class="step-input-wrapper"
-              *ngFor="let element of step.elements; let i = index"
-            >
-              <div class="input-group input-group-md">
-                <span class="input-group-addon">
-                  <select
-                    [ngModelOptions]="{standalone: true}"
-                    [(ngModel)]="element.type"
-                  >
-                    <option
-                      *ngFor="let t of elementTypes"
-                      [value]="t"
-                    >{{t}}</option>
-                  </select>
-                </span>
-
-                <input
-                  [ngModelOptions]="{standalone: true}"
-                  [(ngModel)]="element.data"
-                  placeholder="Learning Resource"
-                  class="site-tbox"
-                  required="required"
-                />
-                <input
-                  [ngModelOptions]="{standalone: true}"
-                  [(ngModel)]="element.tooltip"
-                  placeholder="Add tooltip text (optional)"
-                  class="site-tbox"
-                  required="required"
-                />
-              </div>
-
-              <span
-                class="fa fa-trash"
-                (click)="onClickRemoveElement(step,i)"
-              ></span>
-            </div>
-
-            <div
-              class="btn-flat btn-flat-primary"
-              (click)="onClickAddElement(step)"
-            >
-              Add Element: (text) (youtube video) (graphic file) (pdf)
-            </div>
+            <input
+              class="site-tbox"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="step.description"
+              placeholder="Step Description"
+            />
           </div>
         </div>
 
