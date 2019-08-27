@@ -14,9 +14,11 @@
       class="site-tbox"
       required="required"
     >
-      <option *ngFor="let template of templates" [ngValue]="template.id">{{ template.description }}</option>
+      <option *ngFor="let template of templates" [ngValue]="template.id">{{ template.name }}</option>
     </select>
   </div>
+
+  <div class="well template-description" *ngIf="description">{{ description }}</div>
 
   <div class="form-group" *ngIf="!templateFields">
     <label>Template Configuration</label>

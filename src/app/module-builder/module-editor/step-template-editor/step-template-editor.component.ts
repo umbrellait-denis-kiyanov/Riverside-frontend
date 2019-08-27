@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Step } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from '../../../common/services/module.service';
@@ -6,7 +6,8 @@ import { ModuleService } from '../../../common/services/module.service';
 @Component({
   selector: 'app-step-template-editor',
   templateUrl: './step-template-editor.component.html',
-  styleUrls: ['./step-template-editor.component.sass']
+  styleUrls: ['./step-template-editor.component.sass'],
+  encapsulation: ViewEncapsulation.None,
 })
 export class StepTemplateEditorComponent implements OnInit {
 
@@ -21,6 +22,8 @@ export class StepTemplateEditorComponent implements OnInit {
   templateConfig: any;
 
   initialized = false;
+
+  description: '';
 
   constructor(public modal: NgbActiveModal,
               private moduleService: ModuleService) {}
@@ -39,9 +42,10 @@ export class StepTemplateEditorComponent implements OnInit {
   }
 
   onTemplateChange() {
-    const fields = this.templates.
-      filter(template => template.id === this.stepEdit.template_id).shift().params_json.
+    const template = this.templates.filter(tpl => tpl.id === this.stepEdit.template_id).shift();
+    const fields = template.params_json.
       replace(/\s/g, '').
+      split(/inputs\:\s{0,}\[\]/).join('inputs:Array<{key: string}>').
       split(';').join(',').
       split('Array<').join('[').
       split('>').join(']').
@@ -51,10 +55,12 @@ export class StepTemplateEditorComponent implements OnInit {
       split('}').join(']').
       split(',').join('],[').
       split(':').join(',').
-      split('?').join('')
+      split('?').join('').
+      split("'").join('')
       ;
 
     this.templateFields = JSON.parse('[' + fields + ']');
     this.templateFields.push(['number_of_inputs', 'number']);
+    this.description = template.description;
   }
 }

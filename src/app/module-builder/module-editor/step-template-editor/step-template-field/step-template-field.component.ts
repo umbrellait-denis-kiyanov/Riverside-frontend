@@ -40,7 +40,7 @@ export class StepTemplateFieldComponent implements OnInit {
       if (typeof this.value === 'object' && this.value !== null) {
         this.value = JSON.stringify(this.value);
         this.type = 'json';
-      } else if (['title', 'sufix', 'input_sufix'].includes(this.name)) {
+      } else if (['title', 'sufix', 'input_sufix', 'key'].includes(this.name)) {
         this.type = 'text-input';
       } else {
         this.rtEditor = InlineEditor;
