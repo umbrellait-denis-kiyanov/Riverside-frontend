@@ -55,6 +55,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
+import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
 
 
 
@@ -75,7 +76,8 @@ import { FeedbackSourceComponent } from './request-feedback/feedback-source/feed
     ModuleBuilderModule,
     CKEditorModule,
     E3CommonModule,
-    VideoRecorderModule
+    VideoRecorderModule,
+    AudioRecorderModule,
   ],
   declarations: [
     ModuleViewerRootComponent,

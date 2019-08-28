@@ -17,6 +17,7 @@ export class ModuleNavComponent implements OnInit {
   @Input() submitting: boolean;
   @Input() is_done: boolean;
   @Input() is_subaction_done: boolean;
+  @Input() hideActionButton: boolean;
   @Output() feedback: EventEmitter<Partial<Message>> = new EventEmitter();
 
   constructor(
@@ -61,16 +62,8 @@ export class ModuleNavComponent implements OnInit {
   }
 
   feedbackClicked() {
-    const partialMessage: Partial<Message> = {
-      module_id: this.navService.module.current.id,
-      step_id: this.navService.currentStep.id
-    };
-    if (['feedback', 'final_feedback'].includes(this.action)) {
-      partialMessage.from_org_id = this.userService.me.org.id;
-    } else {
-      partialMessage.to_org_id = this.userService.me.org.id;
-    }
-    this.feedback.emit(partialMessage);
+
+    this.feedback.emit();
     this.is_done = true;
     // this.navService.nextStep();
   }
