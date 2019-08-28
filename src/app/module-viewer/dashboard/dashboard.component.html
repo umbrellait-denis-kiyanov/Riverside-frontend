@@ -10,11 +10,11 @@
       <div *ngFor="let moduleGroup of category.modules" class="module-group">
         <div *ngFor="let module of moduleGroup" class="module-item container-fluid">
           <div class="row">
-            <div class="col-xs-2 module-control">
+            <div class="col-xs-3 module-control">
                 <mat-radio-button class="example-radio-button" [name]="module.id">
                 </mat-radio-button>
             </div>
-            <div class="col-xs-10 module-name">
+            <div class="col-xs-9 module-name">
               {{ module.name }}
             </div>
           </div>
