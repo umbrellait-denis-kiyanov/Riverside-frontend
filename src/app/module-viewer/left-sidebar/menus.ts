@@ -44,6 +44,11 @@ export const menus: MenusInterface = [
     link: '/account',
   },
   {
+    'mat-icon': 'dashboard',
+    label: 'DASHBOARD',
+    link: '/dashboard',
+  },
+  {
     'mat-icon': 'view_module',
     label: 'MODULE',
     link: '/module/1',

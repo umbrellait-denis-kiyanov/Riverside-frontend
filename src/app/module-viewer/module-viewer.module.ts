@@ -23,6 +23,7 @@ import { LetterImageComponent } from './ice/letter-image/letter-image.component'
 import { MatMenuModule} from '@angular/material/menu';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
+import { MatRadioModule} from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UserComponent } from './ice/user/user.component';
 import { IceService } from './ice/ice.service';
@@ -55,6 +56,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
+import { DashboardComponent } from './dashboard/dashboard.component';
 
 
 
@@ -68,6 +70,7 @@ import { FeedbackSourceComponent } from './request-feedback/feedback-source/feed
     RouterModule,
     AppRoutingModule,
     MatMenuModule,
+    MatRadioModule,
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
@@ -112,7 +115,8 @@ import { FeedbackSourceComponent } from './request-feedback/feedback-source/feed
     FinalFeedbackComponent,
     PersonaComponent,
     AgeGenderComponent,
-    FeedbackSourceComponent
+    FeedbackSourceComponent,
+    DashboardComponent
 
   ],
   entryComponents: [

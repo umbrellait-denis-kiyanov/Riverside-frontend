@@ -1,0 +1,26 @@
+<h1>Portco Required Modules</h1>
+
+<div *ngIf="modules$ | async as modules" class="panel-container">
+  <div *ngFor="let category of modules" class="panel module-category" [class.double]="2 == category.modules.length">
+    <div class="panel-heading">
+      {{ category.name }}
+    </div>
+
+    <div class="panel-body">
+      <div *ngFor="let moduleGroup of category.modules" class="module-group">
+        <div *ngFor="let module of moduleGroup" class="module-item container-fluid">
+          <div class="row">
+            <div class="col-xs-2 module-control">
+                <mat-radio-button class="example-radio-button" [name]="module.id">
+                </mat-radio-button>
+            </div>
+            <div class="col-xs-10 module-name">
+              {{ module.name }}
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>

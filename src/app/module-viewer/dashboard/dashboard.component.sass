@@ -1,0 +1,73 @@
+\:host
+    width: 100%
+    padding: 2em
+
+h1
+    text-transform: uppercase
+    font-family: Montserrat
+    margin-bottom: 0.6em
+    font-size: 3em
+
+.panel-container
+    display: flex
+    width: 100%
+    border-right: 1px solid black !important
+
+    .panel
+        flex: 1
+        border: 1px solid black
+        border-radius: 0
+        border-right: 0
+        margin: 0
+        display: flex
+        flex-direction: column
+
+        \&.double
+            flex: 2
+
+            .module-group:first-of-type
+                padding-right: 1em;
+
+        .panel-heading
+            text-transform: uppercase
+            text-align: center
+            background-color: #00529f
+            margin: 1em
+            padding: 5px
+            font-size: 1.2em
+            color: white
+
+        .panel-body
+            padding: 0 5px 0
+            flex: 1
+            display: flex
+            overflow: auto
+
+            .container-fluid
+                padding: 0
+
+                .row
+                    margin: 0
+
+            .module-group
+                flex: 1
+                height: 100%
+                padding-top: 15px
+
+                &:nth-of-type(2)
+                    border-left: 1px solid #ccc
+                    padding-left: 1em;
+
+            .module-item
+                margin-bottom: 4em
+
+                .module-control
+                    text-align: center
+                    padding: 5px;
+
+                .module-name
+                    padding: 0
+                    padding-left: 5px
+                    color: #999
+                    text-transform: uppercase
+                    font-size: 1.1em
