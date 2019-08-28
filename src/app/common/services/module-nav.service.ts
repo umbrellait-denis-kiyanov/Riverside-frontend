@@ -81,7 +81,7 @@ export class ModuleNavService {
    }
 
   updateProgress(module: Module) {
-    const numerator = module.steps.filter(s => !s.is_section_break).map(s => Number(!!s.is_checked)).reduce((prev, curr) => prev + curr);
+    const numerator = module.steps.filter(s => !s.is_section_break).map(s => Number(!!s.is_approved)).reduce((prev, curr) => prev + curr);
     const denominator = module.steps.filter(s => !s.is_section_break).length;
     module.percComplete = Math.round(100 * numerator / denominator);
   }
