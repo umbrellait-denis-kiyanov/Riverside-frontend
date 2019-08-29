@@ -28,6 +28,7 @@ const hardCodePictures = (user: User) => {
     case 'md@test.con':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic26.jpg';
     case 'facilitator@riversidecompany.com':
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/picLynn.jpg';
     default:
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
   }
