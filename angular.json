@@ -49,6 +49,7 @@
             ],
             "scripts": [
               "src/assets/scripts/jqueryBrowser.js",
+              "src/assets/scripts/mictest.js",
               "node_modules/ice/lib/rangy/rangy-core.js",
               "node_modules/ice/src/polyfills.js",
               "node_modules/ice/src/ice.js",

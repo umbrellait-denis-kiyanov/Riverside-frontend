@@ -1,0 +1,79 @@
+<div class="content">
+
+  <div *ngIf="status == STATUS.TESTING" class="message">
+    Please wait while we are checking your microfone.
+  </div>
+
+  <div *ngIf="status == STATUS.UPlOADING" class="message">
+    Uploading your recording.
+  </div>
+
+  <div *ngIf="status == STATUS.DONE" class="message">
+    All done! Your audio has been submitted.
+  </div>
+
+  <div *ngIf="status == STATUS.ERROR" class="message with-error">
+    Sorry, we were not able to submit your audio;
+  </div>
+
+  <div *ngIf="status == STATUS.TEST_ERROR" class="message with-error">
+    {{errorMsg}}
+  </div>
+  <!-- [ngClass]="{'recording': status == STATUS.RECORDING}" -->
+  <div>
+    <audio
+      #audioOption
+      [src]="audioSrc | safeurl"
+      [ngStyle]="{'visibility': status == STATUS.PLAYING?'visible':'hidden'}"
+      controls
+    >
+    </audio>
+  </div>
+  <div *ngIf="showUI() " class="audio-recorder-buttons">
+    <button
+
+      class="btn-default btn "
+      (click)="toggleRecording()"
+      *ngIf="status == STATUS.READY"
+    >
+      <!-- <mat-icon class=icon-btn>mic</mat-icon> -->
+      <span class="fa fa-circle text-red"></span> Start
+    </button>
+
+    <button
+      class="btn-default btn "
+      (click)="toggleRecording()"
+      *ngIf="status == STATUS.RECORDING"
+    >
+      <!-- <mat-icon class=icon-btn>mic</mat-icon> -->
+      <span class="fa fa-stop text-red"></span> Stop
+    </button>
+
+    <button
+      class="btn-default btn "
+      (click)="play()"
+      *ngIf="status == STATUS.RECORDED"
+    >
+      <span class="fa fa-play text-green"></span> Play
+      <!-- <mat-icon class=icon-btn>play_arrow</mat-icon> -->
+    </button>
+
+    <button
+      class="btn btn-default"
+      (click)="toggleRecording()"
+      *ngIf="status == STATUS.PLAYING"
+    >
+      <fa-icon [icon]="redoIcon" class="text-red"></fa-icon> Redo
+    </button>
+
+
+    <button
+        class="btn-default btn "
+        *ngIf="status == STATUS.RECORDED || status == STATUS.PLAYING"
+        (click)="upload()"
+      >
+        <span class="fa fa-check text-green"></span> Submit
+      </button>
+  </div>
+</div>
+

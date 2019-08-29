@@ -28,7 +28,8 @@ export class ModuleService {
     if (this.modules) {
       return this.modules.find(m => Number(m.id) === Number(id));
     } else {
-      return await this.httpClient.get(`${this.baseUrl}/${id}`, {params: {org_id}}).toPromise().then(async (res: any) => {
+      const endpoint = String(id) + (org_id ? `/org/${org_id}` : '');
+      return await this.httpClient.get(`${this.baseUrl}/${endpoint}`).toPromise().then(async (res: any) => {
         let i = 1;
         for (const step of (res.steps as Step[])) {
           step.position = i;

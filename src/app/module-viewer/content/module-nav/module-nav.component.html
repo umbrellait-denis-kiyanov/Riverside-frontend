@@ -10,6 +10,7 @@
 <span class="middle-buttons">
   <button
   *ngIf="is_done"
+  [hidden]="hideActionButton"
   mat-raised-button
   color="accent"
   (click)="buttonClicked()"
@@ -21,6 +22,7 @@
 </button>
 <button
   *ngIf="!is_done"
+  [hidden]="hideActionButton"
   mat-stroked-button
   color="accent"
   (click)="buttonClicked()"

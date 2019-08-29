@@ -9,6 +9,7 @@ import { ModuleContentService } from 'src/app/common/services/module-content.ser
 import { InboxService } from 'src/app/module-viewer/inbox/inbox.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { PersonaInputs } from '../persona-ids.class';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 
 @Component({
@@ -28,14 +29,16 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
   action: string;
   subaction: string;
   currentSection: string;
+  currentTab = 'text';
 
   constructor(
     protected el: ElementRef,
     protected moduleContentService: ModuleContentService,
     private inboxService: InboxService,
-    protected userService: UserService
+    protected userService: UserService,
+    private navService: ModuleNavService,
   ) {
-    super(el, moduleContentService);
+    super(el, moduleContentService, userService);
   }
 
   ngOnInit() {
@@ -107,9 +110,18 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
     return behaviorInputs;
   }
 
-  feedbackClicked(partialMessage: Partial<Message>) {
+  feedbackClicked(msg: string) {
+    const partialMessage: Partial<Message> = {
+      module_id: this.navService.module.current.id,
+      step_id: this.navService.currentStep.id
+    };
+    if (['feedback', 'final_feedback'].includes(this.action)) {
+      partialMessage.from_org_id = this.userService.me.org.id;
+    } else {
+      partialMessage.to_org_id = this.userService.me.org.id;
+    }
     const message = {
-      message: this.message,
+      message: msg,
       ...partialMessage
     };
     this.inboxService.save(message);

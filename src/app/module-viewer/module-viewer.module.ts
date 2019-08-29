@@ -56,6 +56,7 @@ import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
+import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgbDate, NgbModule, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbStringAdapter } from './ngb-string-adapter';
@@ -80,6 +81,7 @@ import { NgbStringAdapter } from './ngb-string-adapter';
     CKEditorModule,
     E3CommonModule,
     VideoRecorderModule,
+    AudioRecorderModule,
     NgbModule
   ],
   declarations: [

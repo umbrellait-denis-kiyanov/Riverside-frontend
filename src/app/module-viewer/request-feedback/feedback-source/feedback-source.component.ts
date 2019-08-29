@@ -16,7 +16,8 @@ export class FeedbackSourceComponent implements OnInit {
   public Editor = InlineEditor;
   tabs = [
     'text',
-    'video'
+    'video',
+    'audio'
   ];
   activeTabIndex = 0;
 
@@ -57,6 +58,13 @@ export class FeedbackSourceComponent implements OnInit {
   submitVideo(url: string) {
     this.message = `<div style="text-align: center">
       <video src="${url}" controls>
+    </div>`;
+    this.submit.emit(this.message);
+  }
+
+  submitAudio(url: string) {
+    this.message = `<div style="text-align: center">
+      <audio src="${url}" controls>
     </div>`;
     this.submit.emit(this.message);
   }

@@ -124,11 +124,17 @@
   [innerHtml]="contentData.instructions | safehtml"
 ></div>
 
-<ckeditor class="ckeditor" [editor]="Editor" [(ngModel)]="message"></ckeditor>
+<feedback-source
+    (submit)="feedbackClicked($event)"
+    (messageChanged)="message=$event"
+    (currentTabChanged)="currentTab=$event"
+    >
+</feedback-source>
 
 <module-nav
   [action]="action"
   (feedback)="feedbackClicked($event)"
   [submitting]="submitting"
+  [hideActionButton]="currentTab != 'text'"
   >
 </module-nav>

@@ -133,16 +133,17 @@
 ></div>
 
 <feedback-source
-    (submit)="provideFeedback($event)"
-    (messageChanged)="feedbackMessage=$event"
+    (submit)="feedbackClicked($event)"
+    (messageChanged)="message=$event"
     (currentTabChanged)="currentTab=$event"
     >
 </feedback-source>
 
 <module-nav
   [action]="action"
-  (feedback)="feedbackClicked($event)"
+  (feedback)="feedbackClicked(message)"
   [submitting]="submitting"
   [subaction]="subaction"
+  [hideActionButton]="currentTab != 'text'"
   >
 </module-nav>
