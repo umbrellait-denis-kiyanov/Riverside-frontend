@@ -63,15 +63,79 @@ h1
             .module-item
                 height: 8em
 
+                \&.active
+                    .module-name
+                        color: black
+
+                        .due-date
+                            display: block
+                            margin-top: 3px
+
+                            input
+                                width: 0
+                                height: 0
+                                visibility: hidden
+                                position: absolute
+                                margin-left: 5px
+                                margin-top: -5px
+
+                            .selected-due-date
+                                display: flex
+                                width: 100%
+
+                                .actual-date
+                                    font-size: 0.7em
+                                    padding-right: 0.5em
+
+                                .due-progress
+                                    flex: 1
+
+                                .module-progress-bar
+                                    width: 100%
+                                    height: 0.7em
+                                    border: 1px solid #aaa
+                                    margin-top: 1px
+
+                                    .module-progress-fill
+                                        background-color: #58ad3f
+                                        height: 100%
+
+
+                        \::ng-deep
+                            .mat-icon
+                                color: #888
+                                cursor: pointer
+
+
                 .module-control
                     text-align: center
                     padding: 5px
 
-                    \::ng-deep .mat-radio-label-content
-                        padding: 0
+                    \::ng-deep
+                        .mat-radio-label-content
+                            padding: 0
+
+                        .mat-radio-button.mat-accent .mat-radio-outer-circle
+                            border-color: #222
+                            border-width: 1px
+
+                        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
+                            border-color: #ccc
+                            border-width: 2px
+
+                        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle
+                            color: #00529f
+                            background-color: #00529f
+                            transform: scale(0.75)
+
+                        .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element
+                            background-color: rgba(0, 82, 159, .26)
 
                 .module-name
                     padding: 0
                     color: #999
                     text-transform: uppercase
                     padding-right: 5px
+
+                    .due-date
+                        display: none

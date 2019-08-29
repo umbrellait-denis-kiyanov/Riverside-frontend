@@ -57,7 +57,8 @@ import { AgeGenderComponent } from './riverside-step-template/templates/age-gend
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { NgbDate, NgbModule, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbStringAdapter } from './ngb-string-adapter';
 
 
 @NgModule({
@@ -78,7 +79,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     ModuleBuilderModule,
     CKEditorModule,
     E3CommonModule,
-    VideoRecorderModule
+    VideoRecorderModule,
+    NgbModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -143,7 +145,8 @@ import { DashboardComponent } from './dashboard/dashboard.component';
     UserService,
     IceService,
     LeftMenuService,
-    InboxService
+    InboxService,
+    {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
   bootstrap: [ModuleViewerRootComponent]
 })
