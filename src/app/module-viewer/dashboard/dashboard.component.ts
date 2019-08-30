@@ -73,4 +73,10 @@ export class DashboardComponent implements OnInit {
       }
     }
   }
+
+  showUnderConstructionMessage(module: Module) {
+    module.underConstruction = true;
+
+    setTimeout(() => module.underConstruction = false, 3000);
+  }
 }

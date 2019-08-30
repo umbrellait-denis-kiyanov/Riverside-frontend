@@ -15,7 +15,8 @@
                 <mat-icon class="completed-check">check_circle</mat-icon>
             </div>
             <div class="col-sm-9 module-name">
-              <a class="module-name-link" [routerLink]="'/module/' + module.id">{{ module.name }}</a>
+              <a class="module-name-link" *ngIf="module.id == 1" [routerLink]="'/module/' + module.id">{{ module.name }}</a>
+              <a class="module-name-link" *ngIf="module.id != 1" (click)="showUnderConstructionMessage(module)">{{ module.name }}</a>
               <span class="module-name-link">{{ module.name }}</span>
 
               <div class="due-date" *ngIf="module.status?.is_activated">
@@ -37,7 +38,10 @@
                     </div>
                   </div>
                 </div>
+
+                <div class="under-construction" *ngIf="module.underConstruction">This module is under construction!</div>
               </div>
+
             </div>
           </div>
         </div>

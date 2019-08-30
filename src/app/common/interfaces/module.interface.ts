@@ -12,6 +12,7 @@ export interface Module {
   percComplete?: number;
   steps: Step[];
   status?: ModuleStatus;
+  underConstruction?: boolean;
 }
 
 export interface Step {
