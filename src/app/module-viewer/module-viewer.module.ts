@@ -48,6 +48,7 @@ import { NamePersonasTemplateComponent } from './riverside-step-template/templat
 import { PersonaBehaviorTemplateComponent } from './riverside-step-template/templates/persona_behavior/persona_behavior.component';
 import { FeedbackSectionTemplateComponent } from './riverside-step-template/templates/feedback_section/feedback_section.component';
 import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
+import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
@@ -94,6 +95,7 @@ import { NgbStringAdapter } from './ngb-string-adapter';
     // E3CheckboxComponent,
     LoadingComponent,
     FormatDatePipe,
+    ReadableDatePipe,
     LearningElementComponent,
 
     IceComponent,

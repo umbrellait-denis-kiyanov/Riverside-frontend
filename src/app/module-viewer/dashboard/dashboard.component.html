@@ -29,7 +29,7 @@
 
                 <div class="selected-due-date" *ngIf="module.status.due_date" (click)="d.toggle()">
                   <div class="actual-date">
-                    {{ module.status.due_date }}
+                    {{ module.status.due_date | readabledate }}
                   </div>
                   <div class="due-progress">
                     <div class="module-progress-bar">
