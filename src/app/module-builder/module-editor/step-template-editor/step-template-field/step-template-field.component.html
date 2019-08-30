@@ -46,8 +46,8 @@
 
 <div *ngIf="hasSubFields">
   <label>{{ fieldTitle(name) }}</label>
-  <div class="panel panel-default sub-fields" *ngFor="let val of value; index as idx">
-    <div class="panel-body">
+  <div class="card sub-fields" *ngFor="let val of value; index as idx">
+    <div class="card-body">
       <button class="btn btn-danger remove-subvalue" (click)="onClickRemoveSubField(idx)">Remove</button>
       <app-step-template-field *ngFor="let field of type" (change)="subValueChange()" [section]="name" [index]="idx" [field]="field" [(json)]="json"></app-step-template-field>
     </div>
