@@ -8,11 +8,11 @@
 
     <div class="panel-body">
       <div *ngFor="let moduleGroup of category.modules" class="module-group">
-        <div *ngFor="let module of moduleGroup" class="module-item container-fluid" [class.active]="module.status?.is_activated == 1" [class.late]="module.status?.is_late">
+        <div *ngFor="let module of moduleGroup" class="module-item container-fluid" [class.active]="module.status?.is_activated == 1" [class.late]="module.status?.is_late" [class.completed]="module.status?.progress == 100">
           <div class="row">
             <div class="col-sm-3 module-control">
-                <mat-radio-button class="example-radio-button" [name]="module.id" (click)="toggleModuleStatus(module)" [checked]="module.status?.is_activated == 1">
-                </mat-radio-button>
+                <mat-radio-button class="example-radio-button" [name]="module.id" (click)="toggleModuleStatus(module)" [checked]="module.status?.is_activated == 1"></mat-radio-button>
+                <mat-icon class="completed-check">check_circle</mat-icon>
             </div>
             <div class="col-sm-9 module-name">
               <a class="module-name-link" [routerLink]="'/module/' + module.id">{{ module.name }}</a>
@@ -33,7 +33,7 @@
                   </div>
                   <div class="due-progress">
                     <div class="module-progress-bar">
-                      <div class="module-progress-fill" style="width: 25%"></div>
+                      <div class="module-progress-fill" [style.width]="module.status.progress + '%'"></div>
                     </div>
                   </div>
                 </div>

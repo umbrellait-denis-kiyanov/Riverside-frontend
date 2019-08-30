@@ -3,6 +3,7 @@ export interface ModuleStatus {
   due_date?: string;
   due_date_edit?: string;
   is_late?: boolean;
+  progress: number;
 }
 
 export interface Module {

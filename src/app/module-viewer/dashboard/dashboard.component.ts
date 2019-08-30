@@ -66,6 +66,11 @@ export class DashboardComponent implements OnInit {
     if (module.status) {
       module.status.due_date_edit = module.status.due_date;
       module.status.is_late = module.status.due_date < new Date().toJSON().substr(0, 10);
+
+      module.status.progress = Math.floor(Math.random() * 100);
+      if (module.status.progress > 70) {
+        module.status.progress = 100;
+      }
     }
   }
 }

@@ -117,10 +117,24 @@ h1
                         .actual-date
                             color: red !important
 
+                    \&.completed
+                        .actual-date
+                            display: none
+
+                        .module-control
+                            .completed-check
+                                display: inline-block
+
+                            mat-radio-button
+                                display: none
 
                 .module-control
                     text-align: center
                     padding: 5px
+
+                    .completed-check
+                        color: #58ad3f
+                        display: none
 
                     \::ng-deep
                         .mat-radio-label-content
