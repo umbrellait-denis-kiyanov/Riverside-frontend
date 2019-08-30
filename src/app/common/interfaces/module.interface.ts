@@ -2,6 +2,7 @@ export interface ModuleStatus {
   is_activated: boolean;
   due_date?: string;
   due_date_edit?: string;
+  is_late?: boolean;
 }
 
 export interface Module {

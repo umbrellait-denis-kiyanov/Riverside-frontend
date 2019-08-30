@@ -8,7 +8,7 @@
 
     <div class="panel-body">
       <div *ngFor="let moduleGroup of category.modules" class="module-group">
-        <div *ngFor="let module of moduleGroup" class="module-item container-fluid" [class.active]="module.status?.is_activated == 1">
+        <div *ngFor="let module of moduleGroup" class="module-item container-fluid" [class.active]="module.status?.is_activated == 1" [class.late]="module.status?.is_late">
           <div class="row">
             <div class="col-sm-3 module-control">
                 <mat-radio-button class="example-radio-button" [name]="module.id" (click)="toggleModuleStatus(module)" [checked]="module.status?.is_activated == 1">
