@@ -34,6 +34,7 @@ export class ContentComponent implements OnInit {
   moduleId: number;
   unsubNavChanged: Subscription;
   unsubOnApprove: Subscription;
+  unsubContentChange: Subscription;
   debounceSaveTime = 500;
 
   @ViewChild(RiversideStepTemplateComponent) templateComponent: RiversideStepTemplateComponent;
@@ -60,7 +61,7 @@ export class ContentComponent implements OnInit {
     });
     this.init();
 
-    this.moduleContentService.contentChanged.pipe(skip(1), debounceTime(this.debounceSaveTime)).subscribe(this.save.bind(this));
+
   }
 
   async init() {
@@ -100,6 +101,11 @@ export class ContentComponent implements OnInit {
     this.ready = true;
     this.navService.setStepFromId(this.stepId);
     this.processFeedbackStatus();
+    this.unsubContentChange && this.unsubContentChange.unsubscribe();
+    this.unsubContentChange = this.moduleContentService.contentChanged.pipe(
+      skip(1),
+      debounceTime(this.debounceSaveTime))
+      .subscribe(this.save.bind(this));
     const { moduleContent: { data: { content_json: data,
       inputs, template_params_json, template_component,
       is_approved } } } = this.moduleContentService;
@@ -114,21 +120,21 @@ export class ContentComponent implements OnInit {
     this.templateData = new TemplateContentData({ data: templateData, me: this.me });
     this.templateComponentName = template_component as keyof typeof Templates;
     this.unsubOnApprove && this.unsubOnApprove.unsubscribe();
-    this.unsubOnApprove = this.navService.onApprove.pipe(debounceTime(100)).subscribe(val => {
-      this.iceService.onApprove.emit(val);
-      if (!this.iceService.allComponents.length) {
-        this.navService.nextStep();
-      } else {
-        this.moduleContentService.contentChanged.pipe(take(1)).subscribe(() => {
-          if (this.moduleContentService.moduleContent.data.is_section_break) {
-            setTimeout(() => this.navService.nextStep(), this.debounceSaveTime + 10);
-          } else {
-            this.navService.getModule(this.moduleId, String(this.userService.me.org.id));
-          }
+    // this.unsubOnApprove = this.navService.onApprove.pipe(debounceTime(100)).subscribe(val => {
+    //   this.iceService.onApprove.emit(val);
+    //   if (!this.iceService.allComponents.length) {
+    //     this.navService.nextStep();
+    //   } else {
+    //     this.moduleContentService.contentChanged.pipe(take(1)).subscribe(() => {
+    //       if (!this.moduleContentService.moduleContent.data.requires_feedback) {
+    //         this.navService.onSave.pipe(take(1)).subscribe(() => {
+    //           this.navService.nextStep();
+    //         });
+    //       }
 
-        });
-      }
-    });
+    //     });
+    //   }
+    // });
 
   }
 
@@ -150,7 +156,9 @@ export class ContentComponent implements OnInit {
     data.content_json = templateData;
     data.inputs = this.addIdsToInputs(templateData.inputs);
     delete data.is_approved;
-    this.moduleContentService.save(data);
+    this.moduleContentService.save(data).then(() => {
+      this.navService.onSave.emit();
+    });
   }
 
   addIdsToInputs(inputs: any) {
