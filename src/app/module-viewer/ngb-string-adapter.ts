@@ -5,8 +5,8 @@ export class NgbStringAdapter extends NgbDateAdapter<string> {
   fromModel(date: string): NgbDateStruct {
     return date ? {
       year: parseInt(date.substr(0, 4), 10),
-      month: parseInt(date.substr(4, 2), 10),
-      day: parseInt(date.substr(6, 2), 10)
+      month: parseInt(date.substr(5, 2), 10),
+      day: parseInt(date.substr(8, 2), 10)
     } : null;
   }
 

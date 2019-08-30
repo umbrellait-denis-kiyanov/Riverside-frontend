@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { UserService } from 'src/app/common/services/user.service';
 import User from 'src/app/common/interfaces/user.model';
+import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,11 +20,9 @@ export class DashboardComponent implements OnInit {
 
   modules$: Observable<any>;
 
-  statusChangeProgress = {};
-
   me: User;
 
-  minDate: Date;
+  minDate: NgbDateStruct;
 
   ngOnInit() {
     this.me = this.userService.me;
@@ -43,20 +42,16 @@ export class DashboardComponent implements OnInit {
       })
     }));
 
-    this.minDate = new Date();
+    const today = new Date();
+    this.minDate = {year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate()};
   }
 
   toggleModuleStatus(module: Module) {
     const status = module.status ? !module.status.is_activated : true;
 
-    this.statusChangeProgress[module.id] = true;
     this.moduleService.setStatus(module, status, this.me.org.id).subscribe(newStatus => {
       module.status = newStatus;
       this.prepareStatus(module);
-    },
-    err => {},
-    () => {
-      this.statusChangeProgress[module.id] = false;
     });
   }
 
@@ -64,10 +59,6 @@ export class DashboardComponent implements OnInit {
     this.moduleService.setDueDate(module, module.status.due_date_edit, this.me.org.id).subscribe(newStatus => {
       module.status = newStatus;
       this.prepareStatus(module);
-    },
-    err => {},
-    () => {
-      this.statusChangeProgress[module.id] = false;
     });
   }
 

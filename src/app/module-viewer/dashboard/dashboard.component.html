@@ -10,18 +10,23 @@
       <div *ngFor="let moduleGroup of category.modules" class="module-group">
         <div *ngFor="let module of moduleGroup" class="module-item container-fluid" [class.active]="module.status?.is_activated == 1">
           <div class="row">
-            <div class="col-xs-3 module-control">
+            <div class="col-sm-3 module-control">
                 <mat-radio-button class="example-radio-button" [name]="module.id" (click)="toggleModuleStatus(module)" [checked]="module.status?.is_activated == 1">
                 </mat-radio-button>
             </div>
-            <div class="col-xs-9 module-name">
-
+            <div class="col-sm-9 module-name">
               <a class="module-name-link" [routerLink]="'/module/' + module.id">{{ module.name }}</a>
               <span class="module-name-link">{{ module.name }}</span>
 
               <div class="due-date" *ngIf="module.status?.is_activated">
                 <mat-icon *ngIf="!module.status.due_date" (click)="d.toggle()">calendar_today</mat-icon>
-                <input type="text" ngbDatepicker #d="ngbDatepicker" container="body" [autoClose]="true" [minDate]="minDate" [(ngModel)]="module.status.due_date_edit" (dateSelect)="saveDueDate(module)" />
+                <input type="text" ngbDatepicker #d="ngbDatepicker" container="body" [minDate]="minDate" [(ngModel)]="module.status.due_date_edit" (dateSelect)="saveDueDate(module)" [footerTemplate]="calendarFooter" />
+                <ng-template #calendarFooter>
+                  <div class="calendar-footer text-center" style="padding: 0.5em">
+                    <button class="btn btn-sm btn-secondary" (click)="d.close()">Cancel</button>
+                  </div>
+                </ng-template>
+
                 <div class="selected-due-date" *ngIf="module.status.due_date" (click)="d.toggle()">
                   <div class="actual-date">
                     {{ module.status.due_date }}

@@ -76,7 +76,7 @@ export const menus: MenusInterface = [
 
   {
     render: () => review_svg,
-    restrict: ({nav}) => !!nav.module.current,
+    restrict: ({nav}) => !!nav.module.current && nav.getRouter().url !== '/dashboard',
     className: 'material-icons-outlined',
     labelFn: ({nav}) => (nav.module.current || {name: ''}).name.toUpperCase(),
     linkFn(nav: ModuleNavService) {
