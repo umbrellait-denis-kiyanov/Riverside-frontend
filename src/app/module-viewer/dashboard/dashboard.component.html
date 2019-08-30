@@ -28,7 +28,7 @@
                   </div>
                 </ng-template>
 
-                <div class="selected-due-date" *ngIf="module.status.due_date" (click)="d.toggle()">
+                <div class="selected-due-date" *ngIf="module.status.due_date" (click)="(module.status?.progress == 100) || d.toggle()">
                   <div class="actual-date">
                     {{ module.status.due_date | readabledate }}
                   </div>
