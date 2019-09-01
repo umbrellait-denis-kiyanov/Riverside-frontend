@@ -61,6 +61,9 @@ import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { NgbDate, NgbModule, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbStringAdapter } from './ngb-string-adapter';
+import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
+import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
+import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.component';
 
 
 @NgModule({
@@ -122,7 +125,10 @@ import { NgbStringAdapter } from './ngb-string-adapter';
     PersonaComponent,
     AgeGenderComponent,
     FeedbackSourceComponent,
-    DashboardComponent
+    DashboardComponent,
+    MasterDashboardComponent,
+    DashboardProgressBarComponent,
+    ListStyleToggleComponent
 
   ],
   entryComponents: [

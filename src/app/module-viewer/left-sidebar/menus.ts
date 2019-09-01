@@ -44,6 +44,11 @@ export const menus: MenusInterface = [
     link: '/account',
   },
   {
+    'mat-icon': 'business_center',
+    label: 'MASTER DASHBOARD',
+    link: '/master-dashboard',
+  },
+  {
     'mat-icon': 'dashboard',
     label: 'DASHBOARD',
     link: '/dashboard',
@@ -76,7 +81,7 @@ export const menus: MenusInterface = [
 
   {
     render: () => review_svg,
-    restrict: ({nav}) => !!nav.module.current && nav.getRouter().url !== '/dashboard',
+    restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
     className: 'material-icons-outlined',
     labelFn: ({nav}) => (nav.module.current || {name: ''}).name.toUpperCase(),
     linkFn(nav: ModuleNavService) {

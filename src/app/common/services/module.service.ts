@@ -84,4 +84,8 @@ export class ModuleService {
   setDueDate(module: Partial<Module>, date: string, orgId: number): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/due-date`, {date});
   }
+
+  getOrganizations(): Observable<any> {
+    return this.httpClient.get(`${this.baseUrl}/organizations/list`);
+  }
 }

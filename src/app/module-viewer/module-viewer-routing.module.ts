@@ -10,7 +10,7 @@ import { LeftMenuComponent } from './left-menu/module/module-left-menu.component
 import { InboxLeftMenuComponent } from './left-menu/inbox/inbox-left-menu.component';
 import { AccountLeftMenuComponent } from './left-menu/account/account-left-menu.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
-
+import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 
 
 const routes: Routes = [
@@ -83,8 +83,21 @@ const routes: Routes = [
       }
     ]
   },
-
-
+  {
+    path: 'master-dashboard',
+    component: MainComponent,
+    children: [
+      {
+        path: '',
+        component: MasterDashboardComponent
+      },
+      {
+        path: '',
+        component: LeftMenuComponent,
+        outlet: 'left-menu'
+      }
+    ]
+  }
 ];
 
 @NgModule({

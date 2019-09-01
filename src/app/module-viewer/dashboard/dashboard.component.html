@@ -33,9 +33,7 @@
                     {{ module.status.due_date | readabledate }}
                   </div>
                   <div class="due-progress">
-                    <div class="module-progress-bar">
-                      <div class="module-progress-fill" [style.width]="module.status.progress + '%'"></div>
-                    </div>
+                    <app-dashboard-progress-bar [progress]="module.status.progress"></app-dashboard-progress-bar>
                   </div>
                 </div>
 
