@@ -1,10 +1,14 @@
 \:host
     padding: 2em
+    width: 100%
 
 .organizations
     text-transform: uppercase
     font-family: Montserrat
     margin-top: 1em
+    flex-direction: column
+    max-height: 60em
+    width: 100%
 
     .organization-item
         padding: 2em
@@ -32,21 +36,28 @@
             .org-progress
                 display: block !important
 
-.sort-dropdown
+.sort-menu
     margin-top: 3em
     font-family: Montserrat
+    display: flex
     width: 100%
+
+    .sort-dropdown
+        flex: 1
+
+        .btn
+            width: 100%
 
     .btn
         text-transform: uppercase
-        width: 100%
         line-height: 1
         text-align: left
 
-    .btn-secondary
+    .btn-primary
         background-color: #00529f
         color: white
         border-color: #00529f
+        padding-right: 2em
 
     .dropdown-toggle::after
         position: absolute
@@ -59,3 +70,8 @@
         .dropdown-item
             padding: 0.5em
             text-transform: uppercase
+
+    .sort-direction
+        padding: 0 0.5em
+        font-size: 2em
+        margin-left: 0.5em
