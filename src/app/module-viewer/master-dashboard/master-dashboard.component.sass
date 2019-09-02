@@ -4,7 +4,7 @@
 .organizations
     text-transform: uppercase
     font-family: Montserrat
-    margin-top: 4em
+    margin-top: 1em
 
     .organization-item
         padding: 2em
@@ -13,22 +13,27 @@
         flex: 0 0 20%
         max-width: 20%
 
-        .org-name
-            height: 4em
-            display: flex;
-            justify-content: center
-            align-items: center
-            color: #999
+        .org-item-container
+            display: block
+            max-width: 150px
+            margin: 0 auto
+
+            .org-name
+                height: 4em
+                display: flex;
+                justify-content: center
+                align-items: center
+                color: #999
 
         \&.has-progress
             .org-name
-                color: black
+                color: black !important
 
             .org-progress
                 display: block !important
 
 .sort-dropdown
-    margin-top: 4em
+    margin-top: 3em
     font-family: Montserrat
     width: 100%
 
@@ -39,9 +44,9 @@
         text-align: left
 
     .btn-secondary
-        background-color: #ccc
+        background-color: #00529f
         color: white
-        border-color: #ccc
+        border-color: #00529f
 
     .dropdown-toggle::after
         position: absolute

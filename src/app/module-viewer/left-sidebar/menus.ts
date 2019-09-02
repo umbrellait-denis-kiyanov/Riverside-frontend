@@ -45,12 +45,12 @@ export const menus: MenusInterface = [
   },
   {
     'mat-icon': 'business_center',
-    label: 'MASTER DASHBOARD',
+    label: 'RMCF SALES EXCELLENCE DASHBOARD',
     link: '/master-dashboard',
   },
   {
     'mat-icon': 'dashboard',
-    label: 'DASHBOARD',
+    label: 'SALES EXCELLENCE DASHBOARD',
     link: '/dashboard',
   },
   {

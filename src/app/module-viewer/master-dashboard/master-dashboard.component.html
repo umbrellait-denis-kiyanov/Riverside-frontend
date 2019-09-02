@@ -1,6 +1,6 @@
 <div class="row">
   <div class="col-sm-10">
-    <h1>RMCF SALES & MARKETING GTM FRAMEWORK MASTER DASHBOARD</h1>
+    <h1>RMCF SALES EXCELLENCE DASHBOARD</h1>
   </div>
   <div class="col-sm-2 text-right">
     <app-list-style-toggle listLink="/master-dashboard-detail" gridLink="/master-dashboard" active="grid"></app-list-style-toggle>
@@ -17,11 +17,13 @@
 
 <div class="organizations row" *ngIf="organizations$ | async as organizations">
   <div class="organization-item col-sm-2" *ngFor="let organization of organizations" [class.has-progress]="organization.progress">
-    <div class="org-name">
-      {{ organization.name }}
-    </div>
-    <div class="org-progress d-none">
-      <app-dashboard-progress-bar [progress]="organization.progress" [hasColors]="true"></app-dashboard-progress-bar>
+    <div class="org-item-container">
+      <div class="org-name">
+        {{ organization.name }}
+      </div>
+      <div class="org-progress d-none">
+        <app-dashboard-progress-bar [progress]="organization.progress" [hasColors]="true"></app-dashboard-progress-bar>
+      </div>
     </div>
   </div>
 </div>
