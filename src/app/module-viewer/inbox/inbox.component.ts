@@ -28,7 +28,7 @@ export class InboxComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.canProvideFeedback = this.userService.me.roles.riverside_se;
+    this.canProvideFeedback = this.userService.me.roles.is_riverside_managing_director;
     this.route.params.subscribe((params) => {
       if (params.id) {
         this.ready = false;

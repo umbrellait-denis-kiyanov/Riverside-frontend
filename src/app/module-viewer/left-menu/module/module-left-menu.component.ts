@@ -93,8 +93,8 @@ export class LeftMenuComponent implements OnInit {
   }
 
   canEdit() {
-    const { riverside_facilitator, riverside_se, super_admin } = this.me.roles;
-    return riverside_facilitator || riverside_se || super_admin;
+    const { riverside_facilitator, is_riverside_managing_director, super_admin } = this.me.roles;
+    return riverside_facilitator || is_riverside_managing_director || super_admin;
   }
 
   isChecked(step: Step) {

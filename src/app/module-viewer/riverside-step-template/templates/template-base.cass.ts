@@ -31,7 +31,7 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   }
 
   protected initAction() {
-    if (this.userService.me.roles.riverside_se) {
+    if (this.userService.me.roles.is_riverside_managing_director) {
       this.action = 'approve';
     } else { this.action = ''; }
   }

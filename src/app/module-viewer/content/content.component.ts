@@ -110,7 +110,7 @@ export class ContentComponent implements OnInit {
       inputs, template_params_json, template_component,
       is_approved } } } = this.moduleContentService;
 
-    is_approved && !this.userService.me.roles.riverside_se && (this.iceService.shouldShowWarning = true);
+    is_approved && !this.userService.me.roles.is_riverside_managing_director && (this.iceService.shouldShowWarning = true);
     const templateData = {
       ...data,
       inputs,
@@ -140,10 +140,10 @@ export class ContentComponent implements OnInit {
 
   processFeedbackStatus() {
     const { moduleContent: { data: { feedback_requested, feedback_started } } } = this.moduleContentService;
-    const { roles: { riverside_se } } = this.me;
-    feedback_requested && !feedback_started && riverside_se && this.moduleService.feedbackStarted({ id: 1 });
-    this.disableInputs = !riverside_se && feedback_started;
-    this.showFinishFeedback = riverside_se && feedback_requested;
+    const { roles: { is_riverside_managing_director } } = this.me;
+    feedback_requested && !feedback_started && is_riverside_managing_director && this.moduleService.feedbackStarted({ id: 1 });
+    this.disableInputs = !is_riverside_managing_director && feedback_started;
+    this.showFinishFeedback = is_riverside_managing_director && feedback_requested;
   }
 
   toggleChanges() {

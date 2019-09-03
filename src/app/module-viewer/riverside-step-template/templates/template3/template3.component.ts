@@ -44,7 +44,7 @@ export class Template3Component extends TemplateComponent implements OnInit {
   ngOnInit() {
     super.ngOnInit();
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
-    if (this.userService.me.roles.riverside_se) {
+    if (this.userService.me.roles.is_riverside_managing_director) {
       this.action = 'provide_feedback';
     } else { this.action = 'feedback'; }
   }

@@ -8,7 +8,7 @@ class User extends BaseModel {
   id: string = '';
   roles = {
     riverside_facilitator: false,
-    riverside_se: false,
+    is_riverside_managing_director: false,
     super_admin: false
   };
   org = {
@@ -23,7 +23,7 @@ class User extends BaseModel {
       roles: (val: any, data: any) => {
         return {
           riverside_facilitator: !!data.is_riverside_facilitator,
-          riverside_se: !!data.is_riverside_managing_director,
+          is_riverside_managing_director: !!data.is_riverside_managing_director,
           super_admin: !!data.is_super_admin,
         };
       }

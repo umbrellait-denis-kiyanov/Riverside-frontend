@@ -48,6 +48,7 @@ export const menus: MenusInterface = [
     'mat-icon': 'business_center',
     label: 'RMCF SALES EXCELLENCE DASHBOARD',
     link: '/master-dashboard',
+    restrict: ({ user }) => user.roles.is_riverside_managing_director
   },
   {
     'mat-icon': 'dashboard',
@@ -70,7 +71,7 @@ export const menus: MenusInterface = [
     render: () => feedback_svg,
     label: 'REQUEST FEEDBACK',
     modalComponent: RequestFeedbackComponent,
-    restrict: ({ user }) => !user.roles.riverside_se
+    restrict: ({ user }) => !user.roles.is_riverside_managing_director
   },
   {
     'mat-icon': 'email',
