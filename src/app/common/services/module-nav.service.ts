@@ -107,6 +107,14 @@ export class ModuleNavService {
     });
    }
 
+  getActivatedRoute(): ActivatedRoute {
+    return this.route;
+  }
+
+  getRouter(): Router {
+    return this.router;
+  }
+
   updateProgress(module: Module) {
     const numerator = module.steps.filter(s => !s.is_section_break).map(s => Number(!!s.is_approved)).reduce((prev, curr) => prev + curr);
     const denominator = module.steps.filter(s => !s.is_section_break).length;

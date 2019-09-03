@@ -73,5 +73,19 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/finish`, module).toPromise();
   }
 
+  getCategories(orgId: number): Observable<any> {
+    return this.httpClient.get(`${this.baseUrl}/categories/org/${orgId}`);
+  }
 
+  setStatus(module: Partial<Module>, isActivated: boolean, orgId: number): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/` + (isActivated ? 'activate' : 'deactivate'), {});
+  }
+
+  setDueDate(module: Partial<Module>, date: string, orgId: number): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/due-date`, {date});
+  }
+
+  getOrganizations(): Observable<any> {
+    return this.httpClient.get(`${this.baseUrl}/organizations/list`);
+  }
 }

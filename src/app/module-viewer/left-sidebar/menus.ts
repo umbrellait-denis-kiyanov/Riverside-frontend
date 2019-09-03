@@ -45,6 +45,16 @@ export const menus: MenusInterface = [
     link: '/account',
   },
   {
+    'mat-icon': 'business_center',
+    label: 'RMCF SALES EXCELLENCE DASHBOARD',
+    link: '/master-dashboard',
+  },
+  {
+    'mat-icon': 'dashboard',
+    label: 'SALES EXCELLENCE DASHBOARD',
+    link: '/dashboard',
+  },
+  {
     'mat-icon': 'view_module',
     label: 'MODULE',
     link: '/module/1',
@@ -72,7 +82,7 @@ export const menus: MenusInterface = [
 
   {
     render: () => review_svg,
-    restrict: ({nav}) => !!nav.module.current,
+    restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
     className: 'material-icons-outlined',
     labelFn: ({nav}) => (nav.module.current || {name: ''}).name.toUpperCase(),
     linkFn(nav: ModuleNavService) {

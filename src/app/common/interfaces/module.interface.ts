@@ -1,10 +1,20 @@
+export interface ModuleStatus {
+  is_activated: boolean;
+  due_date?: string;
+  due_date_edit?: string;
+  is_late?: boolean;
+  progress: number;
+}
 
 export interface Module {
   id: number;
   name: string;
   percComplete?: number;
   steps: Step[];
+  status?: ModuleStatus;
+  underConstruction?: boolean;
 }
+
 export interface Step {
   id?: number;
   module_id?: number;

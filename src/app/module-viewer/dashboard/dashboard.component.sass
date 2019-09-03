@@ -1,0 +1,173 @@
+\:host
+    width: 100%
+    padding: 2em
+
+.panel-container
+    display: flex
+    width: 100%
+    border-right: 1px solid black !important
+    font-family: Montserrat
+
+    .card
+        flex: 1
+        border: 1px solid black
+        border-radius: 0
+        border-right: 0
+        margin: 0
+        display: flex
+        flex-direction: column
+        min-width: 100px
+
+        \&.double
+            flex: 2
+
+            .module-group:first-of-type
+                padding-right: 1em;
+
+        .card-header
+            text-transform: uppercase
+            text-align: center
+            background-color: #00529f
+            margin: 1em
+            padding: 5px
+            font-size: 1.2em
+            color: white
+            border-radius: 4px
+
+        .card-body
+            padding: 0 5px 0
+            flex: 1
+            display: flex
+            overflow: auto
+
+            .container-fluid
+                padding: 0
+
+                .row
+                    margin: 0
+
+            .module-group
+                flex: 1
+                height: 100%
+                padding-top: 15px
+
+                &:nth-of-type(2)
+                    border-left: 1px solid #ccc
+                    padding-left: 1em;
+
+            .module-item
+                height: 8em
+
+                \&.active
+                    .module-name
+                        a.module-name-link
+                            display: block
+                            color: black
+                            cursor: pointer
+
+                        span.module-name-link
+                            display: none
+
+                        .due-date
+                            display: block
+                            margin-top: 3px
+                            cursor: pointer
+                            position: relative
+
+                            input
+                                width: 0
+                                height: 0
+                                visibility: hidden
+                                position: absolute
+                                margin-left: 5px
+                                margin-top: -5px
+
+                            .selected-due-date
+                                display: flex
+                                width: 100%
+
+                                .actual-date
+                                    flex: 1
+                                    font-size: 0.7em
+                                    padding-right: 0.5em
+
+                                .due-progress
+                                    flex: 1
+
+                            .under-construction
+                                position: absolute
+                                top: 0
+                                z-index: 1
+                                background-color: red
+                                color: white
+                                padding: 5px
+                                text-align: center
+                                font-size: 12px
+
+                        \::ng-deep
+                            .mat-icon
+                                color: #888
+
+                    \&.late
+                        .actual-date
+                            color: red !important
+
+                    \&.completed
+                        .actual-date
+                            display: none
+
+                        .module-control
+                            .completed-check
+                                display: inline-block
+
+                            mat-radio-button
+                                display: none
+
+                    \&.has-due-date
+                        .due-date
+                            input
+                                margin-top: 10px !important
+                                margin-left: 0 !important
+
+                .module-control
+                    text-align: center
+                    padding: 5px
+
+                    .completed-check
+                        color: #58ad3f
+                        display: none
+
+                    \::ng-deep
+                        .mat-radio-label-content
+                            padding: 0
+
+                        .mat-radio-button.mat-accent .mat-radio-outer-circle
+                            border-color: #222
+                            border-width: 1px
+
+                        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
+                            border-color: #ccc
+                            border-width: 2px
+
+                        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle
+                            color: #00529f
+                            background-color: #00529f
+                            transform: scale(0.75)
+
+                        .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element
+                            background-color: rgba(0, 82, 159, .26)
+
+                .module-name
+                    padding: 0
+                    color: #999
+                    text-transform: uppercase
+                    padding-right: 5px
+
+                    .due-date
+                        display: none
+
+                    a.module-name-link
+                        display: none
+
+                    span.module-name-link
+                        display: block

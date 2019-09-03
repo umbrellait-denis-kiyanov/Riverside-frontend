@@ -23,6 +23,7 @@ import { LetterImageComponent } from './ice/letter-image/letter-image.component'
 import { MatMenuModule} from '@angular/material/menu';
 import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
+import { MatRadioModule} from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { UserComponent } from './ice/user/user.component';
 import { IceService } from './ice/ice.service';
@@ -47,6 +48,7 @@ import { NamePersonasTemplateComponent } from './riverside-step-template/templat
 import { PersonaBehaviorTemplateComponent } from './riverside-step-template/templates/persona_behavior/persona_behavior.component';
 import { FeedbackSectionTemplateComponent } from './riverside-step-template/templates/feedback_section/feedback_section.component';
 import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
+import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
@@ -56,7 +58,12 @@ import { AgeGenderComponent } from './riverside-step-template/templates/age-gend
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
 import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
-
+import { DashboardComponent } from './dashboard/dashboard.component';
+import { NgbDate, NgbModule, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbStringAdapter } from './ngb-string-adapter';
+import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
+import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
+import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.component';
 
 
 @NgModule({
@@ -69,6 +76,7 @@ import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
     RouterModule,
     AppRoutingModule,
     MatMenuModule,
+    MatRadioModule,
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
@@ -78,6 +86,7 @@ import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
     E3CommonModule,
     VideoRecorderModule,
     AudioRecorderModule,
+    NgbModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -89,6 +98,7 @@ import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
     // E3CheckboxComponent,
     LoadingComponent,
     FormatDatePipe,
+    ReadableDatePipe,
     LearningElementComponent,
 
     IceComponent,
@@ -114,7 +124,11 @@ import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
     FinalFeedbackComponent,
     PersonaComponent,
     AgeGenderComponent,
-    FeedbackSourceComponent
+    FeedbackSourceComponent,
+    DashboardComponent,
+    MasterDashboardComponent,
+    DashboardProgressBarComponent,
+    ListStyleToggleComponent
 
   ],
   entryComponents: [
@@ -141,7 +155,8 @@ import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
     UserService,
     IceService,
     LeftMenuService,
-    InboxService
+    InboxService,
+    {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
   bootstrap: [ModuleViewerRootComponent]
 })

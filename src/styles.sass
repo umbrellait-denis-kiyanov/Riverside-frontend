@@ -66,6 +66,18 @@
 .ng-tooltip-show
   opacity: 0.9
 
+// global Bootstrap 4 overrides
+body
+  .btn-primary
+    background-color: #3d67c8
+    border-color: #3d67c8
 
+  .card
+    box-shadow: none
 
+  button:focus
+    outline: 0
 
+@media (min-width: 576px)
+  body .modal-dialog
+    max-width: 600px

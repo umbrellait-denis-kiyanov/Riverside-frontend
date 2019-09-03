@@ -1,0 +1,37 @@
+<div class="row">
+  <div class="col-sm-10">
+    <h1>RMCF SALES EXCELLENCE DASHBOARD</h1>
+  </div>
+  <div class="col-sm-2 text-right">
+    <app-list-style-toggle listLink="/master-dashboard-detail" gridLink="/master-dashboard" active="grid"></app-list-style-toggle>
+
+    <div class="sort-menu">
+      <div ngbDropdown class="sort-dropdown d-inline-block" #layoutSel="ngbDropdown">
+        <button class="btn btn-primary" id="grid-sort" ngbDropdownToggle>{{ (sortOrder$ | async) || 'Sort By' }}</button>
+        <div ngbDropdownMenu aria-labelledby="grid-sort">
+          <button ngbDropdownItem (click)="setSort('Alphabetical'); layoutSel.close();">Alphabetical</button>
+          <button ngbDropdownItem (click)="setSort('% Complete'); layoutSel.close();">% Complete</button>
+        </div>
+      </div>
+
+      <button class="btn btn-primary sort-direction" (click)="toggleSortOrder()">
+        <mat-icon *ngIf="sortAsc$ | async">arrow_upward</mat-icon>
+        <mat-icon *ngIf="!(sortAsc$ | async)">arrow_downward</mat-icon>
+      </button>
+    </div>
+
+  </div>
+</div>
+
+<div class="organizations row" *ngIf="organizations$ | async as organizations">
+  <div class="organization-item col-sm-2" *ngFor="let organization of organizations" [class.has-progress]="organization.progress">
+    <div class="org-item-container">
+      <div class="org-name">
+        {{ organization.name }}
+      </div>
+      <div class="org-progress d-none">
+        <app-dashboard-progress-bar [progress]="organization.progress" [hasColors]="true"></app-dashboard-progress-bar>
+      </div>
+    </div>
+  </div>
+</div>
