@@ -14,7 +14,7 @@
         </div>
       </div>
 
-      <button class="btn btn-primary sort-direction" (click)="toggleSortOrder()">
+      <button *ngIf="view == 'grid'" class="btn btn-primary sort-direction" (click)="toggleSortOrder()">
         <mat-icon *ngIf="sortAsc$ | async">arrow_upward</mat-icon>
         <mat-icon *ngIf="!(sortAsc$ | async)">arrow_downward</mat-icon>
       </button>
@@ -41,7 +41,7 @@
 
   <div class="organizations row" *ngIf="view == 'list'">
 
-    <table matSort (matSortChange)="setListSort($event)">
+    <table matSort (matSortChange)="setListSort($event)" [matSortDisableClear]="true">
       <tr>
         <th mat-sort-header="name">Portco</th>
         <th mat-sort-header="progress">% Complete</th>

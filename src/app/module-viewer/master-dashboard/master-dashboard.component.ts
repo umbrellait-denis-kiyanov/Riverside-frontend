@@ -17,30 +17,31 @@ export class MasterDashboardComponent implements OnInit {
 
   sortOrder$ = new BehaviorSubject<string>('Alphabetical');
 
+  listSortOrder$ = new BehaviorSubject<string>('name');
+
   sortAsc$ = new BehaviorSubject<boolean>(true);
 
   constructor(private moduleService: ModuleService) { }
 
   ngOnInit() {
-    this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.sortAsc$]).
-      pipe(map(([items, sortOrder, sortAsc]) => {
-        if (!sortOrder) {
-          return items;
-        }
+    this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
+      pipe(map(([items, sortOrder, listSortOrder, sortAsc]) => {
+        return items.map(item => { item.progress = item.progress || 0; return item; }).sort((a, b) => {
+          const direction = ('grid' === this.view ? sortAsc : listSortOrder.direction === 'asc') ? 1 : -1;
 
-        return items.sort((a, b) => {
-          const direction = sortAsc ? 1 : -1;
-          if (sortOrder === 'Alphabetical') {
-            return a.name < b.name ? -1 * direction : direction;
-          } else {
-            return (a.progress || 0) < (b.progress || 0) ? direction : -1 * direction;
-          }
+          const field = 'grid' === this.view ? (sortOrder === 'Alphabetical' ? 'name' : 'progress') : listSortOrder.active;
+
+          return a[field] < b[field] ? -1 * direction : direction;
         });
       }));
   }
 
   setSort(sortLabel: string) {
     this.sortOrder$.next(sortLabel);
+  }
+
+  setListSort(sortLabel: string) {
+    this.listSortOrder$.next(sortLabel);
   }
 
   toggleSortOrder() {
