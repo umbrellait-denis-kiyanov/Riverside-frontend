@@ -11,6 +11,8 @@ import { UserService } from 'src/app/common/services/user.service';
 })
 export class MasterDashboardComponent implements OnInit {
 
+  view = 'grid';
+
   organizations$: Observable<any>;
 
   sortOrder$ = new BehaviorSubject<string>('Alphabetical');

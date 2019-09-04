@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 
 @Component({
   selector: 'app-list-style-toggle',
@@ -7,14 +7,19 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class ListStyleToggleComponent implements OnInit {
 
-  @Input()
-  listLink: string;
+  state: 'grid' | 'list';
 
   @Input()
-  gridLink: string;
+  get active() {
+    return this.state;
+  }
 
-  @Input()
-  active: 'grid' | 'list';
+  set active(state: 'grid' | 'list') {
+    this.state = state;
+    this.stateChange.emit(this.state);
+  }
+
+  @Output() stateChange = new EventEmitter();
 
   constructor() { }
 

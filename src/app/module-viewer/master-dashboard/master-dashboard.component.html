@@ -3,7 +3,7 @@
     <h1>RMCF SALES EXCELLENCE DASHBOARD</h1>
   </div>
   <div class="col-sm-2 text-right">
-    <app-list-style-toggle listLink="/master-dashboard-detail" gridLink="/master-dashboard" active="grid"></app-list-style-toggle>
+    <app-list-style-toggle [(active)]="view"></app-list-style-toggle>
 
     <div class="sort-menu">
       <div ngbDropdown class="sort-dropdown d-inline-block" #layoutSel="ngbDropdown">
@@ -23,16 +23,43 @@
   </div>
 </div>
 
-<div class="organizations row" *ngIf="organizations$ | async as organizations">
-  <div class="organization-item col-sm-2" *ngFor="let organization of organizations" [class.has-progress]="organization.progress">
-    <div class="org-item-container">
-      <div class="org-name">
-        {{ organization.name }}
-      </div>
-      <div class="org-progress d-none">
-        <span class="progress-pct">{{ organization.progress }}%</span>
-        <app-dashboard-progress-bar [progress]="organization.progress"></app-dashboard-progress-bar>
+<div *ngIf="organizations$ | async as organizations">
+
+  <div class="organizations row" *ngIf="view == 'grid'">
+    <div class="organization-item col-sm-2" *ngFor="let organization of organizations" [class.has-progress]="organization.progress">
+      <div class="org-item-container">
+        <div class="org-name">
+          {{ organization.name }}
+        </div>
+        <div class="org-progress d-none">
+          <span class="progress-pct">{{ organization.progress }}%</span>
+          <app-dashboard-progress-bar [progress]="organization.progress"></app-dashboard-progress-bar>
+        </div>
       </div>
     </div>
   </div>
+
+  <div class="organizations row" *ngIf="view == 'list'">
+
+    <table matSort (matSortChange)="setListSort($event)">
+      <tr>
+        <th mat-sort-header="name">Portco</th>
+        <th mat-sort-header="progress">% Complete</th>
+        <th mat-sort-header="due_date">Final Completion Date</th>
+        <th mat-sort-header="op_partner">Operating Partner</th>
+        <th mat-sort-header="fin_director">Finance Director</th>
+        <th mat-sort-header="man_director">SE Managing Director</th>
+      </tr>
+
+      <tr *ngFor="let organization of organizations">
+        <td>{{ organization.name }}</td>
+        <td>{{ organization.progress }}</td>
+        <td></td>
+        <td></td>
+        <td></td>
+        <td></td>
+      </tr>
+    </table>
+  </div>
+
 </div>
