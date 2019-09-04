@@ -24,11 +24,16 @@ export class DashboardComponent implements OnInit {
 
   minDate: NgbDateStruct;
 
+  canActivate = false;
+
   ngOnInit() {
     this.me = this.userService.me;
 
-    this.modules$ = this.moduleService.getCategories(this.me.org.id).pipe(map(categories => {
-      return categories.map(category => {
+    this.modules$ = this.moduleService.getCategories(this.me.org.id).pipe(map(response => {
+
+      this.canActivate = response.permissions.canActivate;
+
+      return response.categories.map(category => {
         category.modules.map(this.prepareStatus);
 
         if (category.modules.length >= 12) {
@@ -39,7 +44,7 @@ export class DashboardComponent implements OnInit {
         }
 
         return category;
-      })
+      });
     }));
 
     const today = new Date();
