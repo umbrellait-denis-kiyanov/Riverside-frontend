@@ -11,6 +11,12 @@ class User extends BaseModel {
     is_riverside_managing_director: false,
     super_admin: false
   };
+  permissions = {
+    riversideRMCFDashboard: false,
+    riversideSalesDashboard: false,
+    riversideModuleEditor: false,
+    riversideRequestFeedback: false
+  };
   org = {
     id: 0
   };

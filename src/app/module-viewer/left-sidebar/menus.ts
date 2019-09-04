@@ -48,12 +48,13 @@ export const menus: MenusInterface = [
     'mat-icon': 'business_center',
     label: 'RMCF SALES EXCELLENCE DASHBOARD',
     link: '/master-dashboard',
-    restrict: ({ user }) => user.roles.is_riverside_managing_director
+    restrict: ({ user }) => user.permissions.riversideRMCFDashboard
   },
   {
     'mat-icon': 'dashboard',
     label: 'SALES EXCELLENCE DASHBOARD',
     link: '/dashboard',
+    restrict: ({ user }) => user.permissions.riversideSalesDashboard
   },
   {
     'mat-icon': 'view_module',
@@ -64,14 +65,14 @@ export const menus: MenusInterface = [
     'mat-icon': 'build',
     label: 'EDITOR',
     link: '/builder',
-    restrict: ({ user }) => user.roles.super_admin
+    restrict: ({ user }) => user.permissions.riversideModuleEditor
   },
 
   {
     render: () => feedback_svg,
     label: 'REQUEST FEEDBACK',
     modalComponent: RequestFeedbackComponent,
-    restrict: ({ user }) => !user.roles.is_riverside_managing_director
+    restrict: ({ user }) => user.permissions.riversideRequestFeedback
   },
   {
     'mat-icon': 'email',
