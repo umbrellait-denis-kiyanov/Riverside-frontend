@@ -15,6 +15,12 @@ export interface Module {
   underConstruction?: boolean;
 }
 
+export interface Organization {
+  id: number;
+  name: string;
+  progress?: number;
+}
+
 export interface Step {
   id?: number;
   module_id?: number;

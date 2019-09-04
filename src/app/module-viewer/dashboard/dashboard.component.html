@@ -1,5 +1,16 @@
 <h1>SALES EXCELLENCE DASHBOARD</h1>
 
+<div *ngIf="organizations$ | async as organizations">
+  <div class="organization-select" *ngIf="organization && organizations.length > 1">
+    <div ngbDropdown class="d-inline-block" #orgSel="ngbDropdown">
+      <button class="btn btn-primary" ngbDropdownToggle>{{ organization.name }}</button>
+      <div ngbDropdownMenu aria-labelledby="grid-sort">
+        <button *ngFor="let org of organizations" ngbDropdownItem (click)="setOrganization(org); orgSel.close();">{{ org.name }}</button>
+      </div>
+    </div>
+  </div>
+</div>
+
 <div *ngIf="modules$ | async as modules" class="panel-container">
   <div *ngFor="let category of modules" class="card module-category" [class.double]="2 == category.modules.length">
     <div class="card-header">

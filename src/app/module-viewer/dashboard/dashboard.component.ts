@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { Module } from 'src/app/common/interfaces/module.interface';
+import { Module, Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -18,34 +18,20 @@ export class DashboardComponent implements OnInit {
               private userService: UserService
             ) { }
 
-  modules$: Observable<any>;
+  modules$: Observable<Module[]>;
 
-  me: User;
+  organizations$: Observable<Organization[]>;
 
   minDate: NgbDateStruct;
 
   canActivate = false;
 
+  organization: Organization;
+
   ngOnInit() {
-    this.me = this.userService.me;
+    this.organizations$ = this.moduleService.getOrganizations();
 
-    this.modules$ = this.moduleService.getCategories(this.me.org.id).pipe(map(response => {
-
-      this.canActivate = response.permissions.canActivate;
-
-      return response.categories.map(category => {
-        category.modules.map(this.prepareStatus);
-
-        if (category.modules.length >= 12) {
-          const chunkSize = Math.ceil(category.modules.length / 2);
-          category.modules = [category.modules.slice(0, chunkSize), category.modules.slice(chunkSize)];
-        } else {
-          category.modules = [category.modules];
-        }
-
-        return category;
-      });
-    }));
+    this.organizations$.subscribe(organizations => this.setOrganization(organizations[0]));
 
     const today = new Date();
     this.minDate = {year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate()};
@@ -54,14 +40,14 @@ export class DashboardComponent implements OnInit {
   toggleModuleStatus(module: Module) {
     const status = module.status ? !module.status.is_activated : true;
 
-    this.moduleService.setStatus(module, status, this.me.org.id).subscribe(newStatus => {
+    this.moduleService.setStatus(module, status, this.organization.id).subscribe(newStatus => {
       module.status = newStatus;
       this.prepareStatus(module);
     });
   }
 
   saveDueDate(module: Module) {
-    this.moduleService.setDueDate(module, module.status.due_date_edit, this.me.org.id).subscribe(newStatus => {
+    this.moduleService.setDueDate(module, module.status.due_date_edit, this.organization.id).subscribe(newStatus => {
       module.status = newStatus;
       this.prepareStatus(module);
     });
@@ -80,6 +66,28 @@ export class DashboardComponent implements OnInit {
         }
       }
     }
+  }
+
+  setOrganization(organization: Organization) {
+    this.organization = organization;
+
+    this.modules$ = this.moduleService.getCategories(this.organization.id).pipe(map(response => {
+
+      this.canActivate = response.permissions.canActivate;
+
+      return response.categories.map(category => {
+        category.modules.map(this.prepareStatus);
+
+        if (category.modules.length >= 12) {
+          const chunkSize = Math.ceil(category.modules.length / 2);
+          category.modules = [category.modules.slice(0, chunkSize), category.modules.slice(chunkSize)];
+        } else {
+          category.modules = [category.modules];
+        }
+
+        return category;
+      });
+    }));
   }
 
   showUnderConstructionMessage(module: Module) {
