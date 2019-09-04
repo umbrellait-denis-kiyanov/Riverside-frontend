@@ -25,6 +25,7 @@ import { MatIconModule} from '@angular/material/icon';
 import { MatButtonModule} from '@angular/material/button';
 import { MatRadioModule} from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
+import { MatSortModule } from '@angular/material/sort';
 import { UserComponent } from './ice/user/user.component';
 import { IceService } from './ice/ice.service';
 import { LeftSidebarComponent } from './left-sidebar/left-sidebar.component';
@@ -80,6 +81,7 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
     MatButtonModule,
     MatIconModule,
     MatTabsModule,
+    MatSortModule,
     MatProgressBarModule,
     ModuleBuilderModule,
     CKEditorModule,

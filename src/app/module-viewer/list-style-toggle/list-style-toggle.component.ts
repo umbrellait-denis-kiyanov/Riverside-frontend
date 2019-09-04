@@ -16,10 +16,10 @@ export class ListStyleToggleComponent implements OnInit {
 
   set active(state: 'grid' | 'list') {
     this.state = state;
-    this.stateChange.emit(this.state);
+    this.activeChange.emit(this.state);
   }
 
-  @Output() stateChange = new EventEmitter();
+  @Output() activeChange = new EventEmitter();
 
   constructor() { }
 
