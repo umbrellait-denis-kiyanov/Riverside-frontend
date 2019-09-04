@@ -7,7 +7,7 @@
     font-family: Montserrat
     margin-top: 1em
     flex-direction: column
-    max-height: 60em
+    max-height: 55em
     width: 100%
 
     .organization-item
@@ -34,7 +34,18 @@
                 color: black !important
 
             .org-progress
-                display: block !important
+                display: flex !important
+
+                .progress-pct
+                    display: inline-block
+                    width: 4em
+                    text-align: left
+                    color: #00529f
+
+                app-dashboard-progress-bar
+                    margin-top: 6px
+
+
 
 .sort-menu
     margin-top: 3em

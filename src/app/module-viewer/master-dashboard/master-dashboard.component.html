@@ -30,7 +30,8 @@
         {{ organization.name }}
       </div>
       <div class="org-progress d-none">
-        <app-dashboard-progress-bar [progress]="organization.progress" [hasColors]="true"></app-dashboard-progress-bar>
+        <span class="progress-pct">{{ organization.progress }}%</span>
+        <app-dashboard-progress-bar [progress]="organization.progress"></app-dashboard-progress-bar>
       </div>
     </div>
   </div>
