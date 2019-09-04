@@ -33,6 +33,7 @@
             font-size: 1.2em
             color: white
             border-radius: 4px
+            white-space: nowrap
 
         .card-body
             padding: 0 5px 0
@@ -171,3 +172,52 @@
 
                     span.module-name-link
                         display: block
+
+@media only screen and (max-width: 1700px)
+    .panel-container .card
+        font-size: 0.8vw
+
+        .card-header
+            font-size: 0.9vw
+
+        \::ng-deep
+            .mat-radio-container, .mat-radio-outer-circle, .mat-radio-inner-circle
+                width: 1vw
+                height: 1vw
+
+        .mat-icon
+            width: 1.2vw
+            height: 1.2vw
+            font-size: 1.2vw
+
+@media only screen and (max-width: 1300px)
+    \:host
+        width: auto
+        position: relative
+        z-index: 0
+
+    .panel-container .card
+        font-size: 11px
+
+        \&.double
+            .card-body
+                width: 300px
+
+        .card-body
+            width: 150px
+
+        .module-group
+            width: 150px
+
+        .card-header
+            font-size: 13px
+
+        \::ng-deep
+            .mat-radio-container, .mat-radio-outer-circle, .mat-radio-inner-circle
+                width: 15px
+                height: 15px
+
+        .mat-icon
+            width: 20px
+            height: 20px
+            font-size: 20px
