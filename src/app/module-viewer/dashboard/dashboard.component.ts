@@ -5,6 +5,7 @@ import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
+import { CanModifyPipe } from '../../common/pipes/canModify.pipe';
 
 @Component({
   selector: 'app-dashboard',
@@ -72,7 +73,7 @@ export class DashboardComponent implements OnInit {
     this.organization = organization;
 
     this.modules$ = this.moduleService.getCategories(this.organization.id).pipe(map(response => {
-      this.canActivate = response.headers.get('X-Can-Modify');
+      this.canActivate = new CanModifyPipe().transform(response);
 
       return response.body.map(category => {
         category.modules.map(this.prepareStatus);
