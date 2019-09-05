@@ -11,7 +11,8 @@
   </div>
 </div>
 
-<div *ngIf="modules$ | async as modules" class="panel-container">
+<div *ngIf="modules$ | async as modules">
+  <div *ngLet="(modulesRequest$ | async | canModify) as canActivate" class="panel-container">
   <div *ngFor="let category of modules" class="card module-category" [class.double]="2 == category.modules.length">
     <div class="card-header">
       {{ category.name }}
@@ -56,6 +57,6 @@
         </div>
       </div>
     </div>
-
+  </div>
   </div>
 </div>

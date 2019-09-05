@@ -2,10 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { Module, Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, shareReplay } from 'rxjs/operators';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute } from '@angular/router';
-import { CanModifyPipe } from '../../common/pipes/canModify.pipe';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-dashboard',
@@ -18,13 +18,12 @@ export class DashboardComponent implements OnInit {
               private route: ActivatedRoute
             ) { }
 
-  modules$: Observable<Module[]>;
+  modulesRequest$: Observable<any>;
+  modules$: Observable<any>;
 
   organizations$: Observable<Organization[]>;
 
   minDate: NgbDateStruct;
-
-  canActivate = false;
 
   organization: Organization;
 
@@ -72,9 +71,8 @@ export class DashboardComponent implements OnInit {
   setOrganization(organization: Organization) {
     this.organization = organization;
 
-    this.modules$ = this.moduleService.getCategories(this.organization.id).pipe(map(response => {
-      this.canActivate = new CanModifyPipe().transform(response);
-
+    this.modulesRequest$ = this.moduleService.getCategories(this.organization.id).pipe(shareReplay(1));
+    this.modules$ = this.modulesRequest$.pipe(map(response => {
       return response.body.map(category => {
         category.modules.map(this.prepareStatus);
 

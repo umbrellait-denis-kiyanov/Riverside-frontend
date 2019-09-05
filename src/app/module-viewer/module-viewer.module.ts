@@ -66,6 +66,7 @@ import { NgbStringAdapter } from './ngb-string-adapter';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
 import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.component';
+import { NgLetDirective } from '../common/directives/nglet.directive';
 
 
 @NgModule({
@@ -89,7 +90,7 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
     E3CommonModule,
     VideoRecorderModule,
     AudioRecorderModule,
-    NgbModule
+    NgbModule,
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -132,8 +133,8 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
     DashboardComponent,
     MasterDashboardComponent,
     DashboardProgressBarComponent,
-    ListStyleToggleComponent
-
+    ListStyleToggleComponent,
+    NgLetDirective
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -162,6 +163,7 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
     InboxService,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
-  bootstrap: [ModuleViewerRootComponent]
+  bootstrap: [ModuleViewerRootComponent],
+  exports: [NgLetDirective]
 })
 export class ModuleViewerModule { }
