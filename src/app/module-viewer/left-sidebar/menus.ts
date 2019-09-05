@@ -17,6 +17,7 @@ type MenusInterface = MenuItemType[];
 const hardCodePictures = (user: User) => {
   switch (user.email) {
     case 'dan@riverside.com':
+    case 'dperry@omnigo.com':
     case 'dperry@riversidecompany.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dan+-+Riverside.jpg';
     case 'dave@alice.com':
