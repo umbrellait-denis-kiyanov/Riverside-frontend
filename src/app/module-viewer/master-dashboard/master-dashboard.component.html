@@ -1,3 +1,4 @@
+<div class="container-fluid">
 <div class="row">
   <div class="col-lg-9 col-md-12">
     <h1>RMCF SALES EXCELLENCE DASHBOARD</h1>
@@ -16,8 +17,8 @@
         </div>
 
         <button class="btn btn-primary sort-direction" (click)="toggleSortOrder()">
-          <mat-icon *ngIf="sortAsc$ | async">arrow_upward</mat-icon>
-          <mat-icon *ngIf="!(sortAsc$ | async)">arrow_downward</mat-icon>
+          <mat-icon *ngIf="sortAsc$ | async">arrow_downward</mat-icon>
+          <mat-icon *ngIf="!(sortAsc$ | async)">arrow_upward</mat-icon>
         </button>
       </div>
     </div>
@@ -40,27 +41,36 @@
     </div>
   </div>
 
-  <div class="organizations row" *ngIf="view == 'list'">
+  <div *ngIf="view == 'list'">
 
-    <table matSort (matSortChange)="setListSort($event)" [matSortDisableClear]="true">
-      <tr>
-        <th mat-sort-header="name">Portco</th>
-        <th mat-sort-header="progress">% Complete</th>
-        <th mat-sort-header="due_date">Final Completion Date</th>
-        <th mat-sort-header="op_partner">Operating Partner</th>
-        <th mat-sort-header="fin_director">Finance Director</th>
-        <th mat-sort-header="man_director">SE Managing Director</th>
-      </tr>
+    <table class="table list-view" matSort (matSortChange)="setListSort($event)" [matSortDisableClear]="true" matSortActive="name" matSortDirection="asc">
+      <thead>
+        <tr>
+          <th class="text-center" mat-sort-header="name">Portco</th>
+          <th mat-sort-header="progress">% Complete</th>
+          <th mat-sort-header="due_date">Final Completion Date</th>
+          <th class="op-partner" mat-sort-header="op_partner">Operating Partner</th>
+          <th class="fin-director" mat-sort-header="fin_director">Finance Director</th>
+          <th class="man-director" mat-sort-header="man_director">SE Managing Director</th>
+        </tr>
+      </thead>
 
-      <tr *ngFor="let organization of organizations">
-        <td>{{ organization.name }}</td>
-        <td>{{ organization.progress }}</td>
-        <td></td>
-        <td></td>
-        <td></td>
-        <td></td>
-      </tr>
+      <tbody>
+        <tr *ngFor="let organization of organizations" [class.no-progress]="!organization.progress">
+          <td>{{ organization.name }}</td>
+          <td class="org-progress">
+            <div [class.red]="organization.progress < 30" [class.yellow]="organization.progress < 50">{{ organization.progress }}</div>
+          </td>
+          <td class="due-date">
+            <span *ngIf="organization.due_date">{{ organization.due_date | readabledate }}</span>
+          </td>
+          <td class="op-partner"></td>
+          <td class="fin-director"></td>
+          <td class="man-director"></td>
+        </tr>
+      </tbody>
     </table>
   </div>
 
+</div>
 </div>

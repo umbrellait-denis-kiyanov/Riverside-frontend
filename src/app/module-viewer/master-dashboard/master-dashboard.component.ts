@@ -2,6 +2,7 @@ import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable, fromEvent, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
+import { Sort } from '@angular/material/sort';
 
 @Component({
   selector: 'app-master-dashboard',
@@ -16,7 +17,7 @@ export class MasterDashboardComponent implements OnInit {
 
   sortOrder$ = new BehaviorSubject<string>('Alphabetical');
 
-  listSortOrder$ = new BehaviorSubject<string>('name');
+  listSortOrder$ = new BehaviorSubject<Sort>({active: 'name', direction: 'asc'});
 
   sortAsc$ = new BehaviorSubject<boolean>(true);
 
@@ -30,11 +31,14 @@ export class MasterDashboardComponent implements OnInit {
     this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
       pipe(map(([items, sortOrder, listSortOrder, sortAsc]) => {
         return items.map(item => { item.progress = item.progress || 0; return item; }).sort((a, b) => {
-          const direction = ('grid' === this.view ? sortAsc : listSortOrder.direction === 'asc') ? 1 : -1;
+          const direction = ('grid' === this.view ? sortAsc : (listSortOrder.direction === 'asc')) ? 1 : -1;
 
           const field = 'grid' === this.view ? (sortOrder === 'Alphabetical' ? 'name' : 'progress') : listSortOrder.active;
 
-          return a[field] < b[field] ? -1 * direction : direction;
+          // keep rows with empty column values at the bottom of the table
+          const defValue = -1 === direction ? '' : 'ZZZ';
+
+          return (a[field] || defValue) < (b[field] || defValue) ? -1 * direction : direction;
         });
       }));
 
@@ -52,7 +56,7 @@ export class MasterDashboardComponent implements OnInit {
     this.sortOrder$.next(sortLabel);
   }
 
-  setListSort(sortLabel: string) {
+  setListSort(sortLabel: Sort) {
     this.listSortOrder$.next(sortLabel);
   }
 

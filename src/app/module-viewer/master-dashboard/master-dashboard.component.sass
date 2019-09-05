@@ -44,9 +44,7 @@
                 app-dashboard-progress-bar
                     margin-top: 6px
 
-
 .dashboard-menu
-    padding: 0
 
     .dashboard-menu-wrapper
         width: 250px
@@ -93,6 +91,87 @@
                 font-size: 2em
                 margin-left: 0.2em
 
+.list-view
+
+    font-family: Montserrat
+
+    thead:after
+        content: "@"
+        display: block
+        line-height: 10px
+        text-indent: -99999px
+
+    thead
+        border-radius: 5px
+
+        tr
+            th
+                background-color: #00529f
+                color: white
+                border: 0
+                vertical-align: middle
+
+                &:first-of-type
+                    border-radius: 5px 0 0 5px
+                    padding-left: 2em
+
+                &:last-of-type
+                    border-radius: 0 5px 5px 0
+
+                \::ng-deep .mat-sort-header-container
+                    display: block
+                    text-align: center
+                    white-space: nowrap
+
+                    button
+                        display: inline-block !important
+                        text-transform: uppercase !important
+                        white-space: normal
+                        vertical-align: middle
+
+                    .mat-sort-header-arrow
+                        color: white
+                        display: inline-block !important
+
+    tbody
+        border: 1px solid #dee2e6
+
+        tr
+            td:first-of-type
+                padding-left: 2em
+                font-size: 1.1em
+
+            td
+                vertical-align: middle
+
+                &.org-progress
+                    text-align: center
+                    padding: 8px
+
+                    div
+                        display: inline-block
+                        width: 5.5em
+                        color: white
+                        background-color: #58ad3f
+                        border-radius: 5px
+                        padding: 3px
+                        font-size: 1.8em
+                        text-align: center
+
+                        &.red
+                            background-color: #cc0000 !important
+
+                        &.yellow
+                            background-color: #f7cd4b
+
+                &.due-date
+                    text-align: center
+
+            &.no-progress
+                color: #999
+
+                td.org-progress div
+                    display: none
 
 @media only screen and (max-width: 1300px)
     h1
@@ -106,8 +185,8 @@
 
     .dashboard-menu
         text-align: left !important
-        padding: 0 15px
         margin-top: 2em
+        margin-bottom: 2em
         width: 100%
 
         .dashboard-menu-wrapper
@@ -123,9 +202,16 @@
                 float: left
 
     .organizations
+        margin-top: -1em
+
         .organization-item
             flex: 0 0 25%
             max-width: 25%
+
+    .list-view
+        .op-partner, .fin-director, .man-director
+            display: none
+
 
 @media only screen and (max-width: 768px)
     .organizations
