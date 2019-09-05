@@ -30,7 +30,7 @@
   <div class="organizations row" [style.max-height]="gridHeight$ | async" *ngIf="view == 'grid'">
     <div #orgItem class="organization-item col-sm-2" *ngFor="let organization of organizations" [class.has-progress]="organization.progress">
       <div class="org-item-container">
-        <div class="org-name">
+        <div class="org-name" [routerLink]="'/dashboard/' + organization.id">
           {{ organization.name }}
         </div>
         <div class="org-progress d-none">
@@ -42,7 +42,6 @@
   </div>
 
   <div *ngIf="view == 'list'">
-
     <table class="table list-view" matSort (matSortChange)="setListSort($event)" [matSortDisableClear]="true" matSortActive="name" matSortDirection="asc">
       <thead>
         <tr>
@@ -57,7 +56,11 @@
 
       <tbody>
         <tr *ngFor="let organization of organizations" [class.no-progress]="!organization.progress">
-          <td>{{ organization.name }}</td>
+          <td>
+            <div class="org-name" [routerLink]="'/dashboard/' + organization.id">
+              {{ organization.name }}
+            </div>
+          </td>
           <td class="org-progress">
             <div [class.red]="organization.progress < 30" [class.yellow]="organization.progress < 50">{{ organization.progress }}</div>
           </td>

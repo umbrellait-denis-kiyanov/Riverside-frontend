@@ -77,6 +77,10 @@ const routes: Routes = [
         component: DashboardComponent
       },
       {
+        path: ':id',
+        component: DashboardComponent
+      },
+      {
         path: '',
         component: LeftMenuComponent,
         outlet: 'left-menu'
