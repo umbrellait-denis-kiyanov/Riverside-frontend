@@ -72,10 +72,9 @@ export class DashboardComponent implements OnInit {
     this.organization = organization;
 
     this.modules$ = this.moduleService.getCategories(this.organization.id).pipe(map(response => {
+      this.canActivate = response.headers.get('X-Can-Modify');
 
-      this.canActivate = response.permissions.canActivate;
-
-      return response.categories.map(category => {
+      return response.body.map(category => {
         category.modules.map(this.prepareStatus);
 
         if (category.modules.length >= 12) {

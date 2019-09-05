@@ -74,7 +74,7 @@ export class ModuleService {
   }
 
   getCategories(orgId: number): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/categories/org/${orgId}`);
+    return this.httpClient.get(`${this.baseUrl}/categories/org/${orgId}`, {observe: 'response'});
   }
 
   setStatus(module: Partial<Module>, isActivated: boolean, orgId: number): Observable<any> {
