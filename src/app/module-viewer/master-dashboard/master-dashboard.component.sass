@@ -7,7 +7,7 @@
     font-family: Montserrat
     margin-top: 1em
     flex-direction: column
-    max-height: 57em
+    max-height: 60em
     width: 100%
 
     .organization-item
@@ -28,6 +28,7 @@
                 justify-content: center
                 align-items: center
                 color: #999
+                font-size: 1.1em
 
         \&.has-progress
             .org-name
@@ -40,49 +41,184 @@
                     display: inline-block
                     width: 4em
                     text-align: left
-                    color: #00529f
 
                 app-dashboard-progress-bar
                     margin-top: 6px
 
+.org-name
+    cursor: pointer
 
+.dashboard-menu
 
-.sort-menu
-    margin-top: 3em
-    font-family: Montserrat
-    display: flex
-    width: 100%
+    .dashboard-menu-wrapper
+        width: 250px
+        float: right
 
-    .sort-dropdown
-        flex: 1
-
-        .btn
+        .sort-menu
+            margin-top: 3em
+            font-family: Montserrat
+            display: flex
             width: 100%
+            white-space: nowrap
 
-    .btn
-        text-transform: uppercase
-        line-height: 1
-        text-align: left
+            .sort-dropdown
+                flex: 1
 
-    .btn-primary
-        background-color: #00529f
-        color: white
-        border-color: #00529f
-        padding-right: 2em
+                .btn
+                    width: 100%
 
-    .dropdown-toggle::after
-        position: absolute
-        right: 12px
-        top: 45%
+            .btn
+                text-transform: uppercase
+                line-height: 1
+                text-align: left
 
-    .dropdown-menu
+            .btn-primary
+                background-color: #00529f
+                color: white
+                border-color: #00529f
+                padding-right: 2em
+
+            .dropdown-toggle::after
+                position: absolute
+                right: 12px
+                top: 45%
+
+            .dropdown-menu
+                width: 100%
+
+                .dropdown-item
+                    padding: 0.5em
+                    text-transform: uppercase
+
+            .sort-direction
+                padding: 0 0.3em
+                font-size: 2em
+                margin-left: 0.2em
+
+.list-view
+
+    font-family: Montserrat
+
+    thead:after
+        content: "@"
+        display: block
+        line-height: 10px
+        text-indent: -99999px
+
+    thead
+        border-radius: 5px
+
+        tr
+            th
+                background-color: #00529f
+                color: white
+                border: 0
+                vertical-align: middle
+
+                &:first-of-type
+                    border-radius: 5px 0 0 5px
+                    padding-left: 2em
+
+                &:last-of-type
+                    border-radius: 0 5px 5px 0
+
+                \::ng-deep .mat-sort-header-container
+                    display: block
+                    text-align: center
+                    white-space: nowrap
+
+                    button
+                        display: inline-block !important
+                        text-transform: uppercase !important
+                        white-space: normal
+                        vertical-align: middle
+
+                    .mat-sort-header-arrow
+                        color: white
+                        display: inline-block !important
+
+    tbody
+        border: 1px solid #dee2e6
+
+        tr
+            td:first-of-type
+                padding-left: 2em
+                font-size: 1.1em
+
+            td
+                vertical-align: middle
+
+                &.org-progress
+                    text-align: center
+                    padding: 8px
+
+                    div
+                        display: inline-block
+                        width: 5.5em
+                        color: white
+                        background-color: #58ad3f
+                        border-radius: 5px
+                        padding: 3px
+                        font-size: 1.8em
+                        text-align: center
+
+                        &.red
+                            background-color: #cc0000 !important
+
+                        &.yellow
+                            background-color: #f7cd4b
+
+                &.due-date
+                    text-align: center
+
+            &.no-progress
+                color: #999
+
+                td.org-progress div
+                    display: none
+
+@media only screen and (max-width: 1300px)
+    h1
+        font-size: 3vw
+
+@media only screen and (max-width: 991px)
+    h1
+        font-size: 3.7vw
+        white-space: nowrap
+        margin-bottom: 0
+
+    .dashboard-menu
+        text-align: left !important
+        margin-top: 2em
+        margin-bottom: 2em
         width: 100%
 
-        .dropdown-item
-            padding: 0.5em
-            text-transform: uppercase
+        .dashboard-menu-wrapper
+            width: 100%
+            float: none
 
-    .sort-direction
-        padding: 0 0.5em
-        font-size: 2em
-        margin-left: 0.5em
+            .sort-menu
+                float: right
+                margin-top: 0
+                width: auto
+
+            app-list-style-toggle
+                float: left
+
+    .organizations
+        margin-top: -1em
+
+        .organization-item
+            flex: 0 0 25%
+            max-width: 25%
+
+    .list-view
+        .op-partner, .fin-director, .man-director
+            display: none
+
+
+@media only screen and (max-width: 768px)
+    .organizations
+        .organization-item
+            flex: 0 0 33%
+            max-width: 33%

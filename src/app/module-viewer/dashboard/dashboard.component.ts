@@ -3,9 +3,8 @@ import { Module, Organization } from 'src/app/common/interfaces/module.interface
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { UserService } from 'src/app/common/services/user.service';
-import User from 'src/app/common/interfaces/user.model';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
+import { ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,7 +14,7 @@ import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 export class DashboardComponent implements OnInit {
 
   constructor(private moduleService: ModuleService,
-              private userService: UserService
+              private route: ActivatedRoute
             ) { }
 
   modules$: Observable<Module[]>;
@@ -31,7 +30,8 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
 
-    this.organizations$.subscribe(organizations => this.setOrganization(organizations[0]));
+    const id = this.route.snapshot.params.id;
+    this.organizations$.subscribe(organizations => this.setOrganization(id ? organizations.find(org => org.id.toString() === id) : organizations[0]));
 
     const today = new Date();
     this.minDate = {year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate()};
