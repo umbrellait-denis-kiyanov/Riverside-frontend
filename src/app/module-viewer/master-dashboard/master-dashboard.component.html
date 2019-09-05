@@ -1,32 +1,33 @@
 <div class="row">
-  <div class="col-sm-10">
+  <div class="col-lg-9 col-md-12">
     <h1>RMCF SALES EXCELLENCE DASHBOARD</h1>
   </div>
-  <div class="col-sm-2 text-right">
-    <app-list-style-toggle [(active)]="view"></app-list-style-toggle>
+  <div class="col-lg-3 col-md-12 dashboard-menu text-right">
+    <div class="dashboard-menu-wrapper">
+      <app-list-style-toggle [(active)]="view"></app-list-style-toggle>
 
-    <div class="sort-menu">
-      <div ngbDropdown class="sort-dropdown d-inline-block" #layoutSel="ngbDropdown">
-        <button class="btn btn-primary" id="grid-sort" ngbDropdownToggle>{{ (sortOrder$ | async) || 'Sort By' }}</button>
-        <div ngbDropdownMenu aria-labelledby="grid-sort">
-          <button ngbDropdownItem (click)="setSort('Alphabetical'); layoutSel.close();">Alphabetical</button>
-          <button ngbDropdownItem (click)="setSort('% Complete'); layoutSel.close();">% Complete</button>
+      <div class="sort-menu" *ngIf="view == 'grid'">
+        <div ngbDropdown class="sort-dropdown d-inline-block" #layoutSel="ngbDropdown">
+          <button class="btn btn-primary" id="grid-sort" ngbDropdownToggle>{{ (sortOrder$ | async) || 'Sort By' }}</button>
+          <div ngbDropdownMenu aria-labelledby="grid-sort">
+            <button ngbDropdownItem (click)="setSort('Alphabetical'); layoutSel.close();">Alphabetical</button>
+            <button ngbDropdownItem (click)="setSort('% Complete'); layoutSel.close();">% Complete</button>
+          </div>
         </div>
+
+        <button class="btn btn-primary sort-direction" (click)="toggleSortOrder()">
+          <mat-icon *ngIf="sortAsc$ | async">arrow_upward</mat-icon>
+          <mat-icon *ngIf="!(sortAsc$ | async)">arrow_downward</mat-icon>
+        </button>
       </div>
-
-      <button *ngIf="view == 'grid'" class="btn btn-primary sort-direction" (click)="toggleSortOrder()">
-        <mat-icon *ngIf="sortAsc$ | async">arrow_upward</mat-icon>
-        <mat-icon *ngIf="!(sortAsc$ | async)">arrow_downward</mat-icon>
-      </button>
     </div>
-
   </div>
 </div>
 
 <div *ngIf="organizations$ | async as organizations">
 
-  <div class="organizations row" *ngIf="view == 'grid'">
-    <div class="organization-item col-sm-2" *ngFor="let organization of organizations" [class.has-progress]="organization.progress">
+  <div class="organizations row" [style.max-height]="gridHeight$ | async" *ngIf="view == 'grid'">
+    <div #orgItem class="organization-item col-sm-2" *ngFor="let organization of organizations" [class.has-progress]="organization.progress">
       <div class="org-item-container">
         <div class="org-name">
           {{ organization.name }}

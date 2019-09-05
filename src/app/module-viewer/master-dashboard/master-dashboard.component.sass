@@ -7,7 +7,7 @@
     font-family: Montserrat
     margin-top: 1em
     flex-direction: column
-    max-height: 57em
+    max-height: 60em
     width: 100%
 
     .organization-item
@@ -40,49 +40,95 @@
                     display: inline-block
                     width: 4em
                     text-align: left
-                    color: #00529f
 
                 app-dashboard-progress-bar
                     margin-top: 6px
 
 
+.dashboard-menu
+    padding: 0
 
-.sort-menu
-    margin-top: 3em
-    font-family: Montserrat
-    display: flex
-    width: 100%
+    .dashboard-menu-wrapper
+        width: 250px
+        float: right
 
-    .sort-dropdown
-        flex: 1
-
-        .btn
+        .sort-menu
+            margin-top: 3em
+            font-family: Montserrat
+            display: flex
             width: 100%
+            white-space: nowrap
 
-    .btn
-        text-transform: uppercase
-        line-height: 1
-        text-align: left
+            .sort-dropdown
+                flex: 1
 
-    .btn-primary
-        background-color: #00529f
-        color: white
-        border-color: #00529f
-        padding-right: 2em
+                .btn
+                    width: 100%
 
-    .dropdown-toggle::after
-        position: absolute
-        right: 12px
-        top: 45%
+            .btn
+                text-transform: uppercase
+                line-height: 1
+                text-align: left
 
-    .dropdown-menu
+            .btn-primary
+                background-color: #00529f
+                color: white
+                border-color: #00529f
+                padding-right: 2em
+
+            .dropdown-toggle::after
+                position: absolute
+                right: 12px
+                top: 45%
+
+            .dropdown-menu
+                width: 100%
+
+                .dropdown-item
+                    padding: 0.5em
+                    text-transform: uppercase
+
+            .sort-direction
+                padding: 0 0.3em
+                font-size: 2em
+                margin-left: 0.2em
+
+
+@media only screen and (max-width: 1300px)
+    h1
+        font-size: 3vw
+
+@media only screen and (max-width: 991px)
+    h1
+        font-size: 3.7vw
+        white-space: nowrap
+        margin-bottom: 0
+
+    .dashboard-menu
+        text-align: left !important
+        padding: 0 15px
+        margin-top: 2em
         width: 100%
 
-        .dropdown-item
-            padding: 0.5em
-            text-transform: uppercase
+        .dashboard-menu-wrapper
+            width: 100%
+            float: none
 
-    .sort-direction
-        padding: 0 0.5em
-        font-size: 2em
-        margin-left: 0.5em
+            .sort-menu
+                float: right
+                margin-top: 0
+                width: auto
+
+            app-list-style-toggle
+                float: left
+
+    .organizations
+        .organization-item
+            flex: 0 0 25%
+            max-width: 25%
+
+@media only screen and (max-width: 768px)
+    .organizations
+        .organization-item
+            flex: 0 0 33%
+            max-width: 33%

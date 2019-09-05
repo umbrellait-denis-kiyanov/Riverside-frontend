@@ -1,8 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
 import { ModuleService } from 'src/app/common/services/module.service';
-import { Observable, of, Subject, BehaviorSubject, combineLatest } from 'rxjs';
-import { map } from 'rxjs/operators';
-import { UserService } from 'src/app/common/services/user.service';
+import { Observable, fromEvent, BehaviorSubject, combineLatest } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   selector: 'app-master-dashboard',
@@ -21,6 +20,10 @@ export class MasterDashboardComponent implements OnInit {
 
   sortAsc$ = new BehaviorSubject<boolean>(true);
 
+  gridHeight$: Observable<string>;
+
+  @ViewChild('orgItem') orgItem: ElementRef;
+
   constructor(private moduleService: ModuleService) { }
 
   ngOnInit() {
@@ -33,6 +36,15 @@ export class MasterDashboardComponent implements OnInit {
 
           return a[field] < b[field] ? -1 * direction : direction;
         });
+      }));
+
+    this.gridHeight$ = combineLatest([this.moduleService.getOrganizations(), fromEvent(window, 'resize').pipe(startWith(null))]).
+      pipe(map(([items, event]) => {
+        const el = this.orgItem.nativeElement;
+        const columns = 100 / parseInt(window.getComputedStyle(el, null).getPropertyValue('max-width'), 10);
+        const containerHeight = (Math.ceil(items.length / columns) + 0.5) * el.clientHeight;
+
+        return containerHeight.toString(10) + 'px';
       }));
   }
 
