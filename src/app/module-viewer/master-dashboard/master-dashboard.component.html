@@ -48,6 +48,7 @@
           <th class="text-center" mat-sort-header="name">Portco</th>
           <th mat-sort-header="progress">% Complete</th>
           <th mat-sort-header="due_date">Final Completion Date</th>
+          <th mat-sort-header="assessment">Assessment</th>
           <th class="op-partner" mat-sort-header="op_partner">Operating Partner</th>
           <th class="fin-director" mat-sort-header="fin_director">Finance Director</th>
           <th class="man-director" mat-sort-header="man_director">SE Managing Director</th>
@@ -66,6 +67,9 @@
           </td>
           <td class="due-date">
             <span *ngIf="organization.due_date">{{ organization.due_date | readabledate }}</span>
+          </td>
+          <td class="assessment">
+              <span *ngIf="organization.assessment">{{ organization.assessment }}</span>
           </td>
           <td class="op-partner"></td>
           <td class="fin-director"></td>
