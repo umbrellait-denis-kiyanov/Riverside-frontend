@@ -11,7 +11,7 @@ import { Sort } from '@angular/material/sort';
 })
 export class MasterDashboardComponent implements OnInit {
 
-  view = 'grid';
+  view = 'list';
 
   organizations$: Observable<any>;
 
@@ -27,6 +27,10 @@ export class MasterDashboardComponent implements OnInit {
 
   constructor(private moduleService: ModuleService) { }
 
+  quarters = [];
+
+  currentQuarter = '';
+
   ngOnInit() {
     this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
       pipe(map(([items, sortOrder, listSortOrder, sortAsc]) => {
@@ -36,9 +40,17 @@ export class MasterDashboardComponent implements OnInit {
           const field = 'grid' === this.view ? (sortOrder === 'Alphabetical' ? 'name' : 'progress') : listSortOrder.active;
 
           // keep rows with empty column values at the bottom of the table
-          const defValue = -1 === direction ? '' : 'ZZZ';
+          let defLowValue = isNaN(parseInt(a[field], 10)) && isNaN(parseInt(b[field], 10)) || ('due_date' === field) ? 'ZZZ' : 9999;
+          let defHiValue = '' as any;
 
-          return (a[field] || defValue) < (b[field] || defValue) ? -1 * direction : direction;
+          if ('assessment' === field) {
+            defLowValue = 9999 * direction;
+            defHiValue = 9999 * direction;
+          }
+
+          const defValue = -1 === direction ? defHiValue : defLowValue;
+
+          return ((a[field] || defValue) < (b[field] || defValue)) ? -1 * direction : direction;
         });
       }));
 
@@ -50,6 +62,12 @@ export class MasterDashboardComponent implements OnInit {
 
         return containerHeight.toString(10) + 'px';
       }));
+
+    // @todo: load from API
+    this.currentQuarter = 'q3';
+
+    const quarters = ['q1', 'q2', 'q3', 'q4'];
+    this.quarters = quarters.concat(quarters).slice(quarters.indexOf(this.currentQuarter) + 1, 8).slice(0, 4);
   }
 
   setSort(sortLabel: string) {
