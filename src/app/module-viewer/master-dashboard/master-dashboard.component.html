@@ -70,7 +70,22 @@
             <div *ngIf="organization[q]" [class.red]="organization[q] < 30" [class.yellow]="organization[q] < 50">{{ organization[q] }}</div>
           </td>
           <td class="org-progress-chart">
-            <div>{{ organization.progress }}</div>
+            <div class="d-none">{{ organization.progress }}</div>
+
+            <div class="org-chart-container">
+              <ngx-charts-line-chart
+                *ngIf="organization.progress"
+                yScaleMin="0"
+                yScaleMax="100"
+                xScaleMin="0"
+                xScaleMax="3"
+                [animations]="false"
+                [tooltipDisabled]="true"
+                [scheme]="colorScheme"
+                [results]="organization.chart">
+              </ngx-charts-line-chart>
+            </div>
+
           </td>
           <td class="due-date">
             <span *ngIf="organization.due_date">{{ organization.due_date | readabledate }}</span>

@@ -67,7 +67,7 @@ import { MasterDashboardComponent } from './master-dashboard/master-dashboard.co
 import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
 import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.component';
 import { NgLetDirective } from '../common/directives/nglet.directive';
-
+import { NgxChartsModule } from '@swimlane/ngx-charts';
 
 @NgModule({
   imports: [
@@ -91,6 +91,7 @@ import { NgLetDirective } from '../common/directives/nglet.directive';
     VideoRecorderModule,
     AudioRecorderModule,
     NgbModule,
+    NgxChartsModule
   ],
   declarations: [
     ModuleViewerRootComponent,
