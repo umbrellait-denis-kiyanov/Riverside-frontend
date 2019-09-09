@@ -38,6 +38,10 @@ export class MasterDashboardComponent implements OnInit {
   ngOnInit() {
     this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
       pipe(map(([items, sortOrder, listSortOrder, sortAsc]) => {
+        this.currentQuarter = items[0].current_quarter;
+        const quarters = ['q1', 'q2', 'q3', 'q4'];
+        this.quarters = quarters.concat(quarters).slice(quarters.indexOf(this.currentQuarter) + 1, 8).slice(0, 4);
+
         return items
           .map(item => {
             item.chart = [{name: 'Progress', series: this.quarters.map((quarter, idx) =>
@@ -73,12 +77,6 @@ export class MasterDashboardComponent implements OnInit {
 
         return containerHeight.toString(10) + 'px';
       }));
-
-    // @todo: load from API
-    this.currentQuarter = 'q3';
-
-    const quarters = ['q1', 'q2', 'q3', 'q4'];
-    this.quarters = quarters.concat(quarters).slice(quarters.indexOf(this.currentQuarter) + 1, 8).slice(0, 4);
   }
 
   setSort(sortLabel: string) {
