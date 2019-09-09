@@ -78,9 +78,9 @@
           <td class="assessment">
               <span [class.red]="organization.assessment < 0" [class.yellow]="organization.assessment <= 10" *ngIf="organization.assessment">{{ organization.assessment }}</span>
           </td>
-          <td class="op-partner"></td>
-          <td class="fin-director"></td>
-          <td class="man-director"></td>
+          <td class="op-partner">{{ organization.op_partner }}</td>
+          <td class="fin-director">{{ organization.fin_director }}</td>
+          <td class="man-director">{{ organization.man_director }}</td>
         </tr>
       </tbody>
     </table>
