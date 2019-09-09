@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { Location } from '@angular/common';
 import { Module, Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable, BehaviorSubject } from 'rxjs';
@@ -16,7 +17,8 @@ import { Sort } from '@angular/material/sort';
 export class DashboardComponent implements OnInit {
 
   constructor(private moduleService: ModuleService,
-              private route: ActivatedRoute
+              private route: ActivatedRoute,
+              private location: Location
             ) { }
 
   modulesRequest$: Observable<any>;
@@ -81,6 +83,8 @@ export class DashboardComponent implements OnInit {
 
   setOrganization(organization: Organization) {
     this.organization = organization;
+
+    this.location.replaceState('/dashboard/' + organization.id);
 
     this.modulesRequest$ = this.moduleService.getCategories(this.organization.id).pipe(shareReplay(1));
     this.modules$ = this.modulesRequest$.pipe(map(response => {
