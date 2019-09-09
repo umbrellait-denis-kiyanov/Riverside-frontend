@@ -42,7 +42,7 @@
   </div>
 
   <div *ngIf="view == 'list'">
-    <table class="table list-view" matSort (matSortChange)="setListSort($event)" [matSortDisableClear]="true" matSortActive="name" matSortDirection="asc">
+    <table class="table dashboard-table list-view" matSort (matSortChange)="setListSort($event)" [matSortDisableClear]="true" matSortActive="name" matSortDirection="asc">
       <thead>
         <tr>
           <th class="text-center" mat-sort-header="name">Portco</th>

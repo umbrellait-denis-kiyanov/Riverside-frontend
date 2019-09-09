@@ -68,6 +68,7 @@ import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboar
 import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.component';
 import { NgLetDirective } from '../common/directives/nglet.directive';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ModuleLinkComponent } from './dashboard/module-link/module-link.component';
 
 @NgModule({
   imports: [
@@ -135,7 +136,8 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
     MasterDashboardComponent,
     DashboardProgressBarComponent,
     ListStyleToggleComponent,
-    NgLetDirective
+    NgLetDirective,
+    ModuleLinkComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

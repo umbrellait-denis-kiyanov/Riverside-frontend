@@ -8,6 +8,9 @@
     .dropdown-menu
         margin-left: -3px
 
+.completed-check
+    color: #58ad3f
+
 .panel-container
     display: flex
     width: 100%
@@ -101,16 +104,6 @@
                                 .due-progress
                                     flex: 1
 
-                            .under-construction
-                                position: absolute
-                                top: 0
-                                z-index: 1
-                                background-color: red
-                                color: white
-                                padding: 5px
-                                text-align: center
-                                font-size: 12px
-
                         \::ng-deep
                             .mat-icon
                                 color: #888
@@ -141,7 +134,6 @@
                     padding: 5px
 
                     .completed-check
-                        color: #58ad3f
                         display: none
 
                     \::ng-deep
@@ -178,6 +170,12 @@
 
                     span.module-name-link
                         display: block
+
+table.list-view
+    tr
+        app-module-link
+            display: inline-block
+
 
 @media only screen and (max-width: 1700px)
     .panel-container .card
