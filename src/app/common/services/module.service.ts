@@ -85,6 +85,10 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/due-date`, {date});
   }
 
+  saveNotes(module: Partial<Module>, orgId: number, notes: string): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/notes`, {notes});
+  }
+
   getOrganizations(): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}/organizations/list`);
   }

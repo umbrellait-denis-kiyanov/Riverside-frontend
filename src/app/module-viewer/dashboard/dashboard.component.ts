@@ -121,6 +121,14 @@ export class DashboardComponent implements OnInit {
             const bValue = 'idx' === field ? b[field] : (b.status ? b.status[field] : null);
 
             // keep rows with empty column values at the bottom of the table
+            if ((aValue === null && bValue)) {
+              return 1;
+            }
+
+            if ((bValue === null && aValue)) {
+              return -1;
+            }
+
             let defLowValue = isNaN(parseInt(aValue, 10)) && isNaN(parseInt(bValue, 10)) || ('due_date' === field) ? 'ZZZ' : 9999;
             let defHiValue = '' as any;
 
@@ -138,5 +146,12 @@ export class DashboardComponent implements OnInit {
 
   setListSort(sortLabel: Sort) {
     this.listSortOrder$.next(sortLabel);
+  }
+
+  saveNotes(module: Module) {
+    this.moduleService.saveNotes(module, this.organization.id, module.status.notes).subscribe(newStatus => {
+      module.status = newStatus;
+      this.prepareStatus(module);
+    });
   }
 }
