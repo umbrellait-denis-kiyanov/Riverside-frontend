@@ -31,10 +31,6 @@ export class MasterDashboardComponent implements OnInit {
 
   currentQuarter = '';
 
-  colorScheme = {
-    domain: ['#00529f']
-  };
-
   ngOnInit() {
     this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
       pipe(map(([items, sortOrder, listSortOrder, sortAsc]) => {
@@ -43,12 +39,6 @@ export class MasterDashboardComponent implements OnInit {
         this.quarters = quarters.concat(quarters).slice(quarters.indexOf(this.currentQuarter) + 1, 8).slice(0, 4);
 
         return items
-          .map(item => {
-            item.chart = [{name: 'Progress', series: this.quarters.map((quarter, idx) =>
-                            ({name: idx, value: item[quarter]})).filter((entry, idx) => !idx || entry.value)}];
-
-            return item;
-          })
           .sort((a, b) => {
             const direction = ('grid' === this.view ? sortAsc : (listSortOrder.direction === 'asc')) ? 1 : -1;
 
