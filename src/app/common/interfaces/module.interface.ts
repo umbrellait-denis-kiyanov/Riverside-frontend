@@ -4,6 +4,7 @@ export interface ModuleStatus {
   due_date_edit?: string;
   is_late?: boolean;
   progress: number;
+  notes: string;
 }
 
 export interface Module {

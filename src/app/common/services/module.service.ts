@@ -74,7 +74,7 @@ export class ModuleService {
   }
 
   getCategories(orgId: number): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/categories/org/${orgId}`);
+    return this.httpClient.get(`${this.baseUrl}/categories/org/${orgId}`, {observe: 'response'});
   }
 
   setStatus(module: Partial<Module>, isActivated: boolean, orgId: number): Observable<any> {
@@ -83,6 +83,10 @@ export class ModuleService {
 
   setDueDate(module: Partial<Module>, date: string, orgId: number): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/due-date`, {date});
+  }
+
+  saveNotes(module: Partial<Module>, orgId: number, notes: string): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/notes`, {notes});
   }
 
   getOrganizations(): Observable<any> {

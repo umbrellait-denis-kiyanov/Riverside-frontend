@@ -50,6 +50,7 @@ import { PersonaBehaviorTemplateComponent } from './riverside-step-template/temp
 import { FeedbackSectionTemplateComponent } from './riverside-step-template/templates/feedback_section/feedback_section.component';
 import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
+import { CanModifyPipe } from '../common/pipes/canModify.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
@@ -65,7 +66,9 @@ import { NgbStringAdapter } from './ngb-string-adapter';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
 import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.component';
-
+import { NgLetDirective } from '../common/directives/nglet.directive';
+import { NgxChartsModule } from '@swimlane/ngx-charts';
+import { ModuleLinkComponent } from './dashboard/module-link/module-link.component';
 
 @NgModule({
   imports: [
@@ -88,7 +91,8 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
     E3CommonModule,
     VideoRecorderModule,
     AudioRecorderModule,
-    NgbModule
+    NgbModule,
+    NgxChartsModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -101,6 +105,7 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
     LoadingComponent,
     FormatDatePipe,
     ReadableDatePipe,
+    CanModifyPipe,
     LearningElementComponent,
 
     IceComponent,
@@ -130,8 +135,9 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
     DashboardComponent,
     MasterDashboardComponent,
     DashboardProgressBarComponent,
-    ListStyleToggleComponent
-
+    ListStyleToggleComponent,
+    NgLetDirective,
+    ModuleLinkComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -160,6 +166,7 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
     InboxService,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
-  bootstrap: [ModuleViewerRootComponent]
+  bootstrap: [ModuleViewerRootComponent],
+  exports: [NgLetDirective]
 })
 export class ModuleViewerModule { }

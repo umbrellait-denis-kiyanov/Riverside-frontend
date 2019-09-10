@@ -11,7 +11,7 @@ import { Sort } from '@angular/material/sort';
 })
 export class MasterDashboardComponent implements OnInit {
 
-  view = 'grid';
+  view = 'list';
 
   organizations$: Observable<any>;
 
@@ -27,19 +27,36 @@ export class MasterDashboardComponent implements OnInit {
 
   constructor(private moduleService: ModuleService) { }
 
+  quarters = [];
+
+  currentQuarter = '';
+
   ngOnInit() {
     this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
       pipe(map(([items, sortOrder, listSortOrder, sortAsc]) => {
-        return items.map(item => { item.progress = item.progress || 0; return item; }).sort((a, b) => {
-          const direction = ('grid' === this.view ? sortAsc : (listSortOrder.direction === 'asc')) ? 1 : -1;
+        this.currentQuarter = items[0].current_quarter;
+        const quarters = ['q1', 'q2', 'q3', 'q4'];
+        this.quarters = quarters.concat(quarters).slice(quarters.indexOf(this.currentQuarter) + 1, 8).slice(0, 4);
 
-          const field = 'grid' === this.view ? (sortOrder === 'Alphabetical' ? 'name' : 'progress') : listSortOrder.active;
+        return items
+          .sort((a, b) => {
+            const direction = ('grid' === this.view ? sortAsc : (listSortOrder.direction === 'asc')) ? 1 : -1;
 
-          // keep rows with empty column values at the bottom of the table
-          const defValue = -1 === direction ? '' : 'ZZZ';
+            const field = 'grid' === this.view ? (sortOrder === 'Alphabetical' ? 'name' : 'progress') : listSortOrder.active;
 
-          return (a[field] || defValue) < (b[field] || defValue) ? -1 * direction : direction;
-        });
+            // keep rows with empty column values at the bottom of the table
+            let defLowValue = isNaN(parseInt(a[field], 10)) && isNaN(parseInt(b[field], 10)) || ('due_date' === field) ? 'ZZZ' : 9999;
+            let defHiValue = '' as any;
+
+            if ('assessment' === field) {
+              defLowValue = 9999 * direction;
+              defHiValue = 9999 * direction;
+            }
+
+            const defValue = -1 === direction ? defHiValue : defLowValue;
+
+            return ((a[field] || defValue) < (b[field] || defValue)) ? -1 * direction : direction;
+          });
       }));
 
     this.gridHeight$ = combineLatest([this.moduleService.getOrganizations(), fromEvent(window, 'resize').pipe(startWith(null))]).

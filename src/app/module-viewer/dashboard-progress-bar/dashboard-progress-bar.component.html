@@ -1,5 +1,5 @@
 <div class="progress-fill"
-  [style.width]="progress + '%'"
+  [style.width]="(progress || 0) + '%'"
   [class.red]="hasColors && progress <= 25"
   [class.orange]="hasColors && progress <= 50"
   >
