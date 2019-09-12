@@ -43,6 +43,16 @@
 ></div>
 
 <div class="persona-behavior-wrapper">
+  <app-selection-matrix
+    [personas]="inputIds.fromPreviousStep"
+    [options]="['Define Problem', 'Evaluate Solutions', 'Make Recommendations']"
+    [horizontal]="true"
+    [inputIds]="inputIds"
+    [inputs]="inputs"
+  ></app-selection-matrix>
+</div>
+
+<div class="persona-behavior-wrapper">
   <div class="persona-row">
       <div class="persona-name-column"></div>
       <div class="persona-behavior-column behavior-title ">
