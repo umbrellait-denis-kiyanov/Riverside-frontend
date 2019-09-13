@@ -1,9 +1,13 @@
+<div *ngIf="data.selections$ | async as selections" class="matrix-selections">
+  <span *ngFor="let selection of selections" class="matrix-selection">{{ selection }}</span>
+</div>
+
 <div
   id="textbody"
   attr.disabled={{disabled}}
   attr.contenteditable={{!disabled}}
   [ngClass]="{'CT-hide': hideChanges, hasComment: comment.hasComment, showComment: comment.show}"
-  [innerHTML]="data.content | safehtml"
+  [innerHTML]="data.textContent | safehtml"
   (mouseenter)="onMouseEnter($event)"
   (blur)="onBlur()"
   (paste)="onPaste($event)"

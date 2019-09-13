@@ -13,8 +13,8 @@ import {
 import User from 'src/app/common/interfaces/user.model';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, fromEvent } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { Subscription, fromEvent, BehaviorSubject } from 'rxjs';
+import { filter, take, skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { DOCUMENT } from '@angular/common';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
@@ -31,10 +31,13 @@ export class IceComponent implements OnInit {
   @Input() box: number;
   @Input() disabled: boolean;
   @Input() data: {
+    textContent: string,
     content: string,
+    selections$: BehaviorSubject<string[]>,
     comments_json: any[]
   };
   @Output() changed = new EventEmitter(false);
+  @Output() dataChanged = new EventEmitter(false);
 
   @ViewChild('commentOverlay') commentOverlay: TemplateRef<any>;
 
@@ -62,8 +65,20 @@ export class IceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.data = this.data || { content: '', comments_json: [] };
+    this.data = this.data || { textContent: '', content: '', comments_json: [], selections$: new BehaviorSubject([]) };
     this.data.content = this.data.content || '';
+    this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
+
+    const el: HTMLDivElement = document.createElement('div');
+    el.innerHTML = this.data.content;
+    const selections = el.querySelector('.matrix-options');
+
+    if (selections) {
+      this.data.selections$.next(Array.prototype.slice.call(selections.querySelectorAll('span')).map(node => node.innerHTML));
+      selections.remove();
+    }
+
+    this.data.textContent = el.innerHTML;
 
     this.iceService.allComponents.push(this);
 
@@ -98,6 +113,10 @@ export class IceComponent implements OnInit {
       });
     });
 
+    this.data.selections$.pipe(skip(1)).subscribe(_ => {
+      this.onBlur();
+      this.changed.emit();
+    });
   }
 
   addComment($event: MouseEvent) {
@@ -267,7 +286,14 @@ export class IceComponent implements OnInit {
 
   onBlur() {
     const { element } = this.tracker;
+
     element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
+
+    this.data.content = '<p class="matrix-options">' +
+                          (this.data.selections$.value || []).map(sel => '<span>' + sel + '</span>').join('') +
+                        '</p>' + element.innerHTML;
+
+    this.dataChanged.emit(this.data);
   }
 
   setEndOfContenteditable(contentEditableElement) {

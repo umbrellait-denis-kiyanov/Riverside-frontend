@@ -44,13 +44,14 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
     Object.keys(this.inputs).forEach(key => {
       const iceElement = this.el.nativeElement.querySelector(`#${key} #textbody`);
       if (iceElement) {
-      data.inputs[key] = {
-        comments_json: this.data.data.inputs[key] ? this.data.data.inputs[key].comments_json : [],
-        org_id: this.data.data.inputs[key] ? this.data.data.inputs[key].org_id : null,
-        module_id: this.data.data.inputs[key] ? this.data.data.inputs[key].module_id : null,
-        content: iceElement ? iceElement.innerHTML.replace(/(\s)|(&nbsp;)/g, ' ') : '',
-        element_key: key,
-      };
+        const input = this.data.data.inputs[key] || {} as any;
+        data.inputs[key] = {
+          comments_json: input.comments_json || [],
+          org_id: input.org_id || null,
+          module_id: input.module_id || null,
+          content: input.content || null,
+          element_key: key
+        };
       } else if (this.data.data.inputs[key]) {
         data.inputs[key]  = {...this.data.data.inputs[key], element_key: key};
       }

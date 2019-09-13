@@ -9,6 +9,9 @@ import { TemplateComponent } from '../riverside-step-template/templates/template
 export class SelectionMatrixComponent  {
 
   @Input()
+  question: string;
+
+  @Input()
   personas: any;
 
   @Input()
@@ -30,27 +33,15 @@ export class SelectionMatrixComponent  {
     const checked = $event.srcElement.checked;
     const input = this.inputs[this.inputIds.personas[personaIdx]];
 
-    // if ('<p><br></p>' === input.content) {
-    //   input.content = '<p><span></span></p>';
-    // }
-
-    const el: HTMLDivElement = document.createElement('div');
-    el.innerHTML = input.content;
+    let selections = input.selections$.value;
 
     if (checked) {
-      const newEl = document.createElement('span');
-      newEl.innerHTML = option;
-      newEl.className = 'matrix-option';
-      newEl.title = option;
-
-      el.appendChild(newEl);
+      selections.push(option);
     } else {
-      el.querySelectorAll('span[title="' + option + '"]').forEach(item => item.parentNode.removeChild(item));
+      selections = selections.filter(sel => sel !== option);
     }
 
-    input.content = el.innerHTML;
-
-    console.log(input);
+    input.selections$.next(selections);
   }
 
   notEmpty(el: string) {
