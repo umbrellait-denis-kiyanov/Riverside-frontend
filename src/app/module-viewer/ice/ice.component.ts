@@ -36,6 +36,8 @@ export class IceComponent implements OnInit {
     selections$: BehaviorSubject<string[]>,
     comments_json: any[]
   };
+  @Input() allowRemoveSelections = false;
+
   @Output() changed = new EventEmitter(false);
   @Output() dataChanged = new EventEmitter(false);
 
@@ -117,6 +119,11 @@ export class IceComponent implements OnInit {
       this.onBlur();
       this.changed.emit();
     });
+  }
+
+  removeSelection(selection: string) {
+    const selections = this.data.selections$.value.filter(sel => sel !== selection);
+    this.data.selections$.next(selections);
   }
 
   addComment($event: MouseEvent) {
