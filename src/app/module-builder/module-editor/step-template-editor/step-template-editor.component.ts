@@ -30,6 +30,8 @@ export class StepTemplateEditorComponent implements OnInit {
 
   async ngOnInit() {
     this.stepEdit = JSON.parse(JSON.stringify(this.step));
+    this.stepEdit.template_params_json = JSON.parse(this.stepEdit.template_params_json);
+
     this.templates = await this.moduleService.getTemplates(this.step.module_id);
     this.onTemplateChange();
     this.initialized = true;
@@ -37,7 +39,7 @@ export class StepTemplateEditorComponent implements OnInit {
 
   save() {
     this.step.template_id = this.stepEdit.template_id;
-    this.step.template_params_json = this.stepEdit.template_params_json;
+    this.step.template_params_json = JSON.stringify(this.stepEdit.template_params_json);
     this.modal.close();
   }
 
@@ -56,7 +58,7 @@ export class StepTemplateEditorComponent implements OnInit {
       split(',').join('],[').
       split(':').join(',').
       split('?').join('').
-      split("'").join('')
+      split('\'').join('')
       ;
 
     this.templateFields = JSON.parse('[' + fields + ']');

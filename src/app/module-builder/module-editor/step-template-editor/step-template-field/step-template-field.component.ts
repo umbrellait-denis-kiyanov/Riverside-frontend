@@ -8,16 +8,13 @@ import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 })
 export class StepTemplateFieldComponent implements OnInit {
 
-  @Input() section: string;
-  @Input() index: number;
   @Input() field: any;
-  @Input() json: string;
+  @Input() json: any;
   @Input() change: EventEmitter<string> = new EventEmitter<string>();
   @Output() jsonChange: EventEmitter<string> = new EventEmitter<string>();
 
   name: string;
   type: any;
-  value: any;
 
   hasSubFields = false;
   rtEditor: any;
@@ -28,31 +25,24 @@ export class StepTemplateFieldComponent implements OnInit {
     this.name = this.field[0];
     this.type = this.field[1];
 
-    let json = JSON.parse(this.json);
-
-    if (this.section) {
-      json = ((json[this.section] || [])[this.index]) || {};
-    }
-    this.value = json[this.name];
-
     if ('string' === this.type) {
       // in case we still have some JSON data
-      if (typeof this.value === 'object' && this.value !== null) {
-        this.value = JSON.stringify(this.value);
+      if (typeof this.json === 'object' && this.json !== null) {
+        this.json = JSON.stringify(this.json);
         this.type = 'json';
-      } else if (['title', 'sufix', 'input_sufix', 'key'].includes(this.name)) {
+      } else if (['title', 'sufix', 'input_sufix', 'key', 'question', 'option'].includes(this.name)) {
         this.type = 'text-input';
       } else {
         this.rtEditor = InlineEditor;
-        this.value = this.value || '';
+        this.json = this.json || '';
       }
     }
 
     if (this.type instanceof Array) {
       this.hasSubFields = true;
 
-      if (!(this.value instanceof Array)) {
-        this.value = [{}];
+      if (!(this.json instanceof Array)) {
+        this.json = [{}];
       }
     }
   }
@@ -66,39 +56,19 @@ export class StepTemplateFieldComponent implements OnInit {
   }
 
   valueChange() {
-    const json = JSON.parse(this.json);
-
     if ('input_sufix' === this.name) {
-      this.value = this.value.replace(/[\W]+/g, '');
+      this.json = this.json.replace(/[\W]+/g, '');
     }
 
-    if (this.section) {
-      if (!json[this.section]) {
-        json[this.section] = [];
-      }
-      if (!json[this.section][this.index]) {
-        json[this.section][this.index] = {};
-      }
-
-      json[this.section][this.index][this.name] = this.value;
-
-    } else {
-      json[this.name] = this.value;
-    }
-
-    this.jsonChange.emit(JSON.stringify(json));
-  }
-
-  subValueChange() {
-    this.jsonChange.emit(JSON.stringify(JSON.parse(this.json)));
+    this.jsonChange.emit(this.json);
   }
 
   onClickAddSubField() {
-    this.value.push({});
+    this.json.push({});
   }
 
   onClickRemoveSubField(idx: number) {
-    this.value.splice(idx, 1);
+    this.json.splice(idx, 1);
     this.valueChange();
   }
 }
