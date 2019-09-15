@@ -1,3 +1,6 @@
+label
+  display: block
+
 textarea
   min-height: 250px
 
@@ -11,4 +14,28 @@ textarea
 
 .card.sub-fields
   margin-bottom: 10px
-  width: 100%
+  display: block
+
+  &.fields-cnt-1
+    border: 0
+    margin: 0
+
+    .card-body
+      padding: 0
+      display: flex
+      justify-content: center;
+
+    .remove-subvalue
+      padding-top: 0
+      position: relative
+      right: auto
+      height: 2em
+      display: inline-block
+      line-height: 2em
+      margin-top: 2em
+      margin-right: 2em
+
+    ::ng-deep app-step-template-field
+      flex: 1
+      label
+        display: none
