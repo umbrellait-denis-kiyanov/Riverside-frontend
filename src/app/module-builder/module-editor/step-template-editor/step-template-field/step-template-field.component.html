@@ -29,6 +29,7 @@
     *ngIf="type == 'string'"
     class="ckeditor"
     [editor]="rtEditor"
+    (change)="valueChange()"
     [(ngModel)]="json"
   ></ckeditor>
 

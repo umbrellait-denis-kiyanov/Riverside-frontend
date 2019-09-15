@@ -1,3 +1,6 @@
+h3
+    text-align: center
+
 .matrix
     th
         text-align: center
@@ -47,6 +50,10 @@
             td.empty-corner .empty-container
                 height: 120px
 
+            td.riverside-persona
+                padding-left: 5px
+                padding-right: 5px
+
             \::ng-deep
                 riverside-persona
                     display: block
@@ -66,4 +73,16 @@
                     .persona-title
                         margin-top: -5px
                         font-size: smaller
-                        white-space: nowrap
+                        max-height: 3em
+                        overflow: hidden
+
+@media only screen and (max-width: 1400px)
+    .option-wrapper
+        font-size: 1.3vw
+
+    \::ng-deep
+        .persona-name
+            font-size: 2vw !important
+
+        .persona-title
+            font-size: 1vw !important
