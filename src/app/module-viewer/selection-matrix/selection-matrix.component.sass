@@ -5,10 +5,22 @@
     td.checkbox-container
         text-align: center
         vertical-align: middle
+        cursor: pointer
+
+        &:hover
+            background-color: #eee
 
         .checkbox
             width: 1em
             height: 1em
+
+    td.riverside-persona
+        padding-left: 0
+
+        \::ng-deep
+            riverside-persona
+                .persona-name-column
+                    margin-right: 0
 
     &.horizontal
         display: flex
@@ -23,6 +35,10 @@
             th, td
                 flex: 1
                 display: block
+
+                .option-wrapper
+                    display: inline-block
+                    width: 10em
 
             th
                 white-space: nowrap

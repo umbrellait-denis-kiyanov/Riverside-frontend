@@ -30,10 +30,25 @@ export class SelectionMatrixComponent  {
     this.options = this.options.map(opt => opt.option || opt);
   }
 
+  toggleSelection(personaIdx, option, $event) {
+    if ($event.target.tagName === 'INPUT') {
+      return;
+    }
+
+    const input = this.inputs[this.inputIds.personas[personaIdx]];
+    const checked = input.selections$.value.includes(option);
+
+    this.updateSelection(input, option, !checked);
+  }
+
   updateTextInput(personaIdx, option, $event) {
     const checked = $event.srcElement.checked;
     const input = this.inputs[this.inputIds.personas[personaIdx]];
 
+    this.updateSelection(input, option, checked);
+  }
+
+  updateSelection(input, option, checked) {
     let selections = input.selections$.value;
 
     if (checked) {
