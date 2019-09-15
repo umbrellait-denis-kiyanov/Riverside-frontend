@@ -35,7 +35,7 @@ export interface Step {
   is_section_break?: boolean;
   requires_feedback?: boolean;
   template_component?: string;
-  template_params_json: string;
+  template_params_json: object;
   position?: number;
   elements: LearningElement[];
 }

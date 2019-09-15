@@ -128,7 +128,6 @@ export class ModuleEditorComponent implements OnInit {
   getSections(moduleData: Module): Section[] {
     return moduleData.steps.
       reduce((sections, step) => {
-        step.template_params_json = JSON.stringify(step.template_params_json);
         if (step.is_section_break) {
           sections.push({section: step, steps: []});
         } else {
@@ -160,7 +159,7 @@ export class ModuleEditorComponent implements OnInit {
       id: 0,
       module_id: this.moduleData.id,
       requires_feedback: false,
-      template_params_json: '',
+      template_params_json: {},
       template_component: ''
     };
   }
