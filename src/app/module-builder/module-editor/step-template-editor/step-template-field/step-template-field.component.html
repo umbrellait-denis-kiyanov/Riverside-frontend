@@ -45,9 +45,9 @@
 
 </div>
 
-<div *ngIf="hasSubFields">
+<div *ngIf="hasSubFields" cdkDropList (cdkDropListDropped)="onSubValueDrop($event)">
   <label>{{ fieldTitle(name) }}</label>
-  <div class="card sub-fields fields-cnt-{{ type.length }}" *ngFor="let val of json; index as idx">
+  <div class="card sub-fields fields-cnt-{{ type.length }}" cdkDrag cdkDragLockAxis="y" *ngFor="let val of json; index as idx">
     <div class="card-body">
       <button class="btn btn-danger remove-subvalue" (click)="onClickRemoveSubField(idx)">Remove</button>
       <app-step-template-field *ngFor="let field of type" (change)="valueChange()" [field]="field" [(json)]="json[idx][field[0]]"></app-step-template-field>

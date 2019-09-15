@@ -1,5 +1,6 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 
 @Component({
   selector: 'app-step-template-field',
@@ -70,5 +71,9 @@ export class StepTemplateFieldComponent implements OnInit {
   onClickRemoveSubField(idx: number) {
     this.json.splice(idx, 1);
     this.valueChange();
+  }
+
+  onSubValueDrop(event: CdkDragDrop<string[]>) {
+    moveItemInArray(this.json, event.previousIndex, event.currentIndex);
   }
 }
