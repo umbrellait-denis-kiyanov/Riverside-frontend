@@ -15,7 +15,7 @@ export class SelectionMatrixComponent  {
   personas: any;
 
   @Input()
-  options: string[] = [];
+  options: any[] = [];
 
   @Input()
   horizontal = false;
@@ -27,6 +27,7 @@ export class SelectionMatrixComponent  {
   inputIds: any;
 
   ngOnInit() {
+    this.options = this.options.map(opt => opt.option || opt);
   }
 
   updateTextInput(personaIdx, option, $event) {

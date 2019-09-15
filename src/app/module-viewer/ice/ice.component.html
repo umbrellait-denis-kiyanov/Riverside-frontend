@@ -1,5 +1,5 @@
 <div *ngIf="data.selections$ | async as selections" class="matrix-selections" [class.allow-remove-selections]="allowRemoveSelections">
-  <span *ngFor="let selection of selections" class="matrix-selection"><span>{{ selection }}</span><span class="remove-selection" (click)="removeSelection(selection)"><mat-icon>delete</mat-icon></span></span>
+  <span *ngFor="let selection of selections; last as isLast" class="matrix-selection"><span>{{ selection }}</span><span class="remove-selection" (click)="removeSelection(selection)"><mat-icon>delete</mat-icon></span><span *ngIf="!isLast">,&nbsp;</span> </span>
 </div>
 
 <div

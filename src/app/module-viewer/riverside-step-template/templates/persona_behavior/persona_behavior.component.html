@@ -42,28 +42,16 @@
   *ngIf="contentData.instructions"
 ></div>
 
-<div class="persona-behavior-wrapper">
+<div class="persona-behavior-wrapper" *ngFor="let matrix of contentData.selection_matrix">
   <app-selection-matrix
-    question="Which steps of they buying process is this person involved in"
+    [question]="matrix.question"
     [personas]="inputIds.fromPreviousStep"
-    [options]="['Define Problem', 'Evaluate Solutions', 'Make Recommendations']"
+    [options]="matrix.options"
     [horizontal]="false"
     [inputIds]="inputIds"
     [inputs]="inputs"
   ></app-selection-matrix>
 </div>
-
-<div class="persona-behavior-wrapper">
-  <app-selection-matrix
-    question="Which personas are involved in each of the following"
-    [personas]="inputIds.fromPreviousStep"
-    [options]="['Coordinate meetings', 'Attend meetings', 'Official recommender', 'Negotiate', 'Make the final decision', 'Control the budget']"
-    [horizontal]="true"
-    [inputIds]="inputIds"
-    [inputs]="inputs"
-  ></app-selection-matrix>
-</div>
-
 
 <div class="persona-behavior-wrapper">
   <div class="persona-row">
