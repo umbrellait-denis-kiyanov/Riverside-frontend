@@ -1,0 +1,15 @@
+<div class="instructions" [innerHtml]="contentData.instructions | safehtml"></div>
+
+<div class="questions">
+  <div class="row">
+    <div class="col-sm-1 align-self-center" (click)="prev()"><mat-icon>navigate_before</mat-icon></div>
+    <div class="col-sm-10 align-self-center">{{ questionIndex }}. {{ contentData.questions[questionIndex - 1].question }}</div>
+    <div class="col-sm-1 align-self-center" (click)="next()"><mat-icon>navigate_next</mat-icon></div>
+  </div>
+</div>
+
+<div class="image">
+  <img src="{{ contentData.image }}" />
+</div>
+
+<module-nav [action]="action"></module-nav>

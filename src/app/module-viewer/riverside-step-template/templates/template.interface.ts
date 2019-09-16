@@ -7,6 +7,7 @@ import { BrainstormTemplateData } from './brainstorm/brainstorm.interface';
 import { NamePersonasTemplateData } from './name_personas/name_personas.interface';
 import { PersonaBehaviorTemplateData } from './persona_behavior/persona_behavior.interface';
 import { FeedbackSectionTemplateData } from './feedback_section/feedback_section.interface';
+import { QuestionImageTemplateData } from './question-image/question-image.interface';
 
 export type TemplateContentDataType =
   Template1Data |
@@ -15,7 +16,8 @@ export type TemplateContentDataType =
   BrainstormTemplateData |
   NamePersonasTemplateData |
   PersonaBehaviorTemplateData |
-  FeedbackSectionTemplateData
+  FeedbackSectionTemplateData |
+  QuestionImageTemplateData
   ;
 
 export interface TemplateComponentInterface {

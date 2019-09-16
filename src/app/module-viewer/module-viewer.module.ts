@@ -54,6 +54,7 @@ import { CanModifyPipe } from '../common/pipes/canModify.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
+import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
 import { PersonaComponent } from './riverside-step-template/persona/persona.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
@@ -139,7 +140,8 @@ import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.co
     ListStyleToggleComponent,
     NgLetDirective,
     ModuleLinkComponent,
-    SelectionMatrixComponent
+    SelectionMatrixComponent,
+    QuestionImageComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -156,6 +158,7 @@ import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.co
     PersonaPictureTemplateComponent,
     PersonaPictureListComponent,
     FinalFeedbackComponent,
+    QuestionImageComponent,
     AgeGenderComponent
   ],
   providers: [

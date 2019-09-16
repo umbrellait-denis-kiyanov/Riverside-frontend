@@ -9,6 +9,7 @@ import { FeedbackSectionTemplateComponent } from './feedback_section/feedback_se
 import { PersonaPictureTemplateComponent } from './persona-picture/persona-picture.component';
 import { FinalFeedbackComponent } from './final-feedback/final-feedback.component';
 import { AgeGenderComponent } from './age-gender/age-gender.component';
+import { QuestionImageComponent } from './question-image/question-image.component';
 
 export const Templates = {
   template1: Template1Component,
@@ -22,4 +23,5 @@ export const Templates = {
   persona_picture: PersonaPictureTemplateComponent,
   final_feedback: FinalFeedbackComponent,
   age_gender: AgeGenderComponent,
+  question_image: QuestionImageComponent,
 };
