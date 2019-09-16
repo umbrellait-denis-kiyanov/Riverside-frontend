@@ -321,7 +321,7 @@ export class IceComponent implements OnInit {
     setTimeout(_ => {
       this.onBlur();
       this.changed.emit(e);
-    });
+    }, 100);
   }
 }
 
