@@ -18,7 +18,7 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
   constructor(
       protected el: ElementRef,
       protected moduleContentService: ModuleContentService,
-      protected userService?: UserService
+      protected userService?: UserService,
     ) {}
 
   ngOnInit() {

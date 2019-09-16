@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { QuestionImageTemplateData } from './question-image.interface';
+import { DomSanitizer } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-question-image',
@@ -14,8 +15,14 @@ export class QuestionImageComponent extends TemplateComponent {
 
   questionIndex = 1;
 
+  pdf = '';
+
   protected init() {
     this.contentData = this.data.data.template_params_json as QuestionImageTemplateData['template_params_json'];
+
+    if (this.contentData.image.toLowerCase().substr(-4) === '.pdf') {
+      this.pdf = 'https://docs.google.com/gview?url=' + this.contentData.image + '&embedded=true';
+    }
   }
 
   public next() {

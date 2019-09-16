@@ -8,8 +8,10 @@
   </div>
 </div>
 
-<div class="image">
+<div class="image" *ngIf="!pdf">
   <img src="{{ contentData.image }}" />
 </div>
+
+<iframe *ngIf="pdf" [src]="pdf | safe" style="width:600px; height:500px;" frameborder="0"></iframe>
 
 <module-nav [action]="action"></module-nav>
