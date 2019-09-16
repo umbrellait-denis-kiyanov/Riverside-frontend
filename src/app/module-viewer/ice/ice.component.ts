@@ -288,17 +288,14 @@ export class IceComponent implements OnInit {
     }
 
     this.changed.emit(e);
-
   }
 
   onBlur() {
     const { element } = this.tracker;
 
-    element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
-
     this.data.content = '<p class="matrix-options">' +
                           (this.data.selections$.value || []).map(sel => '<span>' + sel + '</span>').join('') +
-                        '</p>' + element.innerHTML;
+                        '</p>' + element.innerHTML.replace(/&nbsp;/g, ' ');
 
     this.dataChanged.emit(this.data);
   }
@@ -318,7 +315,10 @@ export class IceComponent implements OnInit {
 
   @HostListener('paste', ['$event'])
   onPaste(e: KeyboardEvent) {
-    console.log('pasting', e);
+    setTimeout(_ => {
+      this.onBlur();
+      this.changed.emit(e);
+    });
   }
 }
 
