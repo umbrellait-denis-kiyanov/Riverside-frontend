@@ -293,9 +293,12 @@ export class IceComponent implements OnInit {
   onBlur() {
     const { element } = this.tracker;
 
-    this.data.content = '<p class="matrix-options">' +
-                          (this.data.selections$.value || []).map(sel => '<span>' + sel + '</span>').join('') +
-                        '</p>' + element.innerHTML.replace(/&nbsp;/g, ' ');
+    const selections = this.data.selections$.value;
+
+    this.data.content = (selections && selections.length ?
+                            '<p class="matrix-options">' + (selections || []).map(sel => '<span>' + sel + '</span>').join('') + '</p>' :
+                            '') +
+                        element.innerHTML.replace(/&nbsp;/g, ' ');
 
     this.dataChanged.emit(this.data);
   }
