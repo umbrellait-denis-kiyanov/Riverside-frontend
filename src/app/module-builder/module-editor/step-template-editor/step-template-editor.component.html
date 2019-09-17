@@ -1,5 +1,5 @@
 <div class="modal-header">
-  <h4 class="modal-title">Configure Step Template</h4>
+  <h4 class="modal-title">{{ stepEdit.description }}</h4>
   <button type="button" class="close" aria-label="Close" (click)="modal.dismiss()">
     <span aria-hidden="true">&times;</span>
   </button>
@@ -30,7 +30,7 @@
   </div>
 
   <div class="form-group" *ngIf="templateFields">
-    <app-step-template-field *ngFor="let field of templateFields" [field]="field" [(json)]="stepEdit.template_params_json"></app-step-template-field>
+    <app-step-template-field *ngFor="let field of templateFields" [field]="field" [(json)]="stepEdit.template_params_json[field[0]]"></app-step-template-field>
   </div>
 </div>
 

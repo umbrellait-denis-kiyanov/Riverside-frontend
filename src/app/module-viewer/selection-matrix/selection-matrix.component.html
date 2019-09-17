@@ -1,0 +1,26 @@
+<h3>{{ question }}</h3>
+
+<table class="table matrix" [class.horizontal]="horizontal">
+  <tr>
+    <td class="empty-corner"><div class="empty-container"></div></td>
+    <th *ngFor="let option of options">
+      <span class="option-wrapper">{{ option }}</span>
+    </th>
+  </tr>
+  <ng-container *ngFor="let persona of inputIds.fromPreviousStep; let i=index">
+    <tr *ngIf="inputs[persona.name]?.content && inputs[persona.name]?.content != '<p><br></p>'">
+      <td class="riverside-persona">
+        <riverside-persona
+          [title]="textContent(inputs[persona.title].content)"
+          [name]="textContent(inputs[persona.name].content)"
+          [picture]="inputs[persona.picture].content"
+        ></riverside-persona>
+      </td>
+      <td class="checkbox-container" *ngFor="let option of options" (click)="toggleSelection(i, option, $event)">
+        <input type="checkbox" class="checkbox" (change)="updateTextInput(i, option, $event)" [checked]="(inputs[inputIds.personas[i]].selections$ | async)?.includes(option)" />
+      </td>
+    </tr>
+  </ng-container>
+</table>
+
+<!-- <button (click)="horizontal = !horizontal">Rotate</button> -->

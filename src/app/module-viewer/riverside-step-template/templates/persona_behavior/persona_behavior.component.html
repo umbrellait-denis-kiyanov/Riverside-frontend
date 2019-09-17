@@ -36,6 +36,18 @@
 
   </div>
 </div>
+
+<div class="persona-behavior-wrapper" *ngFor="let matrix of contentData.selection_matrix">
+  <app-selection-matrix
+    [question]="matrix.question"
+    [personas]="inputIds.fromPreviousStep"
+    [options]="matrix.options"
+    [horizontal]="true"
+    [inputIds]="inputIds"
+    [inputs]="inputs"
+  ></app-selection-matrix>
+</div>
+
 <div
   class="template-instructions"
   [innerHtml]="contentData.instructions | safehtml"

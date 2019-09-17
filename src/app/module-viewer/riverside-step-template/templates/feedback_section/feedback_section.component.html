@@ -17,6 +17,7 @@
           (click)="scrollTo(persona.name + '_wrapper')"
           *ngFor="let persona of inputIds.fromPreviousSteps"
           [hidden]="!(notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content))"
+          title="{{ textContent(inputs[persona.title].content) }}"
         >
             <riverside-persona
               *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)"
@@ -39,7 +40,7 @@
                 [title]="textContent(inputs[persona.title].content)"
                 [name]="textContent(inputs[persona.name].content)"
                 [picture]="inputs[persona.picture].content"
-                [size]="150"
+                [size]="130"
               ></riverside-persona>
               <div style="min-height: 300px;margin-top: 10px" >
                 <div class="behavior-title" style="padding-left: 0px;" >Demographics</div>

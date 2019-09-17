@@ -31,27 +31,26 @@
   background: white
 
 .paper
-
   box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3)
 
 .left-menu-summary
   padding: 10px
-  .summary-title
 
-    font-size: 30px
-    margin-bottom: 15px
+  .summary-title
+    font-size: 25px
+    margin-bottom: 5px
     letter-spacing: 2px
-    padding: 5px
     color: #504f4f
-    border-bottom: 2px solid #ccc
+    text-align: center
+
   .summary-body
     .summary-row
       display: flex
       margin-top: 10px
       align-items: center
+
       .summary-label
         width: 105px
-
 
       .summary-content
         flex-grow: 1
@@ -60,8 +59,8 @@
           text-align: center
 
 .left-menu-actions
-  margin-top: 20px
   padding: 10px
+
   .step-list
     list-style: none
     padding-left: 0
@@ -71,37 +70,49 @@
       text-decoration: none
       width: 100%
       display: block
+      white-space: nowrap
+
+      span
+        vertical-align: middle
+
     .step-list-item.active
       font-weight: bold
       background: white
-      // color: white !important
+
       .checkmark
         color: white
+
     .step-list-item.section-break
       color: #585858
-      padding: 4px 20px
       border-radius: 7px
       font-size: 22px
+      margin-top: 20px
 
     .step-list-item:not(.section-break)
-      padding: 5px
-      font-size: 19px
+      padding: 0
+      font-size: 15px
       color: gray
 
     .checkmark
-      margin-left: 30px
       color: white
-      padding: 0 5px
+
+      mat-icon
+        position: relative
+        top: 5px
 
     .checkmark.checked
       color: #ffc800 !important
       .approved
         color: green !important
-    .step-number, .step-title
+
+    .step-title
       padding: 0 5px
 
-
-
+    .step-number
+      display: inline-block
+      width: 2em
+      padding-right: 3px
+      text-align: right
 
 a.fa
   text-decoration: none

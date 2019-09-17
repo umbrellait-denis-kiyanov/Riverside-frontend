@@ -63,6 +63,7 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.contentData = this.data.data.template_params_json as PersonaBehaviorTemplateData['template_params_json'];
+
     const defaultContent = { content: this.contentData.formatAsList ? this.defaultListContent : '<p></p>' };
     const sufix = this.contentData.input_sufix || '';
     Object.keys(this.inputIds).forEach(key => {

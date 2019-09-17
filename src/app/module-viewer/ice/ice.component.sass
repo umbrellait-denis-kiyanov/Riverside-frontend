@@ -95,3 +95,26 @@ textarea
   text-align: right;
   button
     margin-left: 5px;
+
+.matrix-selection
+  display: inline-block
+
+  span
+    vertical-align: middle
+
+  .remove-selection
+    display: none
+
+.allow-remove-selections
+  .matrix-selection:hover
+    .remove-selection
+      cursor: pointer
+      display: inline-block
+
+      mat-icon
+        height: 16px
+        width: 16px
+        vertical-align: middle
+        line-height: 14px
+        margin-left: -3px
+        margin-right: 10px

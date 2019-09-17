@@ -1,0 +1,85 @@
+h3
+    text-align: center
+
+.matrix
+    th
+        text-align: center
+
+    td.checkbox-container
+        text-align: center
+        vertical-align: middle
+        cursor: pointer
+
+        &:hover
+            background-color: #eee
+
+        .checkbox
+            width: 1em
+            height: 1em
+
+    td.riverside-persona
+        padding-left: 0
+
+        \::ng-deep
+            riverside-persona
+                .persona-name-column
+                    margin-right: 0
+
+    &.horizontal
+        display: flex
+
+        tbody
+            display: flex
+
+            tr
+                flex: 1
+                display: block
+
+            th, td
+                flex: 1
+                display: block
+
+                .option-wrapper
+                    display: inline-block
+                    width: 10em
+
+            th
+                white-space: nowrap
+                text-align: left
+
+            td.empty-corner .empty-container
+                height: 120px
+
+            td.riverside-persona
+                padding-left: 5px
+                padding-right: 5px
+
+            \::ng-deep
+                riverside-persona
+                    display: block
+                    height: 120px
+
+                    .persona-name-column
+                        display: block
+                        text-align: center
+                        width: auto
+                        margin-right: 0
+
+                    img.persona-picture
+                        margin-right: 0 !important
+                        width: 60px !important
+                        height: 60px !important
+
+                    .persona-title
+                        display: none
+
+@media only screen and (max-width: 1400px)
+    .option-wrapper
+        font-size: 1.3vw
+
+    \::ng-deep
+        .persona-name
+            font-size: 2vw !important
+
+        .persona-title
+            font-size: 1vw !important

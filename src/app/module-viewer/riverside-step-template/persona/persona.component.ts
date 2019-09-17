@@ -19,8 +19,7 @@ export class PersonaComponent implements OnInit {
     if (this.size) {
       this.style = {
         width: this.size + 'px',
-        height: this.size + 'px',
-        'border-radius': this.size / 2 + 'px',
+        height: this.size + 'px'
       };
     }
   }

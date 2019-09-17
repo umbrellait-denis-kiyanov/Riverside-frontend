@@ -13,8 +13,8 @@ import {
 import User from 'src/app/common/interfaces/user.model';
 import { Overlay, OverlayRef } from '@angular/cdk/overlay';
 import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, fromEvent } from 'rxjs';
-import { filter, take } from 'rxjs/operators';
+import { Subscription, fromEvent, BehaviorSubject } from 'rxjs';
+import { filter, take, skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { DOCUMENT } from '@angular/common';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
@@ -31,10 +31,15 @@ export class IceComponent implements OnInit {
   @Input() box: number;
   @Input() disabled: boolean;
   @Input() data: {
+    textContent: string,
     content: string,
+    selections$: BehaviorSubject<string[]>,
     comments_json: any[]
   };
+  @Input() allowRemoveSelections = false;
+
   @Output() changed = new EventEmitter(false);
+  @Output() dataChanged = new EventEmitter(false);
 
   @ViewChild('commentOverlay') commentOverlay: TemplateRef<any>;
 
@@ -62,8 +67,20 @@ export class IceComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.data = this.data || { content: '', comments_json: [] };
+    this.data = this.data || { textContent: '', content: '', comments_json: [], selections$: new BehaviorSubject([]) };
     this.data.content = this.data.content || '';
+    this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
+
+    const el: HTMLDivElement = document.createElement('div');
+    el.innerHTML = this.data.content;
+    const selections = el.querySelector('.matrix-options');
+
+    if (selections) {
+      this.data.selections$.next(Array.prototype.slice.call(selections.querySelectorAll('span')).map(node => node.innerHTML));
+      selections.remove();
+    }
+
+    this.data.textContent = el.innerHTML;
 
     this.iceService.allComponents.push(this);
 
@@ -98,6 +115,15 @@ export class IceComponent implements OnInit {
       });
     });
 
+    this.data.selections$.pipe(skip(1)).subscribe(_ => {
+      this.onBlur();
+      this.changed.emit();
+    });
+  }
+
+  removeSelection(selection: string) {
+    const selections = this.data.selections$.value.filter(sel => sel !== selection);
+    this.data.selections$.next(selections);
   }
 
   addComment($event: MouseEvent) {
@@ -262,12 +288,19 @@ export class IceComponent implements OnInit {
     }
 
     this.changed.emit(e);
-
   }
 
   onBlur() {
     const { element } = this.tracker;
-    element.innerHTML = element.innerHTML.replace(/&nbsp;/g, ' ');
+
+    const selections = this.data.selections$.value;
+
+    this.data.content = (selections && selections.length ?
+                            '<p class="matrix-options">' + (selections || []).map(sel => '<span>' + sel + '</span>').join('') + '</p>' :
+                            '') +
+                        element.innerHTML.replace(/&nbsp;/g, ' ');
+
+    this.dataChanged.emit(this.data);
   }
 
   setEndOfContenteditable(contentEditableElement) {
@@ -285,7 +318,10 @@ export class IceComponent implements OnInit {
 
   @HostListener('paste', ['$event'])
   onPaste(e: KeyboardEvent) {
-    console.log('pasting', e);
+    setTimeout(_ => {
+      this.onBlur();
+      this.changed.emit(e);
+    }, 100);
   }
 }
 

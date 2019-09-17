@@ -54,6 +54,7 @@ import { CanModifyPipe } from '../common/pipes/canModify.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
+import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
 import { PersonaComponent } from './riverside-step-template/persona/persona.component';
 import {MatProgressBarModule} from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
@@ -69,6 +70,7 @@ import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.
 import { NgLetDirective } from '../common/directives/nglet.directive';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ModuleLinkComponent } from './dashboard/module-link/module-link.component';
+import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.component';
 
 @NgModule({
   imports: [
@@ -137,7 +139,9 @@ import { ModuleLinkComponent } from './dashboard/module-link/module-link.compone
     DashboardProgressBarComponent,
     ListStyleToggleComponent,
     NgLetDirective,
-    ModuleLinkComponent
+    ModuleLinkComponent,
+    SelectionMatrixComponent,
+    QuestionImageComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -154,6 +158,7 @@ import { ModuleLinkComponent } from './dashboard/module-link/module-link.compone
     PersonaPictureTemplateComponent,
     PersonaPictureListComponent,
     FinalFeedbackComponent,
+    QuestionImageComponent,
     AgeGenderComponent
   ],
   providers: [

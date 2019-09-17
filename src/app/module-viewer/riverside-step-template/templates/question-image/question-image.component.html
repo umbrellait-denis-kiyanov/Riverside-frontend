@@ -1,0 +1,20 @@
+<div class="instructions" [innerHtml]="contentData.instructions | safehtml"></div>
+
+<div class="questions card card-body bg-light">
+  <ol>
+    <li *ngFor="let question of contentData.questions">{{ question.question }}</li>
+  </ol>
+</div>
+
+<div class="image" *ngIf="!pdf">
+    <div class="image-container" [style.background-image]="image"></div>
+</div>
+
+<div class="pdf" [class.pdf-loading]="!pdfLoaded" *ngIf="pdf">
+  <div class="loading-msg d-none">
+    <span class="fa fa-pulse fa-spinner"></span> Loading PDF
+  </div>
+  <iframe #iframe [src]="pdf" frameborder="0" (load)="iframeLoaded()"></iframe>
+</div>
+
+<module-nav [action]="action"></module-nav>
