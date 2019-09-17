@@ -19,6 +19,7 @@ const hardCodePictures = (user: User) => {
     case 'dan@riverside.com':
     case 'dperry@omnigo.com':
     case 'dperry@riversidecompany.com':
+    case 'dperry@logically.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dan+-+Riverside.jpg';
     case 'dave@alice.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Dave+-+Alice.png';
@@ -32,6 +33,8 @@ const hardCodePictures = (user: User) => {
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/picLynn.jpg';
     case 'mark.kornegay@omnigo.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Mark+Kornegay.jpg';
+    case 'mputney@logically.com':
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/matt-putney.jpg';
     default:
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
   }
