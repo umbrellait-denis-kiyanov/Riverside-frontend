@@ -7,6 +7,11 @@
 
 .questions
     font-size: 20px
+    padding-top: 1em
+    padding-right: 1em
+
+    li
+        margin-bottom: 7px
 
     .mat-icon
         width: 50px
@@ -18,3 +23,23 @@
     margin-top: 2em
     img
         border: 1px solid #aaa
+
+.pdf
+    width: 100%
+    height: 700px
+    position: relative
+
+    iframe
+        width: 100%
+        height: 700px
+
+    &.pdf-loading
+        font-size: 4vw
+        display: flex
+        align-items: center
+
+        .loading-msg
+            width: 100%
+            text-align: center
+            position: absolute
+            display: block !important

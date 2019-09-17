@@ -4,6 +4,7 @@ import { TemplateComponentInterface, TemplateContentDataType } from './template.
 import User from 'src/app/common/interfaces/user.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { UserService } from 'src/app/common/services/user.service';
+import { Injector } from '@angular/core';
 
 @Component({})
 export class TemplateComponent implements TemplateComponentInterface, OnInit {
@@ -19,6 +20,7 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
       protected el: ElementRef,
       protected moduleContentService: ModuleContentService,
       protected userService?: UserService,
+      protected injectorObj?: Injector
     ) {}
 
   ngOnInit() {
