@@ -7,7 +7,7 @@
 </div>
 
 <div class="image" *ngIf="!pdf">
-  <img src="{{ contentData.image }}" />
+    <div class="image-container" [style.background-image]="image"></div>
 </div>
 
 <div class="pdf" [class.pdf-loading]="!pdfLoaded" *ngIf="pdf">

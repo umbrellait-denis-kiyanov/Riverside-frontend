@@ -1,7 +1,7 @@
-import { Component, ViewChild, AfterViewInit } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { QuestionImageTemplateData } from './question-image.interface';
-import { DomSanitizer } from '@angular/platform-browser';
+import { DomSanitizer, SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
   selector: 'app-question-image',
@@ -9,11 +9,12 @@ import { DomSanitizer } from '@angular/platform-browser';
   styleUrls: ['./question-image.component.sass'],
   preserveWhitespaces: true
 })
-export class QuestionImageComponent extends TemplateComponent implements AfterViewInit {
+export class QuestionImageComponent extends TemplateComponent {
 
   contentData: QuestionImageTemplateData['template_params_json'];
 
-  pdf = '';
+  pdf: SafeResourceUrl;
+  image: SafeStyle;
 
   pdfLoaded = false;
 
@@ -24,25 +25,15 @@ export class QuestionImageComponent extends TemplateComponent implements AfterVi
   protected init() {
     this.contentData = this.data.data.template_params_json as QuestionImageTemplateData['template_params_json'];
 
+    const sanitizer = this.injectorObj.get(DomSanitizer);
     if (this.contentData.image.toLowerCase().substr(-4) === '.pdf') {
-      this.pdf = this.injectorObj.get(DomSanitizer).bypassSecurityTrustResourceUrl(
-      'https://docs.google.com/viewer?url=' + this.contentData.image + '&embedded=true');
+      this.pdf = sanitizer.bypassSecurityTrustResourceUrl(this.contentData.image);
+    } else {
+      this.image = sanitizer.bypassSecurityTrustStyle('url(' + this.contentData.image + ')');
     }
-  }
-
-  ngAfterViewInit() {
-    if (!this.pdf) {
-      return;
-    }
-
-    const iframe = this.iframe.nativeElement;
-    this.iframeInterval = setInterval(_ => {
-      iframe.src += '';
-    }, 1000);
   }
 
   iframeLoaded() {
     this.pdfLoaded = true;
-    clearInterval(this.iframeInterval);
   }
 }
