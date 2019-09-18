@@ -14,4 +14,12 @@ export class GenericTemplateComponent extends TemplateComponent {
   protected init() {
     this.contentData = (this.data.data.template_params_json as GenericTemplateData['template_params_json']);
   }
+
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Generic Content';
+  }
 }

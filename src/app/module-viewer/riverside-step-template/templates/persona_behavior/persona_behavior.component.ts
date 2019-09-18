@@ -59,7 +59,13 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
 
   contentData: PersonaBehaviorTemplateData['template_params_json'];
 
-  // contentData = data;
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Persona Behavior';
+  }
 
   protected init() {
     this.contentData = this.data.data.template_params_json as PersonaBehaviorTemplateData['template_params_json'];

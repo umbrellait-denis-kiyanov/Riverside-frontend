@@ -29,10 +29,17 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
     ]
   };
 
-
   contentData: NamePersonasTemplateData['template_params_json'];
 
   // contentData = data;
+
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Name Personas';
+  }
 
   protected init() {
     Object.keys(this.inputIds).forEach(key => {

@@ -22,6 +22,14 @@ export class QuestionImageComponent extends TemplateComponent {
 
   @ViewChild('iframe') iframe;
 
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Image and Questions';
+  }
+
   protected init() {
     this.contentData = this.data.data.template_params_json as QuestionImageTemplateData['template_params_json'];
 

@@ -2,6 +2,7 @@ import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Step } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from '../../../common/services/module.service';
+import { Templates } from '../../../module-viewer/riverside-step-template/templates';
 
 @Component({
   selector: 'app-step-template-editor',
@@ -35,18 +36,24 @@ export class StepTemplateEditorComponent implements OnInit {
     }
 
     this.templates = await this.moduleService.getTemplates(this.step.module_id);
+    this.templates.map(tpl => {
+      const inst = new Templates[tpl.id]();
+      tpl.name = inst.getName();
+      tpl.description = inst.getDescription();
+    });
+
     this.onTemplateChange();
     this.initialized = true;
   }
 
   save() {
-    this.step.template_id = this.stepEdit.template_id;
+    this.step.template_component = this.stepEdit.template_component;
     this.step.template_params_json = this.stepEdit.template_params_json;
     this.modal.close();
   }
 
   onTemplateChange() {
-    const template = this.templates.filter(tpl => tpl.id === this.stepEdit.template_id).shift();
+    const template = this.templates.filter(tpl => tpl.id === this.stepEdit.template_component).shift();
     const fields = template ? template.params_json.
       replace(/\s/g, '').
       split(/inputs\:\s{0,}\[\]/).join('inputs:Array<{key: string}>').

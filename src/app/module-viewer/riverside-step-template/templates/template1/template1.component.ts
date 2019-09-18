@@ -12,6 +12,14 @@ import { Template1Data } from './template1.interface';
 export class Template1Component extends TemplateComponent {
   contentData: Template1Data['template_params_json'];
 
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Tpl1';
+  }
+
   protected init() {
     this.contentData = (this.data.data.template_params_json as Template1Data['template_params_json']);
   }

@@ -57,7 +57,13 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
 
   contentData: PersonaPictureTemplateData['template_params_json'];
 
-  // contentData = data;
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Persona Picture';
+  }
 
   constructor(
     protected el: ElementRef,

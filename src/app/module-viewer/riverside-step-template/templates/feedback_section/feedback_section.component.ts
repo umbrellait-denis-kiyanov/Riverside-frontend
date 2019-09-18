@@ -41,6 +41,14 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
     super(el, moduleContentService, userService);
   }
 
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Request Feedback';
+  }
+
   ngOnInit() {
     super.ngOnInit();
     this.inboxService.message.saving.subscribe(s => this.submitting = s);

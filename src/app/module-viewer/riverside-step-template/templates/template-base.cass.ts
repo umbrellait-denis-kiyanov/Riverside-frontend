@@ -7,7 +7,7 @@ import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
 
 @Component({})
-export class TemplateComponent implements TemplateComponentInterface, OnInit {
+export abstract class TemplateComponent implements TemplateComponentInterface, OnInit {
   data: TemplateContentData;
   hideChanges: boolean;
   inputs: any;
@@ -22,6 +22,10 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
       protected userService?: UserService,
       protected injectorObj?: Injector
     ) {}
+
+  abstract getDescription(): string;
+
+  abstract getName(): string;
 
   ngOnInit() {
     this.data.onHideChanges.subscribe((val: boolean) => this.hideChanges = val);
@@ -73,5 +77,9 @@ export class TemplateComponent implements TemplateComponentInterface, OnInit {
     const _el: any = window.$(el).clone();
     _el.find('.del').remove();
     return _el.length ? _el[0].textContent.replace(/\s/g, ' ') : '';
+  }
+
+  isEnabled() {
+    return true;
   }
 }

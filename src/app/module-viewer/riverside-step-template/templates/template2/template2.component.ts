@@ -25,7 +25,13 @@ export class Template2Component extends TemplateComponent {
 
   contentData: Template2Data['template_params_json'];
 
-  // contentData = data;
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Tpl2';
+  }
 
   protected init() {
     Object.keys(this.inputIds).forEach(key => {

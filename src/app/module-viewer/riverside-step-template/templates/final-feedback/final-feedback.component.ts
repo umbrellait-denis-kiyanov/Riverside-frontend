@@ -18,7 +18,6 @@ import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_s
 export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent implements OnInit  {
   contentData = data;
 
-
   columnBoxes = [
     [
       {
@@ -59,6 +58,14 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
       }
     ]
   ];
+
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Final Feedback';
+  }
 
   protected initAction() {
     if (this.userService.me.roles.is_riverside_managing_director) {

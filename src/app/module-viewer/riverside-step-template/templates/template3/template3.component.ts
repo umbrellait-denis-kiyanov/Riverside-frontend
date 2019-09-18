@@ -32,6 +32,14 @@ export class Template3Component extends TemplateComponent implements OnInit {
   contentData = data;
   action: string;
 
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Tpl3';
+  }
+
   constructor(
     protected el: ElementRef,
     protected moduleContentService: ModuleContentService,

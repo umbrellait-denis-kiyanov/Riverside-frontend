@@ -11,8 +11,15 @@ import { BrainstormTemplateData } from './brainstorm.interface';
 export class BrainstormTemplateComponent extends TemplateComponent {
   inputIds = ['brainstorm'];
 
-
   contentData: BrainstormTemplateData['template_params_json'];
+
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Brainstorm';
+  }
 
   protected init() {
     this.inputIds.forEach(id => {

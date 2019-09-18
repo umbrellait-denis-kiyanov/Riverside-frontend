@@ -42,6 +42,14 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
     super(el, moduleContentService, userService);
   }
 
+  getDescription() {
+    return '';
+  }
+
+  getName() {
+    return 'Age & Gender';
+  }
+
   ngOnInit() {
     super.ngOnInit();
   }
