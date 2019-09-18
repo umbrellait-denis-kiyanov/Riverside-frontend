@@ -132,7 +132,6 @@ export class IceComponent implements OnInit {
     this.comment.adding = true;
     this.closeComment();
     this.openComment(this.commentPosition());
-
   }
 
   cancelComment() {
@@ -291,6 +290,7 @@ export class IceComponent implements OnInit {
   }
 
   onBlur() {
+
     const { element } = this.tracker;
 
     const selections = this.data.selections$.value;
@@ -298,9 +298,11 @@ export class IceComponent implements OnInit {
     this.data.content = (selections && selections.length ?
                             '<p class="matrix-options">' + (selections || []).map(sel => '<span>' + sel + '</span>').join('') + '</p>' :
                             '') +
-                        element.innerHTML.replace(/&nbsp;/g, ' ');
+
+                          element.innerHTML.replace(/&nbsp;/g, ' ');
 
     this.dataChanged.emit(this.data);
+    this.changed.emit(null);
   }
 
   setEndOfContenteditable(contentEditableElement) {
