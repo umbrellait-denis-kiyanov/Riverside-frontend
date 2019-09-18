@@ -151,6 +151,21 @@ export class ModuleEditorComponent implements OnInit {
     this.lastSavedModule = JSON.stringify(this.moduleData);
   }
 
+  export() {
+    window.location.href = this.moduleService.exportUrl();
+  }
+
+  sync() {
+    if (prompt(`Data synchronization is a destructive action which will overwrite your current module and step configuration. Please make sure to export a data backup before proceeding. Are you sure you want to continue with the synchronization? Type "Yes" to confirm.`) !== 'Yes') {
+      return;
+    }
+
+    this.moduleService.sync().subscribe((res) => {
+      alert('Synchronization complete. The application will be reloaded to refresh your data.');
+      window.location.reload();
+    });
+  }
+
   private newStep(): Step {
     return {
       description: '',

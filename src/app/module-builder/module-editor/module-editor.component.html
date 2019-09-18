@@ -106,11 +106,32 @@
   </div>
   </div>
 
-  <div class="add-new">
-    <button
-      class="btn btn-primary btn-lg"
-      (click)="onClickAddSection()"
-    >Add new section</button>
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="add-new">
+        <button
+          class="btn btn-primary btn-lg"
+          (click)="onClickAddSection()"
+        >Add new section</button>
+      </div>
+    </div>
+    <div class="col-sm-6 import-export">
+      <button
+        class="floating-btn bg-save"
+        (click)="export()"
+        title="Export Module Data...."
+      >
+        <mat-icon class="tab-icon">cloud_download</mat-icon>
+      </button>
+
+      <button
+        class="floating-btn bg-save"
+        (click)="sync()"
+        title="Synchronize Module Data From File"
+      >
+        <mat-icon class="tab-icon">sync</mat-icon>
+      </button>
+    </div>
   </div>
 
 </ng-container>

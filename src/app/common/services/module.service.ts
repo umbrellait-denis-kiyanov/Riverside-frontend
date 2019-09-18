@@ -92,4 +92,12 @@ export class ModuleService {
   getOrganizations(): Observable<any> {
     return this.httpClient.get(`${this.baseUrl}/organizations/list`);
   }
+
+  exportUrl() {
+    return `${this.baseUrl}/export`;
+  }
+
+  sync(): Observable<any> {
+    return this.httpClient.get(`${this.baseUrl}/sync`);
+  }
 }
