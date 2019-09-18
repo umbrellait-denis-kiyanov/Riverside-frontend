@@ -42,7 +42,7 @@
             <mat-icon [ngClass]="{'approved': step.is_approved}" >done</mat-icon>
           </span>
 
-          <span class="step-number">{{step.position}}</span>
+          <span class="step-number" [class.double]="step.position >= 10">{{step.position}}</span>
 
           <span class="step-title">{{step.description}}</span>
         </a>

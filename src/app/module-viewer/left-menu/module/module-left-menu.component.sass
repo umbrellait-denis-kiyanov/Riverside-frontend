@@ -79,8 +79,38 @@
       font-weight: bold
       background: white
 
+      &.EXPERIMENTAL
+        font-weight: normal
+
+        .step-title
+          color: #00529f
+
       .checkmark
         color: white
+
+      .step-number.EXPERIMENTAL
+        font-weight: bold
+        background-color: #00529f
+        color: white
+        border-radius: 100%
+        height: 1.5em
+        width: 1.5em
+        text-align: center
+        line-height: 1.5em
+        padding-left: 3px
+        margin-left: 12px
+        margin-right: -2px
+        font-size: 0.9em
+
+        &.double
+          height: 2em
+          width: 2em
+          line-height: 2em
+          margin-left: 4px
+          margin-right: -1px
+          position: relative
+          margin-top: -0.35em
+          margin-bottom: -0.25em
 
     .step-list-item.section-break
       color: #585858
