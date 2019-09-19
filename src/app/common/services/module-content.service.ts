@@ -35,7 +35,6 @@ export class ModuleContentService {
             object = {
               module_id: moduleId,
               step_id: stepId,
-              template_id: res.template_id
             };
           }
           return ModuleContent.fromObject(object);
