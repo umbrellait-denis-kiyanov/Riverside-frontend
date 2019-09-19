@@ -1,4 +1,4 @@
-import { Component, OnInit, Input, ViewChild } from '@angular/core';
+import { Component, OnInit, Input, ViewChild, OnDestroy } from '@angular/core';
 import { ActivatedRoute, NavigationEnd, Router } from '@angular/router';
 import { Module } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
@@ -9,17 +9,16 @@ import { RiversideStepTemplateComponent } from 'src/app/module-viewer/riverside-
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { first, filter, debounceTime, skip, take } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { combineLatest, Subscription } from 'rxjs';
+import { combineLatest, Subscription, forkJoin, merge } from 'rxjs';
 import { Templates } from '../riverside-step-template/templates';
 import { IceService } from '../ice/ice.service';
-
 
 @Component({
   selector: 'app-content',
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.sass']
 })
-export class ContentComponent implements OnInit {
+export class ContentComponent implements OnInit, OnDestroy {
   iframeUrl: string;
   module: Module;
   ready = false;
@@ -37,7 +36,8 @@ export class ContentComponent implements OnInit {
   unsubContentChange: Subscription;
   debounceSaveTime = 500;
 
-  @ViewChild(RiversideStepTemplateComponent) templateComponent: RiversideStepTemplateComponent;
+  @ViewChild(RiversideStepTemplateComponent)
+  templateComponent: RiversideStepTemplateComponent;
 
   constructor(
     private route: ActivatedRoute,
@@ -47,53 +47,63 @@ export class ContentComponent implements OnInit {
     private moduleContentService: ModuleContentService,
     private navService: ModuleNavService,
     private iceService: IceService
-  ) { }
+  ) {}
+
+  async ngOnDestroy() {
+    this.unsubNavChanged && this.unsubNavChanged.unsubscribe();
+    this.unsubContentChange && this.unsubContentChange.unsubscribe();
+    this.unsubOnApprove && this.unsubOnApprove.unsubscribe();
+  }
 
   async ngOnInit() {
     this.unsubNavChanged && this.unsubNavChanged.unsubscribe();
     this.unsubOnApprove && this.unsubOnApprove.unsubscribe();
-    this.unsubNavChanged = this.router.events.pipe(
-      filter(e => e instanceof NavigationEnd)
-    ).subscribe(e => {
-      this.ready = false;
-      this.templateData = null;
-      this.init();
-    });
+    this.unsubNavChanged = this.router.events
+      .pipe(
+          filter(e => e instanceof NavigationEnd),
+        )
+      .subscribe(e => {
+        this.ready = false;
+        this.templateData = null;
+        this.init();
+      });
     this.init();
-
-
   }
 
   async init() {
     this.me = this.userService.me;
     await Promise.all([this.waitForParams(), this.waitForModule()]);
 
-    this.moduleContentService.load({
-      moduleId: this.navService.module.current.id,
-      stepId: this.stepId,
-      org_id: this.me.org.id
-    }).then(this.render.bind(this));
-
+    this.moduleContentService
+      .load({
+        moduleId: this.navService.module.current.id,
+        stepId: this.stepId,
+        org_id: this.orgId
+      })
+      .then(this.render.bind(this));
   }
 
   async waitForParams() {
     return new Promise(resolve => {
-      this.route.params.subscribe(params => {
-        this.stepId = params.stepId;
-        this.orgId = this.me.org.id;
-        this.navService.setStepFromId(this.stepId);
-        resolve();
-      });
+      combineLatest(this.route.params, this.route.parent.params).subscribe(
+        ([params, parentParams]) => {
+          this.stepId = params.stepId;
+          this.orgId = parentParams.orgId || this.me.org.id;
+          this.navService.setStepFromId(this.stepId);
+          resolve();
+        }
+      );
     });
-
   }
 
   async waitForModule() {
     return new Promise(resolve => {
-      this.navService.module.onChange.pipe(filter(v => v !== null)).subscribe(() => {
-        this.moduleId = this.navService.module.current.id;
-        resolve();
-      });
+      this.navService.module.onChange
+        .pipe(filter(v => v !== null))
+        .subscribe(() => {
+          this.moduleId = this.navService.module.current.id;
+          resolve();
+        });
     });
   }
 
@@ -102,22 +112,37 @@ export class ContentComponent implements OnInit {
     this.navService.setStepFromId(this.stepId);
     this.processFeedbackStatus();
     this.unsubContentChange && this.unsubContentChange.unsubscribe();
-    this.unsubContentChange = this.moduleContentService.contentChanged.pipe(
-      skip(1),
-      debounceTime(this.debounceSaveTime))
+    this.unsubContentChange = this.moduleContentService.contentChanged
+      .pipe(
+        skip(1),
+        debounceTime(this.debounceSaveTime)
+      )
       .subscribe(this.save.bind(this));
-    const { moduleContent: { data: { content_json: data,
-      inputs, template_params_json, template_component,
-      is_approved } } } = this.moduleContentService;
+    const {
+      moduleContent: {
+        data: {
+          content_json: data,
+          inputs,
+          template_params_json,
+          template_component,
+          is_approved
+        }
+      }
+    } = this.moduleContentService;
 
-    is_approved && !this.userService.me.roles.is_riverside_managing_director && (this.iceService.shouldShowWarning = true);
+    is_approved &&
+      !this.userService.me.roles.is_riverside_managing_director &&
+      (this.iceService.shouldShowWarning = true);
     const templateData = {
       ...data,
       inputs,
       template_params_json,
       disabled: this.disableInputs
     };
-    this.templateData = new TemplateContentData({ data: templateData, me: this.me });
+    this.templateData = new TemplateContentData({
+      data: templateData,
+      me: this.me
+    });
     this.templateComponentName = template_component as keyof typeof Templates;
     this.unsubOnApprove && this.unsubOnApprove.unsubscribe();
     // this.unsubOnApprove = this.navService.onApprove.pipe(debounceTime(100)).subscribe(val => {
@@ -135,15 +160,24 @@ export class ContentComponent implements OnInit {
     //     });
     //   }
     // });
-
   }
 
   processFeedbackStatus() {
-    const { moduleContent: { data: { feedback_requested, feedback_started } } } = this.moduleContentService;
-    const { roles: { is_riverside_managing_director } } = this.me;
-    feedback_requested && !feedback_started && is_riverside_managing_director && this.moduleService.feedbackStarted({ id: 1 });
+    const {
+      moduleContent: {
+        data: { feedback_requested, feedback_started }
+      }
+    } = this.moduleContentService;
+    const {
+      roles: { is_riverside_managing_director }
+    } = this.me;
+    feedback_requested &&
+      !feedback_started &&
+      is_riverside_managing_director &&
+      this.moduleService.feedbackStarted({ id: 1 });
     this.disableInputs = !is_riverside_managing_director && feedback_started;
-    this.showFinishFeedback = is_riverside_managing_director && feedback_requested;
+    this.showFinishFeedback =
+      is_riverside_managing_director && feedback_requested;
   }
 
   toggleChanges() {
@@ -151,7 +185,9 @@ export class ContentComponent implements OnInit {
   }
 
   save() {
-    const { moduleContent: { data } } = this.moduleContentService;
+    const {
+      moduleContent: { data }
+    } = this.moduleContentService;
     const templateData = this.templateComponent.prepareData();
     data.content_json = templateData;
     data.inputs = this.addIdsToInputs(templateData.inputs);
@@ -177,4 +213,3 @@ export class ContentComponent implements OnInit {
     this.moduleService.finalizeFeedback({ id: 1 });
   }
 }
-

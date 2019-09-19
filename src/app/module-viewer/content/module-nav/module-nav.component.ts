@@ -3,6 +3,8 @@ import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { UserService } from 'src/app/common/services/user.service';
 import Message from '../../inbox/message.model';
 import { IceService } from '../../ice/ice.service';
+import { Subscription } from 'rxjs';
+import { ActivatedRoute } from '@angular/router';
 
 type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedback' | 'provide_final_feedback' | 'approve';
 @Component({
@@ -21,16 +23,20 @@ export class ModuleNavComponent implements OnInit {
   @Input() hideActionButton: boolean;
   @Output() feedback: EventEmitter<Partial<Message>> = new EventEmitter();
 
+  unApproveSub: Subscription;
+
   constructor(
     private navService: ModuleNavService,
     private userService: UserService,
     private iceService: IceService,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.prepareActionFlag('is_done', this.action);
     this.subaction && this.prepareActionFlag('is_subaction_done', this.subaction);
-    this.iceService.onUnapprove.subscribe(() => {
+    this.unApproveSub && this.unApproveSub.unsubscribe();
+    this.unApproveSub = this.iceService.onUnapprove.subscribe(() => {
       this.markAsApproved(!!this.subaction, false);
       this.markAsDone(!!this.subaction, false);
     });
@@ -72,16 +78,20 @@ export class ModuleNavComponent implements OnInit {
 
   markAsDone(isSubaction: boolean = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
-    this.navService.markAsDone(this.navService.currentStep.id, !this[key]).then(() => {
-      this[key] = state !== null ? state : !this[key];
+    const newState = state !== null ? state : !this[key];
+    const { stepId } = this.route.snapshot.params;
+    this.navService.markAsDone(stepId, newState).then(() => {
+      this[key] = newState;
       this[key] && this.navService.nextStep();
     });
   }
 
   markAsApproved(isSubaction: boolean = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
-    this.navService.markAsApproved(this.navService.currentStep.id, !this[key]).then(() => {
-      this[key] = state !== null ? state : !this[key];
+    const newState = state !== null ? state : !this[key];
+    const { stepId } = this.route.snapshot.params;
+    this.navService.markAsApproved(stepId, newState).then(() => {
+      this[key] = newState;
     });
   }
 

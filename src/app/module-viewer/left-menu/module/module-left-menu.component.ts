@@ -1,5 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-import { Module, Step } from 'src/app/common/interfaces/module.interface';
+import { Module, Step, Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { LearningElementComponent } from '../../modals/learning-element/learning-element.component';
@@ -9,6 +9,7 @@ import User from 'src/app/common/interfaces/user.model';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { Observable } from 'rxjs';
 
 declare global {
   interface Window { $: any; }
@@ -24,6 +25,7 @@ export class LeftMenuComponent implements OnInit {
   @Input() width: number = 280;
 
   module: Module;
+  orgId: number;
 
   sending = false;
   me: User;
@@ -42,12 +44,13 @@ export class LeftMenuComponent implements OnInit {
   ngOnInit() {
     this.me = this.userService.me;
     this.route.params.subscribe((params) => {
+      this.orgId = params.orgId || this.me.org.id;
       if (params.moduleId) {
         this.navService.module.onChange.subscribe((module: Module) => {
           this.module = module;
         });
-        this.navService.orgId =  String(this.me.org.id);
-        this.navService.getModule(params.moduleId, String(this.me.org.id)).then(moduleData => {
+        this.navService.orgId =  String(this.orgId );
+        this.navService.getModule(params.moduleId, String(this.orgId )).then(moduleData => {
           if (moduleData) {
             this.module = moduleData;
           }
@@ -99,5 +102,9 @@ export class LeftMenuComponent implements OnInit {
 
   isChecked(step: Step) {
     return step.is_checked || step.is_approved || step.waiting_for_feedback || step.feedback_received;
+  }
+
+  stepRouterLink(step: Step) {
+    return ['/org', this.orgId, 'module', this.module.id , 'step', step.id ];
   }
 }

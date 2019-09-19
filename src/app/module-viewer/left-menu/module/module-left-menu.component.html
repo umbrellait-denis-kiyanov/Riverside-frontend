@@ -5,6 +5,7 @@
   <div class="left-menu-header"></div>
 
   <div class="left-menu-summary">
+    <module-org-selector *ngIf="me.permissions.riversideCanSelectMultipleOrgs"></module-org-selector>
     <div class="summary-title">{{module.name}}</div>
 
     <div>
@@ -32,7 +33,7 @@
         >{{step.description}}</a>
 
         <a
-          [routerLink]="[ '/module', module.id , 'step', step.id ]"
+          [routerLink]="stepRouterLink(step)"
 
           *ngIf="!step.is_section_break"
         >

@@ -70,7 +70,7 @@ export class InboxComponent implements OnInit {
     if (!this.message.message) {
       this.message.message = `<p>No message was provided.</p>`;
     }
-    this.routerLink = ['/module', String(this.message.module_id)];
+    this.routerLink = ['/org', String(this.message.from_org_id), 'module', String(this.message.module_id)];
     if (this.message.step_id) {
       this.routerLink = this.routerLink.concat(['step', String(this.message.step_id)]);
     }
