@@ -115,7 +115,6 @@ export class IceComponent implements OnInit {
               preserve: 'ol,ul,li'
             }
           }
-        }
         ]
       }).startTracking();
 
