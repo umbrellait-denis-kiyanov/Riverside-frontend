@@ -51,7 +51,6 @@ export class IceComponent implements OnInit {
     content: '',
     list: [],
     editingIndex: 0,
-    hasComment: false,
     show: false,
     index: false
   };
@@ -85,11 +84,12 @@ export class IceComponent implements OnInit {
     this.iceService.allComponents.push(this);
 
     if (this.data.comments_json && this.data.comments_json.length) {
+      this.data.comments_json = this.data.comments_json.filter(c => c.content);
       this.comment.list = this.data.comments_json;
-      this.comment.hasComment = true;
     }
-    const text = this.el.nativeElement.querySelector('#textbody');
+
     setTimeout(() => {
+      const text = this.el.nativeElement.querySelector('#textbody');
       const tracker = new window.ice.InlineChangeEditor({
         element: text,
         handleEvents: true,
@@ -155,7 +155,6 @@ export class IceComponent implements OnInit {
       });
     }
 
-    this.comment.hasComment = !!this.comment.list.length;
     this.data.comments_json = this.comment.list;
     this.comment.index = false;
     this.comment.content = '';
@@ -164,7 +163,7 @@ export class IceComponent implements OnInit {
   }
 
   onMouseEnter() {
-    if (this.comment.hasComment) {
+    if (this.comment.list && this.comment.list.length) {
       this.openComment(this.commentPosition());
     }
   }
@@ -290,6 +289,11 @@ export class IceComponent implements OnInit {
   }
 
   onBlur() {
+
+    if (!this.tracker)
+    {
+      return;
+    }
 
     const { element } = this.tracker;
 

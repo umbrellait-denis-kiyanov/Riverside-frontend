@@ -6,7 +6,7 @@
   id="textbody"
   attr.disabled={{disabled}}
   attr.contenteditable={{!disabled}}
-  [ngClass]="{'CT-hide': hideChanges, hasComment: comment.hasComment, showComment: comment.show}"
+  [ngClass]="{'CT-hide': hideChanges, hasComment: comment.list?.length, showComment: comment.show}"
   [innerHTML]="data.textContent | safehtml"
   (mouseenter)="onMouseEnter($event)"
   (mouseleave)="onBlur()"
@@ -19,7 +19,7 @@
         <mat-icon>add_comment</mat-icon>
      </button>
 </div>
-<div  class="has-comment" [hidden]="!comment.hasComment" >
+<div  class="has-comment" [hidden]="!comment.list?.length" >
   <button mat-icon-button id="hasComment">
       <mat-icon>comment</mat-icon>
    </button>
@@ -35,7 +35,7 @@
     </div>
   </div>
 
-  <div *ngIf="!comment.adding" class="comment-wrapper">
+  <div *ngIf="!comment.adding && comment.list?.length" class="comment-wrapper">
     <div *ngFor="let c of comment.list; let i=index" >
       <div *ngIf="tracker">
           <ice-user [user]="c.user" [time]="c.formattedTime" [className]="'b' + tracker.getUserStyle(c.user.id)"></ice-user>
