@@ -6,7 +6,6 @@ import BaseModel from './base.model';
 class ModuleContent extends BaseModel {
   org_id: number = 0;
   id: number = 0;
-  template_id: number = 0;
   step_id: number = 0;
   module_id: number = 0;
   content_json: any = {inputs: {}};
