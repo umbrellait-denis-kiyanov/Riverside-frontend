@@ -19,7 +19,6 @@ import { IceService } from './ice.service';
 import { DOCUMENT } from '@angular/common';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 
-
 @Component({
   selector: 'ice',
   templateUrl: './ice.component.html',
@@ -31,10 +30,10 @@ export class IceComponent implements OnInit {
   @Input() box: number;
   @Input() disabled: boolean;
   @Input() data: {
-    textContent: string,
-    content: string,
-    selections$: BehaviorSubject<string[]>,
-    comments_json: any[]
+    textContent: string;
+    content: string;
+    selections$: BehaviorSubject<string[]>;
+    comments_json: any[];
   };
   @Input() allowRemoveSelections = false;
 
@@ -46,7 +45,7 @@ export class IceComponent implements OnInit {
   tracker: any;
   overlayRef: OverlayRef | null;
   subs: Array<Subscription | null> = [];
-  comment: { [key: string]: any, index: false | number } = {
+  comment: { [key: string]: any; index: false | number } = {
     adding: false,
     content: '',
     list: [],
@@ -64,10 +63,15 @@ export class IceComponent implements OnInit {
     public viewContainerRef: ViewContainerRef,
     private iceService: IceService,
     private dialogService: E3ConfirmationDialogService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.data = this.data || { textContent: '', content: '', comments_json: [], selections$: new BehaviorSubject([]) };
+    this.data = this.data || {
+      textContent: '',
+      content: '',
+      comments_json: [],
+      selections$: new BehaviorSubject([])
+    };
     this.data.content = this.data.content || '';
     this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
 
@@ -76,7 +80,11 @@ export class IceComponent implements OnInit {
     const selections = el.querySelector('.matrix-options');
 
     if (selections) {
-      this.data.selections$.next(Array.prototype.slice.call(selections.querySelectorAll('span')).map(node => node.innerHTML));
+      this.data.selections$.next(
+        Array.prototype.slice
+          .call(selections.querySelectorAll('span'))
+          .map(node => node.innerHTML)
+      );
       selections.remove();
     }
 
@@ -94,13 +102,17 @@ export class IceComponent implements OnInit {
         element: text,
         handleEvents: true,
         currentUser: this.user,
-        plugins: ['IceAddTitlePlugin', 'IceSmartQuotesPlugin', 'IceEmdashPlugin', {
-          name: 'IceCopyPastePlugin',
-          settings: {
-            pasteType: 'formattedClean',
-            preserve: 'ol,ul,li'
+        plugins: [
+          'IceAddTitlePlugin',
+          'IceSmartQuotesPlugin',
+          'IceEmdashPlugin',
+          {
+            name: 'IceCopyPastePlugin',
+            settings: {
+              pasteType: 'formattedClean',
+              preserve: 'ol,ul,li'
+            }
           }
-        }
         ]
       }).startTracking();
 
@@ -122,7 +134,9 @@ export class IceComponent implements OnInit {
   }
 
   removeSelection(selection: string) {
-    const selections = this.data.selections$.value.filter(sel => sel !== selection);
+    const selections = this.data.selections$.value.filter(
+      sel => sel !== selection
+    );
     this.data.selections$.next(selections);
   }
 
@@ -146,7 +160,7 @@ export class IceComponent implements OnInit {
     if (this.comment.index !== false) {
       this.comment.list[this.comment.index].content = this.comment.content;
     } else {
-      const time = (new Date()).getTime();
+      const time = new Date().getTime();
       this.comment.list.push({
         content: this.comment.content,
         user: this.user,
@@ -170,7 +184,9 @@ export class IceComponent implements OnInit {
   }
 
   private commentPosition() {
-    const rect = this.el.nativeElement.querySelector('#textbody').getBoundingClientRect();
+    const rect = this.el.nativeElement
+      .querySelector('#textbody')
+      .getBoundingClientRect();
     return {
       x: rect.left,
       y: rect.bottom
@@ -179,14 +195,15 @@ export class IceComponent implements OnInit {
 
   private openComment({ x, y }) {
     this.iceService.closeAll();
-    const positionStrategy = this.overlay.position()
+    const positionStrategy = this.overlay
+      .position()
       .flexibleConnectedTo({ x, y })
       .withPositions([
         {
           originX: 'end',
           originY: 'bottom',
           overlayX: 'end',
-          overlayY: 'top',
+          overlayY: 'top'
         }
       ]);
 
@@ -195,35 +212,47 @@ export class IceComponent implements OnInit {
       scrollStrategy: this.overlay.scrollStrategies.close()
     });
 
-    this.overlayRef.attach(new TemplatePortal(this.commentOverlay, this.viewContainerRef, {
-      $implicit: this.comment
-    }));
-
-    this.subs.push(fromEvent<MouseEvent>(document, 'click')
-      .pipe(
-        filter(event => {
-          const clickTarget = event.target as HTMLElement;
-          return !!this.overlayRef &&
-            !(
-              this.overlayRef.overlayElement.contains(clickTarget) ||
-              clickTarget.classList.contains('cdk-overlay-transparent-backdrop') ||
-              clickTarget.id === 'addComment' ||
-              (this.el.nativeElement as HTMLElement).contains(clickTarget)
-            );
-        }),
-        take(1)
-      ).subscribe(() => this.closeComment())
+    this.overlayRef.attach(
+      new TemplatePortal(this.commentOverlay, this.viewContainerRef, {
+        $implicit: this.comment
+      })
     );
 
-    this.subs.push(fromEvent<MouseEvent>(this.overlayRef.overlayElement, 'mouseleave')
-      .pipe(
-        filter(e => {
-          const target = e.toElement || e.relatedTarget as HTMLElement;
-          return !!this.overlayRef &&
-            !this.overlayRef.overlayElement.contains(target);
-        }),
-        take(1)
-      ).subscribe(() => this.closeComment())
+    this.subs.push(
+      fromEvent<MouseEvent>(document, 'click')
+        .pipe(
+          filter(event => {
+            const clickTarget = event.target as HTMLElement;
+            return (
+              !!this.overlayRef &&
+              !(
+                this.overlayRef.overlayElement.contains(clickTarget) ||
+                clickTarget.classList.contains(
+                  'cdk-overlay-transparent-backdrop'
+                ) ||
+                clickTarget.id === 'addComment' ||
+                (this.el.nativeElement as HTMLElement).contains(clickTarget)
+              )
+            );
+          }),
+          take(1)
+        )
+        .subscribe(() => this.closeComment())
+    );
+
+    this.subs.push(
+      fromEvent<MouseEvent>(this.overlayRef.overlayElement, 'mouseleave')
+        .pipe(
+          filter((e: MouseEvent & { toElement: any }) => {
+            const target = e.toElement || (e.relatedTarget as HTMLElement);
+            return (
+              !!this.overlayRef &&
+              !this.overlayRef.overlayElement.contains(target)
+            );
+          }),
+          take(1)
+        )
+        .subscribe(() => this.closeComment())
     );
     this.comment.show = true;
   }
@@ -239,16 +268,17 @@ export class IceComponent implements OnInit {
 
   @HostListener('mouseleave', ['$event'])
   onMouseLeave(e) {
-    if (this.overlayRef && !this.overlayRef.overlayElement.contains(e.toElement || e.relatedTarget)) {
+    if (
+      this.overlayRef &&
+      !this.overlayRef.overlayElement.contains(e.toElement || e.relatedTarget)
+    ) {
       this.closeComment();
     }
-
   }
 
   @HostListener('click', ['$event'])
   onClick() {
     if (this.iceService.shouldShowWarning) {
-
       this.dialogService.open({
         content: this.iceService.warningText,
         onCancel: () => {
@@ -286,20 +316,20 @@ export class IceComponent implements OnInit {
       return false;
     }
 
-    this.changed.emit(e);
+    this.onBlur();
   }
 
   onBlur() {
-
     const { element } = this.tracker;
 
     const selections = this.data.selections$.value;
 
-    this.data.content = (selections && selections.length ?
-                            '<p class="matrix-options">' + (selections || []).map(sel => '<span>' + sel + '</span>').join('') + '</p>' :
-                            '') +
-
-                          element.innerHTML.replace(/&nbsp;/g, ' ');
+    this.data.content =
+      (selections && selections.length
+        ? '<p class="matrix-options">' +
+          (selections || []).map(sel => '<span>' + sel + '</span>').join('') +
+          '</p>'
+        : '') + element.innerHTML.replace(/&nbsp;/g, ' ');
 
     this.dataChanged.emit(this.data);
     this.changed.emit(null);
@@ -326,4 +356,3 @@ export class IceComponent implements OnInit {
     }, 100);
   }
 }
-

@@ -10,6 +10,7 @@ import { InboxService } from 'src/app/module-viewer/inbox/inbox.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { PersonaInputs } from '../persona-ids.class';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { ActivatedRoute } from '@angular/router';
 
 
 @Component({
@@ -37,6 +38,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
     private inboxService: InboxService,
     protected userService: UserService,
     private navService: ModuleNavService,
+    private route: ActivatedRoute
   ) {
     super(el, moduleContentService, userService);
   }
@@ -123,10 +125,11 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
       module_id: this.navService.module.current.id,
       step_id: this.navService.currentStep.id
     };
+    const {orgId} = this.route.parent.snapshot.params;
     if (['feedback', 'final_feedback'].includes(this.action)) {
-      partialMessage.from_org_id = this.userService.me.org.id;
+      partialMessage.from_org_id = orgId;
     } else {
-      partialMessage.to_org_id = this.userService.me.org.id;
+      partialMessage.to_org_id = orgId;
     }
     const message = {
       message: msg,

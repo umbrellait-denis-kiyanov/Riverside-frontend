@@ -152,21 +152,23 @@ export class ModuleNavService {
   }
 
   private moveToStep(offset: number) {
+    const { stepId } = this.route.snapshot.params;
+    stepId && this.setStepFromId(stepId);
     const index = this.stepIndex.current;
     if (this.module.current.steps.length === index + offset || index + offset < 0) {
       return;
     }
     this.stepIndex.current = Number(index) + offset;
     const step = this.module.current.steps[this.stepIndex.current];
-    if (step.template_component && !step.is_section_break) {
-      this.router.navigate(['module', this.module.current.id, 'step', step.id]);
+    if (!step.is_section_break) {
+      this.router.navigate(['org', this.orgId, 'module', this.module.current.id, 'step', step.id]);
     } else {
       return offset === 1 ? this.nextStep() : this.previousStep();
     }
   }
 
   async markAsDone(stepId: number, is_checked: boolean = true) {
-    return this.http.post(`/api/modules/0/step/${stepId}/done`, {is_checked}).toPromise()
+    return this.http.post(`/api/modules/0/step/${stepId}/done`, {is_checked, org_id: this.orgId}).toPromise()
       .then(() => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];
@@ -178,7 +180,7 @@ export class ModuleNavService {
   }
 
   async markAsApproved(stepId: number, is_approved: boolean = true) {
-    return this.http.post(`/api/modules/0/step/${stepId}/done`, {is_approved}).toPromise()
+    return this.http.post(`/api/modules/0/step/${stepId}/done`, {is_approved, org_id: this.orgId}).toPromise()
       .then(() => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];

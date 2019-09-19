@@ -12,6 +12,17 @@ import { AccountLeftMenuComponent } from './left-menu/account/account-left-menu.
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 
+const moduleContentRoute = [
+  {
+    path: 'step/:stepId',
+    component: ContentComponent
+  },
+  {
+    path: '',
+    component: LeftMenuComponent,
+    outlet: 'left-menu'
+  }
+];
 
 const routes: Routes = [
   {
@@ -20,19 +31,14 @@ const routes: Routes = [
     redirectTo: 'module/1'
   },
   {
+    path: 'org/:orgId/module/:moduleId',
+    component: MainComponent,
+    children: moduleContentRoute
+  },
+  {
     path: 'module/:moduleId',
     component: MainComponent,
-    children: [
-      {
-        path: 'step/:stepId',
-        component: ContentComponent
-      },
-      {
-        path: '',
-        component: LeftMenuComponent,
-        outlet: 'left-menu'
-      }
-    ]
+    children: moduleContentRoute
   },
   {
     path: 'inbox',

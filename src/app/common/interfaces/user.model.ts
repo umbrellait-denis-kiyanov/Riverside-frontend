@@ -15,7 +15,8 @@ class User extends BaseModel {
     riversideRMCFDashboard: false,
     riversideSalesDashboard: false,
     riversideModuleEditor: false,
-    riversideRequestFeedback: false
+    riversideRequestFeedback: false,
+    riversideCanSelectMultipleOrgs: false,
   };
   org = {
     id: 0

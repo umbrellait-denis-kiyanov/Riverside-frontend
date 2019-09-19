@@ -52,6 +52,7 @@ import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { CanModifyPipe } from '../common/pipes/canModify.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
+// tslint:disable-next-line:max-line-length
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
 import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
@@ -71,12 +72,13 @@ import { NgLetDirective } from '../common/directives/nglet.directive';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ModuleLinkComponent } from './dashboard/module-link/module-link.component';
 import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.component';
+import { OrgSelectorComponent } from './left-menu/module/org-selector/org-selector.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], { useHash: true, enableTracing: true }),
+    RouterModule.forRoot([], { useHash: true }),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -141,7 +143,8 @@ import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.co
     NgLetDirective,
     ModuleLinkComponent,
     SelectionMatrixComponent,
-    QuestionImageComponent
+    QuestionImageComponent,
+    OrgSelectorComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
