@@ -21,7 +21,7 @@ declare global {
 })
 export class LeftMenuComponent implements OnInit {
 
-  @Input() width: number = 320;
+  @Input() width: number = 280;
 
   module: Module;
 
