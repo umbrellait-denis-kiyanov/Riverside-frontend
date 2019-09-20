@@ -15,8 +15,8 @@
   </div>
   <div class="persona-row" *ngFor="let persona of inputIds.fromPreviousStep; let i=index">
       <div class="persona-name-column CT-hide" *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)">
-        <div class="persona-picture" *ngIf="!inputs[inputIds.personas[i]].content">
-          <button mat-icon-button (click)="openModal(inputIds.personas[i])" ><mat-icon>add</mat-icon></button>
+        <div class="persona-picture" *ngIf="!inputs[inputIds.personas[i]].content" (click)="openModal(inputIds.personas[i])" >
+          <button mat-icon-button ><mat-icon>add</mat-icon></button>
 
         </div>
         <img class="persona-picture" (click)="openModal(inputIds.personas[i])" [src]="inputs[inputIds.personas[i]].content | safeurl" *ngIf="inputs[inputIds.personas[i]].content">
