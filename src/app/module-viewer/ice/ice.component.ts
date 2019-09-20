@@ -246,6 +246,7 @@ export class IceComponent implements OnInit {
           filter((e: MouseEvent & { toElement: any }) => {
             const target = e.toElement || (e.relatedTarget as HTMLElement);
             return (
+              !this.comment.adding &&
               !!this.overlayRef &&
               !this.overlayRef.overlayElement.contains(target)
             );
@@ -269,6 +270,7 @@ export class IceComponent implements OnInit {
   @HostListener('mouseleave', ['$event'])
   onMouseLeave(e) {
     if (
+      !this.comment.adding &&
       this.overlayRef &&
       !this.overlayRef.overlayElement.contains(e.toElement || e.relatedTarget)
     ) {
