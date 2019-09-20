@@ -16,16 +16,9 @@
           [ngClass]="{'active': currentSection == persona.name + '_wrapper'}"
           (click)="scrollTo(persona.name + '_wrapper')"
           *ngFor="let persona of inputIds.fromPreviousSteps"
-          [hidden]="!(notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content))"
           title="{{ textContent(inputs[persona.title].content) }}"
         >
-            <riverside-persona
-              *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)"
-              [title]="textContent(inputs[persona.title].content)"
-              [name]="textContent(inputs[persona.name].content)"
-              [picture]="inputs[persona.picture].content"
-              [size]="50"
-            ></riverside-persona>
+          <riverside-persona [persona]="persona.title" [inputs]="inputs"></riverside-persona>
         </div>
     </div>
     <div
@@ -34,14 +27,9 @@
         (sectionChange)="onSectionChange($event)"
       >
         <div class="persona-wrapper" id="{{persona.name+'_wrapper'}}" *ngFor="let persona of inputIds.fromPreviousSteps; let i=index">
-          <div class="persona-content" *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)">
+          <div class="persona-content">
             <div class="column">
-                <riverside-persona
-                [title]="textContent(inputs[persona.title].content)"
-                [name]="textContent(inputs[persona.name].content)"
-                [picture]="inputs[persona.picture].content"
-                [size]="130"
-              ></riverside-persona>
+                <riverside-persona [persona]="persona.title" [inputs]="inputs"></riverside-persona>
               <div style="min-height: 300px;margin-top: 10px" >
                 <div class="behavior-title" style="padding-left: 0px;" >Demographics</div>
                 <div class="previous-behavior ">

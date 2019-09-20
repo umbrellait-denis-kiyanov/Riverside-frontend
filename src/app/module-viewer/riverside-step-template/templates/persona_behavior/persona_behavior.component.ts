@@ -13,7 +13,6 @@ import { PersonaBehaviorTemplateData } from './persona_behavior.interface';
 
 export class PersonaBehaviorTemplateComponent extends TemplateComponent {
   inputIds = {
-    fromPreviousStep: [],
     personas: []
   };
 
@@ -29,7 +28,6 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.inputIds = {
-      fromPreviousStep: this.activePersonas.map(persona => ({title: persona, name: persona.split('_').join('_name_'), picture: persona.split('_').join('_picture_')})),
       personas: this.activePersonas.map(persona => persona.split('_').join('_behavior_'))
     };
 

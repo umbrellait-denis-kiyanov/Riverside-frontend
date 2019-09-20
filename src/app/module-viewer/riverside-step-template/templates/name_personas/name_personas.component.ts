@@ -11,7 +11,6 @@ import { NamePersonasTemplateData } from './name_personas.interface';
 })
 export class NamePersonasTemplateComponent extends TemplateComponent {
   inputIds = {
-    fromPreviousStep: [ ],
     personas: [  ]
   };
 
@@ -27,7 +26,6 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.inputIds = {
-      fromPreviousStep: this.activePersonas,
       personas: this.activePersonas.map(persona => persona.split('_').join('_name_'))
     };
 

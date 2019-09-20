@@ -74,12 +74,6 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
         title: {
           prefix: 'persona'
         },
-        name: {
-          prefix: 'persona_name'
-        },
-        picture: {
-          prefix: 'persona_picture'
-        },
         ...this.traitInputs()
       }
     });

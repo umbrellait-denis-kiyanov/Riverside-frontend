@@ -84,17 +84,9 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
         title: {
           prefix: 'persona'
         },
-        name: {
-          prefix: 'persona_name'
-        },
-        picture: {
-          prefix: 'persona_picture'
-        },
-
         age: {
           prefix: 'persona_age'
         },
-
         perc_male: {
           prefix: 'persona_perc_male'
         },
