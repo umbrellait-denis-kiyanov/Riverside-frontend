@@ -16,13 +16,13 @@ export class ModuleContentService {
 
   async save(moduleContent: ModuleContent): Promise<any> {
     return this.moduleContent.save(
-      this.httpClient.post(`${this.baseUrl}/${moduleContent.module_id}/step/${moduleContent.step_id}`, moduleContent).toPromise()
+      this.httpClient.post(`${this.baseUrl}/${moduleContent.module_id}/org/${moduleContent.org_id}/step/${moduleContent.step_id}`, moduleContent).toPromise()
     );
   }
 
   load({ moduleId, stepId, org_id }) {
     return this.moduleContent.load(
-      this.httpClient.get(`${this.baseUrl}/${moduleId}/step/${stepId}`, { params: { org_id } })
+      this.httpClient.get(`${this.baseUrl}/${moduleId}/org/${org_id}/step/${stepId}`)
         .toPromise()
         .then(async (res: any) => {
           let object;

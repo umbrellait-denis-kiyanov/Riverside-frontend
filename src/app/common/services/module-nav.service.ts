@@ -168,7 +168,7 @@ export class ModuleNavService {
   }
 
   async markAsDone(stepId: number, is_checked: boolean = true) {
-    return this.http.post('/api/modules/' + this.module.current.id + '/step/' + stepId + '/done', {is_checked, org_id: this.orgId}).toPromise()
+    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.orgId + '/step/' + stepId + '/done', {is_checked}).toPromise()
       .then(() => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];
@@ -180,7 +180,7 @@ export class ModuleNavService {
   }
 
   async markAsApproved(stepId: number, is_approved: boolean = true) {
-    return this.http.post('/api/modules/' + this.module.current.id + '/step/' + stepId + '/done', {is_approved, org_id: this.orgId}).toPromise()
+    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.orgId + '/step/' + stepId + '/done', {is_approved, org_id: this.orgId}).toPromise()
       .then(() => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];
