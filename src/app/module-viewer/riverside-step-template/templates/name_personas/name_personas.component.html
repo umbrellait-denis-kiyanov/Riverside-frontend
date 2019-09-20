@@ -19,29 +19,29 @@
 <div class="template-description">
   <p>Based on the instructions in the video above, give each persona a name.</p>
 </div>
-<div class="inputs-wrapper">
-  <div class="inputs-wrapper-column">
-    <ice
-    *ngFor="let inputId of inputIds.fromPreviousStep"
-    id="{{inputId}}"
-    [hideChanges]="hideChanges"
-    [user]="me"
-    [disabled]="true"
-    (changed)="contentChanged()"
-    [(data)]="inputs[inputId]"
-  ></ice>
-  </div>
 
-  <div class="inputs-wrapper-column">
+<div class="inputs-wrapper container-fluid">
+  <div *ngFor="let inputId of inputIds.fromPreviousStep; let idx = index" class="row">
+    <div class="col-sm-6">
       <ice
-      *ngFor="let inputId of inputIds.personas"
-      id="{{inputId}}"
-      [hideChanges]="hideChanges"
-      [user]="me"
-      [disabled]="disabled"
-      (changed)="contentChanged()"
-      [(data)]="inputs[inputId]"
-    ></ice>
+        id="{{ inputId }}"
+        [hideChanges]="hideChanges"
+        [user]="me"
+        [disabled]="true"
+        (changed)="contentChanged()"
+        [(data)]="inputs[inputId]"
+      ></ice>
+    </div>
+    <div class="col-sm-6">
+      <ice
+        id="{{ inputIds.personas[idx] }}"
+        [hideChanges]="hideChanges"
+        [user]="me"
+        [disabled]="disabled"
+        (changed)="contentChanged()"
+        [(data)]="inputs[inputIds.personas[idx]]"
+      ></ice>
+    </div>
   </div>
 </div>
 
