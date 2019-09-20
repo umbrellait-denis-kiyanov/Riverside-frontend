@@ -13,49 +13,9 @@ import { PersonaBehaviorTemplateData } from './persona_behavior.interface';
 
 export class PersonaBehaviorTemplateComponent extends TemplateComponent {
   inputIds = {
-    fromPreviousStep: [
-      {
-        title: 'persona_1',
-        name: 'persona_name_1',
-        picture: 'persona_picture_1'
-      },
-      {
-        title: 'persona_2',
-        name: 'persona_name_2',
-        picture: 'persona_picture_2'
-      },
-      {
-        title: 'persona_3',
-        name: 'persona_name_3',
-        picture: 'persona_picture_3'
-      },
-      {
-        title: 'persona_4',
-        name: 'persona_name_4',
-        picture: 'persona_picture_4'
-      },
-      {
-        title: 'persona_5',
-        name: 'persona_name_5',
-        picture: 'persona_picture_5'
-      },
-      {
-        title: 'persona_6',
-        name: 'persona_name_6',
-        picture: 'persona_picture_6'
-      }
-    ],
-    personas: [
-      'persona_behavior_1',
-      'persona_behavior_2',
-      'persona_behavior_3',
-      'persona_behavior_4',
-      'persona_behavior_5',
-      'persona_behavior_6',
-    ]
-
+    fromPreviousStep: [],
+    personas: []
   };
-
 
   contentData: PersonaBehaviorTemplateData['template_params_json'];
 
@@ -68,6 +28,11 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
+    this.inputIds = {
+      fromPreviousStep: this.activePersonas.map(persona => ({title: persona, name: persona.split('_').join('_name_'), picture: persona.split('_').join('_picture_')})),
+      personas: this.activePersonas.map(persona => persona.split('_').join('_behavior_'))
+    };
+
     this.contentData = this.data.data.template_params_json as PersonaBehaviorTemplateData['template_params_json'];
 
     const defaultContent = { content: this.contentData.formatAsList ? this.defaultListContent : '<p></p>' };
@@ -85,7 +50,5 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
         }
       });
     });
-
   }
-
 }

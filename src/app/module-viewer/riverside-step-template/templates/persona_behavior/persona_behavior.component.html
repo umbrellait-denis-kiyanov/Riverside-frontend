@@ -39,6 +39,7 @@
 
 <div class="persona-behavior-wrapper" *ngFor="let matrix of contentData.selection_matrix">
   <app-selection-matrix
+    *ngIf="inputIds.fromPreviousStep.length"
     [question]="matrix.question"
     [personas]="inputIds.fromPreviousStep"
     [options]="matrix.options"

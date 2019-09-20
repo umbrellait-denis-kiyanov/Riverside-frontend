@@ -7,7 +7,7 @@ interface PreviousStepInputs {
 
 export class PersonaInputs {
   static defaults = {
-    numberOfPersonas: 6,
+    activePersonas: [],
     stepPrefix: '',
     stepSufix: '',
     previousSteps: null
@@ -24,24 +24,26 @@ export class PersonaInputs {
   }
 
   preparePreviousInputIds() {
-    const {numberOfPersonas, previousSteps} = this.options;
+    const {activePersonas, previousSteps} = this.options;
     if (!previousSteps) { return; }
     this.fromPreviousSteps = [];
-    Array.from({ length: numberOfPersonas }).forEach((_, i: number) => {
+    activePersonas.forEach((persona: string) => {
+      const i = parseInt(persona.split('_').pop(), 10);
       const personaDefs = {};
       Object.keys(previousSteps).forEach(stepKey => {
         const stepDef = previousSteps[stepKey];
-        personaDefs[stepKey] = `${stepDef.prefix}_${i + 1}${stepDef.sufix ? '_' + stepDef.sufix : ''}`;
+        personaDefs[stepKey] = `${stepDef.prefix}_${i}${stepDef.sufix ? '_' + stepDef.sufix : ''}`;
       });
       this.fromPreviousSteps.push(personaDefs);
     });
   }
 
   prepareCurrentInputIds() {
-    const {numberOfPersonas, stepPrefix, stepSufix} = this.options;
+    const {activePersonas, stepPrefix, stepSufix} = this.options;
     if (!stepPrefix) { return; }
-    Array.from({ length: numberOfPersonas }).forEach((_, i: number) => {
-      this.personas.push(`${stepPrefix}_${i + 1}${stepSufix ? '_' + stepSufix : ''}`);
+    activePersonas.forEach((persona: string) => {
+      const i = parseInt(persona.split('_').pop(), 10);
+      this.personas.push(`${stepPrefix}_${i}${stepSufix ? '_' + stepSufix : ''}`);
     });
   }
 }

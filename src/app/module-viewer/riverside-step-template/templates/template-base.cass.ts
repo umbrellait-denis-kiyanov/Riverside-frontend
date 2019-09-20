@@ -15,6 +15,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   me: User;
   action: string;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
+  activePersonas: any[];
 
   constructor(
       protected el: ElementRef,
@@ -32,6 +33,15 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     this.inputs = this.data.data.inputs;
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
+
+    this.activePersonas = Object.values(this.inputs).filter(i => i).map(i => {
+      const input = (i as any);
+      return input.element_key &&
+             input.element_key.match(/^persona_[0-9]+$/) &&
+             input.content && input.content !== '<p><br></p>' ?
+          input.element_key : null;
+    }).filter(i => i);
+
     this.init();
     this.initAction();
   }

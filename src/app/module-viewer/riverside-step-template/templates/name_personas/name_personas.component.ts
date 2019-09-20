@@ -11,27 +11,11 @@ import { NamePersonasTemplateData } from './name_personas.interface';
 })
 export class NamePersonasTemplateComponent extends TemplateComponent {
   inputIds = {
-    fromPreviousStep: [
-      'persona_1',
-      'persona_2',
-      'persona_3',
-      'persona_4',
-      'persona_5',
-      'persona_6',
-    ],
-    personas: [
-      'persona_name_1',
-      'persona_name_2',
-      'persona_name_3',
-      'persona_name_4',
-      'persona_name_5',
-      'persona_name_6',
-    ]
+    fromPreviousStep: [ ],
+    personas: [  ]
   };
 
   contentData: NamePersonasTemplateData['template_params_json'];
-
-  // contentData = data;
 
   getDescription() {
     return '';
@@ -42,6 +26,11 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
+    this.inputIds = {
+      fromPreviousStep: this.activePersonas,
+      personas: this.activePersonas.map(persona => persona.split('_').join('_name_'))
+    };
+
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach(id => {
         this.inputs[id] = this.inputs[id] || '';

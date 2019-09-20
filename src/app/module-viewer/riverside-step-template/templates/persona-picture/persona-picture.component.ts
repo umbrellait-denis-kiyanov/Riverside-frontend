@@ -17,43 +17,9 @@ import { UserService } from 'src/app/common/services/user.service';
 
 export class PersonaPictureTemplateComponent extends TemplateComponent {
   inputIds = {
-    fromPreviousStep: [
-      {
-        title: 'persona_1',
-        name: 'persona_name_1'
-      },
-      {
-        title: 'persona_2',
-        name: 'persona_name_2'
-      },
-      {
-        title: 'persona_3',
-        name: 'persona_name_3'
-      },
-      {
-        title: 'persona_4',
-        name: 'persona_name_4'
-      },
-      {
-        title: 'persona_5',
-        name: 'persona_name_5'
-      },
-      {
-        title: 'persona_6',
-        name: 'persona_name_6'
-      }
-    ],
-    personas: [
-      'persona_picture_1',
-      'persona_picture_2',
-      'persona_picture_3',
-      'persona_picture_4',
-      'persona_picture_5',
-      'persona_picture_6',
-    ]
-
+    fromPreviousStep: [ ],
+    personas: [ ]
   };
-
 
   contentData: PersonaPictureTemplateData['template_params_json'];
 
@@ -75,6 +41,11 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
+    this.inputIds = {
+      fromPreviousStep: this.activePersonas.map(persona => ({title: persona, name: persona.split('_').join('_name_')})),
+      personas: this.activePersonas.map(persona => persona.split('_').join('_picture_'))
+    };
+
     this.contentData = this.data.data.template_params_json as PersonaPictureTemplateData['template_params_json'];
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach((id, i) => {

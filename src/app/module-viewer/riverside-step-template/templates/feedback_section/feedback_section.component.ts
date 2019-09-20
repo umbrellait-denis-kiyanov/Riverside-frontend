@@ -79,7 +79,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
 
   initIds() {
     this.inputIds = new PersonaInputs({
-      numberOfPersonas: 6,
+      activePersonas: this.activePersonas,
       previousSteps: {
         title: {
           prefix: 'persona'

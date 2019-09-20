@@ -65,12 +65,11 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
         });
       });
     });
-    // this.contentData = this.data.data.template_params_json;
   }
 
   initIds() {
     this.inputIds = new PersonaInputs({
-      numberOfPersonas: 6,
+      activePersonas: this.activePersonas,
       previousSteps: {
         title: {
           prefix: 'persona'
