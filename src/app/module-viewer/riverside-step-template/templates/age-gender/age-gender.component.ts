@@ -2,9 +2,6 @@ import { Component, OnInit, ElementRef } from '@angular/core';
 import { PersonaInputs } from '../persona-ids.class';
 import { TemplateComponent } from '../template-base.cass';
 import { AgeGenderTemplateData } from './age-gender.interface';
-import { ModuleContentService } from 'src/app/common/services/module-content.service';
-import { UserService } from 'src/app/common/services/user.service';
-import Message from 'src/app/module-viewer/inbox/message.model';
 
 @Component({
   selector: 'app-age-gender',
@@ -33,14 +30,6 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
       title: 'Typical education',
     }
   ];
-
-  constructor(
-    protected el: ElementRef,
-    protected moduleContentService: ModuleContentService,
-    protected userService: UserService
-  ) {
-    super(el, moduleContentService, userService);
-  }
 
   getDescription() {
     return '';

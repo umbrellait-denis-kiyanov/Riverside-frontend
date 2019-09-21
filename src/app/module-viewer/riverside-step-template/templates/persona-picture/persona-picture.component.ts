@@ -1,12 +1,9 @@
-import { Component, ElementRef } from '@angular/core';
+import { Component } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
-import { data } from './exampleData';
 import { PersonaPictureTemplateData } from './persona-picture.interface';
-import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
-import { UserService } from 'src/app/common/services/user.service';
 
 @Component({
   selector: 'app-persona-picture',
@@ -23,6 +20,8 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
 
   contentData: PersonaPictureTemplateData['template_params_json'];
 
+  protected modalService: NgbModal;
+
   getDescription() {
     return '';
   }
@@ -31,16 +30,9 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
     return 'Persona Picture';
   }
 
-  constructor(
-    protected el: ElementRef,
-    protected moduleContentService: ModuleContentService,
-    protected modalService: NgbModal,
-    protected userService: UserService
-  ) {
-    super(el, moduleContentService, userService);
-  }
-
   protected init() {
+    this.modalService = this.injectorObj.get(NgbModal);
+
     this.inputIds = {
       fromPreviousStep: this.activePersonas.map(persona => ({title: persona, name: persona.split('_').join('_name_')})),
       personas: this.activePersonas.map(persona => persona.split('_').join('_picture_'))

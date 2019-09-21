@@ -32,6 +32,8 @@ export class Template3Component extends TemplateComponent implements OnInit {
   contentData = data;
   action: string;
 
+  private inboxService: InboxService;
+
   getDescription() {
     return '';
   }
@@ -40,17 +42,11 @@ export class Template3Component extends TemplateComponent implements OnInit {
     return 'Tpl3';
   }
 
-  constructor(
-    protected el: ElementRef,
-    protected moduleContentService: ModuleContentService,
-    private inboxService: InboxService,
-    protected userService: UserService
-  ) {
-    super(el, moduleContentService, userService);
-  }
-
   ngOnInit() {
     super.ngOnInit();
+
+    this.inboxService = this.injectorObj.get(InboxService);
+
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
     if (this.userService.me.roles.is_riverside_managing_director) {
       this.action = 'provide_feedback';
@@ -63,7 +59,6 @@ export class Template3Component extends TemplateComponent implements OnInit {
         this.inputs[id] = this.inputs[id] || '';
       });
     });
-    // this.contentData = this.data.data.template_params_json;
   }
 
   feedbackClicked(partialMessage: Partial<Message>) {

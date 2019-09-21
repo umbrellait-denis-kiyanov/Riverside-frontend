@@ -3,8 +3,10 @@ import { OnInit, ElementRef, Component } from '@angular/core';
 import { TemplateComponentInterface, TemplateContentDataType } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
+import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
+import { Input } from 'src/app/common/interfaces/module.interface';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit {
@@ -20,8 +22,9 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   constructor(
       protected el: ElementRef,
       protected moduleContentService: ModuleContentService,
-      protected userService?: UserService,
-      protected injectorObj?: Injector
+      protected moduleService: ModuleService,
+      protected userService: UserService,
+      protected injectorObj: Injector
     ) {}
 
   abstract getDescription(): string;

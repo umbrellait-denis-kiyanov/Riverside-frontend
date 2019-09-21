@@ -1,13 +1,10 @@
-import { Component, ElementRef, OnInit } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
 import { data } from './exampleData';
-import { FeedbackSectionTemplateData } from './feedback_section.interface';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import Message from 'src/app/module-viewer/inbox/message.model';
-import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { InboxService } from 'src/app/module-viewer/inbox/inbox.service';
-import { UserService } from 'src/app/common/services/user.service';
 import { PersonaInputs } from '../persona-ids.class';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { ActivatedRoute } from '@angular/router';
@@ -32,16 +29,9 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
   currentSection: string;
   currentTab = 'text';
 
-  constructor(
-    protected el: ElementRef,
-    protected moduleContentService: ModuleContentService,
-    private inboxService: InboxService,
-    protected userService: UserService,
-    private navService: ModuleNavService,
-    private route: ActivatedRoute
-  ) {
-    super(el, moduleContentService, userService);
-  }
+  private inboxService: InboxService;
+  private navService: ModuleNavService;
+  private route: ActivatedRoute;
 
   getDescription() {
     return '';
@@ -53,6 +43,11 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
 
   ngOnInit() {
     super.ngOnInit();
+
+    this.inboxService = this.injectorObj.get(InboxService);
+    this.navService = this.injectorObj.get(ModuleNavService);
+    this.route = this.injectorObj.get(ActivatedRoute);
+
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
     this.initAction();
   }
