@@ -39,9 +39,9 @@
 
 <div class="persona-behavior-wrapper" *ngFor="let matrix of contentData.selection_matrix">
   <app-selection-matrix
-    *ngIf="inputIds.fromPreviousStep.length"
+    *ngIf="activePersonas.length"
     [question]="matrix.question"
-    [personas]="inputIds.fromPreviousStep"
+    [personas]="activePersonas"
     [options]="matrix.options"
     [horizontal]="true"
     [inputIds]="inputIds"
@@ -65,12 +65,12 @@
   <div class="persona-row" *ngFor="let persona of activePersonas; let i=index">
       <riverside-persona [persona]="persona" [inputs]="inputs"></riverside-persona>
       <div class="persona-behavior-column">
-          <ice
+        <ice
             id="{{inputIds.personas[i]}}"
             [hideChanges]="hideChanges"
             [user]="me"
             [disabled]="disabled"
-            (changed)="contentChanged()"
+            (changed)="contentChanged($event)"
             [(data)]="inputs[inputIds.personas[i]]"
           ></ice>
       </div>

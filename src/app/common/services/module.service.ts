@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Module, Step } from '../interfaces/module.interface';
+import { Module, Step, Input } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 
@@ -87,6 +87,11 @@ export class ModuleService {
 
   saveNotes(module: Partial<Module>, orgId: number, notes: string): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/notes`, {notes});
+  }
+
+  saveInput(input: Input): Observable<any> {
+    const dataToSend =  (({ comments_json, content, element_key }) => ({ comments_json, content, element_key }))(input);
+    return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
   }
 
   getOrganizations(): Observable<any> {

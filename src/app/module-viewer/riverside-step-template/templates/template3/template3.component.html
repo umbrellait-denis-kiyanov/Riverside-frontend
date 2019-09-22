@@ -15,7 +15,7 @@
     [hideChanges]="hideChanges"
     [user]="me"
     [disabled]="disabled"
-    (changed)="contentChanged()"
+    (changed)="contentChanged($event)"
     [(data)]="inputs[inputId]"
   ></ice>
 </div>

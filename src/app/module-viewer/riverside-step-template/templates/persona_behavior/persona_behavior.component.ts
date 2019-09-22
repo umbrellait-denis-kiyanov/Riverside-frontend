@@ -1,7 +1,6 @@
 import { Component } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
-import { data } from './exampleData';
 import { PersonaBehaviorTemplateData } from './persona_behavior.interface';
 
 @Component({

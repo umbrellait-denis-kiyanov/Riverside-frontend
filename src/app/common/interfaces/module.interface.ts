@@ -16,6 +16,15 @@ export interface Module {
   underConstruction?: boolean;
 }
 
+export interface Input {
+  id: number;
+  org_id: number;
+  module_id: number;
+  element_key: string;
+  content: string;
+  comments_json: string;
+}
+
 export interface Organization {
   id: number;
   name: string;

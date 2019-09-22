@@ -19,7 +19,6 @@ import { IceService } from './ice.service';
 import { DOCUMENT } from '@angular/common';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 
-
 @Component({
   selector: 'ice',
   templateUrl: './ice.component.html',
@@ -66,12 +65,6 @@ export class IceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data = this.data || {
-      textContent: '',
-      content: '',
-      comments_json: [],
-      selections$: new BehaviorSubject([])
-    };
     this.data.content = this.data.content || '';
     this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
 
@@ -275,7 +268,6 @@ export class IceComponent implements OnInit {
     ) {
       this.closeComment();
     }
-
   }
 
   @HostListener('click', ['$event'])
@@ -319,11 +311,10 @@ export class IceComponent implements OnInit {
       return false;
     }
 
-    this.onBlur();
+    // this.onBlur();
   }
 
   onBlur() {
-
     const { element } = this.tracker;
 
     const selections = this.data.selections$.value;
@@ -336,7 +327,7 @@ export class IceComponent implements OnInit {
         : '') + element.innerHTML.replace(/&nbsp;/g, ' ');
 
     this.dataChanged.emit(this.data);
-    this.changed.emit(null);
+    this.changed.emit(this.data);
   }
 
   setEndOfContenteditable(contentEditableElement) {
@@ -355,7 +346,6 @@ export class IceComponent implements OnInit {
   @HostListener('paste', ['$event'])
   onPaste(e: KeyboardEvent) {
     setTimeout(_ => {
-      this.onBlur();
       this.changed.emit(e);
     }, 100);
   }

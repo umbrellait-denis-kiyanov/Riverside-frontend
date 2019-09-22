@@ -65,7 +65,7 @@
                 [hideChanges]="hideChanges"
                 [user]="me"
                 [disabled]="disabled"
-                (changed)="contentChanged()"
+                (changed)="contentChanged($event)"
                 [(data)]="inputs[item.inputId(i)]"
                 [allowRemoveSelections]="true"
               ></ice>
@@ -80,7 +80,7 @@
                 [hideChanges]="hideChanges"
                 [user]="me"
                 [disabled]="disabled"
-                (changed)="contentChanged()"
+                (changed)="contentChanged($event)"
                 [(data)]="inputs[item.inputId(i)]"
                 [allowRemoveSelections]="true"
               ></ice>
@@ -95,7 +95,7 @@
                   [hideChanges]="hideChanges"
                   [user]="me"
                   [disabled]="disabled"
-                  (changed)="contentChanged()"
+                  (changed)="contentChanged($event)"
                   [(data)]="inputs[item.inputId(i)]"
                   [allowRemoveSelections]="true"
                 ></ice>

@@ -7,10 +7,10 @@
       <span class="option-wrapper">{{ option }}</span>
     </th>
   </tr>
-  <ng-container *ngFor="let persona of inputIds.fromPreviousStep; let i=index">
+  <ng-container *ngFor="let persona of personas; let i=index">
     <tr>
       <td class="riverside-persona">
-        <riverside-persona [persona]="persona.title" [inputs]="inputs"></riverside-persona>
+        <riverside-persona [persona]="persona" [inputs]="inputs"></riverside-persona>
       </td>
       <td class="checkbox-container" *ngFor="let option of options" (click)="toggleSelection(i, option, $event)">
         <input type="checkbox" class="checkbox" (change)="updateTextInput(i, option, $event)" [checked]="(inputs[inputIds.personas[i]].selections$ | async)?.includes(option)" />

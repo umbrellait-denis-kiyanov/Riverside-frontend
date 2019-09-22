@@ -12,7 +12,7 @@
     [hideChanges]="hideChanges"
     [user]="me"
     [disabled]="true"
-    (changed)="contentChanged()"
+    (changed)="contentChanged($event)"
     [(data)]="inputs.brainstorm"
     style="margin: 20px 0"
   ></ice>
@@ -29,7 +29,7 @@
     [hideChanges]="hideChanges"
     [user]="me"
     [disabled]="disabled"
-    (changed)="contentChanged()"
+    (changed)="contentChanged($event)"
     [(data)]="inputs[inputId]"
   ></ice>
 </div>

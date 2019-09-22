@@ -78,8 +78,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return data;
   }
 
-  contentChanged() {
-    this.moduleContentService.contentChanged.next(this.moduleContentService.contentChanged.getValue() + 1);
+  contentChanged(data: Input) {
+    this.moduleService.saveInput(data).subscribe();
   }
 
   notEmpty(el: string) {

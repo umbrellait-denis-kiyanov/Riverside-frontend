@@ -58,7 +58,7 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
 
     modalRef.result.then((src: string) => {
       this.inputs[id].content = src;
-      this.contentChanged();
+      this.contentChanged(this.inputs[id]);
     });
   }
 }

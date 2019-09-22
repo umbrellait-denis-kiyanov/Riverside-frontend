@@ -40,7 +40,7 @@
                     [hideChanges]="hideChanges"
                     [user]="me"
                     [disabled]="disabled"
-                    (changed)="contentChanged()"
+                    (changed)="contentChanged($event)"
                     [(data)]="inputs[persona.perc_male]"
                   ></ice>%) / Female (<ice
 
@@ -48,7 +48,7 @@
                   [hideChanges]="hideChanges"
                   [user]="me"
                   [disabled]="disabled"
-                  (changed)="contentChanged()"
+                  (changed)="contentChanged($event)"
                   [(data)]="inputs[persona.perc_female]"
                 ></ice>%)</div>
                 </div>
@@ -59,7 +59,7 @@
                     [hideChanges]="hideChanges"
                     [user]="me"
                     [disabled]="disabled"
-                    (changed)="contentChanged()"
+                    (changed)="contentChanged($event)"
                     [(data)]="inputs[persona.age]"
                   ></ice>
                 </div>
@@ -70,7 +70,7 @@
                     [hideChanges]="hideChanges"
                     [user]="me"
                     [disabled]="disabled"
-                    (changed)="contentChanged()"
+                    (changed)="contentChanged($event)"
                     [(data)]="inputs[persona.how_they_buy]"
                   ></ice>
                 </div>
@@ -81,7 +81,7 @@
                     [hideChanges]="hideChanges"
                     [user]="me"
                     [disabled]="disabled"
-                    (changed)="contentChanged()"
+                    (changed)="contentChanged($event)"
                     [(data)]="inputs[persona.how_they_pay]"
                   ></ice>
                 </div>
@@ -92,7 +92,7 @@
                     [hideChanges]="hideChanges"
                     [user]="me"
                     [disabled]="disabled"
-                    (changed)="contentChanged()"
+                    (changed)="contentChanged($event)"
                     [(data)]="inputs[persona.titles]"
                   ></ice>
                 </div>
@@ -103,7 +103,7 @@
                     [hideChanges]="hideChanges"
                     [user]="me"
                     [disabled]="disabled"
-                    (changed)="contentChanged()"
+                    (changed)="contentChanged($event)"
                     [(data)]="inputs[persona.watering_holes]"
                   ></ice>
                 </div>
