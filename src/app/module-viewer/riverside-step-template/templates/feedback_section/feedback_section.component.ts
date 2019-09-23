@@ -122,7 +122,9 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
       message: msg,
       ...partialMessage
     };
-    this.inboxService.save(message);
+    this.inboxService.save(message).then(() => {
+      this.navService.reloadModule();
+    });
   }
 
   onSectionChange(sectionId: string) {
