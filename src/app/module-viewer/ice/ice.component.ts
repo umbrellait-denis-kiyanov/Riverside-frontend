@@ -56,6 +56,8 @@ export class IceComponent implements OnInit {
   menuComment: any;
   menuIndex: number;
 
+  isInitialized = false;
+
   constructor(
     private el: ElementRef,
     public overlay: Overlay,
@@ -315,6 +317,12 @@ export class IceComponent implements OnInit {
   }
 
   onBlur() {
+
+    if (!this.isInitialized) {
+      this.isInitialized = true;
+      return;
+    }
+
     const { element } = this.tracker;
 
     const selections = this.data.selections$.value;

@@ -9,8 +9,7 @@
   [ngClass]="{'CT-hide': hideChanges, hasComment: comment.list?.length, showComment: comment.show}"
   [innerHTML]="data.textContent | safehtml"
   (mouseenter)="onMouseEnter($event)"
-  (blur)="onBlur()"
-  (change)="onBlur()"
+  (blur)="onBlur($event)"
   (paste)="onPaste()"
 ></div>
 <div  class="add-comment" >
