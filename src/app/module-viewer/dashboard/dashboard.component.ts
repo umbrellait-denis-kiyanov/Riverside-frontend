@@ -31,7 +31,7 @@ export class DashboardComponent implements OnInit {
 
   organization: Organization;
 
-  view = 'list';
+  view = 'grid';
 
   listSortOrder$ = new BehaviorSubject<Sort>({active: 'idx', direction: 'asc'});
 
