@@ -1,17 +1,5 @@
-
 <div>
-    <div style="margin:auto;text-align: center;">
-        <div
-        class="template-title"
-        [innerHtml]="contentData.title | safehtml"
-      ></div>
-
-      <div
-        class=""
-        [innerHtml]="contentData.content | safehtml"
-      ></div>
-
-      </div>
-  </div>
+  <div [innerHtml]="contentData.content | safehtml"></div>
+</div>
 
 <module-nav [action]="action"></module-nav>

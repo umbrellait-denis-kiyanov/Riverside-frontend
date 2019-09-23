@@ -1,0 +1,20 @@
+<div class="template-title-bar">
+  <h2
+    class="template-title"
+    [innerHtml]="contentData.title | safehtml"
+  ></h2>
+</div>
+
+<div class="heading-content-wrapper">
+  <div
+    class="template-description"
+    [innerHtml]="contentData.description | safehtml"
+    *ngIf="contentData.description"
+  ></div>
+
+    <div
+    class="template-resource"
+    [innerHtml]="contentData.resource | safehtml"
+    *ngIf="contentData.resource"
+  ></div>
+</div>

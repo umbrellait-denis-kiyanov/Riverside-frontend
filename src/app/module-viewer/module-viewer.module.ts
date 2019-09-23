@@ -73,6 +73,7 @@ import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ModuleLinkComponent } from './dashboard/module-link/module-link.component';
 import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.component';
 import { OrgSelectorComponent } from './left-menu/module/org-selector/org-selector.component';
+import { TemplateHeadingComponent } from './riverside-step-template/template-heading/template-heading.component';
 
 @NgModule({
   imports: [
@@ -144,7 +145,8 @@ import { OrgSelectorComponent } from './left-menu/module/org-selector/org-select
     ModuleLinkComponent,
     SelectionMatrixComponent,
     QuestionImageComponent,
-    OrgSelectorComponent
+    OrgSelectorComponent,
+    TemplateHeadingComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -162,7 +164,8 @@ import { OrgSelectorComponent } from './left-menu/module/org-selector/org-select
     PersonaPictureListComponent,
     FinalFeedbackComponent,
     QuestionImageComponent,
-    AgeGenderComponent
+    AgeGenderComponent,
+    TemplateHeadingComponent
   ],
   providers: [
     ModuleService,

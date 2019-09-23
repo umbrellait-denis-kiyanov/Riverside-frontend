@@ -28,6 +28,7 @@ export class RiversideStepTemplateComponent implements OnInit {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.templateInstance = (componentRef.instance as TemplateComponent);
     this.templateInstance.data = this.data;
+    console.log(this.data.data.template_params_json);
   }
 
   prepareData() {
