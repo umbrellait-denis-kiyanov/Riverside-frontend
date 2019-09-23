@@ -34,7 +34,13 @@ export class IceComponent implements OnInit {
     content: string;
     selections$: BehaviorSubject<string[]>;
     comments_json: any[];
+  } = {
+    textContent: '',
+    content: '',
+    selections$: new BehaviorSubject([]),
+    comments_json: []
   };
+
   @Input() allowRemoveSelections = false;
 
   @Output() changed = new EventEmitter(false);
@@ -67,7 +73,16 @@ export class IceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.data.content = this.data.content || '';
+    if (!this.data)
+    {
+      this.data = {
+        textContent: '',
+        content: '',
+        selections$: new BehaviorSubject([]),
+        comments_json: []
+      };
+    }
+
     this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
 
     const el: HTMLDivElement = document.createElement('div');
