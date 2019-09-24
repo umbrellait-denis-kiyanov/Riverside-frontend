@@ -80,7 +80,14 @@ export class ContentComponent implements OnInit, OnDestroy {
         stepId: this.stepId,
         org_id: this.orgId
       })
-      .then(this.render.bind(this));
+      .then(_ => {
+        if (this.moduleContentService.moduleContent.error) {
+          const firstStep = this.navService.module.current.steps.find(step => !step.is_section_break).id;
+          this.router.navigate(['org', this.orgId, 'module', this.navService.module.current.id, 'step', firstStep]);
+        } else {
+          this.render();
+        }
+      });
   }
 
   async waitForParams() {

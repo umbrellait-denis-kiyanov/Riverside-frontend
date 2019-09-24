@@ -33,7 +33,7 @@ export class ModuleEditorComponent implements OnInit {
 
   ngOnInit() {
     this.route.params.subscribe((params) => {
-      this.moduleService.loadModules({}).then(() => this.moduleService.selectModule(Number(params.id)).then(moduleData => {
+      this.moduleService.loadModules({}).then(() => this.moduleService.getModuleConfig(Number(params.id)).toPromise().then(moduleData => {
         this.moduleData = moduleData;
         this.sections = this.getSections(moduleData);
         this.ready = true;

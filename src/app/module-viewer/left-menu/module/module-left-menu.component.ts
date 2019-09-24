@@ -10,6 +10,7 @@ import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { Observable } from 'rxjs';
+import { combineLatest } from 'rxjs';
 
 declare global {
   interface Window { $: any; }
@@ -43,31 +44,31 @@ export class LeftMenuComponent implements OnInit {
 
   ngOnInit() {
     this.me = this.userService.me;
-    this.route.params.subscribe((params) => {
-      this.orgId = params.orgId || this.me.org.id;
+
+    this.navService.module.onChange.subscribe((module: Module) => {
+      this.module = module;
+    });
+
+    combineLatest(this.navService.organization$, this.route.params).subscribe(([orgId, params]) => {
+
+      if (!orgId) {
+        return;
+      }
+
+      this.orgId = orgId;
+
       if (params.moduleId) {
-        this.navService.module.onChange.subscribe((module: Module) => {
-          this.module = module;
-        });
-        this.navService.orgId =  String(this.orgId );
-        this.navService.getModule(params.moduleId, String(this.orgId )).then(moduleData => {
+        this.navService.getModule(params.moduleId, this.orgId).then(moduleData => {
           if (moduleData) {
             this.module = moduleData;
           }
 
           this.module.percComplete = this.module.percComplete || 0;
-          if (!this.router.routerState.snapshot.url.includes('step')) {
-            this.navService.stepIndex.current = -1;
-            this.navService.nextStep();
-            // this.router.navigate(['module', params.moduleId, 'step', this.navService.currentStep.id]);
-          }
+
           this.ready = true;
         });
-
       }
-
     });
-
 
     window.$('#datepicker').datepicker({
       dateFormat: 'dd M yy'

@@ -6,7 +6,7 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 
 @Component({
@@ -18,6 +18,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private moduleService: ModuleService,
               private route: ActivatedRoute,
+              private router: Router,
               private location: Location
             ) { }
 
@@ -38,7 +39,7 @@ export class DashboardComponent implements OnInit {
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
 
-    const id = this.route.snapshot.params.id;
+    const id = this.route.snapshot.params.orgId;
     this.organizations$.subscribe(organizations =>
         this.setOrganization(id ? organizations.find(org => org.id.toString() === id) : organizations[0]));
 
@@ -84,7 +85,7 @@ export class DashboardComponent implements OnInit {
   setOrganization(organization: Organization) {
     this.organization = organization;
 
-    this.location.replaceState('/dashboard/' + organization.id);
+    this.router.navigate(['dashboard', organization.id]);
 
     this.modulesRequest$ = this.moduleService.getCategories(this.organization.id).pipe(shareReplay(1));
     this.modules$ = this.modulesRequest$.pipe(map(response => {

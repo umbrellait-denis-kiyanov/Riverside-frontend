@@ -61,13 +61,19 @@ export const menus: MenusInterface = [
   {
     'mat-icon': 'dashboard',
     label: 'SALES EXCELLENCE DASHBOARD',
-    link: '/dashboard',
+    linkFn(nav: ModuleNavService) {
+      return `/dashboard/${nav.organization$.value}`;
+    },
     restrict: ({ user }) => user.permissions.riversideSalesDashboard
   },
   {
     'mat-icon': 'view_module',
     label: 'MODULE',
-    link: '/module/1',
+    linkFn(nav: ModuleNavService) {
+      const module = nav.module.current;
+      const stepId = module.steps[module.steps.length - 1].id;
+      return `/org/${nav.organization$.value}/module/1/step/1`;
+    }
   },
   {
     'mat-icon': 'build',
@@ -89,7 +95,6 @@ export const menus: MenusInterface = [
     link: '/inbox',
     counter: 0
   },
-
   {
     render: () => review_svg,
     restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
@@ -98,7 +103,7 @@ export const menus: MenusInterface = [
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
       const stepId = module.steps[module.steps.length - 1].id;
-      return `/module/${module.id}/step/${stepId}`;
+      return `/org/${nav.organization$.value}/module/${module.id}/step/${stepId}`;
     }
   },
 ];

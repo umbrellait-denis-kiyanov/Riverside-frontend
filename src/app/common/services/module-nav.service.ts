@@ -1,6 +1,6 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Module } from '../interfaces/module.interface';
-import { Router, ActivatedRoute } from '@angular/router';
+import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject, from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IceService } from 'src/app/module-viewer/ice/ice.service';
@@ -62,6 +62,7 @@ class ResourceFromStorage<T extends {toString: () => string}> {
 }
 @Injectable()
 export class ModuleNavService {
+  lastOrganization = new ResourceFromStorage<number>('last_organization');
   module = new ResourceFromStorage<Module>('last_module');
   stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
   onApprove = new EventEmitter<boolean>(false);
@@ -69,7 +70,7 @@ export class ModuleNavService {
   onSave = new EventEmitter(false);
   shouldReloadModule = false;
   shouldMoveToNext = false;
-  orgId: string;
+  organization$ = new BehaviorSubject<number>(null);
 
   get currentStep() {
     return this.module.current.steps[this.stepIndex.current];
@@ -105,6 +106,25 @@ export class ModuleNavService {
         this.shouldMoveToNext = false;
       }
     });
+
+    this.moduleService.getOrganizations().subscribe(organizations => {
+      const currentOrg = parseInt(this.route.snapshot.params.orgId, 10) || this.lastOrganization.current;
+      const initialOrg = parseInt(String(currentOrg), 10) ? currentOrg : organizations[0].id;
+
+      this.organization$.next(parseInt(initialOrg, 10));
+
+      this.router.events.subscribe(val => {
+        if (val instanceof RoutesRecognized) {
+          const params = val.state.root.firstChild.params;
+          if (params.orgId) {
+            if (this.organization$.value !== params.orgId) {
+              this.organization$.next(parseInt(params.orgId, 10));
+            }
+            this.lastOrganization.current = params.orgId;
+          }
+        }
+      });
+    });
    }
 
   getActivatedRoute(): ActivatedRoute {
@@ -121,27 +141,26 @@ export class ModuleNavService {
     module.percComplete = Math.round(100 * numerator / denominator);
   }
 
+  getStepId() {
+    return this.module.current.steps[this.stepIndex.current].id;
+  }
+
   setStepFromId(id: number) {
     this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
     return this.stepIndex.current;
   }
 
   reloadModule() {
-    this.getModule(this.module.current.id, this.orgId);
+    this.getModule(this.module.current.id, this.organization$.value);
   }
 
-  getModule(id: number, orgId: string) {
+  getModule(id: number, orgId: number) {
     return this.moduleService.getModule(id, orgId).then(async (moduleData: Module) => {
         this.module.current = moduleData;
         this.updateProgress(this.module.current);
         return moduleData;
     });
   }
-
-  // setStepFromUrl() {
-  //   this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
-  //   return this.stepIndex.current;
-  // }
 
   nextStep() {
     this.moveToStep(1);
@@ -161,14 +180,15 @@ export class ModuleNavService {
     this.stepIndex.current = Number(index) + offset;
     const step = this.module.current.steps[this.stepIndex.current];
     if (!step.is_section_break) {
-      this.router.navigate(['org', this.orgId, 'module', this.module.current.id, 'step', step.id]);
+      console.log()
+      this.router.navigate(['org', this.organization$.value, 'module', this.module.current.id, 'step', step.id]);
     } else {
       return offset === 1 ? this.nextStep() : this.previousStep();
     }
   }
 
   async markAsDone(stepId: number, is_checked: boolean = true) {
-    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.orgId + '/step/' + stepId + '/done', {is_checked}).toPromise()
+    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.organization$.value + '/step/' + stepId + '/done', {is_checked}).toPromise()
       .then(() => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];
@@ -180,7 +200,7 @@ export class ModuleNavService {
   }
 
   async markAsApproved(stepId: number, is_approved: boolean = true) {
-    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.orgId + '/step/' + stepId + '/done', {is_approved, org_id: this.orgId}).toPromise()
+    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.organization$.value + '/step/' + stepId + '/done', {is_approved, org_id: this.organization$.value}).toPromise()
       .then(() => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];

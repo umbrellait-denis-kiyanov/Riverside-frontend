@@ -28,7 +28,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'module/1'
+    redirectTo: 'module/1/step/1'
   },
   {
     path: 'org/:orgId/module/:moduleId',
@@ -75,15 +75,11 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'dashboard',
+    path: 'dashboard/:orgId',
     component: MainComponent,
     children: [
       {
         path: '',
-        component: DashboardComponent
-      },
-      {
-        path: ':id',
         component: DashboardComponent
       },
       {

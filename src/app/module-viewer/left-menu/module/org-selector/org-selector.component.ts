@@ -1,10 +1,10 @@
 import { Component, OnInit } from '@angular/core';
-import { UserService } from 'src/app/common/services/user.service';
-import User from 'src/app/common/interfaces/user.model';
 import { Observable } from 'rxjs';
+import { first } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
-import { ActivatedRoute, Router } from '@angular/router';
+import { Router } from '@angular/router';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 @Component({
   selector: 'module-org-selector',
@@ -17,28 +17,34 @@ export class OrgSelectorComponent implements OnInit {
 
   constructor(
     private moduleService: ModuleService,
-    private route: ActivatedRoute,
+    private moduleNavService: ModuleNavService,
     private router: Router
   ) {}
 
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
-    const { orgId } = this.route.snapshot.params;
-    this.organizations$.subscribe(organizations => {
-      const currentOrg = organizations.find(
-        org => org.id.toString() === orgId
-      );
-      return this.setOrganization(
-        orgId && currentOrg ? currentOrg : organizations[0]
-      );
+
+    this.moduleNavService.organization$.pipe(first()).subscribe((orgId: number) => {
+      this.organizations$.subscribe(organizations => {
+        const currentOrg = organizations.find(
+          org => org.id === orgId
+        );
+
+        this.setOrganization(
+          orgId && currentOrg ? currentOrg : organizations[0]
+        );
+      });
     });
   }
 
   setOrganization(organization: Organization) {
-    this.organization = organization;
-    const { moduleId, orgId } = this.route.snapshot.params;
-    if (orgId !== organization.id.toString()) {
-      this.router.navigate(['org', organization.id, 'module', moduleId]);
+    if (!this.organization || (this.organization.id !== organization.id)) {
+      const moduleId = this.moduleNavService.module.current.id;
+      const stepId = this.moduleNavService.getStepId();
+
+      this.organization = organization;
+
+      this.router.navigate(['org', organization.id, 'module', moduleId, 'step', stepId]);
     }
   }
 }

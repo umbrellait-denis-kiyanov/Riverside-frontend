@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { Module } from 'src/app/common/interfaces/module.interface';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 @Component({
   selector: 'app-module-link',
@@ -13,9 +14,13 @@ export class ModuleLinkComponent implements OnInit {
 
   underConstruction = false;
 
-  constructor() { }
+  orgId: number;
+
+  constructor(private moduleNavService: ModuleNavService
+              ) { }
 
   ngOnInit() {
+    this.moduleNavService.organization$.subscribe(orgId => this.orgId = orgId);
   }
 
   showUnderConstructionMessage(module: Module) {

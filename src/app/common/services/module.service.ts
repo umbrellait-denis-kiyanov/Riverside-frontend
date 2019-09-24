@@ -11,36 +11,27 @@ export interface LoadModuleParams {
 export class ModuleService {
 
   modules: Module[];
-  selectedModule: number = null;
   baseUrl = '/api/modules';
 
   constructor(private httpClient: HttpClient) { }
 
-  async selectModule(id: number): Promise<Module> {
-    this.selectedModule = id;
-    const m = await this.getModule(id);
-    if (m) {
-      return m;
-    }
+  getModuleConfig(id: number): Observable<Module> {
+    return this.httpClient.get<Module>(`${this.baseUrl}/${id}`);
   }
 
-  async getModule(id: number, org_id?: string): Promise<Module | false> {
-    if (this.modules) {
-      return this.modules.find(m => Number(m.id) === Number(id));
-    } else {
-      const endpoint = String(id) + (org_id ? `/org/${org_id}` : '');
-      return await this.httpClient.get(`${this.baseUrl}/${endpoint}`).toPromise().then(async (res: any) => {
-        let i = 1;
-        for (const step of (res.steps as Step[])) {
-          step.position = i;
-          if (!step.is_section_break) {
-            i++;
-          }
+  async getModule(id: number, org_id: number): Promise<Module | false> {
+    const endpoint = String(id) + `/org/${org_id}`;
+    return await this.httpClient.get(`${this.baseUrl}/${endpoint}`).toPromise().then(async (res: any) => {
+      let i = 1;
+      for (const step of (res.steps as Step[])) {
+        step.position = i;
+        if (!step.is_section_break) {
+          i++;
         }
+      }
 
-        return res;
-      });
-    }
+      return res;
+    });
   }
 
   async loadModules(params?: LoadModuleParams, refresh = false) {
