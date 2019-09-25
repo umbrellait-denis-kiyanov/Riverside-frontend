@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit, Input, Renderer2 } from '@angular/core';
 import { TemplateContentData } from '../templates/template-data.class';
 import { interval, Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
@@ -25,7 +25,7 @@ export class TemplateHeadingComponent implements OnInit {
 
   contentData: any;
 
-  constructor() { }
+  constructor(private renderer: Renderer2) { }
 
   ngOnInit() {
     this.contentData = this.content.data.template_params_json;
@@ -35,6 +35,17 @@ export class TemplateHeadingComponent implements OnInit {
         this.time = this.accumulatedTime + Math.floor((Date.now() - this.timeStart) / 1000);
       })
     );
+
+    let restartTimer = false;
+    this.renderer.listen('document', 'visibilitychange', changeEvt => {
+      if (document.hidden) {
+        restartTimer = this.isTimerOn;
+      }
+
+      if (restartTimer) {
+        this.toggleTimer();
+      }
+    });
 
     this.toggleTimer();
   }
