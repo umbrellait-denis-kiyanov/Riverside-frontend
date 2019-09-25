@@ -33,6 +33,7 @@
       </a>
       <a
         [routerLink]="menu.linkFn(navService)"
+        routerLinkActive="active"
         *ngIf="menu.linkFn"
       >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>

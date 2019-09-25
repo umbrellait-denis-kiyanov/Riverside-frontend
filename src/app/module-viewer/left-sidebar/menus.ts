@@ -68,11 +68,12 @@ export const menus: MenusInterface = [
   },
   {
     'mat-icon': 'view_module',
-    label: 'MODULE',
+    labelFn: ({nav}) => {
+      return (nav.module.current || {name: ''}).name.toUpperCase()
+    },
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
-      const stepId = module.steps[module.steps.length - 1].id;
-      return `/org/${nav.organization$.value}/module/1/step/1`;
+      return `/org/${nav.organization$.value}/module/${module.id}`;
     }
   },
   {
@@ -99,7 +100,11 @@ export const menus: MenusInterface = [
     render: () => review_svg,
     restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
     className: 'material-icons-outlined',
-    labelFn: ({nav}) => (nav.module.current || {name: ''}).name.toUpperCase(),
+    labelFn: ({nav}) => {
+      const module = nav.module.current;
+      return module.steps[module.steps.length - 1].description.toUpperCase() + ' - ' +
+            (nav.module.current || {name: ''}).name.toUpperCase();
+    },
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
       const stepId = module.steps[module.steps.length - 1].id;
