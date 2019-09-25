@@ -7,7 +7,7 @@ import { IceService } from 'src/app/module-viewer/ice/ice.service';
 import { ModuleService } from './module.service';
 import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
 
-class ResourceFromStorage<T extends {toString: () => string}> {
+export class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
   private storageKey: string;
   private default: T;
@@ -60,6 +60,7 @@ class ResourceFromStorage<T extends {toString: () => string}> {
     return this.current;
   }
 }
+
 @Injectable()
 export class ModuleNavService {
   lastOrganization = new ResourceFromStorage<number>('last_organization');
