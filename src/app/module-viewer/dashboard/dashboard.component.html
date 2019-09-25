@@ -107,7 +107,7 @@
             <span *ngIf="module.status?.due_date_revised">{{ module.status?.due_date_revised | readabledate }}</span>
           </td>
           <td class="notes">
-            <textarea *ngIf="module.status && canActivate" [(ngModel)]="module.status.notes" (change)="saveNotes(module)"></textarea>
+            <textarea mat-autosize matAutosizeMaxRows="5" *ngIf="module.status && canActivate" [(ngModel)]="module.status.notes" (change)="saveNotes(module)"></textarea>
             <span *ngIf="module.status && !canActivate">{{ module.status?.notes }}</span>
           </td>
         </tr>

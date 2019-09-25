@@ -74,6 +74,7 @@ import { ModuleLinkComponent } from './dashboard/module-link/module-link.compone
 import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.component';
 import { OrgSelectorComponent } from './left-menu/module/org-selector/org-selector.component';
 import { TemplateHeadingComponent } from './riverside-step-template/template-heading/template-heading.component';
+import { MatInputModule } from '@angular/material/input';
 
 @NgModule({
   imports: [
@@ -97,7 +98,8 @@ import { TemplateHeadingComponent } from './riverside-step-template/template-hea
     VideoRecorderModule,
     AudioRecorderModule,
     NgbModule,
-    NgxChartsModule
+    NgxChartsModule,
+    MatInputModule
   ],
   declarations: [
     ModuleViewerRootComponent,
