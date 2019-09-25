@@ -35,7 +35,7 @@ export class ModuleEditorComponent implements OnInit {
     this.route.params.subscribe((params) => {
       this.moduleService.loadModules({}).then(() => this.moduleService.getModuleConfig(Number(params.id)).toPromise().then(moduleData => {
         this.moduleData = moduleData;
-        this.sections = this.getSections(moduleData);
+        this.sections = this.getSections(moduleData) || [];
         this.ready = true;
         this.setPristineState();
       }));
@@ -138,7 +138,7 @@ export class ModuleEditorComponent implements OnInit {
   }
 
   generateStepsData(): Step[] {
-    return this.sections.reduce((steps, section: Section) => {
+    return (this.sections || []).reduce((steps, section: Section) => {
       steps.push(section.section);
 
       section.steps.forEach(step => steps.push(step));

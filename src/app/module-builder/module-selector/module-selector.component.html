@@ -13,7 +13,7 @@
         <label class="control-label">Select a module:</label>
 
         <select
-          [ngModel]="moduleService.selectedModule"
+          [ngModel]="selectedModule"
           (change)="onChange($event.target.value)"
           class="site-tbox margin_0"
         >

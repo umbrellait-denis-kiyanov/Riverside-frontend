@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 
-import { Router, ActivatedRoute, ParamMap, RouterState, NavigationEnd, Event, Params } from '@angular/router';
+import { Router, ActivatedRoute, ParamMap, RouterState, NavigationEnd, Event, Params, RoutesRecognized } from '@angular/router';
 import { ModuleService } from '../../common/services/module.service';
 
 
@@ -10,29 +10,27 @@ import { ModuleService } from '../../common/services/module.service';
   styleUrls: ['./module-selector.component.sass']
 })
 export class ModuleSelectorComponent implements OnInit {
+
+  public selectedModule = 1;
+
   constructor(
     private route: ActivatedRoute,
     private router: Router,
     public moduleService: ModuleService
   ) {
-    route.params.subscribe((params) => {
-      this.navigateToModuleIfNeeded(params);
-    });
-    // router.events.subscribe((event: Event) => {
-    //   if (event instanceof NavigationEnd) {
-    //     this.navigateToModuleIfNeeded();
-    //   }
-    // });
+
   }
 
   ngOnInit() {
-
+    this.selectedModule = parseInt(this.router.url.split('/').pop(), 10) || 1;
+    this.navigateToModuleIfNeeded(this.selectedModule);
   }
 
-  navigateToModuleIfNeeded(params: Params) {
-    if (!params.id) {
+  navigateToModuleIfNeeded(moduleId: number) {
+    if (!moduleId) {
       this.moduleService.loadModules({}).then(() => {
-        this.router.navigateByUrl(`/builder/${this.moduleService.modules[0].id}`);
+        this.selectedModule = this.moduleService.modules[0].id;
+        this.router.navigateByUrl(`/builder/${this.selectedModule}`);
       });
 
     }
