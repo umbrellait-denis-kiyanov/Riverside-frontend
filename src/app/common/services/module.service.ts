@@ -81,6 +81,10 @@ export class ModuleService {
   }
 
   saveInput(input: Input): Observable<any> {
+    if (!input) {
+      console.error('No input data provided');
+      return;
+    }
     const dataToSend =  (({ comments_json, content, element_key }) => ({ comments_json, content, element_key }))(input);
     return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
   }
