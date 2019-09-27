@@ -40,6 +40,7 @@ export class RequestFeedbackComponent implements OnInit {
     this.inboxService.save({
       message,
       module_id: this.module.id,
+      step_id: this.navService.getStepId(),
       from_org_id: this.userService.me.org.id
     }).then(() => {
       this.modal.dismiss();
