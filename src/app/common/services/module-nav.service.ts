@@ -202,7 +202,7 @@ export class ModuleNavService {
 
   async markAsApproved(stepId: number, is_approved: boolean = true) {
     return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.organization$.value + '/step/' + stepId + '/done', {is_approved, org_id: this.organization$.value}).toPromise()
-      .then(() => {
+      .then((response: number[]) => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];
         if (step) {
@@ -220,6 +220,9 @@ export class ModuleNavService {
             }
           }
         }
+
+        response.forEach(id => this.module.current.steps.find(st => st.id === id).is_approved = is_approved);
+
         this.updateProgress(this.module.current);
       });
   }

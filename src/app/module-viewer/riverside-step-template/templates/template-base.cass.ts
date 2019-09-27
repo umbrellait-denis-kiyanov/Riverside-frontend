@@ -79,7 +79,9 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   contentChanged(data: Input) {
-    this.moduleService.saveInput(data).subscribe();
+    if (data) {
+      this.moduleService.saveInput(data).subscribe();
+    }
   }
 
   notEmpty(el: string) {
