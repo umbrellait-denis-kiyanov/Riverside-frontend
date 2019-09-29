@@ -18,8 +18,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private moduleService: ModuleService,
               private route: ActivatedRoute,
-              private router: Router,
-              private location: Location
+              private router: Router
             ) { }
 
   modulesRequest$: Observable<any>;
@@ -32,7 +31,7 @@ export class DashboardComponent implements OnInit {
 
   organization: Organization;
 
-  view = 'grid';
+  view = 'list';
 
   listSortOrder$ = new BehaviorSubject<Sort>({active: 'idx', direction: 'asc'});
 
@@ -45,15 +44,6 @@ export class DashboardComponent implements OnInit {
 
     const today = new Date();
     this.minDate = {year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate()};
-  }
-
-  toggleModuleStatus(module: Module) {
-    const status = module.status ? !module.status.is_activated : true;
-
-    this.moduleService.setStatus(module, status, this.organization.id).subscribe(newStatus => {
-      module.status = newStatus;
-      this.prepareStatus(module);
-    });
   }
 
   saveDueDate(module: Module) {
