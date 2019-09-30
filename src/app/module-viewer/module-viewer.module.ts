@@ -76,6 +76,8 @@ import { OrgSelectorComponent } from './left-menu/module/org-selector/org-select
 import { TemplateHeadingComponent } from './riverside-step-template/template-heading/template-heading.component';
 import { MatInputModule } from '@angular/material/input';
 import { ToggleModuleComponent } from './dashboard/toggle-module/toggle-module.component';
+import { DueDateComponent } from './dashboard/due-date/due-date.component';
+import { AssessmentComponent } from './assessment/assessment.component';
 
 @NgModule({
   imports: [
@@ -150,7 +152,9 @@ import { ToggleModuleComponent } from './dashboard/toggle-module/toggle-module.c
     QuestionImageComponent,
     OrgSelectorComponent,
     TemplateHeadingComponent,
-    ToggleModuleComponent
+    ToggleModuleComponent,
+    DueDateComponent,
+    AssessmentComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

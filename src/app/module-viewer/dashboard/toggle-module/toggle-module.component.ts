@@ -25,7 +25,6 @@ export class ToggleModuleComponent implements OnInit {
 
     this.moduleService.setStatus(module, status, this.organization.id).subscribe(newStatus => {
       module.status = newStatus;
-      // this.prepareStatus(module);
     });
   }
 

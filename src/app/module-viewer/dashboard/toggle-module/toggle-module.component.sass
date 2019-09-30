@@ -1,19 +1,29 @@
-\::ng-deep
-    .mat-radio-label-content
-        padding: 0
+\:host
+    display: block
+    line-height: 0
 
-    .mat-radio-button.mat-accent .mat-radio-outer-circle
-        border-color: #222
-        border-width: 1px
+    \::ng-deep
+        .mat-radio-label
+            margin-bottom: 0
 
-    .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
-        border-color: #ccc
-        border-width: 2px
+        .mat-radio-label-content
+            display: none !important
 
-    .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle
-        color: #00529f
-        background-color: #00529f
-        transform: scale(0.75)
+        .mat-radio-button.mat-accent .mat-radio-outer-circle
+            border-color: #222
+            border-width: 1px
 
-    .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element
-        background-color: rgba(0, 82, 159, .26)
+        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
+            border-color: #ccc
+            border-width: 2px
+
+        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle
+            color: #00529f
+            background-color: #00529f
+            transform: scale(0.75)
+
+        .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element
+            background-color: rgba(0, 82, 159, .26)
+
+        .mat-icon.completed-check
+            color: #58ad3f

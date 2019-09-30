@@ -87,14 +87,6 @@
                             cursor: pointer
                             position: relative
 
-                            input
-                                width: 0
-                                height: 0
-                                visibility: hidden
-                                position: absolute
-                                margin-left: 5px
-                                margin-top: -5px
-
                             .selected-due-date
                                 display: flex
                                 width: 100%
@@ -107,30 +99,6 @@
                                 .due-progress
                                     flex: 1
 
-                        \::ng-deep
-                            .mat-icon
-                                color: #888
-
-                    \&.late
-                        .actual-date
-                            color: red !important
-
-                    \&.completed
-                        .actual-date
-                            display: none
-
-                        .module-control
-                            .completed-check
-                                display: inline-block
-
-                            mat-radio-button
-                                display: none
-
-                    \&.has-due-date
-                        .due-date
-                            input
-                                margin-top: 10px !important
-                                margin-left: 0 !important
 
                 .module-control
                     text-align: center
@@ -138,26 +106,6 @@
 
                     .completed-check
                         display: none
-
-                    \::ng-deep
-                        .mat-radio-label-content
-                            padding: 0
-
-                        .mat-radio-button.mat-accent .mat-radio-outer-circle
-                            border-color: #222
-                            border-width: 1px
-
-                        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-outer-circle
-                            border-color: #ccc
-                            border-width: 2px
-
-                        .mat-radio-button.mat-accent.mat-radio-checked .mat-radio-inner-circle
-                            color: #00529f
-                            background-color: #00529f
-                            transform: scale(0.75)
-
-                        .mat-radio-button.mat-accent .mat-radio-ripple .mat-ripple-element
-                            background-color: rgba(0, 82, 159, .26)
 
                 .module-name
                     padding: 0
@@ -174,10 +122,53 @@
                     span.module-name-link
                         display: block
 
+.has-due-date
+    .due-date
+        \::ng-deep
+            input
+                margin-top: 10px !important
+                margin-left: 0 !important
+
+.late
+    .actual-date
+        color: red !important
+
+.completed
+    .actual-date
+        display: none
+
+    .module-control
+        .completed-check
+            display: inline-block
+
+        mat-radio-button
+            display: none
+
 table.list-view
+    .toggle-module
+        width: 20px
+        padding-left: 1em
+        padding-right: 0.2em
+        text-align: center
+        vertical-align: middle
+
     tr
         app-module-link
             display: inline-block
+
+        td.assessment
+            text-align: center
+
+        td.due-date
+            span
+                cursor: pointer
+
+            \&.has-due-date
+                .due-date
+                    \::ng-deep
+                        input
+                            margin-top: 10px !important
+                            margin-left: 0 !important
 
         td.notes
             padding: 5px
@@ -190,11 +181,19 @@ table.list-view
                 display: block
                 width: 100%
                 min-width: 200px
-                min-height: 2.2em
+                min-height: 1.5em
                 margin: 0
                 padding: 0
                 border: 0
                 outline: 0
+
+        .progress-container
+            display: flex
+            align-items: center
+
+            .progress-pct
+                width: 4em
+                text-align: left
 
 
 @media only screen and (max-width: 1700px)
@@ -245,7 +244,7 @@ table.list-view
                 width: 15px
                 height: 15px
 
-        .mat-icon
-            width: 20px
-            height: 20px
-            font-size: 20px
+            .mat-icon
+                width: 20px
+                height: 20px
+                font-size: 20px
