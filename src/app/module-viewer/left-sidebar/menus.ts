@@ -35,6 +35,8 @@ const hardCodePictures = (user: User) => {
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Mark+Kornegay.jpg';
     case 'mputney@logically.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/matt-putney.jpg';
+    case 'jauer@riversidecompany.com':
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/johnauer.jpg';
     case 'joederosa@safebuilt.com':
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/JoeDeRosa.jpg';
@@ -70,7 +72,7 @@ export const menus: MenusInterface = [
   {
     'mat-icon': 'view_module',
     labelFn: ({nav}) => {
-      return (nav.module.current || {name: ''}).name.toUpperCase()
+      return (nav.module.current || {name: ''}).name.toUpperCase();
     },
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
