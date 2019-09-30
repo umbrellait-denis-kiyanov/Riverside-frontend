@@ -36,6 +36,7 @@ const hardCodePictures = (user: User) => {
     case 'mputney@logically.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/matt-putney.jpg';
     case 'joederosa@safebuilt.com':
+    case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/JoeDeRosa.jpg';
     default:
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
