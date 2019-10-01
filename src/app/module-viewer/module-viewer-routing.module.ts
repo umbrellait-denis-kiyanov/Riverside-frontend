@@ -11,6 +11,8 @@ import { InboxLeftMenuComponent } from './left-menu/inbox/inbox-left-menu.compon
 import { AccountLeftMenuComponent } from './left-menu/account/account-left-menu.component';
 import { DashboardComponent } from './dashboard/dashboard.component';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
+import { AssessmentComponent } from './assessment/assessment.component';
+import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
 
 const moduleContentRoute = [
   {
@@ -100,6 +102,21 @@ const routes: Routes = [
       {
         path: '',
         component: LeftMenuComponent,
+        outlet: 'left-menu'
+      }
+    ]
+  },
+  {
+    path: 'assessment',
+    component: MainComponent,
+    children: [
+      {
+        path: '',
+        component: AssessmentComponent
+      },
+      {
+        path: '',
+        component: AssessmentMenuComponent,
         outlet: 'left-menu'
       }
     ]

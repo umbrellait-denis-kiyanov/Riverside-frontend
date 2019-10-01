@@ -85,7 +85,6 @@ export const menus: MenusInterface = [
     },
     restrict: ({ user }) => user.permissions.riversideModuleEditor
   },
-
   {
     render: () => feedback_svg,
     label: 'REQUEST FEEDBACK',
@@ -114,4 +113,11 @@ export const menus: MenusInterface = [
       return `/org/${nav.organization$.value}/module/${module.id}/step/${stepId}`;
     }
   },
+  {
+    'mat-icon': 'assessment',
+    label: 'ASSESSMENT',
+    linkFn(nav: ModuleNavService) {
+      return `/assessment`;
+    }
+  }
 ];

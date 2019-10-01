@@ -5,7 +5,7 @@ import { BehaviorSubject, from } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IceService } from 'src/app/module-viewer/ice/ice.service';
 import { ModuleService } from './module.service';
-import { THIS_EXPR } from '@angular/compiler/src/output/output_ast';
+import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
@@ -66,12 +66,15 @@ export class ModuleNavService {
   lastOrganization = new ResourceFromStorage<number>('last_organization');
   module = new ResourceFromStorage<Module>('last_module');
   stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
+  assesmentType = new ResourceFromStorage<AssessmentType>('last_type');
+
   onApprove = new EventEmitter<boolean>(false);
   onUnapprove = new EventEmitter<boolean>(false);
   onSave = new EventEmitter(false);
   shouldReloadModule = false;
   shouldMoveToNext = false;
   organization$ = new BehaviorSubject<number>(null);
+  assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
 
   get currentStep() {
     return this.module.current.steps[this.stepIndex.current];
@@ -169,6 +172,10 @@ export class ModuleNavService {
 
   previousStep() {
     this.moveToStep(-1);
+  }
+
+  setAssessmentType(type: AssessmentType) {
+    this.assesmentType.current = type;
   }
 
   private moveToStep(offset: number) {

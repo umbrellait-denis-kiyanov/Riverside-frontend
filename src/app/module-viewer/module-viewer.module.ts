@@ -75,6 +75,9 @@ import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.co
 import { OrgSelectorComponent } from './left-menu/module/org-selector/org-selector.component';
 import { TemplateHeadingComponent } from './riverside-step-template/template-heading/template-heading.component';
 import { MatInputModule } from '@angular/material/input';
+import { AssessmentComponent } from './assessment/assessment.component';
+import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
+import { AssessmentService } from '../common/services/assessment.service';
 
 @NgModule({
   imports: [
@@ -148,7 +151,9 @@ import { MatInputModule } from '@angular/material/input';
     SelectionMatrixComponent,
     QuestionImageComponent,
     OrgSelectorComponent,
-    TemplateHeadingComponent
+    TemplateHeadingComponent,
+    AssessmentComponent,
+    AssessmentMenuComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -170,6 +175,7 @@ import { MatInputModule } from '@angular/material/input';
     TemplateHeadingComponent
   ],
   providers: [
+    AssessmentService,
     ModuleService,
     ModuleNavService,
     ModuleContentService,

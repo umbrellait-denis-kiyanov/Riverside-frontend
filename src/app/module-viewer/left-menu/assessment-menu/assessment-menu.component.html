@@ -1,0 +1,16 @@
+<div class="btn-group">
+  <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" (click)="setType(type)">{{ type.name }}</button>
+</div>
+
+<div *ngIf="activeType$ | async">
+  <h2>{{ (activeType$ | async).name }} Strategy Assessment</h2>
+
+  <table>
+    <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)">
+      <td class="group-status" [class.checked]="group.complete"></td>
+      <td>{{ group.position }}.</td>
+      <td>{{ group.name }}</td>
+      <td>{{ group.score }}</td>
+    </tr>
+  </table>
+</div>
