@@ -117,7 +117,6 @@ export const menus: MenusInterface = [
     'mat-icon': 'assessment',
     label: 'ASSESSMENT',
     linkFn(nav: ModuleNavService) {
-      console.log('rebuilding link');
       return `/org/${nav.lastOrganization.current}/assessment`;
     }
   }

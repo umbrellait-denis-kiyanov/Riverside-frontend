@@ -25,11 +25,7 @@ export class OrgSelectorComponent implements OnInit {
     this.organizations$ = this.moduleService.getOrganizations();
     this.organizationID = this.moduleNavService.lastOrganization.current;
 
-    this.moduleNavService.lastOrganization.onChange.subscribe((orgId: number) => {
-      if (!orgId) {
-        return;
-      }
-
+    this.moduleNavService.organization$.subscribe((orgId: number) => {
       this.organizations$.subscribe(organizations => {
         this.currentOrg = organizations.find(
           org => Number(org.id) === Number(orgId)

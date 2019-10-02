@@ -6,6 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { IceService } from 'src/app/module-viewer/ice/ice.service';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
+import { filter } from 'rxjs/operators';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
@@ -20,6 +21,9 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
     this.type = type;
   }
   set current(value: T) {
+    if (value === this._current) {
+      return;
+    }
     this._current = value;
     window.localStorage.setItem(this.storageKey, this.processToStorage());
     this.onChange.next(value);
@@ -73,8 +77,9 @@ export class ModuleNavService {
   onSave = new EventEmitter(false);
   shouldReloadModule = false;
   shouldMoveToNext = false;
-  organization$ = new BehaviorSubject<number>(null);
   assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
+
+  organization$ = this.lastOrganization.onChange.pipe(filter(org => !!org));
 
   get currentStep() {
     return this.module.current.steps[this.stepIndex.current];

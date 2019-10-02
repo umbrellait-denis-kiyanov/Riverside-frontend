@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { AssessmentType, AssessmentGroup } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { mergeMap } from 'rxjs/operators';
+import { mergeMap, switchMap } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router } from '@angular/router';
 
@@ -32,8 +32,11 @@ export class AssessmentMenuComponent implements OnInit {
     this.activeType$ = this.navService.assesmentType.onChange;
     this.activeType$.next(this.navService.assesmentType.current);
 
-    this.groups$ = this.activeType$.pipe(
-      mergeMap((type: AssessmentType) => this.asmService.getGroups(type)));
+    this.groups$ = combineLatest(this.activeType$, this.navService.organization$).pipe(
+      mergeMap(([type, orgId]) => {
+        return this.asmService.getGroups(type, orgId);
+      })
+    );
 
     this.activeGroup$ = this.navService.assessmentGroup$;
   }
@@ -50,7 +53,6 @@ export class AssessmentMenuComponent implements OnInit {
     this.navService.lastOrganization.current = organization.id;
     const moduleId = this.navService.module.current.id;
     const stepId = this.navService.getStepId();
-    // this.orgId = organization.id;
 
     this.router.navigate(['org', organization.id, 'assessment']);
   }

@@ -49,7 +49,7 @@ export class LeftMenuComponent implements OnInit {
       this.module = module;
     });
 
-    combineLatest(this.navService.lastOrganization.onChange, this.route.params).subscribe(([orgId, params]) => {
+    combineLatest(this.navService.organization$, this.route.params).subscribe(([orgId, params]) => {
 
       if (!orgId) {
         return;

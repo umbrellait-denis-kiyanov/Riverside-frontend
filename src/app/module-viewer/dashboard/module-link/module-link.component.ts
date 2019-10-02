@@ -20,7 +20,7 @@ export class ModuleLinkComponent implements OnInit {
               ) { }
 
   ngOnInit() {
-    this.moduleNavService.lastOrganization.onChange.subscribe(orgId => this.orgId = orgId);
+    this.moduleNavService.organization$.subscribe(orgId => this.orgId = orgId);
   }
 
   showUnderConstructionMessage(module: Module) {

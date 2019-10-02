@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentQuestion } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { mergeMap } from 'rxjs/operators';
@@ -24,9 +24,9 @@ export class AssessmentComponent implements OnInit {
   ngOnInit() {
     this.activeGroup$ = this.navService.assessmentGroup$;
 
-    this.questions$ = this.activeGroup$.pipe(
-      mergeMap((group: AssessmentGroup) => {
-        return this.asmService.getQuestions(group);
+    this.questions$ = combineLatest(this.activeGroup$, this.navService.organization$).pipe(
+      mergeMap(([group, orgId]) => {
+        return this.asmService.getQuestions(group, orgId);
       })
     );
   }
