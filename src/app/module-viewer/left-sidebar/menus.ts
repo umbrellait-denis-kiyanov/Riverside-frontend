@@ -76,7 +76,7 @@ export const menus: MenusInterface = [
     },
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
-      return `/org/${nav.organization$.value}/module/${module.id}`;
+      return `/org/${nav.organization$.value}/module/${module ? module.id : 1}`;
     }
   },
   {
