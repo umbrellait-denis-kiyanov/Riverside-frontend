@@ -6,11 +6,16 @@
   <h2>{{ (activeType$ | async).name }} Strategy Assessment</h2>
 
   <table>
-    <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)">
+    <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)" class="step-list-item" [class.active]="(activeGroup$ | async) == group">
       <td class="group-status" [class.checked]="group.complete"></td>
-      <td>{{ group.position }}.</td>
-      <td>{{ group.name }}</td>
+      <td class="step-num-td">
+        <span class="step-number" [class.double]="group.position >= 10">{{group.position}}</span>
+      </td>
+      <td>{{ group.shortName }}</td>
       <td>{{ group.score }}</td>
+    </tr>
+    <tr>
+      <td colspan="4" (click)="setGroup(null)">Finish Assessment</td>
     </tr>
   </table>
 </div>

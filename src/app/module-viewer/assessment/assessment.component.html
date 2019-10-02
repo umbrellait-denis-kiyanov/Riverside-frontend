@@ -1,40 +1,42 @@
-<div class="page-container">
-  <div class="page-content" *ngIf="(activeGroup$ | async) as activeGroup">
+<div class="page-content" *ngIf="(activeGroup$ | async) as activeGroup">
 
-    <h2>{{ activeGroup.name }}</h2>
-    <div class="description">
-        {{ activeGroup.description }}
-    </div>
-
-    <table *ngIf="(questions$ | async) as questions">
-      <thead>
-        <tr>
-          <th></th>
-          <th></th>
-          <th>Yes</th>
-          <th>No</th>
-          <th>Notes</th>
-        </tr>
-      </thead>
-      <tbody>
-        <tr *ngFor="let question of questions">
-          <td>{{ question.position}}.</td>
-          <td>{{ question.question}}</td>
-          <td>Y</td>
-          <td>N</td>
-          <td>Notes</td>
-        </tr>
-      </tbody>
-      <tfoot>
-        <tr>
-          <th></th>
-          <th>On a scale from 1-5, how important is this to your business? (1 = least important, 5 = most important)</th>
-          <th colspan="2"></th>
-          <th></th>
-        </tr>
-      </tfoot>
-    </table>
-
+  <h2>{{ activeGroup.name }}</h2>
+  <div class="description">
+      {{ activeGroup.description }}
   </div>
-</div>
 
+  <table class="table table-borderless table-striped" *ngIf="(questions$ | async) as questions">
+    <thead>
+      <tr>
+        <th></th>
+        <th>Yes</th>
+        <th>No</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let question of questions">
+        <td>{{ question.position}}. {{ question.question}}</td>
+        <td class="answer">
+          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 1)" [checked]="question.answer?.answer == 1"></mat-radio-button>
+        </td>
+        <td class="answer">
+          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 0)" [checked]="question.answer?.answer == 0"></mat-radio-button>
+        </td>
+        <td class="notes">
+          <textarea mat-autosize matAutosizeMaxRows="5" [(ngModel)]="question.notes" (change)="saveNotes(question)"></textarea>
+        </td>
+      </tr>
+      <tr class="rating">
+        <td class="rating-label">
+          On a scale from 1-5, how important is this to your business?<br />
+          (1 = least important, 5 = most important)
+        </td>
+        <td class="rating-select" colspan="2">
+
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+</div>

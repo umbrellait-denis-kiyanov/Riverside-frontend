@@ -1,0 +1,48 @@
+\:host
+    padding: 2em
+    padding-left: 4em
+    font-family: Montserrat
+
+h2
+    font-size: 25px
+    text-transform: uppercase
+
+.description
+    font-size: 16px
+
+table
+    margin-top: 2em
+
+    th
+        text-transform: uppercase
+        padding-bottom: 2px
+        text-align: left
+        font-weight: normal
+
+    td
+        height: 4em
+        vertical-align: middle
+
+        &.answer
+            text-align: center
+
+            \::ng-deep
+                .mat-radio-label
+                    margin: 0
+
+        &.notes
+            padding: 5px
+            background-color: white
+            border: 1px solid #ddd
+
+            textarea
+                border: 0
+                padding: 0
+                width: 100%
+                min-height: 100%
+                min-width: 150px
+                outline: 0 !important
+
+    tr.rating
+        td.rating-label
+            text-align: right

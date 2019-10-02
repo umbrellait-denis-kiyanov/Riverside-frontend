@@ -16,6 +16,8 @@ export class AssessmentComponent implements OnInit {
 
   activeGroup$: BehaviorSubject<AssessmentGroup>;
 
+  answers = {};
+
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
@@ -27,6 +29,10 @@ export class AssessmentComponent implements OnInit {
         return this.asmService.getQuestions(group);
       })
     );
+  }
+
+  setAnswer(q: AssessmentQuestion, answer) {
+    this.answers[q.id] = answer;
   }
 
 }

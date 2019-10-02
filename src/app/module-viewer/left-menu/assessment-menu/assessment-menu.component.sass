@@ -1,16 +1,55 @@
 @import "src/app/common/sass/variables.sass";
 \:host
-  display: block
-  min-height: 100vh
-  box-shadow: -3px 0 5px 0 #555
-  background: white
-  margin-left: $left-sidebar-width
-  width: 300px
+    display: block
+    min-height: 100vh
+    box-shadow: -3px 0 5px 0 #555
+    background: white
+    margin-left: $left-sidebar-width
+    width: 350px
+    padding: 10px
+    font-family: Montserrat
+    text-transform: uppercase
+
+.step-number
+    display: inline-block
+    width: 2em
+    padding-right: 3px
+    text-align: right
+
+.btn-group
+    display: block
+    text-align: center
+    padding: 1em
+    margin-bottom: 1em
+
+    .btn
+        text-transform: uppercase
+        font-size: 12px
+
+    .btn:focus
+        outline: 0
+        box-shadow: none
+
+    .btn-primary
+        color: white
+
+h2
+    font-size: 2vw
+    font-size: 17px
+    text-align: center
+    padding-bottom: 8px
+    border-bottom: 1px solid #ddd
+    margin-bottom: 10px
 
 table
+    margin: 1em
+
     tr
         cursor: pointer
 
         td
             vertical-align: top
-            padding-bottom: 3px
+            padding-bottom: 5px
+
+            &.step-num-td
+                padding-right: 5px
