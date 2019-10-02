@@ -1,9 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { Observable } from 'rxjs';
-import { first } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
-import { Router } from '@angular/router';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 @Component({
@@ -13,38 +11,44 @@ import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 })
 export class OrgSelectorComponent implements OnInit {
   organizations$: Observable<Organization[]>;
-  organization: Organization;
+  currentOrg: Organization;
+  organizationID: number;
+
+  @Output() changed = new EventEmitter<Organization>(true);
 
   constructor(
     private moduleService: ModuleService,
-    private moduleNavService: ModuleNavService,
-    private router: Router
+    private moduleNavService: ModuleNavService
   ) {}
 
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
+    this.organizationID = this.moduleNavService.lastOrganization.current;
 
-    this.moduleNavService.organization$.pipe(first()).subscribe((orgId: number) => {
+    this.moduleNavService.lastOrganization.onChange.subscribe((orgId: number) => {
+      if (!orgId) {
+        return;
+      }
+
       this.organizations$.subscribe(organizations => {
-        const currentOrg = organizations.find(
-          org => org.id === orgId
+        this.currentOrg = organizations.find(
+          org => Number(org.id) === Number(orgId)
         );
 
         this.setOrganization(
-          orgId && currentOrg ? currentOrg : organizations[0]
+          orgId && this.currentOrg ? this.currentOrg : organizations[0]
         );
       });
     });
   }
 
   setOrganization(organization: Organization) {
-    if (!this.organization || (this.organization.id !== organization.id)) {
-      const moduleId = this.moduleNavService.module.current.id;
-      const stepId = this.moduleNavService.getStepId();
+    this.currentOrg = organization;
 
-      this.organization = organization;
+    if (this.organizationID !== organization.id) {
+      this.organizationID = Number(organization.id);
 
-      this.router.navigate(['org', organization.id, 'module', moduleId, 'step', stepId]);
+      this.changed.emit(organization);
     }
   }
 }

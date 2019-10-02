@@ -4,6 +4,8 @@ import { Observable, BehaviorSubject } from 'rxjs';
 import { AssessmentType, AssessmentGroup } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { mergeMap } from 'rxjs/operators';
+import { Organization } from 'src/app/common/interfaces/module.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assessment-menu',
@@ -12,7 +14,8 @@ import { mergeMap } from 'rxjs/operators';
 })
 export class AssessmentMenuComponent implements OnInit {
 
-  constructor(public asmService: AssessmentService,
+  constructor(private router: Router,
+              public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
   types$: Observable<AssessmentType[]>;
@@ -41,5 +44,14 @@ export class AssessmentMenuComponent implements OnInit {
 
   setGroup(group: AssessmentGroup) {
     this.navService.assessmentGroup$.next(group);
+  }
+
+  setOrganization(organization: Organization) {
+    this.navService.lastOrganization.current = organization.id;
+    const moduleId = this.navService.module.current.id;
+    const stepId = this.navService.getStepId();
+    // this.orgId = organization.id;
+
+    this.router.navigate(['org', organization.id, 'assessment']);
   }
 }

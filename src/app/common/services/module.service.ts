@@ -1,7 +1,8 @@
 import { Injectable } from '@angular/core';
-import { Module, Step, Input } from '../interfaces/module.interface';
+import { Module, Step, Input, Organization } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 export interface LoadModuleParams {
   orgId?: string;
@@ -12,6 +13,8 @@ export class ModuleService {
 
   modules: Module[];
   baseUrl = '/api/modules';
+
+  organizations$ = new BehaviorSubject<Organization[]>(null);
 
   constructor(private httpClient: HttpClient) { }
 
@@ -89,8 +92,14 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
   }
 
-  getOrganizations(): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/organizations/list`);
+  getOrganizations(): Observable<Organization[]> {
+    if (!this.organizations$.value) {
+      this.httpClient.get<Organization[]>(`${this.baseUrl}/organizations/list`).subscribe(organizations => {
+        this.organizations$.next(organizations);
+      });
+    }
+
+    return this.organizations$.pipe(filter(orgs => !!orgs));
   }
 
   exportUrl() {

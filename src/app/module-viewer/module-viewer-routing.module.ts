@@ -120,6 +120,21 @@ const routes: Routes = [
         outlet: 'left-menu'
       }
     ]
+  },
+  {
+    path: 'org/:orgId/assessment',
+    component: MainComponent,
+    children: [
+      {
+        path: '',
+        component: AssessmentComponent
+      },
+      {
+        path: '',
+        component: AssessmentMenuComponent,
+        outlet: 'left-menu'
+      }
+    ]
   }
 ];
 

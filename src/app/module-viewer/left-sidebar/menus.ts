@@ -63,7 +63,7 @@ export const menus: MenusInterface = [
     'mat-icon': 'dashboard',
     label: 'SALES EXCELLENCE DASHBOARD',
     linkFn(nav: ModuleNavService) {
-      return `/dashboard/${nav.organization$.value}`;
+      return `/dashboard/${nav.lastOrganization.current}`;
     },
     restrict: ({ user }) => user.permissions.riversideSalesDashboard
   },
@@ -74,7 +74,7 @@ export const menus: MenusInterface = [
     },
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
-      return `/org/${nav.organization$.value}/module/${module.id}`;
+      return `/org/${nav.lastOrganization.current}/module/${module.id}`;
     }
   },
   {
@@ -110,14 +110,15 @@ export const menus: MenusInterface = [
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
       const stepId = module.steps[module.steps.length - 1].id;
-      return `/org/${nav.organization$.value}/module/${module.id}/step/${stepId}`;
+      return `/org/${nav.lastOrganization.current}/module/${module.id}/step/${stepId}`;
     }
   },
   {
     'mat-icon': 'assessment',
     label: 'ASSESSMENT',
     linkFn(nav: ModuleNavService) {
-      return `/assessment`;
+      console.log('rebuilding link');
+      return `/org/${nav.lastOrganization.current}/assessment`;
     }
   }
 ];

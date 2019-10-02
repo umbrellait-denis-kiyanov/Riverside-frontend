@@ -49,7 +49,7 @@ export class LeftMenuComponent implements OnInit {
       this.module = module;
     });
 
-    combineLatest(this.navService.organization$, this.route.params).subscribe(([orgId, params]) => {
+    combineLatest(this.navService.lastOrganization.onChange, this.route.params).subscribe(([orgId, params]) => {
 
       if (!orgId) {
         return;
@@ -59,9 +59,7 @@ export class LeftMenuComponent implements OnInit {
 
       if (params.moduleId) {
         this.navService.getModule(params.moduleId, this.orgId).then(moduleData => {
-          if (moduleData) {
-            this.module = moduleData;
-          }
+          this.module = moduleData;
 
           this.module.percComplete = this.module.percComplete || 0;
 
@@ -107,5 +105,13 @@ export class LeftMenuComponent implements OnInit {
 
   stepRouterLink(step: Step) {
     return ['/org', this.orgId, 'module', this.module.id , 'step', step.id ];
+  }
+
+  setOrganization(organization: Organization) {
+    const moduleId = this.navService.module.current.id;
+    const stepId = this.navService.getStepId();
+    this.orgId = organization.id;
+
+    this.router.navigate(['org', this.orgId, 'module', moduleId, 'step', stepId]);
   }
 }

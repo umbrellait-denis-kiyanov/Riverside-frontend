@@ -113,18 +113,14 @@ export class ModuleNavService {
 
     this.moduleService.getOrganizations().subscribe(organizations => {
       const currentOrg = parseInt(this.route.snapshot.params.orgId, 10) || this.lastOrganization.current;
-      const initialOrg = parseInt(String(currentOrg), 10) ? currentOrg : organizations[0].id;
-
-      this.organization$.next(parseInt(initialOrg, 10));
+      this.lastOrganization.current = Number(currentOrg) ? Number(currentOrg) : Number(organizations[0].id);
 
       this.router.events.subscribe(val => {
         if (val instanceof RoutesRecognized) {
           const params = val.state.root.firstChild.params;
+
           if (params.orgId) {
-            if (this.organization$.value !== params.orgId) {
-              this.organization$.next(parseInt(params.orgId, 10));
-            }
-            this.lastOrganization.current = params.orgId;
+            this.lastOrganization.current = Number(params.orgId);
           }
         }
       });
@@ -155,7 +151,7 @@ export class ModuleNavService {
   }
 
   reloadModule() {
-    this.getModule(this.module.current.id, this.organization$.value);
+    this.getModule(this.module.current.id, this.lastOrganization.current);
   }
 
   getModule(id: number, orgId: number) {
@@ -188,15 +184,14 @@ export class ModuleNavService {
     this.stepIndex.current = Number(index) + offset;
     const step = this.module.current.steps[this.stepIndex.current];
     if (!step.is_section_break) {
-      console.log()
-      this.router.navigate(['org', this.organization$.value, 'module', this.module.current.id, 'step', step.id]);
+      this.router.navigate(['org', this.lastOrganization.current, 'module', this.module.current.id, 'step', step.id]);
     } else {
       return offset === 1 ? this.nextStep() : this.previousStep();
     }
   }
 
   async markAsDone(stepId: number, is_checked: boolean = true) {
-    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.organization$.value + '/step/' + stepId + '/done', {is_checked}).toPromise()
+    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.lastOrganization.current + '/step/' + stepId + '/done', {is_checked}).toPromise()
       .then(() => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];
@@ -208,7 +203,7 @@ export class ModuleNavService {
   }
 
   async markAsApproved(stepId: number, is_approved: boolean = true) {
-    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.organization$.value + '/step/' + stepId + '/done', {is_approved, org_id: this.organization$.value}).toPromise()
+    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.lastOrganization.current + '/step/' + stepId + '/done', {is_approved}).toPromise()
       .then((response: number[]) => {
         const stepIndex = this.setStepFromId(stepId);
         const step = this.module.current.steps[stepIndex];
