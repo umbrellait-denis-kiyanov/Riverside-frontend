@@ -2,6 +2,7 @@
     padding: 2em
     padding-left: 4em
     font-family: Montserrat
+    width: 100%
 
 h2
     font-size: 25px
@@ -10,7 +11,7 @@ h2
 .description
     font-size: 16px
 
-table
+table.questions
     margin-top: 2em
 
     th
@@ -23,8 +24,13 @@ table
         height: 5em
         vertical-align: middle
 
+        &.question
+            width: 60%
+            padding-right: 3vw
+
         &.answer
             text-align: center
+            width: 20px
 
             \::ng-deep
                 .mat-radio-label
@@ -40,9 +46,45 @@ table
                 padding: 0
                 width: 100%
                 min-height: 100%
-                min-width: 150px
+                min-width: 15vw
                 outline: 0 !important
 
-    tr.rating
-        td.rating-label
+    tr.importance
+        td
+            height: 0
+            border: 0
+
+        td.importance-label
             text-align: right
+            font-size: 12px
+
+        td.importance-select
+            padding: 0
+
+            select
+                width: 100%
+                height: 100%
+                font-size: 20px
+                background-color: orange
+                border: 0
+                text-align-last: center
+                padding: 5px
+
+table.summary
+    margin: 0 auto
+    width: auto
+    margin-top: 4em
+    text-transform: uppercase
+    text-align: right
+
+    td.score
+        padding-left: 2em
+        padding-right: 2em
+
+.done
+    text-align: center
+    margin-top: 2em
+
+    .btn
+        text-transform: uppercase
+        padding: 10px 20px

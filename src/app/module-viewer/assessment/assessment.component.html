@@ -1,11 +1,12 @@
 <div class="page-content" *ngIf="(activeGroup$ | async) as activeGroup">
+  <div *ngIf="(answers$ | async) as answers">
 
   <h2>{{ activeGroup.name }}</h2>
   <div class="description">
       {{ activeGroup.description }}
   </div>
 
-  <table class="table table-borderless table-striped" *ngIf="(questions$ | async) as questions">
+  <table class="table table-borderless table-striped questions" *ngIf="(questions$ | async) as questions">
     <thead>
       <tr>
         <th></th>
@@ -15,28 +16,48 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let question of questions">
-        <td>{{ question.position}}. {{ question.question}}</td>
+      <tr *ngFor="let question of questions; trackBy: questionTrack">
+        <td class="question">{{ question.position}}. {{ question.question}}</td>
         <td class="answer">
-          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 1)" [checked]="question.answer?.answer == 1"></mat-radio-button>
+          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 1)" [checked]="answers && answers.answers[question.id]?.answer == 1"></mat-radio-button>
         </td>
         <td class="answer">
-          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 0)" [checked]="question.answer?.answer == 0"></mat-radio-button>
+          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
         </td>
         <td class="notes">
-          <textarea mat-autosize matAutosizeMaxRows="5" [(ngModel)]="question.notes" (change)="saveNotes(question)"></textarea>
+          <textarea mat-autosize matAutosizeMaxRows="5" (change)="saveNotes(question, answers.answers[question.id])"></textarea>
         </td>
       </tr>
-      <tr class="rating">
-        <td class="rating-label">
-          On a scale from 1-5, how important is this to your business?<br />
+      <tr class="importance">
+        <td class="importance-label">
+          On a scale from 1-5, how important is this to your business?
           (1 = least important, 5 = most important)
         </td>
-        <td class="rating-select" colspan="2">
-
+        <td class="importance-select" colspan="2">
+          <select [(ngModel)]="answers.importance" (change)="setImportance(activeGroup, answers.importance)">
+            <option *ngFor="let imp of importance">{{ imp }}</option>
+          </select>
         </td>
       </tr>
     </tbody>
   </table>
 
+  <table class="summary table table-bordered">
+    <tbody>
+      <tr>
+        <td>Sum Total</td>
+        <td class="score">{{ answers.rawScore || 0 }}</td>
+      </tr>
+      <tr>
+        <td>Weighted Total</td>
+        <td class="score">{{ answers.score || 0 }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="done">
+    <button class="btn btn-success" (click)="markAsDone(activeGroup)">Mark As Done</button>
+  </div>
+
+  </div>
 </div>
