@@ -1,12 +1,17 @@
 import { Injectable } from '@angular/core';
 import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup } from '../interfaces/assessment.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 
 @Injectable()
 export class AssessmentService {
 
   baseUrl = '/api/assessment';
+
+  groupsUpdated$ = new BehaviorSubject<boolean>(false);
+
+  updateGroups = tap(_ => this.groupsUpdated$.next(true));
 
   constructor(private httpClient: HttpClient) { }
 
@@ -18,12 +23,16 @@ export class AssessmentService {
     return this.httpClient.get<AssessmentGroup[]>(`${this.baseUrl}/groups/${type.id}/org/${orgID}`);
   }
 
+  getOrgGroups(type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup[]> {
+    return this.httpClient.get<AssessmentOrgGroup[]>(`${this.baseUrl}/org-groups/${type.id}/org/${orgID}`);
+  }
+
   getQuestions(group: AssessmentGroup, orgID: number): Observable<AssessmentQuestion[]> {
     return this.httpClient.get<AssessmentQuestion[]>(`${this.baseUrl}/questions/${group.id}/org/${orgID}`);
   }
 
   saveAnswer(question: AssessmentQuestion, orgID: number, answer: boolean): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/answer/${question.id}/org/${orgID}`, {answer});
+    return this.httpClient.post(`${this.baseUrl}/answer/${question.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
   }
 
   saveNotes(question: AssessmentQuestion, orgID: number, notes: string): Observable<any> {
@@ -35,11 +44,11 @@ export class AssessmentService {
   }
 
   setImportance(group: AssessmentGroup, orgID: number, importance: number): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/org/${orgID}`, {importance});
+    return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/org/${orgID}`, {importance}).pipe(this.updateGroups);;
   }
 
   markAsDone(group: AssessmentGroup, orgID: number): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/done/${group.id}/org/${orgID}`, {});
+    return this.httpClient.post(`${this.baseUrl}/done/${group.id}/org/${orgID}`, {}).pipe(this.updateGroups);
   }
 
 }

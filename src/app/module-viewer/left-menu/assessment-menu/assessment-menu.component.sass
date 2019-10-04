@@ -42,8 +42,6 @@ h2
     margin-bottom: 10px
 
 table
-    margin: 1em
-
     tr
         cursor: pointer
 
@@ -52,4 +50,21 @@ table
             padding-bottom: 5px
 
             &.step-num-td
+                width: 5px
                 padding-right: 5px
+
+            &.group-status
+                width: 5px
+                padding-top: 2px
+                color: $green
+
+                \::ng-deep .mat-icon
+                    font-size: 16px
+                    width: auto
+                    height: auto
+
+            &.score
+                width: 3em
+                text-align: right
+                color: #666
+                font-weight: 100
