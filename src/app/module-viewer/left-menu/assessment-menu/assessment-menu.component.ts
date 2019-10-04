@@ -3,7 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, zip } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { mergeMap, switchMap, combineAll } from 'rxjs/operators';
+import { mergeMap, filter, take } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router } from '@angular/router';
 
@@ -28,6 +28,8 @@ export class AssessmentMenuComponent implements OnInit {
 
   activeGroup$: BehaviorSubject<AssessmentGroup>;
 
+  groupCompleted$ = new BehaviorSubject<boolean>(false);
+
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
 
@@ -48,8 +50,26 @@ export class AssessmentMenuComponent implements OnInit {
 
     this.activeGroup$ = this.navService.assessmentGroup$;
 
+    // select first group which is not done yet
     zip(this.groups$, this.orgGroups$).subscribe(([groups, orgGroups]) => {
       this.setGroup(groups.find(g => !(orgGroups[g.id] && orgGroups[g.id].isDone)) || groups[0]);
+    });
+
+    // move to next group if current is done
+    this.orgGroups$.subscribe(groups => {
+      this.groupCompleted$.next(groups[this.activeGroup$.value.id].isDone);
+    });
+
+    this.activeGroup$.subscribe(_ => this.groupCompleted$.next(false));
+
+    zip(this.asmService.groupsUpdated$, this.groupCompleted$.pipe(filter(r => r))).subscribe(([update, isCompleted]) => {
+      zip(this.activeGroup$, this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([active, groups, orgGroups]) => {
+        const next = groups.find(g => (g.position > active.position) && !(orgGroups[g.id] && orgGroups[g.id].isDone));
+
+        if (next) {
+          this.setGroup(next);
+        }
+      });
     });
   }
 

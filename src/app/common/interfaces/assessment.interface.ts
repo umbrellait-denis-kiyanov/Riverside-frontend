@@ -8,6 +8,7 @@ export interface AssessmentGroup {
     id: number;
     name: string;
     description: string;
+    position: number;
     questions: AssessmentQuestion[]
 }
 
