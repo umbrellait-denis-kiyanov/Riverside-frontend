@@ -35,9 +35,11 @@ const hardCodePictures = (user: User) => {
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Mark+Kornegay.jpg';
     case 'mputney@logically.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/matt-putney.jpg';
+    case 'jauer@riversidecompany.com':
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/johnauer.jpg';
     case 'joederosa@safebuilt.com':
     case 'jderosa@safebuilt.com':
-      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/JoeDeRosa.jpg';
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
     default:
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
   }
@@ -85,6 +87,7 @@ export const menus: MenusInterface = [
     },
     restrict: ({ user }) => user.permissions.riversideModuleEditor
   },
+
   {
     render: () => feedback_svg,
     label: 'REQUEST FEEDBACK',

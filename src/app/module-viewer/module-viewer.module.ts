@@ -75,7 +75,10 @@ import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.co
 import { OrgSelectorComponent } from './left-menu/org-selector/org-selector.component';
 import { TemplateHeadingComponent } from './riverside-step-template/template-heading/template-heading.component';
 import { MatInputModule } from '@angular/material/input';
+import { ToggleModuleComponent } from './dashboard/toggle-module/toggle-module.component';
+import { DueDateComponent } from './dashboard/due-date/due-date.component';
 import { AssessmentComponent } from './assessment/assessment.component';
+import { AssessmentScoreComponent } from './assessment-score/assessment.component';
 import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
 import { AssessmentService } from '../common/services/assessment.service';
 
@@ -152,8 +155,10 @@ import { AssessmentService } from '../common/services/assessment.service';
     QuestionImageComponent,
     OrgSelectorComponent,
     TemplateHeadingComponent,
+    ToggleModuleComponent,
+    DueDateComponent,
     AssessmentComponent,
-    AssessmentMenuComponent
+    AssessmentScoreComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

@@ -1,11 +1,9 @@
 import { Component, OnInit } from '@angular/core';
-import { Location } from '@angular/common';
 import { Module, Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { map, shareReplay } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
-import { NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 
@@ -18,8 +16,7 @@ export class DashboardComponent implements OnInit {
 
   constructor(private moduleService: ModuleService,
               private route: ActivatedRoute,
-              private router: Router,
-              private location: Location
+              private router: Router
             ) { }
 
   modulesRequest$: Observable<any>;
@@ -27,8 +24,6 @@ export class DashboardComponent implements OnInit {
   listModules$: Observable<any>;
 
   organizations$: Observable<Organization[]>;
-
-  minDate: NgbDateStruct;
 
   organization: Organization;
 
@@ -42,43 +37,20 @@ export class DashboardComponent implements OnInit {
     const id = this.route.snapshot.params.orgId;
     this.organizations$.subscribe(organizations =>
         this.setOrganization(id ? organizations.find(org => org.id.toString() === id) : organizations[0]));
-
-    const today = new Date();
-    this.minDate = {year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate()};
-  }
-
-  toggleModuleStatus(module: Module) {
-    const status = module.status ? !module.status.is_activated : true;
-
-    this.moduleService.setStatus(module, status, this.organization.id).subscribe(newStatus => {
-      module.status = newStatus;
-      this.prepareStatus(module);
-    });
-  }
-
-  saveDueDate(module: Module) {
-    this.moduleService.setDueDate(module, module.status.due_date_edit, this.organization.id).subscribe(newStatus => {
-      module.status = newStatus;
-      this.prepareStatus(module);
-    });
   }
 
   prepareStatus(module: Module) {
-    if (module.status) {
-      module.status.due_date_edit = module.status.due_date;
-      module.status.is_late = module.status.due_date < new Date().toJSON().substr(0, 10);
+    // if (module.status) {
+    //   if (module.status.due_date && !module.status.progress) {
+    //     module.status.progress = Math.floor(Math.random() * 100);
+    //     if (module.status.progress > 70) {
+    //       module.status.progress = 100;
+    //     }
+    //   }
 
-      module.underConstruction = module.name !== 'Buyer Personas';
-
-      // randomize progress - remove this ASAP
-      // if (module.status.due_date && !module.status.progress) {
-      //   module.status.progress = Math.floor(Math.random() * 100);
-      //   if (module.status.progress > 70) {
-      //     module.status.progress = 100;
-      //   }
-      // }
-    }
-
+    //   module.status.assessment_mkt = -10;
+    //   module.status.assessment_sales = 10;
+    // }
     return module;
   }
 
@@ -156,7 +128,6 @@ export class DashboardComponent implements OnInit {
   saveNotes(module: Module) {
     this.moduleService.saveNotes(module, this.organization.id, module.status.notes).subscribe(newStatus => {
       module.status = newStatus;
-      this.prepareStatus(module);
     });
   }
 }

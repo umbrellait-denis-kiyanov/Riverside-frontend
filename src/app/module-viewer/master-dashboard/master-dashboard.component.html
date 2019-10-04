@@ -65,7 +65,7 @@
             </div>
           </td>
           <td class="assessment">
-              <span [class.red]="organization.assessment < 0" [class.yellow]="organization.assessment <= 10" *ngIf="organization.assessment">{{ organization.assessment }}</span>
+            <app-assessment [score]="organization.assessment"></app-assessment>
           </td>
           <td *ngFor="let q of quarters" class="org-progress" [class.current-quarter]="q == currentQuarter">
             <div *ngIf="organization[q]" [class.red]="organization[q] < 30" [class.yellow]="organization[q] < 50">{{ organization[q] }}</div>
