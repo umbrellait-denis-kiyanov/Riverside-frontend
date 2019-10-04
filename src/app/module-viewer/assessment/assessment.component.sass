@@ -51,6 +51,13 @@ table.questions
                 min-width: 15vw
                 outline: 0 !important
 
+    tr.asm-error
+        color: $red
+
+        td.answer
+            border-color: $red
+            border-width: 1px
+
     tr.importance
         td
             height: 0
@@ -98,4 +105,9 @@ table.summary
     .btn
         text-transform: uppercase
         padding: 10px 20px
-        background-color: $green
+
+        &.success
+            background-color: $green
+
+    .alert
+        margin-top: 2em

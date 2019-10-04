@@ -38,4 +38,8 @@ export class AssessmentService {
     return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/org/${orgID}`, {importance});
   }
 
+  markAsDone(group: AssessmentGroup, orgID: number): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/done/${group.id}/org/${orgID}`, {});
+  }
+
 }

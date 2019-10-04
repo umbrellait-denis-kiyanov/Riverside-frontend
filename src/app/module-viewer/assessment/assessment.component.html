@@ -1,12 +1,13 @@
 <div class="page-content" *ngIf="(activeGroup$ | async) as activeGroup">
-  <div *ngIf="(answers$ | async) as answers">
+  <ng-container *ngIf="(answers$ | async) as answers">
+  <ng-container *ngIf="(questions$ | async) as questions">
 
   <h2>{{ activeGroup.name }}</h2>
   <div class="description">
       {{ activeGroup.description }}
   </div>
 
-  <table class="table table-borderless table-striped questions" *ngIf="(questions$ | async) as questions">
+  <table class="table table-borderless table-striped questions">
     <thead>
       <tr>
         <th></th>
@@ -16,7 +17,7 @@
       </tr>
     </thead>
     <tbody>
-      <tr *ngFor="let question of questions; trackBy: questionTrack">
+      <tr *ngFor="let question of questions; trackBy: questionTrack" [class.asm-error]="errors[question.id]">
         <td class="question">{{ question.position}}. {{ question.question}}</td>
         <td class="answer">
           <mat-radio-button [name]="question.id" (click)="setAnswer(question, 1)" [checked]="answers && answers.answers[question.id]?.answer == 1"></mat-radio-button>
@@ -61,8 +62,12 @@
   </table>
 
   <div class="done">
-    <button class="btn btn-success" (click)="markAsDone(activeGroup)">Mark As Done</button>
+    <button class="btn btn-success" *ngIf="!answers.isDone" (click)="markAsDone(activeGroup, questions, answers)">Mark As Done</button>
+    <button class="btn btn-default" *ngIf="answers.isDone">Done</button>
+
+    <div class="alert alert-danger" *ngIf="(errors | keyvalue)?.length">Please answer to all questions to mark this section as done</div>
   </div>
 
-  </div>
+  </ng-container>
+  </ng-container>
 </div>

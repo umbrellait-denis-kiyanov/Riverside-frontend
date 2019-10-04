@@ -22,6 +22,8 @@ export class AssessmentComponent implements OnInit {
 
   importance = [1, 2, 3, 4, 5];
 
+  errors = {};
+
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
@@ -30,6 +32,7 @@ export class AssessmentComponent implements OnInit {
 
     this.questions$ = combineLatest(this.activeGroup$, this.navService.organization$).pipe(
       mergeMap(([group, orgId]) => {
+        this.errors = {};
         return this.asmService.getQuestions(group, orgId);
       })
     );
@@ -42,6 +45,7 @@ export class AssessmentComponent implements OnInit {
   }
 
   setAnswer(q: AssessmentQuestion, answer: boolean) {
+    delete this.errors[q.id];
     this.asmService.saveAnswer(q, this.navService.lastOrganization.current, answer).subscribe(_ => this.answerUpdated$.next(true));
   }
 
@@ -55,6 +59,21 @@ export class AssessmentComponent implements OnInit {
 
   setImportance(g: AssessmentGroup, importance) {
     this.asmService.setImportance(g, this.navService.lastOrganization.current, importance).subscribe(_ => this.answerUpdated$.next(true));
+  }
+
+  markAsDone(activeGroup: AssessmentGroup, questions: AssessmentQuestion[], answers) {
+    this.errors = questions
+      .filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null)
+      .reduce((errors, q) => {
+        errors[q.id] = true;
+        return errors;
+      }, {});
+
+    if (Object.values(this.errors).length) {
+      return;
+    }
+
+    this.asmService.markAsDone(activeGroup, this.navService.lastOrganization.current).subscribe(_ => this.answerUpdated$.next(true));
   }
 
 }
