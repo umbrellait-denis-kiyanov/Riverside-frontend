@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
-import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest, zip } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { mergeMap, switchMap } from 'rxjs/operators';
+import { mergeMap, switchMap, combineAll } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router } from '@angular/router';
 
@@ -46,9 +46,11 @@ export class AssessmentMenuComponent implements OnInit {
       })
     );
 
-    this.asmService.groupsUpdated$.next(true);
-
     this.activeGroup$ = this.navService.assessmentGroup$;
+
+    zip(this.groups$, this.orgGroups$).subscribe(([groups, orgGroups]) => {
+      this.setGroup(groups.find(g => !(orgGroups[g.id] && orgGroups[g.id].isDone)) || groups[0]);
+    });
   }
 
   setType(type: AssessmentType) {

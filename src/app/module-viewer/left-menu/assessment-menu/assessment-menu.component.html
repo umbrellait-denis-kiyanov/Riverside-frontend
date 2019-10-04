@@ -8,15 +8,15 @@
   <h2>{{ (activeType$ | async).name }} Strategy Assessment</h2>
 
   <table *ngIf="(orgGroups$ | async) as orgGroups">
-    <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)" class="step-list-item" [class.active]="(activeGroup$ | async) == group">
+    <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)" class="step-list-item" [class.active]="(activeGroup$ | async)?.id == group.id">
       <td class="group-status">
-        <mat-icon *ngIf="orgGroups[group.id].isDone">check</mat-icon>
+        <mat-icon *ngIf="orgGroups[group.id]?.isDone">check</mat-icon>
       </td>
       <td class="step-num-td">
         <span class="step-number" [class.double]="group.position >= 10">{{group.position}}</span>
       </td>
       <td class="group-name">{{ group.shortName }}</td>
-      <td class="score">{{ orgGroups[group.id].score }}</td>
+      <td class="score">{{ orgGroups[group.id]?.score }}</td>
     </tr>
     <tr>
       <td colspan="2"></td>
