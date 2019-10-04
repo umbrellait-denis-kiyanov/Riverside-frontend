@@ -39,7 +39,7 @@
           (1 = least important, 5 = most important)
         </td>
         <td class="importance-select" colspan="2">
-          <select [(ngModel)]="answers.importance" (change)="setImportance(activeGroup, answers.importance)">
+          <select [(ngModel)]="answers.importance" (change)="setImportance(activeGroup, answers.importance)" [class.red]="answers.importance <= 2" [class.yellow]="answers.importance == 3">
             <option *ngFor="let imp of importance">{{ imp }}</option>
           </select>
         </td>
