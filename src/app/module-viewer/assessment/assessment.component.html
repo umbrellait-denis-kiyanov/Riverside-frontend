@@ -25,7 +25,12 @@
           <mat-radio-button [name]="question.id" (click)="setAnswer(question, 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
         </td>
         <td class="notes">
-          <textarea mat-autosize matAutosizeMaxRows="5" (change)="saveNotes(question, answers.answers[question.id])"></textarea>
+          <textarea mat-autosize matAutosizeMaxRows="5"
+            *ngIf="answers?.answers"
+            [ngModel]="answers.answers[question.id]?.notes"
+            (ngModelChange)="answers.answers[question.id] = answers.answers[question.id] || {}; answers.answers[question.id].notes = $event"
+            (change)="saveNotes(question, answers.answers[question.id])">
+          </textarea>
         </td>
       </tr>
       <tr class="importance">

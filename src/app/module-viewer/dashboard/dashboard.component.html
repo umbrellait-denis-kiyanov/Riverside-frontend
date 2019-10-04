@@ -86,10 +86,10 @@
             {{ module.idx }}. <app-module-link [module]="module"></app-module-link>
           </td>
           <td class="assessment">
-            <app-assessment [score]="module.status?.assessment_mkt"></app-assessment>
+            <app-assessment-score [score]="module.status?.assessment_mkt"></app-assessment-score>
           </td>
           <td class="assessment">
-            <app-assessment [score]="module.status?.assessment_sales"></app-assessment>
+            <app-assessment-score [score]="module.status?.assessment_sales"></app-assessment-score>
           </td>
           <td class="due-date">
             <div *ngIf="module.status?.is_activated">

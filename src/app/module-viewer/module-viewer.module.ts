@@ -158,7 +158,8 @@ import { AssessmentService } from '../common/services/assessment.service';
     ToggleModuleComponent,
     DueDateComponent,
     AssessmentComponent,
-    AssessmentScoreComponent
+    AssessmentScoreComponent,
+    AssessmentMenuComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
