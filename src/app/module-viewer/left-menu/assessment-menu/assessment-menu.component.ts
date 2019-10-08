@@ -52,19 +52,19 @@ export class AssessmentMenuComponent implements OnInit {
 
     this.activeTypeObserver$.subscribe(_ => this.setFirstUncompletedGroup());
 
-    this.orgGroups$ = combineLatest(this.activeTypeObserver$, this.navService.organization$, this.asmService.groupsUpdated$).pipe(
+    this.orgGroups$ = combineLatest(this.activeTypeObserver$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
       mergeMap(([type, orgId]) => {
         return this.asmService.getOrgGroups(type, orgId);
       })
     );
 
-    this.activeGroup$ = this.navService.assessmentGroup$;
-
     this.setFirstUncompletedGroup();
+
+    this.activeGroup$ = this.navService.assessmentGroup$;
 
     // move to next group if current is done
     this.orgGroups$.subscribe(groups => {
-      if (groups[this.activeGroup$.value.id]) {
+      if (this.activeGroup$.value && groups[this.activeGroup$.value.id]) {
         this.groupCompleted$.next(groups[this.activeGroup$.value.id].isDone);
       }
     });
@@ -83,11 +83,11 @@ export class AssessmentMenuComponent implements OnInit {
   }
 
   private setFirstUncompletedGroup() {
-    zip(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
-      if (groups) {
+    if (this.groups$ && this.orgGroups$) {
+      zip(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
         this.setGroup(groups.find(g => (!orgGroups[g.id] || !orgGroups[g.id].isDone)) || groups[0]);
-      }
-    });
+      });
+    }
   }
 
   setType(type: AssessmentType) {
@@ -97,7 +97,6 @@ export class AssessmentMenuComponent implements OnInit {
   setGroup(group: AssessmentGroup) {
     const current = this.navService.assessmentGroup$.value;
     if (!current || (group.id !== current.id)) {
-      console.log('next group');
       this.navService.assessmentGroup$.next(group);
     }
   }

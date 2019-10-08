@@ -16,7 +16,7 @@
         <span class="step-number" [class.double]="group.position >= 10">{{group.position}}</span>
       </td>
       <td class="group-name">{{ group.shortName }}</td>
-      <td class="score">{{ orgGroups[group.id]?.score }}</td>
+      <td class="score">{{ orgGroups[group.id]?.score || 0 }}</td>
     </tr>
     <tr class="finish">
       <td colspan="2"></td>
