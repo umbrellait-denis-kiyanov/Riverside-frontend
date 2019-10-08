@@ -81,6 +81,7 @@ import { AssessmentComponent } from './assessment/assessment.component';
 import { AssessmentScoreComponent } from './assessment-score/assessment.component';
 import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
 import { AssessmentService } from '../common/services/assessment.service';
+import { AssessmentFinishComponent } from './assessment/assessment-finish/assessment-finish.component';
 
 @NgModule({
   imports: [
@@ -159,7 +160,8 @@ import { AssessmentService } from '../common/services/assessment.service';
     DueDateComponent,
     AssessmentComponent,
     AssessmentScoreComponent,
-    AssessmentMenuComponent
+    AssessmentMenuComponent,
+    AssessmentFinishComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

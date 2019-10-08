@@ -1,7 +1,16 @@
 export interface AssessmentType {
-   id: number;
-   name: string;
-   description: string;
+    id: number;
+    name: string;
+    description: string;
+ }
+
+export interface AssessmentSession {
+    id: number;
+    org_id: number;
+    isDone: boolean;
+    type: number;
+    name: string;
+    date: Date;
 }
 
 export interface AssessmentGroup {

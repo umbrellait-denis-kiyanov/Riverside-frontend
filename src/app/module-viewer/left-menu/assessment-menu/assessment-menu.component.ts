@@ -5,7 +5,7 @@ import { AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/com
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { mergeMap, filter, take, tap, distinctUntilChanged } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
-import { Router } from '@angular/router';
+import { Router, ActivatedRoute } from '@angular/router';
 
 @Component({
   selector: 'app-assessment-menu',
@@ -15,6 +15,7 @@ import { Router } from '@angular/router';
 export class AssessmentMenuComponent implements OnInit {
 
   constructor(private router: Router,
+              private route: ActivatedRoute,
               public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
@@ -44,8 +45,8 @@ export class AssessmentMenuComponent implements OnInit {
 
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
-    this.groups$ = combineLatest(this.activeTypeObserver$, this.orgObserver$).pipe(
-      mergeMap(([type, orgId]) => {
+    this.groups$ = this.activeTypeObserver$.pipe(
+      mergeMap((type) => {
         return this.asmService.getGroups(type);
       })
     );
@@ -83,9 +84,18 @@ export class AssessmentMenuComponent implements OnInit {
   }
 
   private setFirstUncompletedGroup() {
+    if (this.router.url.substr(-7) === '/finish') {
+      return;
+    }
+
     if (this.groups$ && this.orgGroups$) {
       zip(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
-        this.setGroup(groups.find(g => (!orgGroups[g.id] || !orgGroups[g.id].isDone)) || groups[0]);
+        const unfinished = groups.find(g => (!orgGroups[g.id] || !orgGroups[g.id].isDone));
+        if (!unfinished && (groups.length === Object.values(orgGroups).length)) {
+          this.finish();
+        } else {
+          this.setGroup(unfinished || groups[0]);
+        }
       });
     }
   }
@@ -96,15 +106,19 @@ export class AssessmentMenuComponent implements OnInit {
 
   setGroup(group: AssessmentGroup) {
     const current = this.navService.assessmentGroup$.value;
+    this.router.navigate(['org', this.navService.lastOrganization.current, 'assessment']);
     if (!current || (group.id !== current.id)) {
       this.navService.assessmentGroup$.next(group);
     }
   }
 
-  finish(group: AssessmentGroup) {
+  finish() {
     combineLatest(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
       if (Object.values(orgGroups).filter(g => g.isDone).length === groups.length) {
         this.navService.assessmentGroup$.next(null);
+
+        this.router.navigate(['finish'], { relativeTo: this.route });
+
       } else {
         this.setFirstUncompletedGroup();
         this.finishError$.next(true);

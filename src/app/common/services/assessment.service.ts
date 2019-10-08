@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup } from '../interfaces/assessment.interface';
+import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession } from '../interfaces/assessment.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, shareReplay } from 'rxjs/operators';
@@ -21,6 +21,10 @@ export class AssessmentService {
 
   getGroups(type: AssessmentType): Observable<AssessmentGroup[]> {
     return this.httpClient.get<AssessmentGroup[]>(`${this.baseUrl}/groups/${type.id}`).pipe(shareReplay(1));
+  }
+
+  getSession(type: AssessmentType, orgID: number): Observable<AssessmentSession> {
+    return this.httpClient.get<AssessmentSession>(`${this.baseUrl}/session/${type.id}/org/${orgID}`);
   }
 
   getOrgGroups(type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup[]> {

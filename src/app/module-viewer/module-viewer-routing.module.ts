@@ -13,6 +13,7 @@ import { DashboardComponent } from './dashboard/dashboard.component';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 import { AssessmentComponent } from './assessment/assessment.component';
 import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
+import { AssessmentFinishComponent } from './assessment/assessment-finish/assessment-finish.component';
 
 const moduleContentRoute = [
   {
@@ -107,21 +108,6 @@ const routes: Routes = [
     ]
   },
   {
-    path: 'assessment',
-    component: MainComponent,
-    children: [
-      {
-        path: '',
-        component: AssessmentComponent
-      },
-      {
-        path: '',
-        component: AssessmentMenuComponent,
-        outlet: 'left-menu'
-      }
-    ]
-  },
-  {
     path: 'org/:orgId/assessment',
     component: MainComponent,
     children: [
@@ -133,6 +119,10 @@ const routes: Routes = [
         path: '',
         component: AssessmentMenuComponent,
         outlet: 'left-menu'
+      },
+      {
+        path: 'finish',
+        component: AssessmentFinishComponent
       }
     ]
   }
