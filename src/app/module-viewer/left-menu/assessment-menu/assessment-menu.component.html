@@ -18,9 +18,15 @@
       <td class="group-name">{{ group.shortName }}</td>
       <td class="score">{{ orgGroups[group.id]?.score }}</td>
     </tr>
-    <tr>
+    <tr class="finish">
       <td colspan="2"></td>
-      <td colspan="2" (click)="setGroup(null)">Finish Assessment</td>
+      <td colspan="2" (click)="finish(null)">
+        Finish Assessment
+      </td>
     </tr>
   </table>
+
+  <div class="alert alert-danger" *ngIf="(finishError$ | async)">
+    Please complete all sections first
+  </div>
 </div>

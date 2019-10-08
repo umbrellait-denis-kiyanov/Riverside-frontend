@@ -33,7 +33,7 @@ export class AssessmentComponent implements OnInit {
     this.questions$ = combineLatest(this.activeGroup$, this.navService.organization$).pipe(
       mergeMap(([group, orgId]) => {
         this.errors = {};
-        return this.asmService.getQuestions(group, orgId);
+        return this.asmService.getQuestions(group);
       })
     );
 
