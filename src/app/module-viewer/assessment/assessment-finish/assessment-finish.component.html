@@ -1,25 +1,29 @@
 <div class="page-content">
-    <h2>Finish Assessment</h2>
+    <h2>
+      Finish Assessment
+      <button class="btn btn-primary" (click)="isLineChart = !isLineChart" style="box-shadow: none !important">
+        <mat-icon *ngIf="isLineChart">bar_chart</mat-icon>
+        <mat-icon *ngIf="!isLineChart">show_chart</mat-icon>
+      </button>
+    </h2>
 
-    <button class="btn btn-primary" (click)="isLineChart = !isLineChart" style="box-shadow: none !important">
-      <mat-icon *ngIf="isLineChart">bar_chart</mat-icon>
-      <mat-icon *ngIf="!isLineChart">show_chart</mat-icon>
-    </button>
 
-    <div class="chart">
+    <div class="chart" *ngIf="(session$ | async) as session">
       <ngx-charts-line-chart *ngIf="chart && isLineChart"
         [xAxisTickFormatting]="xAxisTickFormatting"
         [results]="chart"
         [animations]="false"
         [xAxisTicks]="xTicks"
         [yAxisTicks]="yTicks"
-        [maxXAxisTickLength]="50"
         [trimXAxisTicks]="false"
+        [trimYAxisTicks]="false"
         [xAxis]="true"
         [yAxis]="true"
         [scheme]="colorScheme"
-        [xScaleMin]="-1"
-        [xScaleMax]="xTicks.length"
+        [xScaleMin]="0.01"
+        [xScaleMax]="xTicks.length - 1"
+        [yScaleMin]="-50"
+        [yScaleMax]="50"
         [autoScale]="true"
         >
         <ng-template #tooltipTemplate let-model="model">
@@ -42,6 +46,8 @@
         [trimXAxisTicks]="false"
         [xAxis]="true"
         [yAxis]="true"
+        [yScaleMin]="-50"
+        [yScaleMax]="50"
         [scheme]="colorScheme"
         [showDataLabel]="true"
         [customColors]="barCustomColors"

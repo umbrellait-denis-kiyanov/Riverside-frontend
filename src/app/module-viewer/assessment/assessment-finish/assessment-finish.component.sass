@@ -27,7 +27,21 @@
                 text
                     transform: translate(-5px, -5px)
                     position: relative
-                    top: -5px
 
                     &[text-anchor="end"]
                         transform: translate(5px, 5px)
+
+                &:last-of-type
+                    text
+                        font-size: 1.5em
+                        fill: $green
+                        transform: translate(-15px, -10px)
+
+                        &[text-anchor="end"]
+                            fill: $red
+                            transform: translate(17px, 15px)
+
+            [ngx-charts-x-axis-ticks]
+                g:last-of-type
+                    text
+                        font-size: 1.3em !important

@@ -34,7 +34,7 @@ export class AssessmentFinishComponent implements OnInit {
 
   xAxisTickFormatting: (idx: number) => string;
 
-  isLineChart = false;
+  isLineChart = true;
 
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
@@ -64,26 +64,32 @@ export class AssessmentFinishComponent implements OnInit {
       })
     );
 
-    zip(this.groups$, this.orgGroups$).subscribe(([groups, orgGroups]) => {
+    zip(this.groups$, this.orgGroups$, this.session$).subscribe(([groups, orgGroups, session]) => {
       const series = groups.map((group, idx) => {
         const value = Number(orgGroups[group.id].score);
 
-        this.labels[idx] = group.shortName;
-        this.barCustomColors.push({name: idx.toString(), value: value < 0 ? '#cc0000' : '#58ad3f'});
+        this.labels[idx + 1] = group.shortName;
+        this.barCustomColors.push({name: (idx + 1).toString(), value: value < 0 ? '#ff6666' : '#a9da9a'});
 
-        return {value, name: idx};
+        return {value, name: (idx + 1)};
       });
 
-      this.xTicks = Array.from(Array(series.length).keys());
+      series.push({value: Math.round(session.score * 10) / 10, name: (series.length + 1)});
+      this.barCustomColors.push({name: (series.length).toString(), value: session.score < 0 ? '#cc0000' : '#58ad3f'});
+      this.labels[series.length] = 'Average';
+
+      this.xTicks = Array.from(Array(series.length + 2).keys()).map(k => k - 1);
 
       this.yTicks = Array.from(Array(11).keys()).map(k => (k * 10) - 50);
 
       this.chart = [{
-        name: 'Assessment',
-        series
-      }, {name: '0', series: [{value: 0, name: -2}, {value: 0, name: series.length + 1}]}];
+          name: 'Assessment',
+          series
+        },
+        {name: '0', series: [{value: 0, name: -10}, {value: 0, name: series.length + 10}]}
+      ];
     });
 
-    this.xAxisTickFormatting = (idx: number) => this.labels[idx];
+    this.xAxisTickFormatting = (idx: number) => this.labels[idx] || '';
   }
 }
