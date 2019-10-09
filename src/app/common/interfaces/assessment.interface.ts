@@ -16,6 +16,7 @@ export interface AssessmentSession {
 export interface AssessmentGroup {
     id: number;
     name: string;
+    shortName: string;
     description: string;
     position: number;
     questions: AssessmentQuestion[]

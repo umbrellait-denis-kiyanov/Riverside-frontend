@@ -20,6 +20,22 @@ export class AssessmentFinishComponent implements OnInit {
 
   orgGroups$: Observable<AssessmentOrgGroup[]>;
 
+  colorScheme = {
+    domain: ['#58ad3f', '#999']
+  };
+
+  labels = {};
+
+  xTicks = [];
+  yTicks = [];
+
+  chart: any;
+  barCustomColors = [];
+
+  xAxisTickFormatting: (idx: number) => string;
+
+  isLineChart = false;
+
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
@@ -48,6 +64,26 @@ export class AssessmentFinishComponent implements OnInit {
       })
     );
 
+    zip(this.groups$, this.orgGroups$).subscribe(([groups, orgGroups]) => {
+      const series = groups.map((group, idx) => {
+        const value = Number(orgGroups[group.id].score);
 
+        this.labels[idx] = group.shortName;
+        this.barCustomColors.push({name: idx.toString(), value: value < 0 ? '#cc0000' : '#58ad3f'});
+
+        return {value, name: idx};
+      });
+
+      this.xTicks = Array.from(Array(series.length).keys());
+
+      this.yTicks = Array.from(Array(11).keys()).map(k => (k * 10) - 50);
+
+      this.chart = [{
+        name: 'Assessment',
+        series
+      }, {name: '0', series: [{value: 0, name: -2}, {value: 0, name: series.length + 1}]}];
+    });
+
+    this.xAxisTickFormatting = (idx: number) => this.labels[idx];
   }
 }

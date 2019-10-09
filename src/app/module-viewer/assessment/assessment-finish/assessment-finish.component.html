@@ -1,7 +1,57 @@
 <div class="page-content">
     <h2>Finish Assessment</h2>
 
+    <button class="btn btn-primary" (click)="isLineChart = !isLineChart" style="box-shadow: none !important">
+      <mat-icon *ngIf="isLineChart">bar_chart</mat-icon>
+      <mat-icon *ngIf="!isLineChart">show_chart</mat-icon>
+    </button>
 
+    <div class="chart">
+      <ngx-charts-line-chart *ngIf="chart && isLineChart"
+        [xAxisTickFormatting]="xAxisTickFormatting"
+        [results]="chart"
+        [animations]="false"
+        [xAxisTicks]="xTicks"
+        [yAxisTicks]="yTicks"
+        [maxXAxisTickLength]="50"
+        [trimXAxisTicks]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [scheme]="colorScheme"
+        [xScaleMin]="-1"
+        [xScaleMax]="xTicks.length"
+        [autoScale]="true"
+        >
+        <ng-template #tooltipTemplate let-model="model">
+          {{ labels[model.name] }}: {{ model.value }}
+        </ng-template>
+
+        <ng-template #seriesTooltipTemplate let-model="model">
+          {{ labels[model[0].name] }}: {{ model[0].value }}
+        </ng-template>
+
+      </ngx-charts-line-chart>
+
+      <ngx-charts-bar-vertical *ngIf="chart && !isLineChart"
+        [xAxisTickFormatting]="xAxisTickFormatting"
+        [results]="chart[0].series"
+        [animations]="false"
+        [xAxisTicks]="xTicks"
+        [yAxisTicks]="yTicks"
+        [maxXAxisTickLength]="50"
+        [trimXAxisTicks]="false"
+        [xAxis]="true"
+        [yAxis]="true"
+        [scheme]="colorScheme"
+        [showDataLabel]="true"
+        [customColors]="barCustomColors"
+        >
+        <ng-template #tooltipTemplate let-model="model">
+          {{ labels[model.name] }}: {{ model.value }}
+        </ng-template>
+      </ngx-charts-bar-vertical>
+
+    </div>
 
     <!-- <div class="done">
       <button class="btn btn-success" *ngIf="!session.isDone" (click)="markAsDone(activeGroup, questions, answers)">Finish & Record</button>

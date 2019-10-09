@@ -1,1 +1,33 @@
 @import "../assessment.component.sass";
+
+.chart
+    width: 100%
+    height: 50vh
+    min-height: 500px
+    position: relative
+    padding-top: 5em
+
+    ::ng-deep
+        ngx-charts-line-chart, ngx-charts-bar-vertical
+            text
+                fill: #999
+
+            .gridline-path-vertical
+                display: none
+
+            [ngx-charts-x-axis-ticks]
+                text
+                    transform: rotate(300deg)
+                    text-transform: uppercase
+
+            path
+                stroke-width: 2
+
+            [ngx-charts-bar-label]
+                text
+                    transform: translate(-5px, -5px)
+                    position: relative
+                    top: -5px
+
+                    &[text-anchor="end"]
+                        transform: translate(5px, 5px)
