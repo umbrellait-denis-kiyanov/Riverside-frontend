@@ -17,6 +17,13 @@
     padding-right: 3px
     text-align: right
 
+.step-list-item.active .step-number
+    position: relative
+    left: -3px
+
+    &.double
+        left: 0
+
 .btn-group
     display: block
     text-align: center
@@ -51,11 +58,10 @@ table
             padding-bottom: 5px
 
             &.step-num-td
-                width: 35px
-                padding-right: 5px
+                width: 30px
 
             &.group-status
-                width: 20px
+                width: 18px
                 padding-top: 2px
                 color: $green
 
@@ -68,8 +74,17 @@ table
                 width: 3em
                 text-align: right
                 color: #666
-                font-weight: 100
+                font-size: 0.9em
 
         &.finish
             td
                 padding-top: 10px
+
+                .step-number
+                    left: -2px
+
+                    .mat-icon
+                        width: 20px
+                        height: 20px
+                        font-size: 20px
+                        line-height: 25px

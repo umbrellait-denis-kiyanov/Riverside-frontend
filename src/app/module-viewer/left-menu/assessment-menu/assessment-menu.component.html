@@ -13,13 +13,17 @@
         <mat-icon *ngIf="orgGroups[group.id]?.isDone">check</mat-icon>
       </td>
       <td class="step-num-td">
-        <span class="step-number" [class.double]="group.position >= 10">{{group.position}}</span>
+        <span class="step-number" [class.double]="group.position >= 10">{{group.position}}<span class="dot">.</span></span>
       </td>
       <td class="group-name">{{ group.shortName }}</td>
       <td class="score">{{ orgGroups[group.id]?.score || 0 }}</td>
     </tr>
-    <tr class="finish">
-      <td colspan="2"></td>
+    <tr class="step-list-item finish"  [class.active]="!(activeGroup$ | async)">
+      <td class="group-status"></td>
+      <td class="step-num-td">
+        <span class="step-number double"><mat-icon>check</mat-icon></span>
+      </td>
+
       <td colspan="2" (click)="finish(null)">
         Finish Assessment
       </td>
