@@ -25,13 +25,12 @@
       [autoScale]="true"
       >
       <ng-template #tooltipTemplate let-model="model">
-        {{ labels[model.name] }}: {{ model.value }}
+        {{ fullLabels[model.name] }}: {{ model.value }}
       </ng-template>
 
       <ng-template #seriesTooltipTemplate let-model="model">
-        {{ labels[model[0].name] }}: {{ model[0].value }}
+        {{ fullLabels[model[0].name] }}: {{ model[0].value }}
       </ng-template>
-
     </ngx-charts-line-chart>
 
     <ngx-charts-bar-vertical *ngIf="chart && !isLineChart" [class.d-none]="isLineChart"
@@ -51,13 +50,12 @@
       [customColors]="barCustomColors"
       >
       <ng-template #tooltipTemplate let-model="model">
-        {{ labels[model.name] }}: {{ model.value }}
+        {{ fullLabels[model.name] }}: {{ model.value }}
       </ng-template>
     </ngx-charts-bar-vertical>
   </div>
 
   <div class="done">
-    <button class="btn btn-success" *ngIf="!session.isDone" (click)="finish()">Finish & Record</button>
-    <button class="btn btn-default" *ngIf="session.isDone">Done</button>
+    <button class="btn btn-success" (click)="finish(session)">Finish & Record</button>
   </div>
 </div>

@@ -45,6 +45,10 @@ export class AssessmentService {
     return this.httpClient.get<AssessmentSession>(`${this.baseUrl}/session/${type.id}/org/${orgID}`);
   }
 
+  finishSession(session: AssessmentSession): Observable<any> {
+    return this.httpClient.post<any>(`${this.baseUrl}/finish-session/${session.id}/org/${session.org_id}`, {});
+  }
+
   getOrgGroups(type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup[]> {
     return this.httpClient.get<AssessmentOrgGroup[]>(`${this.baseUrl}/org-groups/${type.id}/org/${orgID}`);
   }

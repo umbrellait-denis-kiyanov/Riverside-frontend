@@ -4,6 +4,7 @@ import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { Observable, zip } from 'rxjs';
 import { mergeMap, take, shareReplay, filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assessment-finish',
@@ -25,6 +26,7 @@ export class AssessmentFinishComponent implements OnInit {
   };
 
   labels = {};
+  fullLabels = {};
 
   xTicks = [];
   yTicks = [];
@@ -37,7 +39,8 @@ export class AssessmentFinishComponent implements OnInit {
   isLineChart = true;
 
   constructor(public asmService: AssessmentService,
-              public navService: ModuleNavService) { }
+              public navService: ModuleNavService,
+              public router: Router) { }
 
   ngOnInit() {
     const type$ = this.navService.assesmentType.onChange.pipe(
@@ -46,10 +49,10 @@ export class AssessmentFinishComponent implements OnInit {
         shareReplay(1),
         mergeMap(typeID => this.asmService.getType(typeID))
       );
+
     const org$ = this.navService.organization$.pipe(take(1), shareReplay(1));
 
     this.session$ = zip(type$, org$).pipe(
-      take(1),
       mergeMap(([type, orgId]) => this.asmService.getSession(type, orgId))
     );
 
@@ -73,6 +76,7 @@ export class AssessmentFinishComponent implements OnInit {
 
         const maxLen = 20;
         this.labels[idx + 1] = group.shortName.length <= maxLen ? group.shortName : group.shortName.substr(0, maxLen - 2) + '...';
+        this.fullLabels[idx + 1] = group.shortName;
         this.barCustomColors.push({name: (idx + 1).toString(), value: value < 0 ? '#ff6666' : '#a9da9a'});
 
         return {value, name: (idx + 1)};
@@ -81,6 +85,7 @@ export class AssessmentFinishComponent implements OnInit {
       series.push({value: Math.round(session.score * 10) / 10, name: (series.length + 1)});
       this.barCustomColors.push({name: (series.length).toString(), value: session.score < 0 ? '#cc0000' : '#58ad3f'});
       this.labels[series.length] = 'Average';
+      this.fullLabels[series.length] = 'Average';
 
       this.xTicks = Array.from(Array(series.length + 2).keys()).map(k => k - 1);
 
@@ -95,5 +100,11 @@ export class AssessmentFinishComponent implements OnInit {
     });
 
     this.xAxisTickFormatting = (idx: number) => this.labels[idx] || '';
+  }
+
+  finish(session: AssessmentSession) {
+    this.asmService.finishSession(session).subscribe(_ =>
+      this.router.navigate(['org', this.navService.lastOrganization.current, 'assessment', session.id])
+    );
   }
 }
