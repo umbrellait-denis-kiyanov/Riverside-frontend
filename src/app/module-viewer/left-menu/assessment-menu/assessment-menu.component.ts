@@ -88,16 +88,13 @@ export class AssessmentMenuComponent implements OnInit {
   }
 
   private setFirstUncompletedGroup() {
-    if (this.router.url.substr(-7) === '/finish') {
-      return;
-    }
-
     if (this.groups$ && this.orgGroups$) {
-      zip(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
+      combineLatest(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
         const unfinished = groups.find(g => (!orgGroups[g.id] || !orgGroups[g.id].isDone));
         if (!unfinished && (groups.length === Object.values(orgGroups).length)) {
           this.finish();
         } else {
+          this.router.navigate(['org', this.navService.lastOrganization.current, 'assessment']);
           this.setGroup(unfinished || groups[0]);
         }
       });

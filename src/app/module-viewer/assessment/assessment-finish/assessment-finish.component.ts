@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
-import { Observable, BehaviorSubject, zip, combineLatest } from 'rxjs';
+import { Observable, zip } from 'rxjs';
 import { mergeMap, take, shareReplay, filter } from 'rxjs/operators';
 
 @Component({
