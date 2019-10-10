@@ -1,12 +1,13 @@
 import { Injectable, EventEmitter } from '@angular/core';
 import { Module } from '../interfaces/module.interface';
 import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
-import { BehaviorSubject, from } from 'rxjs';
+import { BehaviorSubject, from, Observable } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { IceService } from 'src/app/module-viewer/ice/ice.service';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
-import { filter } from 'rxjs/operators';
+import { filter, startWith, distinctUntilChanged, mergeMap } from 'rxjs/operators';
+import { AssessmentService } from './assessment.service';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
@@ -80,10 +81,27 @@ export class ModuleNavService {
   shouldMoveToNext = false;
   assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
 
+  activeAssessmentType$: Observable<AssessmentType>;
+
   organization$ = this.lastOrganization.onChange.pipe(filter(org => !!org));
 
   get currentStep() {
     return this.module.current.steps[this.stepIndex.current];
+  }
+
+  get assessmentType$() {
+    if (!this.activeAssessmentType$) {
+      this.activeAssessmentType$ = this.assesmentType.onChange.pipe(
+        startWith(this.assesmentType.current || 1),
+        distinctUntilChanged(),
+        filter(t => !!t),
+        mergeMap((type_id: number) => {
+          return this.asmService.getType(type_id);
+        })
+      );
+    }
+
+    return this.activeAssessmentType$;
   }
 
   constructor(
@@ -91,7 +109,8 @@ export class ModuleNavService {
     private route: ActivatedRoute,
     private http: HttpClient,
     private iceService: IceService,
-    private moduleService: ModuleService
+    private moduleService: ModuleService,
+    private asmService: AssessmentService
   ) {
 
     this.onUnapprove.subscribe(() => {

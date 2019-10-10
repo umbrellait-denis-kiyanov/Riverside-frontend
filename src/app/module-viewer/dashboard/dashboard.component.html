@@ -1,4 +1,4 @@
-<div *ngLet="(modulesRequest$ | async | canModify) as canActivate">
+<div class="page-content" *ngLet="(modulesRequest$ | async | canModify) as canActivate">
 
 <div class="container-fluid">
   <div class="row">
@@ -7,7 +7,9 @@
     </div>
     <div class="col-lg-3 col-md-12 dashboard-menu text-right">
       <div class="dashboard-menu-wrapper">
-        <app-list-style-toggle [(active)]="view"></app-list-style-toggle>
+        <app-list-style-toggle [(active)]="view">
+          <button type="button" class="btn" [class.btn-secondary]="view == 'assessments'" [class.btn-default]="view != 'assessments'" (click)="view = 'assessments'"><mat-icon>show_chart</mat-icon></button>
+        </app-list-style-toggle>
       </div>
     </div>
   </div>
@@ -24,9 +26,10 @@
   </div>
 </div>
 
+<app-view-assessments *ngIf="view == 'assessments'"></app-view-assessments>
+
 <div *ngIf="modules$ | async as modules">
-  <div *ngIf="view == 'grid'">
-  <div class="panel-container">
+  <div *ngIf="view == 'grid'" class="panel-container">
     <div *ngFor="let category of modules" class="card module-category" [class.double]="2 == category.columns.length">
     <div class="card-header">
       {{ category.name }}
@@ -59,7 +62,6 @@
         </div>
       </div>
     </div>
-  </div>
   </div>
   </div>
 

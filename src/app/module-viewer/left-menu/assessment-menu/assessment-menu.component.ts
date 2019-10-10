@@ -38,14 +38,7 @@ export class AssessmentMenuComponent implements OnInit {
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
 
-    this.activeType$ = this.navService.assesmentType.onChange.pipe(
-      startWith(this.navService.assesmentType.current || 1),
-      distinctUntilChanged(),
-      filter(t => !!t),
-      mergeMap((type_id: number) => {
-        return this.asmService.getType(type_id);
-      })
-    );
+    this.activeType$ = this.navService.assessmentType$;
 
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 

@@ -15,6 +15,8 @@ export class AssessmentService {
 
   types$: Observable<AssessmentType[]>;
 
+  activeTypes$: Observable<AssessmentType[]>;
+
   constructor(private httpClient: HttpClient) { }
 
   getTypes(): Observable<AssessmentType[]> {
@@ -72,5 +74,10 @@ export class AssessmentService {
   markAsDone(group: AssessmentGroup, orgID: number): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/done/${group.id}/org/${orgID}`, {}).pipe(this.updateGroups);
   }
+
+  getCompletedSessions(type: AssessmentType, orgID: number): Observable<AssessmentSession[]> {
+    return this.httpClient.get<AssessmentSession[]>(`${this.baseUrl}/completed-sessions/${type.id}/org/${orgID}`);
+  }
+
 
 }

@@ -1,22 +1,23 @@
-.btn-group
-    button
-        padding: 4px 1.5em 0
-        line-height: 1
+\:host ::ng-deep
+    .btn-group
+        button
+            padding: 4px 1.5em 0
+            line-height: 1
 
-        mat-icon
-            font-size: 1.5em
+            mat-icon
+                font-size: 1.5em
 
-.btn
-    border-color: #00529f
-    color: #00529f
+    .btn
+        border-color: #00529f
+        color: #00529f
 
-    .focus
-        box-shadow: none
+        &:focus
+            box-shadow: none !important
 
-.btn-secondary
-    background-color: #00529f
-    color: white
-
-    &:hover
+    .btn-secondary
         background-color: #00529f
         color: white
+
+        &:hover
+            background-color: #00529f
+            color: white

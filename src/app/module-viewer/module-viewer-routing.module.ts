@@ -14,6 +14,7 @@ import { MasterDashboardComponent } from './master-dashboard/master-dashboard.co
 import { AssessmentComponent } from './assessment/assessment.component';
 import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
 import { AssessmentFinishComponent } from './assessment/assessment-finish/assessment-finish.component';
+import { ViewAssessmentsComponent } from './dashboard/view-assessments/view-assessments.component';
 
 const moduleContentRoute = [
   {
