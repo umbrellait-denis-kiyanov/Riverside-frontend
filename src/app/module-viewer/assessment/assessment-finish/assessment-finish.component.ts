@@ -71,7 +71,8 @@ export class AssessmentFinishComponent implements OnInit {
       const series = groups.map((group, idx) => {
         const value = Number(orgGroups[group.id].score);
 
-        this.labels[idx + 1] = group.shortName;
+        const maxLen = 20;
+        this.labels[idx + 1] = group.shortName.length <= maxLen ? group.shortName : group.shortName.substr(0, maxLen - 2) + '...';
         this.barCustomColors.push({name: (idx + 1).toString(), value: value < 0 ? '#ff6666' : '#a9da9a'});
 
         return {value, name: (idx + 1)};

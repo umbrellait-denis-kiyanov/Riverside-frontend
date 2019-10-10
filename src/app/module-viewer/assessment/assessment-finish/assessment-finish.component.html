@@ -1,66 +1,63 @@
-<div class="page-content">
-    <h2>
-      Finish Assessment
-      <button class="btn btn-primary" (click)="isLineChart = !isLineChart" style="box-shadow: none !important">
-        <mat-icon *ngIf="isLineChart">bar_chart</mat-icon>
-        <mat-icon *ngIf="!isLineChart">show_chart</mat-icon>
-      </button>
-    </h2>
+<div class="page-content" *ngIf="(session$ | async) as session">
+  <h2>
+    Finish Assessment
+    <button class="btn btn-primary" (click)="isLineChart = !isLineChart" style="box-shadow: none !important">
+      <mat-icon *ngIf="isLineChart">bar_chart</mat-icon>
+      <mat-icon *ngIf="!isLineChart">show_chart</mat-icon>
+    </button>
+  </h2>
 
+  <div class="chart">
+    <ngx-charts-line-chart *ngIf="chart" [class.d-none]="!isLineChart"
+      [xAxisTickFormatting]="xAxisTickFormatting"
+      [results]="chart"
+      [animations]="false"
+      [xAxisTicks]="xTicks"
+      [yAxisTicks]="yTicks"
+      [trimXAxisTicks]="false"
+      [xAxis]="true"
+      [yAxis]="true"
+      [scheme]="colorScheme"
+      [xScaleMin]="0.01"
+      [xScaleMax]="xTicks.length - 1"
+      [yScaleMin]="-55"
+      [yScaleMax]="50"
+      [autoScale]="true"
+      >
+      <ng-template #tooltipTemplate let-model="model">
+        {{ labels[model.name] }}: {{ model.value }}
+      </ng-template>
 
-    <div class="chart" *ngIf="(session$ | async) as session">
-      <ngx-charts-line-chart *ngIf="chart" [class.d-none]="!isLineChart"
-        [xAxisTickFormatting]="xAxisTickFormatting"
-        [results]="chart"
-        [animations]="false"
-        [xAxisTicks]="xTicks"
-        [yAxisTicks]="yTicks"
-        [trimXAxisTicks]="false"
-        [trimYAxisTicks]="false"
-        [xAxis]="true"
-        [yAxis]="true"
-        [scheme]="colorScheme"
-        [xScaleMin]="0.01"
-        [xScaleMax]="xTicks.length - 1"
-        [yScaleMin]="-50"
-        [yScaleMax]="50"
-        [autoScale]="true"
-        >
-        <ng-template #tooltipTemplate let-model="model">
-          {{ labels[model.name] }}: {{ model.value }}
-        </ng-template>
+      <ng-template #seriesTooltipTemplate let-model="model">
+        {{ labels[model[0].name] }}: {{ model[0].value }}
+      </ng-template>
 
-        <ng-template #seriesTooltipTemplate let-model="model">
-          {{ labels[model[0].name] }}: {{ model[0].value }}
-        </ng-template>
+    </ngx-charts-line-chart>
 
-      </ngx-charts-line-chart>
-
-      <ngx-charts-bar-vertical *ngIf="chart" [class.d-none]="isLineChart"
-        [xAxisTickFormatting]="xAxisTickFormatting"
-        [results]="chart[0].series"
-        [animations]="false"
-        [xAxisTicks]="xTicks"
-        [yAxisTicks]="yTicks"
-        [maxXAxisTickLength]="50"
-        [trimXAxisTicks]="false"
-        [xAxis]="true"
-        [yAxis]="true"
-        [yScaleMin]="-50"
-        [yScaleMax]="50"
-        [scheme]="colorScheme"
-        [showDataLabel]="true"
-        [customColors]="barCustomColors"
-        >
-        <ng-template #tooltipTemplate let-model="model">
-          {{ labels[model.name] }}: {{ model.value }}
-        </ng-template>
-      </ngx-charts-bar-vertical>
-
-    </div>
-
-    <!-- <div class="done">
-      <button class="btn btn-success" *ngIf="!session.isDone" (click)="markAsDone(activeGroup, questions, answers)">Finish & Record</button>
-      <button class="btn btn-default" *ngIf="session.isDone">Done</button>
-    </div> -->
+    <ngx-charts-bar-vertical *ngIf="chart && !isLineChart" [class.d-none]="isLineChart"
+      [xAxisTickFormatting]="xAxisTickFormatting"
+      [results]="chart[0].series"
+      [animations]="false"
+      [xAxisTicks]="xTicks"
+      [yAxisTicks]="yTicks"
+      [maxXAxisTickLength]="50"
+      [trimXAxisTicks]="true"
+      [xAxis]="true"
+      [yAxis]="true"
+      [yScaleMin]="-55"
+      [yScaleMax]="50"
+      [scheme]="colorScheme"
+      [showDataLabel]="true"
+      [customColors]="barCustomColors"
+      >
+      <ng-template #tooltipTemplate let-model="model">
+        {{ labels[model.name] }}: {{ model.value }}
+      </ng-template>
+    </ngx-charts-bar-vertical>
   </div>
+
+  <div class="done">
+    <button class="btn btn-success" *ngIf="!session.isDone" (click)="finish()">Finish & Record</button>
+    <button class="btn btn-default" *ngIf="session.isDone">Done</button>
+  </div>
+</div>
