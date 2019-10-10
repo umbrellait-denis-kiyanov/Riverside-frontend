@@ -9,7 +9,7 @@
 
 
     <div class="chart" *ngIf="(session$ | async) as session">
-      <ngx-charts-line-chart *ngIf="chart && isLineChart"
+      <ngx-charts-line-chart *ngIf="chart" [class.d-none]="!isLineChart"
         [xAxisTickFormatting]="xAxisTickFormatting"
         [results]="chart"
         [animations]="false"
@@ -36,7 +36,7 @@
 
       </ngx-charts-line-chart>
 
-      <ngx-charts-bar-vertical *ngIf="chart && !isLineChart"
+      <ngx-charts-bar-vertical *ngIf="chart" [class.d-none]="isLineChart"
         [xAxisTickFormatting]="xAxisTickFormatting"
         [results]="chart[0].series"
         [animations]="false"

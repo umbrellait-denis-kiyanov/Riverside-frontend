@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession } from '../interfaces/assessment.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap, shareReplay } from 'rxjs/operators';
+import { tap, shareReplay, mergeMap, filter, map, take } from 'rxjs/operators';
 
 @Injectable()
 export class AssessmentService {
@@ -13,14 +13,32 @@ export class AssessmentService {
 
   updateGroups = tap(_ => this.groupsUpdated$.next(true));
 
+  types$: Observable<AssessmentType[]>;
+
   constructor(private httpClient: HttpClient) { }
 
   getTypes(): Observable<AssessmentType[]> {
-    return this.httpClient.get<AssessmentType[]>(`${this.baseUrl}/types`).pipe(shareReplay(1));
+    if (!this.types$) {
+      this.types$ = this.httpClient.get<AssessmentType[]>(`${this.baseUrl}/questions`).pipe(shareReplay(1));
+    }
+
+    return this.types$;
+  }
+
+  getType(id: number): Observable<AssessmentType> {
+    return this.getTypes().pipe(
+      map(t => t.filter(tp => tp.id == id)),
+      map(t => t[0]),
+      take(1)
+    );
   }
 
   getGroups(type: AssessmentType): Observable<AssessmentGroup[]> {
-    return this.httpClient.get<AssessmentGroup[]>(`${this.baseUrl}/groups/${type.id}`).pipe(shareReplay(1));
+    return new BehaviorSubject<AssessmentGroup[]>(type.groups);
+  }
+
+  getQuestions(group: AssessmentGroup): Observable<AssessmentQuestion[]> {
+    return new BehaviorSubject<AssessmentQuestion[]>(group.questions);
   }
 
   getSession(type: AssessmentType, orgID: number): Observable<AssessmentSession> {
@@ -29,10 +47,6 @@ export class AssessmentService {
 
   getOrgGroups(type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup[]> {
     return this.httpClient.get<AssessmentOrgGroup[]>(`${this.baseUrl}/org-groups/${type.id}/org/${orgID}`);
-  }
-
-  getQuestions(group: AssessmentGroup): Observable<AssessmentQuestion[]> {
-    return this.httpClient.get<AssessmentQuestion[]>(`${this.baseUrl}/questions/${group.id}`).pipe(shareReplay(1));
   }
 
   saveAnswer(question: AssessmentQuestion, orgID: number, answer: boolean): Observable<any> {

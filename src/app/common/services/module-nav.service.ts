@@ -19,6 +19,7 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
     this.storageKey = storageKey;
     this.default = defaultValue;
     this.type = type;
+    this.onChange.next(this.current);
   }
   set current(value: T) {
     if (value === this._current) {
@@ -28,7 +29,7 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
     window.localStorage.setItem(this.storageKey, this.processToStorage());
     this.onChange.next(value);
   }
-  get current() {
+  get current(): T {
     if (this._current !== undefined) {
       return this._current;
     } else {
@@ -70,7 +71,7 @@ export class ModuleNavService {
   lastOrganization = new ResourceFromStorage<number>('last_organization');
   module = new ResourceFromStorage<Module>('last_module');
   stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
-  assesmentType = new ResourceFromStorage<AssessmentType>('last_type');
+  assesmentType = new ResourceFromStorage<number>('last_type');
 
   onApprove = new EventEmitter<boolean>(false);
   onUnapprove = new EventEmitter<boolean>(false);
@@ -176,7 +177,7 @@ export class ModuleNavService {
   }
 
   setAssessmentType(type: AssessmentType) {
-    this.assesmentType.current = type;
+    this.assesmentType.current = type.id;
   }
 
   private moveToStep(offset: number) {

@@ -3,7 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, zip } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { mergeMap, filter, take, tap, distinctUntilChanged } from 'rxjs/operators';
+import { mergeMap, filter, take, tap, distinctUntilChanged, startWith } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -25,8 +25,7 @@ export class AssessmentMenuComponent implements OnInit {
 
   orgGroups$: Observable<AssessmentOrgGroup[]>;
 
-  activeType$: BehaviorSubject<AssessmentType>;
-  activeTypeObserver$: Observable<AssessmentType>;
+  activeType$: Observable<AssessmentType>;
 
   orgObserver$: Observable<number>;
 
@@ -39,21 +38,26 @@ export class AssessmentMenuComponent implements OnInit {
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
 
-    this.activeType$ = this.navService.assesmentType.onChange;
-    this.activeType$.next(this.navService.assesmentType.current);
-    this.activeTypeObserver$ = this.navService.assesmentType.onChange.pipe(distinctUntilChanged((prev, curr) => prev.id === curr.id));
+    this.activeType$ = this.navService.assesmentType.onChange.pipe(
+      startWith(this.navService.assesmentType.current || 1),
+      distinctUntilChanged(),
+      filter(t => !!t),
+      mergeMap((type_id: number) => {
+        return this.asmService.getType(type_id);
+      })
+    );
 
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
-    this.groups$ = this.activeTypeObserver$.pipe(
+    this.groups$ = this.activeType$.pipe(
       mergeMap((type) => {
         return this.asmService.getGroups(type);
       })
     );
 
-    this.activeTypeObserver$.subscribe(_ => this.setFirstUncompletedGroup());
+    this.activeType$.subscribe(_ => this.setFirstUncompletedGroup());
 
-    this.orgGroups$ = combineLatest(this.activeTypeObserver$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
+    this.orgGroups$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
       mergeMap(([type, orgId]) => {
         return this.asmService.getOrgGroups(type, orgId);
       })
@@ -101,7 +105,7 @@ export class AssessmentMenuComponent implements OnInit {
   }
 
   setType(type: AssessmentType) {
-    this.navService.assesmentType.current = type;
+    this.navService.assesmentType.current = type.id;
   }
 
   setGroup(group: AssessmentGroup) {

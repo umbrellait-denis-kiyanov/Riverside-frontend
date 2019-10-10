@@ -2,8 +2,8 @@ import { Component, OnInit } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
-import { Observable, BehaviorSubject, zip } from 'rxjs';
-import { mergeMap, take, shareReplay } from 'rxjs/operators';
+import { Observable, BehaviorSubject, zip, combineLatest } from 'rxjs';
+import { mergeMap, take, shareReplay, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assessment-finish',
@@ -40,14 +40,17 @@ export class AssessmentFinishComponent implements OnInit {
               public navService: ModuleNavService) { }
 
   ngOnInit() {
-    const type$ = this.navService.assesmentType.onChange.pipe(take(1), shareReplay(1));
+    const type$ = this.navService.assesmentType.onChange.pipe(
+        filter(t => !!t),
+        take(1),
+        shareReplay(1),
+        mergeMap(typeID => this.asmService.getType(typeID))
+      );
     const org$ = this.navService.organization$.pipe(take(1), shareReplay(1));
 
     this.session$ = zip(type$, org$).pipe(
       take(1),
-      mergeMap(([type, orgId]) => {
-        return this.asmService.getSession(type, orgId);
-      })
+      mergeMap(([type, orgId]) => this.asmService.getSession(type, orgId))
     );
 
     this.groups$ = type$.pipe(

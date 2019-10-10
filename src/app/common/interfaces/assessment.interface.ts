@@ -2,6 +2,7 @@ export interface AssessmentType {
     id: number;
     name: string;
     description: string;
+    groups: AssessmentGroup[];
  }
 
 export interface AssessmentSession {
