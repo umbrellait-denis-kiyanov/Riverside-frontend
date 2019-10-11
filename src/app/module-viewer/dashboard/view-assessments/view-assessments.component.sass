@@ -11,15 +11,17 @@
     flex: 1
 
 .top-bar
+    display: flex
     margin-bottom: 1em
 
     .btn-group
         display: block
         text-align: left
+        margin-right: 2em
 
         .btn
             text-transform: uppercase
-            font-size: 12px
+            font-size: 14px
 
         .btn:focus
             outline: 0
@@ -29,19 +31,23 @@
             color: white
 
     h2
+        flex: 1
         background-color: $blue
         color: white
         text-align: center
         font-size: 18px
         border-radius: 5px
         text-transform: uppercase
-        padding: 8px
+        padding: 7px
 
 .assessment-content
     flex: 1
+    display: flex
+
+    > .row
+        flex: 1
 
     table
-        height: 100%
         text-transform: uppercase
 
         tbody, thead
@@ -50,24 +56,26 @@
 
             td, th
                 height: 10px
+                padding: 5px 10px
+                border-top-width: 0
+                border-bottom-width: 0
 
-                &.session
-                    width: 20px
-                    text-align: center
-                    white-space: nowrap
+            th
+                border-bottom-width: 1px
 
 
         tfoot
             height: auto
 
-            tr
-                height: 100px
-
             td
                 height: auto
                 vertical-align: bottom
 
-        td.session
+        .session
+            width: 20px
+            text-align: center
+            white-space: nowrap
+
             span
                 color: black
 

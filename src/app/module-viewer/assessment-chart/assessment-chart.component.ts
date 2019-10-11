@@ -13,6 +13,8 @@ export class AssessmentChartComponent implements OnInit {
 
   @Input() isLineChart: boolean;
 
+  @Input() activeEntries: any;
+
   @Output() activatedSeriesChange = new EventEmitter();
 
   xAxisTickFormatting: (idx: number) => string;
@@ -30,6 +32,8 @@ export class AssessmentChartComponent implements OnInit {
   barCustomColors = [];
 
   seriesIndex = [];
+
+  activeEntries = [];
 
   constructor() { }
 

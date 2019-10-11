@@ -16,6 +16,7 @@
   [appChartLabelTooltips]="fullLabels"
   (activate)="activate($event)"
   (deactivate)="deactivate($event)"
+  [activeEntries]="activeEntries"
   appLineChartValueLabels
   >
   <ng-template #tooltipTemplate let-model="model">

@@ -30,6 +30,8 @@ export class ViewAssessmentsComponent implements OnInit {
 
   chart: any;
 
+  activeEntries: any;
+
   colors: string[];
 
   activatedSeries: number;
@@ -44,7 +46,7 @@ export class ViewAssessmentsComponent implements OnInit {
 
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
-    this.sessions$ = zip(this.activeType$.pipe(filter(t => !!t)), this.orgObserver$).pipe(
+    this.sessions$ = combineLatest(this.activeType$.pipe(filter(t => !!t)), this.orgObserver$).pipe(
       mergeMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
     );
 
@@ -79,6 +81,18 @@ export class ViewAssessmentsComponent implements OnInit {
 
   setActiveSeries(event) {
     this.activatedSeries = event;
+  }
+
+  activate(index: number) {
+    this.activatedSeries = index;
+    this.activeEntries = [{name: this.chart[index].name}];
+  }
+
+  deactivate(index: number) {
+    if (index === this.activatedSeries) {
+      this.activatedSeries = null;
+      this.activeEntries = [];
+    }
   }
 
 }
