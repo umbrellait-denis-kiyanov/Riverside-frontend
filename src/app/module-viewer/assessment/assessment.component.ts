@@ -76,4 +76,7 @@ export class AssessmentComponent implements OnInit {
     this.asmService.markAsDone(activeGroup, this.navService.lastOrganization.current).subscribe(_ => this.answerUpdated$.next(true));
   }
 
+  isSectionReady(questions: AssessmentQuestion[], answers) {
+    return !(questions.filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null).length);
+  }
 }

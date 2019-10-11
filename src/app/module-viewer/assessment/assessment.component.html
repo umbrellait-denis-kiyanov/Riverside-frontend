@@ -62,7 +62,12 @@
   </table>
 
   <div class="done">
-    <button class="btn btn-success" *ngIf="!answers.isDone" (click)="markAsDone(activeGroup, questions, answers)">Mark As Done</button>
+    <button class="btn"
+      *ngIf="!answers.isDone"
+      [class.btn-success]="isSectionReady(questions, answers)"
+      [class.btn-default]="!isSectionReady(questions, answers)"
+      (click)="markAsDone(activeGroup, questions, answers)">Mark As Done</button>
+
     <button class="btn btn-default" *ngIf="answers.isDone">Done</button>
 
     <div class="alert alert-danger" *ngIf="(errors | keyvalue)?.length">Please answer to all questions to mark this section as done</div>

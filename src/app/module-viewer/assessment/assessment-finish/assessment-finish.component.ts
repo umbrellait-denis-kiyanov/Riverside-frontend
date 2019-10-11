@@ -77,6 +77,7 @@ export class AssessmentFinishComponent implements OnInit {
         const maxLen = 20;
         this.labels[idx + 1] = group.shortName.length <= maxLen ? group.shortName : group.shortName.substr(0, maxLen - 2) + '...';
         this.fullLabels[idx + 1] = group.shortName;
+
         this.barCustomColors.push({name: (idx + 1).toString(), value: value < 0 ? '#ff6666' : '#a9da9a'});
 
         return {value, name: (idx + 1)};
@@ -95,7 +96,7 @@ export class AssessmentFinishComponent implements OnInit {
           name: 'Assessment',
           series
         },
-        {name: '0', series: [{value: 0, name: -10}, {value: 0, name: series.length + 10}]}
+        {name: '', series: [{value: 0, name: -10}, {value: 0, name: series.length + 10}]}
       ];
     });
 

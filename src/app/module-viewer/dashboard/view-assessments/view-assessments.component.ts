@@ -20,7 +20,7 @@ export class ViewAssessmentsComponent implements OnInit {
 
   orgGroups$: Observable<AssessmentOrgGroup[]>;
 
-  activeType$: Observable<AssessmentType>;
+  activeType$ = new BehaviorSubject<AssessmentType>(null);
 
   orgObserver$: Observable<number>;
 
@@ -28,29 +28,23 @@ export class ViewAssessmentsComponent implements OnInit {
 
   activeGroup$: BehaviorSubject<AssessmentGroup>;
 
-  constructor(private router: Router,
-              private route: ActivatedRoute,
-              public asmService: AssessmentService,
+  constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
 
-    this.activeType$ = this.navService.assessmentType$;
+    this.navService.assessmentType$.pipe(take(1)).subscribe(type => this.activeType$.next(type));
 
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
-    this.sessions$ = zip(this.activeType$, this.orgObserver$).pipe(
+    this.sessions$ = combineLatest(this.activeType$, this.orgObserver$).pipe(
       mergeMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
     );
-
-
-    // this.activeType$.subscribe(console.log);
-
   }
 
   setType(type: AssessmentType) {
-    this.navService.assesmentType.current = type.id;
+    this.activeType$.next(type);
   }
 
 }

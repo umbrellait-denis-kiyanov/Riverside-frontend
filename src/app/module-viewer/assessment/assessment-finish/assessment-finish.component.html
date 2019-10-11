@@ -23,6 +23,8 @@
       [yScaleMin]="-55"
       [yScaleMax]="50"
       [autoScale]="true"
+      [appChartLabelTooltips]="fullLabels"
+      appLineChartValueLabels
       >
       <ng-template #tooltipTemplate let-model="model">
         {{ fullLabels[model.name] }}: {{ model.value }}
@@ -48,6 +50,7 @@
       [scheme]="colorScheme"
       [showDataLabel]="true"
       [customColors]="barCustomColors"
+      [appChartLabelTooltips]="fullLabels"
       >
       <ng-template #tooltipTemplate let-model="model">
         {{ fullLabels[model.name] }}: {{ model.value }}

@@ -75,6 +75,8 @@ export class AssessmentMenuComponent implements OnInit {
 
         if (next) {
           this.setGroup(next);
+        } else if (Object.values(orgGroups).length) {
+          this.finish();
         }
       });
     });

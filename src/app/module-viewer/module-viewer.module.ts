@@ -83,6 +83,8 @@ import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-
 import { AssessmentService } from '../common/services/assessment.service';
 import { AssessmentFinishComponent } from './assessment/assessment-finish/assessment-finish.component';
 import { ViewAssessmentsComponent } from './dashboard/view-assessments/view-assessments.component';
+import { ChartLabelTooltipsDirective } from './directives/chart-label-tooltips.directive';
+import { LineChartValueLabelDirective } from './directives/line-chart-value-label.directive';
 
 @NgModule({
   imports: [
@@ -163,7 +165,9 @@ import { ViewAssessmentsComponent } from './dashboard/view-assessments/view-asse
     AssessmentScoreComponent,
     AssessmentMenuComponent,
     AssessmentFinishComponent,
-    ViewAssessmentsComponent
+    ViewAssessmentsComponent,
+    ChartLabelTooltipsDirective,
+    LineChartValueLabelDirective
   ],
   entryComponents: [
     ModuleViewerRootComponent,
