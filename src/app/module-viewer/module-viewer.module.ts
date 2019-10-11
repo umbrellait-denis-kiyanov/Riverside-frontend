@@ -85,6 +85,7 @@ import { AssessmentFinishComponent } from './assessment/assessment-finish/assess
 import { ViewAssessmentsComponent } from './dashboard/view-assessments/view-assessments.component';
 import { ChartLabelTooltipsDirective } from './directives/chart-label-tooltips.directive';
 import { LineChartValueLabelDirective } from './directives/line-chart-value-label.directive';
+import { AssessmentChartComponent } from './assessment-chart/assessment-chart.component';
 
 @NgModule({
   imports: [
@@ -167,7 +168,8 @@ import { LineChartValueLabelDirective } from './directives/line-chart-value-labe
     AssessmentFinishComponent,
     ViewAssessmentsComponent,
     ChartLabelTooltipsDirective,
-    LineChartValueLabelDirective
+    LineChartValueLabelDirective,
+    AssessmentChartComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

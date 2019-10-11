@@ -8,54 +8,7 @@
   </h2>
 
   <div class="chart">
-    <ngx-charts-line-chart *ngIf="chart" [class.d-none]="!isLineChart"
-      [xAxisTickFormatting]="xAxisTickFormatting"
-      [results]="chart"
-      [animations]="false"
-      [xAxisTicks]="xTicks"
-      [yAxisTicks]="yTicks"
-      [trimXAxisTicks]="false"
-      [xAxis]="true"
-      [yAxis]="true"
-      [scheme]="colorScheme"
-      [xScaleMin]="0.01"
-      [xScaleMax]="xTicks.length - 1"
-      [yScaleMin]="-55"
-      [yScaleMax]="50"
-      [autoScale]="true"
-      [appChartLabelTooltips]="fullLabels"
-      appLineChartValueLabels
-      >
-      <ng-template #tooltipTemplate let-model="model">
-        {{ fullLabels[model.name] }}: {{ model.value }}
-      </ng-template>
-
-      <ng-template #seriesTooltipTemplate let-model="model">
-        {{ fullLabels[model[0].name] }}: {{ model[0].value }}
-      </ng-template>
-    </ngx-charts-line-chart>
-
-    <ngx-charts-bar-vertical *ngIf="chart && !isLineChart" [class.d-none]="isLineChart"
-      [xAxisTickFormatting]="xAxisTickFormatting"
-      [results]="chart[0].series"
-      [animations]="false"
-      [xAxisTicks]="xTicks"
-      [yAxisTicks]="yTicks"
-      [maxXAxisTickLength]="50"
-      [trimXAxisTicks]="true"
-      [xAxis]="true"
-      [yAxis]="true"
-      [yScaleMin]="-55"
-      [yScaleMax]="50"
-      [scheme]="colorScheme"
-      [showDataLabel]="true"
-      [customColors]="barCustomColors"
-      [appChartLabelTooltips]="fullLabels"
-      >
-      <ng-template #tooltipTemplate let-model="model">
-        {{ fullLabels[model.name] }}: {{ model.value }}
-      </ng-template>
-    </ngx-charts-bar-vertical>
+    <assessment-chart *ngIf="chart" [series]="chart" [isLineChart]="isLineChart"></assessment-chart>
   </div>
 
   <div class="done">
