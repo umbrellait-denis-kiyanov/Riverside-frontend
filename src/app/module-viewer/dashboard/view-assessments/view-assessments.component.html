@@ -14,31 +14,30 @@
   <div class="assessment-content" *ngIf="(sessions$ | async) as sessions">
     <div class="row" *ngIf="sessions.length">
       <div class="col-sm-4">
-
         <table class="table table-bordered">
           <thead>
             <tr>
               <th>Phase</th>
-              <th class="session" *ngFor="let session of sessions">{{ session.date | date:'LLL yyyy' }}</th>
+              <th class="session" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i">{{ session.formattedDate }}</th>
             </tr>
           </thead>
           <tbody>
             <tr *ngFor="let group of type.groups">
               <td>{{ group.name }}</td>
-              <td class="session" *ngFor="let session of sessions">{{ session.groups[group.id].score }}</td>
+              <td class="session" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i"><span>{{ session.groups[group.id].score }}</span></td>
             </tr>
           </tbody>
           <tfoot>
             <tr>
               <td>Average</td>
-              <td class="session" *ngFor="let session of sessions">{{ session.score }}</td>
+              <td class="session" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i"><span>{{ session.score }}</span></td>
             </tr>
           </tfoot>
         </table>
       </div>
 
       <div class="col-sm-8">
-
+        <assessment-chart *ngIf="chart" [series]="chart" [colors]="colors" (activatedSeriesChange)="setActiveSeries($event)" [isLineChart]="true"></assessment-chart>
       </div>
     </div>
 

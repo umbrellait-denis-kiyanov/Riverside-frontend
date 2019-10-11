@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
-import { Observable, zip } from 'rxjs';
+import { Observable, zip, combineLatest } from 'rxjs';
 import { mergeMap, take, shareReplay, filter } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -39,7 +39,7 @@ export class AssessmentFinishComponent implements OnInit {
 
     const org$ = this.navService.organization$.pipe(take(1), shareReplay(1));
 
-    this.session$ = zip(type$, org$).pipe(
+    this.session$ = combineLatest(type$, org$).pipe(
       mergeMap(([type, orgId]) => this.asmService.getSession(type, orgId))
     );
 
@@ -57,7 +57,7 @@ export class AssessmentFinishComponent implements OnInit {
       })
     );
 
-    zip(this.groups$, this.orgGroups$, this.session$).subscribe(([groups, orgGroups, session]) => {
+    combineLatest(this.groups$, this.orgGroups$, this.session$).subscribe(([groups, orgGroups, session]) => {
       const series = groups.map((group, idx) => {
         return {value: Number(orgGroups[group.id].score), name: (idx + 1), label: group.shortName};
       });

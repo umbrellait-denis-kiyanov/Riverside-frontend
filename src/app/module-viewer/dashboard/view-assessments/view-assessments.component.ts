@@ -28,6 +28,12 @@ export class ViewAssessmentsComponent implements OnInit {
 
   activeGroup$: BehaviorSubject<AssessmentGroup>;
 
+  chart: any;
+
+  colors: string[];
+
+  activatedSeries: number;
+
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
@@ -38,13 +44,41 @@ export class ViewAssessmentsComponent implements OnInit {
 
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
-    this.sessions$ = combineLatest(this.activeType$, this.orgObserver$).pipe(
+    this.sessions$ = zip(this.activeType$.pipe(filter(t => !!t)), this.orgObserver$).pipe(
       mergeMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
     );
+
+    const colors = ['red', 'green', 'blue', '#00b862', '#afdf0a', '#a7b61a', '#f3e562', '#ff9800', '#ff5722', '#ff4514', '#58ad3f'];
+
+    zip(this.sessions$, this.activeType$.pipe(filter(t => !!t))).subscribe(([sessions, type]) => {
+      this.chart = sessions.map((session, sIdx) => {
+        const series = Object.values(session.groups).map((group, idx) => {
+          return {
+            value: Number(group.score) + (sIdx / 10),
+            formattedValue: Number(group.score),
+            name: (idx + 1),
+            label: type.groups.find(g => g.id == group.group_id).shortName};
+        });
+
+        const score = Math.round(session.score * 10) / 10;
+        series.push({value: score, formattedValue: score, name: (series.length + 1), label: 'Average'});
+
+        return {
+          name: session.formattedDate,
+          series
+        };
+      });
+
+      this.colors = colors.slice(-1 * this.chart.length);
+    });
   }
 
   setType(type: AssessmentType) {
     this.activeType$.next(type);
+  }
+
+  setActiveSeries(event) {
+    this.activatedSeries = event;
   }
 
 }

@@ -13,6 +13,8 @@ export interface AssessmentSession {
     score: number;
     name: string;
     date: Date;
+    formattedDate: string;
+    groups?: AssessmentOrgGroup[];
 }
 
 export interface AssessmentGroup {

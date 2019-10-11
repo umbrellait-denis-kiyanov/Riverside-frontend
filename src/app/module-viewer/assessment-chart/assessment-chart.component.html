@@ -14,14 +14,27 @@
   [yScaleMax]="50"
   [autoScale]="true"
   [appChartLabelTooltips]="fullLabels"
+  (activate)="activate($event)"
+  (deactivate)="deactivate($event)"
   appLineChartValueLabels
   >
   <ng-template #tooltipTemplate let-model="model">
-    {{ fullLabels[model.name] }}: {{ model.value }}
+    {{ fullLabels[model.name] }}: {{ model.formattedValue || model.value }}
   </ng-template>
 
   <ng-template #seriesTooltipTemplate let-model="model">
-    {{ fullLabels[model[0].name] }}: {{ model[0].value }}
+    <div *ngIf="model.length == 1">
+      {{ fullLabels[model[0].name] }}: <span class="tooltip-value">{{ model[0].formattedValue || model[0].value }}</span>
+    </div>
+    <div *ngIf="model.length > 1" style="text-align: left">
+      {{ fullLabels[model[0].name] }}:
+      <table style="margin: 1em 0">
+        <tr *ngFor="let m of model; index as i" [style.color]="colors[i]">
+          <td>{{ seriesIndex[i] }}:</td>
+          <td><span class="tooltip-value"><strong>{{ m.formattedValue || m.value }}</strong></span></td>
+        </tr>
+      </table>
+    </div>
   </ng-template>
 </ngx-charts-line-chart>
 
@@ -43,6 +56,6 @@
   [appChartLabelTooltips]="fullLabels"
   >
   <ng-template #tooltipTemplate let-model="model">
-    {{ fullLabels[model.name] }}: {{ model.value }}
+    {{ fullLabels[model.name] }}: <span class="tooltip-value">{{ model.formattedValue || model.value }}</span>
   </ng-template>
 </ngx-charts-bar-vertical>

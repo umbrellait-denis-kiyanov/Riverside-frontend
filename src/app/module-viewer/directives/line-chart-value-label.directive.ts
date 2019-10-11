@@ -38,7 +38,8 @@ export class LineChartValueLabelDirective {
         g.setAttribute('transform', 'translate(' + point + ')');
         g.setAttribute('class', 'datapoint-value');
 
-        text.innerHTML = this.results[idx].series[pIdx].value.toString();
+        const dp = this.results[idx].series[pIdx];
+        text.innerHTML = (dp.formattedValue || dp.value).toString();
         text.setAttribute('stroke-width', '1');
         text.setAttribute('text-anchor', 'start');
         text.setAttribute('x', '5');
