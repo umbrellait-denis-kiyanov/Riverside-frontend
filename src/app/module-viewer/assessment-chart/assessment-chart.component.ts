@@ -26,14 +26,12 @@ export class AssessmentChartComponent implements OnInit {
   fullLabels = {};
 
   colorScheme = {
-    domain: (this.colors && this.colors.length ? this.colors : ['#58ad3f']).concat(['#999'])
+    domain: ['#999', '#58ad3f']
   };
 
   barCustomColors = [];
 
   seriesIndex = [];
-
-  activeEntries = [];
 
   constructor() { }
 
@@ -52,13 +50,12 @@ export class AssessmentChartComponent implements OnInit {
       this.yTicks = Array.from(Array(11).keys()).map(k => (k * 10) - 50);
     });
 
+    this.series.unshift({name: '', series: [{value: 0, name: -10}, {value: 0, name: this.series[0].series.length + 10}]});
+
     this.seriesIndex = this.series.map(series => series.name);
 
-    this.series.push({name: '', series: [{value: 0, name: -10}, {value: 0, name: this.series[0].series.length + 10}]});
-
     if (this.series.length > 2) {
-      this.colorScheme.domain = ['red', 'green', 'blue', '#00b862', '#afdf0a', '#a7b61a', '#f3e562', '#ff9800', '#ff5722', '#ff4514']
-        .concat(this.colorScheme.domain).slice(-1 * this.series.length);
+      this.colorScheme.domain = this.colorScheme.domain.concat(this.colors);
     }
 
     this.xAxisTickFormatting = (idx: number) => this.labels[idx] || '';

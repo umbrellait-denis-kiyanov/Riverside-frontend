@@ -19,7 +19,7 @@
                     text-transform: uppercase
 
             path
-                stroke-width: 2
+                stroke-width: 3
 
             [ngx-charts-bar-label]
                 text
@@ -50,3 +50,16 @@
             [ngx-charts-y-axis-ticks]
                 text
                     fill: #ddd
+
+            g[ngx-charts-y-axis] + [clip-path]
+                g.ng-trigger-animationState
+                    transform: translate(0, 0)
+
+                    &+g.ng-trigger-animationState
+                        transform: translate(2px,2px)
+
+                        &+g.ng-trigger-animationState
+                            transform: translate(4px,4px)
+
+                            &+g.ng-trigger-animationState
+                                transform: translate(6px,6px)

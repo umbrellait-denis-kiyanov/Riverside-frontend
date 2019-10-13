@@ -31,7 +31,7 @@
       {{ fullLabels[model[0].name] }}:
       <table style="margin: 1em 0">
         <tr *ngFor="let m of model; index as i" [style.color]="colors[i]">
-          <td>{{ seriesIndex[i] }}:</td>
+          <td>{{ seriesIndex[i + 1] }}:</td>
           <td><span class="tooltip-value"><strong>{{ m.formattedValue || m.value }}</strong></span></td>
         </tr>
       </table>

@@ -50,13 +50,13 @@ export class ViewAssessmentsComponent implements OnInit {
       mergeMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
     );
 
-    const colors = ['red', 'green', 'blue', '#00b862', '#afdf0a', '#a7b61a', '#f3e562', '#ff9800', '#ff5722', '#ff4514', '#58ad3f'];
+    const colors = ['red', 'green', '#a7b61a', '#f3e562', '#00b862', '#ff9800', '#afdf0a', '#ff4514', 'blue', '#ff5722', '#58ad3f'];
 
     zip(this.sessions$, this.activeType$.pipe(filter(t => !!t))).subscribe(([sessions, type]) => {
       this.chart = sessions.map((session, sIdx) => {
         const series = Object.values(session.groups).map((group, idx) => {
           return {
-            value: Number(group.score) + (sIdx / 10),
+            value: Number(group.score),
             formattedValue: Number(group.score),
             name: (idx + 1),
             label: type.groups.find(g => g.id == group.group_id).shortName};
@@ -85,7 +85,7 @@ export class ViewAssessmentsComponent implements OnInit {
 
   activate(index: number) {
     this.activatedSeries = index;
-    this.activeEntries = [{name: this.chart[index].name}];
+    this.activeEntries = [{name: this.chart[index + 1].name}];
   }
 
   deactivate(index: number) {
