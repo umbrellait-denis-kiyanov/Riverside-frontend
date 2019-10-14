@@ -61,6 +61,10 @@ export class AssessmentChartComponent implements OnInit {
     this.colorScheme.domain = this.colorScheme.domain.slice(0, this.series.length);
 
     this.xAxisTickFormatting = (idx: number) => this.labels[idx] || '';
+
+    if (!this.activeEntries) {
+      this.activeEntries = [];
+    }
   }
 
   activate(event) {
