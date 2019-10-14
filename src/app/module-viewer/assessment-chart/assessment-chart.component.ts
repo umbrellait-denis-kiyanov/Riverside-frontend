@@ -54,8 +54,8 @@ export class AssessmentChartComponent implements OnInit {
 
     this.seriesIndex = this.series.map(series => series.name);
 
-    if (this.series.length > 2) {
-      this.colorScheme.domain = this.colorScheme.domain.concat(this.colors);
+    if (this.colors) {
+      this.colorScheme.domain = ['#999'].concat(this.colors);
     }
 
     this.colorScheme.domain = this.colorScheme.domain.slice(0, this.series.length);

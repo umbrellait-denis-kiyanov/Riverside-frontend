@@ -50,7 +50,7 @@ export class ViewAssessmentsComponent implements OnInit {
       mergeMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
     );
 
-    const colors = ['red', 'green', '#a7b61a', '#f3e562', '#00b862', '#ff9800', '#afdf0a', '#ff4514', 'blue', '#ff5722', '#58ad3f'];
+    const colors = ['red', 'green', '#f3e562', '#ff9800', '#ff4514', '#afdf0a', '#00b862', 'orange', 'blue', '#ff5722', '#58ad3f'];
 
     zip(this.sessions$, this.activeType$.pipe(filter(t => !!t))).subscribe(([sessions, type]) => {
       this.chart = sessions.map((session, sIdx) => {
