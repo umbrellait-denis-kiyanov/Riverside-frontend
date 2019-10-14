@@ -26,7 +26,7 @@
 
 .btn-group
     display: block
-    text-align: center
+    text-align: left
     padding: 1em
     margin-bottom: 1em
 
@@ -40,6 +40,19 @@
 
     .btn-primary
         color: white
+
+    &.view-completed
+        text-align: right
+
+        .btn
+            position: relative
+            width: 4em
+
+            .mat-icon
+                position: absolute
+                left: 0
+                width: 100%
+                top: 4px
 
 h2
     font-size: 2vw

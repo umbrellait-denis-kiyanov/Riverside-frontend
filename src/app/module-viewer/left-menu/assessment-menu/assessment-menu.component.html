@@ -1,7 +1,16 @@
 <module-org-selector (changed)="setOrganization($event)"></module-org-selector>
 
-<div class="btn-group">
-  <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" (click)="setType(type)">{{ type.name }}</button>
+<div class="row">
+  <div class="col-sm-8">
+    <div class="btn-group">
+      <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" (click)="setType(type)">{{ type.name }}</button>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="btn-group view-completed">
+      <button type="button" class="btn btn-default" (click)="viewPastAssessments()" title="View past assessments">&nbsp;<mat-icon>show_chart</mat-icon></button>
+    </div>
+  </div>
 </div>
 
 <div *ngIf="activeType$ | async">

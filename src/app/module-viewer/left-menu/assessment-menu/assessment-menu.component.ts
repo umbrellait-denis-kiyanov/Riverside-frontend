@@ -130,4 +130,8 @@ export class AssessmentMenuComponent implements OnInit {
 
     this.router.navigate(['org', organization.id, 'assessment']);
   }
+
+  viewPastAssessments() {
+    this.router.navigate(['dashboard', this.navService.lastOrganization.current], { state: { section: 'assessments' } });
+  }
 }
