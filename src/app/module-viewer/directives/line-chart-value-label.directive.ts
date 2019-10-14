@@ -23,6 +23,7 @@ export class LineChartValueLabelDirective {
   }
 
   private updateLabels() {
+    const map = [];
     this.el.nativeElement.querySelectorAll('.datapoint-value').forEach(el => el.remove());
     const series = this.el.nativeElement.querySelectorAll('g.line-series path');
     series.forEach((el, idx) => {
@@ -38,6 +39,12 @@ export class LineChartValueLabelDirective {
         g.setAttribute('transform', 'translate(' + point + ')');
         g.setAttribute('class', 'datapoint-value');
 
+        // hide nearby points to avoid cluttering the chart with overlapping numbers
+        const [x, y] = point.split(',').map(p => Number(p));
+        if (map.find(p => Math.abs(x - p[0]) < 30 && Math.abs(y - p[1]) < 30)) {
+          g.setAttribute('style', 'display: none');
+        }
+
         const dp = this.results[idx].series[pIdx];
         text.innerHTML = (dp.formattedValue || dp.value).toString();
         text.setAttribute('stroke-width', '1');
@@ -47,6 +54,8 @@ export class LineChartValueLabelDirective {
         text.setAttribute('style', 'font-size: 12px; fill: #999;');
 
         el.parentNode.appendChild(g);
+
+        map.push([x, y]);
       });
     });
   }
