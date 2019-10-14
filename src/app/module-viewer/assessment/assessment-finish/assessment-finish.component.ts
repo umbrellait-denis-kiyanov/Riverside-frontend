@@ -74,7 +74,8 @@ export class AssessmentFinishComponent implements OnInit {
 
   finish(session: AssessmentSession) {
     this.asmService.finishSession(session).subscribe(_ => {
-        this.router.navigate(['dashboard', this.navService.lastOrganization.current], { state: { section: 'assessments' } });
+        this.router.navigate(['dashboard', this.navService.lastOrganization.current],
+          { state: { section: 'assessments', type: session.type } });
       }
     );
   }

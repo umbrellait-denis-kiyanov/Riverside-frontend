@@ -40,6 +40,10 @@ export class ViewAssessmentsComponent implements OnInit {
               public navService: ModuleNavService) { }
 
   ngOnInit() {
+    if (window.history.state && window.history.state.type) {
+      this.asmService.getType(window.history.state.type).subscribe(type => this.setType(type));
+    }
+
     this.types$ = this.asmService.getTypes();
 
     this.navService.assessmentType$.pipe(take(1)).subscribe(type => this.activeType$.next(type));
