@@ -70,8 +70,8 @@ export class AssessmentMenuComponent implements OnInit {
     this.activeGroup$.subscribe(_ => this.groupCompleted$.next(false));
 
     zip(this.asmService.groupsUpdated$, this.groupCompleted$.pipe(filter(r => r))).subscribe(([update, isCompleted]) => {
-      zip(this.activeGroup$, this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([active, groups, orgGroups]) => {
-        const next = groups.find(g => (Number(g.position) > Number(active.position)) && (!orgGroups[g.id] || !orgGroups[g.id].isDone));
+      combineLatest(this.activeGroup$, this.activeType$, this.orgGroups$).pipe(take(1)).subscribe(([active, type, orgGroups]) => {
+        const next = type.groups.find(g => (Number(g.position) > Number(active.position)) && (!orgGroups[g.id] || !orgGroups[g.id].isDone));
 
         if (next) {
           this.setGroup(next);
