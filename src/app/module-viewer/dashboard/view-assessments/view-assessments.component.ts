@@ -76,7 +76,8 @@ export class ViewAssessmentsComponent implements OnInit {
   }
 
   setType(type: AssessmentType) {
-    this.activeType$.next(type);
+    this.chart = null;
+    setTimeout(_ => this.activeType$.next(type));
   }
 
   setActiveSeries(event) {

@@ -8,7 +8,7 @@
   </div>
 
   <div class="assessment-content" *ngIf="(sessions$ | async) as sessions">
-    <div class="row" *ngIf="sessions.length">
+    <div class="row" *ngIf="sessions.length && chart">
       <div class="col-sm-4">
         <table class="table table-bordered">
           <thead>
@@ -19,7 +19,7 @@
           </thead>
           <tbody>
             <tr *ngFor="let group of type.groups; index as gIdx">
-              <td>{{ gIdx + 1 }}. {{ group.name }}</td>
+              <td class="group-title">{{ gIdx + 1 }}. {{ group.name }}</td>
               <td class="session" (mouseenter)="activate(i)" (mouseleave)="deactivate(i)" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i"><span>{{ session.groups[group.id]?.score }}</span></td>
             </tr>
           </tbody>
