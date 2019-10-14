@@ -4,7 +4,7 @@ import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { Observable, zip, combineLatest } from 'rxjs';
 import { mergeMap, take, shareReplay, filter } from 'rxjs/operators';
-import { Router } from '@angular/router';
+import { Router, NavigationExtras } from '@angular/router';
 
 @Component({
   selector: 'app-assessment-finish',
@@ -73,8 +73,9 @@ export class AssessmentFinishComponent implements OnInit {
   }
 
   finish(session: AssessmentSession) {
-    this.asmService.finishSession(session).subscribe(_ =>
-      this.router.navigate(['org', this.navService.lastOrganization.current, 'assessment', session.id])
+    this.asmService.finishSession(session).subscribe(_ => {
+        this.router.navigate(['dashboard', this.navService.lastOrganization.current], { state: { section: 'assessments' } });
+      }
     );
   }
 }
