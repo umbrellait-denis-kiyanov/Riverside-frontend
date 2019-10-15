@@ -9,8 +9,8 @@ import User from 'src/app/common/interfaces/user.model';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { combineLatest } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { combineLatest, Observable } from 'rxjs';
+import { filter, switchMap, catchError, tap, startWith } from 'rxjs/operators';
 
 declare global {
   interface Window { $: any; }
@@ -25,12 +25,11 @@ export class LeftMenuComponent implements OnInit {
 
   @Input() width: number = 300;
 
-  module: Module;
   orgId: number;
 
-  sending = false;
   me: User;
-  ready = false;
+
+  module$: Observable<Module>;
 
   constructor(
     private moduleService: ModuleService,
@@ -44,25 +43,17 @@ export class LeftMenuComponent implements OnInit {
   ngOnInit() {
     this.me = this.userService.me;
 
-    this.navService.module.onChange.subscribe((module: Module) => {
-      this.module = module;
-    });
+    this.route.params.pipe(
+      switchMap(params => this.moduleService.getModuleConfig(params.id)),
+      catchError(err => this.moduleService.getDefaultModule())
+    ).subscribe(module => this.navService.module.current = module);
 
-    combineLatest(this.navService.organization$.pipe(filter(o => !!o)), this.route.params).subscribe(([orgId, params]) => {
-      this.orgId = orgId;
-
-      if (params.moduleId) {
-        this.navService.getModule(params.moduleId, this.orgId).then(moduleData => {
-          if (moduleData) {
-            this.module = moduleData;
-          }
-
-          this.module.percComplete = this.module.percComplete || 0;
-
-          this.ready = true;
-        });
-      }
-    });
+    this.module$ = combineLatest(this.navService.organization$,
+                                 this.navService.module.onChange.pipe(startWith(this.navService.module.current), filter(m => !!m)))
+      .pipe(
+        tap(([orgId]) => this.orgId = orgId),
+        switchMap(([orgId, module]) => this.moduleService.getOrgModule(module.id, orgId))
+      );
 
     window.$('#datepicker').datepicker({
       dateFormat: 'dd M yy'
@@ -73,21 +64,9 @@ export class LeftMenuComponent implements OnInit {
     this.leftMenuService.expand = false;
   }
 
-  updateProgress() {
-    this.moduleService.updateProgress(this.module);
-  }
-
   openElement(element: Step['elements'][number]) {
     const modalRef = this.modalService.open(LearningElementComponent, { windowClass: 'learning-element-modal' });
     modalRef.componentInstance.element = element;
-  }
-
-  sendRequest() {
-    this.sending = true;
-    this.moduleService.requestFeedback(this.module).then(() => {
-      this.sending = false;
-      toastr.success('An email has been sent with your request');
-    });
   }
 
   canEdit() {
@@ -99,7 +78,7 @@ export class LeftMenuComponent implements OnInit {
     return step.is_checked || step.is_approved || step.waiting_for_feedback || step.feedback_received;
   }
 
-  stepRouterLink(step: Step) {
-    return ['/org', this.orgId, 'module', this.module.id , 'step', step.id ];
+  stepRouterLink(module: Module, step: Step) {
+    return ['/org', this.orgId, 'module', module.id , 'step', step.id ];
   }
 }

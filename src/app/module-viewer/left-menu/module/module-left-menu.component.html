@@ -1,6 +1,6 @@
 <div
   [ngStyle]="{'width.px': width}"
-  *ngIf="ready"
+  *ngIf="(module$ | async) as module"
 >
   <div class="left-menu-header"></div>
 
@@ -33,7 +33,7 @@
         >{{step.description}}</a>
 
         <a
-          [routerLink]="stepRouterLink(step)"
+          [routerLink]="stepRouterLink(module, step)"
 
           *ngIf="!step.is_section_break"
         >

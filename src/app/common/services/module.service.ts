@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { Module, Step, Input } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { shareReplay, switchMap } from 'rxjs/operators';
+import { shareReplay, switchMap, map } from 'rxjs/operators';
 
 @Injectable()
 export class ModuleService {
@@ -20,19 +20,21 @@ export class ModuleService {
     return this.httpClient.get<Module>(`${this.baseUrl}/${id}`);
   }
 
-  async getModule(id: number, org_id: number): Promise<Module | false> {
+  getOrgModule(id: number, org_id: number): Observable<Module> {
     const endpoint = String(id) + `/org/${org_id}`;
-    return await this.httpClient.get(`${this.baseUrl}/${endpoint}`).toPromise().then(async (res: any) => {
-      let i = 1;
-      for (const step of (res.steps as Step[])) {
-        step.position = i;
-        if (!step.is_section_break) {
-          i++;
+    return this.httpClient.get<Module>(`${this.baseUrl}/${endpoint}`).pipe(
+      map(res => {
+        let i = 1;
+        for (const step of (res.steps as Step[])) {
+          step.position = i;
+          if (!step.is_section_break) {
+            i++;
+          }
         }
-      }
 
-      return res;
-    });
+        return res;
+      })
+    );
   }
 
   getModules(): Observable<Module[]> {

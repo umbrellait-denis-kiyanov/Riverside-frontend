@@ -146,16 +146,16 @@ export class ModuleNavService {
   }
 
   reloadModule() {
-    this.getModule(this.module.current.id, this.organization$.value);
+    // this.getModule(this.module.current.id, this.organization$.value);
   }
 
-  getModule(id: number, orgId: number) {
-    return this.moduleService.getModule(id, orgId).then(async (moduleData: Module) => {
-        this.module.current = moduleData;
-        this.moduleService.updateProgress(this.module.current);
-        return moduleData;
-    });
-  }
+  // getModule(id: number, orgId: number) {
+  //   return this.moduleService.getOrgModule(id, orgId).then(async (moduleData: Module) => {
+  //       this.module.current = moduleData;
+  //       this.moduleService.updateProgress(this.module.current);
+  //       return moduleData;
+  //   });
+  // }
 
   nextStep() {
     this.moveToStep(1);
