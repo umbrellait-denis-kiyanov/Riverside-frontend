@@ -3,7 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { mergeMap, filter, take, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { filter, take, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -43,7 +43,7 @@ export class AssessmentMenuComponent implements OnInit {
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
     this.groups$ = this.activeType$.pipe(
-      mergeMap((type) => {
+      switchMap((type) => {
         return this.asmService.getGroups(type);
       })
     );
@@ -51,7 +51,7 @@ export class AssessmentMenuComponent implements OnInit {
     this.activeType$.subscribe(_ => this.setFirstUncompletedGroup());
 
     this.orgGroups$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
-      mergeMap(([type, orgId]) => {
+      switchMap(([type, orgId]) => {
         return this.asmService.getOrgGroups(type, orgId);
       })
     );

@@ -3,7 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { AssessmentGroup, AssessmentQuestion, AssessmentOrgGroup, AssessmentAnswer } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { mergeMap, filter } from 'rxjs/operators';
+import { switchMap, filter } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assessment',
@@ -31,14 +31,14 @@ export class AssessmentComponent implements OnInit {
     this.activeGroup$ = this.navService.assessmentGroup$.pipe(filter(g => !!g));
 
     this.questions$ = combineLatest(this.activeGroup$, this.navService.organization$).pipe(
-      mergeMap(([group, orgId]) => {
+      switchMap(([group, orgId]) => {
         this.errors = {};
         return this.asmService.getQuestions(group);
       })
     );
 
     this.answers$ = combineLatest(this.activeGroup$, this.navService.organization$, this.answerUpdated$).pipe(
-      mergeMap(([group, orgId]) => {
+      switchMap(([group, orgId]) => {
         return this.asmService.getAnswers(group, orgId);
       })
     );

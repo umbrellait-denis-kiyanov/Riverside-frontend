@@ -2,7 +2,7 @@ import { Injectable } from '@angular/core';
 import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession } from '../interfaces/assessment.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { tap, shareReplay, mergeMap, filter, map, take } from 'rxjs/operators';
+import { tap, shareReplay, map, take } from 'rxjs/operators';
 
 @Injectable()
 export class AssessmentService {

@@ -6,7 +6,7 @@ import { HttpClient } from '@angular/common/http';
 import { IceService } from 'src/app/module-viewer/ice/ice.service';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
-import { filter, startWith, distinctUntilChanged, mergeMap } from 'rxjs/operators';
+import { filter, startWith, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { AssessmentService } from './assessment.service';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
@@ -95,7 +95,7 @@ export class ModuleNavService {
         startWith(this.assesmentType.current || 1),
         distinctUntilChanged(),
         filter(t => !!t),
-        mergeMap((type_id: number) => {
+        switchMap((type_id: number) => {
           return this.asmService.getType(type_id);
         })
       );

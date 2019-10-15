@@ -3,9 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, zip } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { mergeMap, filter, take, tap, distinctUntilChanged, startWith } from 'rxjs/operators';
-import { Organization } from 'src/app/common/interfaces/module.interface';
-import { Router, ActivatedRoute } from '@angular/router';
+import { switchMap, filter, take, distinctUntilChanged } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-assessments',
@@ -51,7 +49,7 @@ export class ViewAssessmentsComponent implements OnInit {
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
     this.sessions$ = combineLatest(this.activeType$.pipe(filter(t => !!t)), this.orgObserver$).pipe(
-      mergeMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
+      switchMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
     );
 
     const colors = ['red', 'green', '#f3e562', '#ff9800', '#ff4514', '#afdf0a', '#00b862', 'orange', 'blue', '#ff5722', '#58ad3f'];

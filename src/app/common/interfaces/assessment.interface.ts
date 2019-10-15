@@ -9,7 +9,7 @@ export interface AssessmentSession {
     id: number;
     org_id: number;
     isDone: boolean;
-    type: number;
+    type_id: number;
     score: number;
     name: string;
     date: Date;
