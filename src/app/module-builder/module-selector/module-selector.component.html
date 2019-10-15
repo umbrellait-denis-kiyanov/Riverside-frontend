@@ -15,10 +15,11 @@
         <select
           [ngModel]="selectedModule"
           (change)="onChange($event.target.value)"
+          *ngIf="(modules$ | async) as modules"
           class="site-tbox margin_0"
         >
           <option
-            *ngFor="let m of moduleService.modules"
+            *ngFor="let m of modules"
             [value]="m.id"
           >{{m.name}}</option>
         </select>

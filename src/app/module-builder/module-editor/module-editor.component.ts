@@ -6,6 +6,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepTemplateEditorComponent } from './step-template-editor/step-template-editor.component';
 import { StepLinkEditorComponent } from './step-link-editor/step-link-editor.component';
+import { switchMap, catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-module-editor',
@@ -21,6 +22,10 @@ export class ModuleEditorComponent implements OnInit {
   lastSavedModule: string;
 
   hasChanges = () => {
+    if (!this.moduleData) {
+      return false;
+    }
+
     this.moduleData.steps = this.generateStepsData();
     return this.lastSavedModule !== JSON.stringify(this.moduleData);
   }
@@ -32,13 +37,14 @@ export class ModuleEditorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.subscribe((params) => {
-      this.moduleService.loadModules({}).then(() => this.moduleService.getModuleConfig(Number(params.id)).toPromise().then(moduleData => {
-        this.moduleData = moduleData;
-        this.sections = this.getSections(moduleData) || [];
-        this.ready = true;
-        this.setPristineState();
-      }));
+    this.route.params.pipe(
+      switchMap(params => this.moduleService.getModuleConfig(Number(params.id))),
+      catchError(err => this.moduleService.getDefaultModule())
+    ).subscribe(moduleData => {
+      this.moduleData = moduleData;
+      this.sections = this.getSections(moduleData) || [];
+      this.ready = true;
+      this.setPristineState();
     });
   }
 
@@ -103,10 +109,9 @@ export class ModuleEditorComponent implements OnInit {
   onClickSave() {
     this.saving = true;
     this.moduleData.steps = this.generateStepsData();
-    this.moduleService.saveModule(this.moduleData)
-    .finally(() => {
-      this.saving = false;
+    this.moduleService.saveModule(this.moduleData).subscribe(_ => {
       this.setPristineState();
+      this.saving = false;
     });
   }
 

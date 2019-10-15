@@ -11,7 +11,9 @@ import { ModuleService } from '../../common/services/module.service';
 })
 export class ModuleSelectorComponent implements OnInit {
 
-  public selectedModule = 1;
+  public selectedModule: number;
+
+  modules$ = this.moduleService.getModules();
 
   constructor(
     private route: ActivatedRoute,
@@ -22,17 +24,16 @@ export class ModuleSelectorComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.selectedModule = parseInt(this.router.url.split('/').pop(), 10) || 1;
+    this.selectedModule = parseInt(this.router.url.split('/').pop(), 10);
     this.navigateToModuleIfNeeded(this.selectedModule);
   }
 
-  navigateToModuleIfNeeded(moduleId: number) {
-    if (!moduleId) {
-      this.moduleService.loadModules({}).then(() => {
-        this.selectedModule = this.moduleService.modules[0].id;
-        this.router.navigateByUrl(`/builder/${this.selectedModule}`);
+  navigateToModuleIfNeeded(moduleId: number = null) {
+    if (!Number(moduleId)) {
+      this.moduleService.getDefaultModule().subscribe(module => {
+        this.router.navigateByUrl(`/builder/${module.id}`);
+        this.selectedModule = module.id;
       });
-
     }
   }
 

@@ -83,7 +83,7 @@ export const menus: MenusInterface = [
     'mat-icon': 'build',
     label: 'EDITOR',
     linkFn(nav: ModuleNavService) {
-      return `/builder/${nav.module.current ? nav.module.current.id : 1}`;
+      return `/builder/${nav.module.current ? nav.module.current.id : ''}`;
     },
     restrict: ({ user }) => user.permissions.riversideModuleEditor
   },

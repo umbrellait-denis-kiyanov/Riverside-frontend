@@ -1,11 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Module, Step, Input } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-
-export interface LoadModuleParams {
-  orgId?: string;
-}
+import { Observable, throwError } from 'rxjs';
+import { shareReplay, switchMap } from 'rxjs/operators';
 
 @Injectable()
 export class ModuleService {
@@ -16,6 +13,10 @@ export class ModuleService {
   constructor(private httpClient: HttpClient) { }
 
   getModuleConfig(id: number): Observable<Module> {
+    if (!Number(id)) {
+      throw throwError('Invalid ID');
+    }
+
     return this.httpClient.get<Module>(`${this.baseUrl}/${id}`);
   }
 
@@ -34,22 +35,22 @@ export class ModuleService {
     });
   }
 
-  async loadModules(params?: LoadModuleParams, refresh = false) {
-    if (this.modules && !refresh) {
-      return this.modules;
-    }
-    this.modules = await this.httpClient.get(this.baseUrl).toPromise().then(async (res: any) => {
-      return res;
-    });
-    return this.modules;
+  getModules(): Observable<Module[]> {
+    return this.httpClient.get<Module[]>(this.baseUrl).pipe(shareReplay(1));
+  }
+
+  getDefaultModule(): Observable<Module> {
+    return this.getModules().pipe(
+      switchMap(modules => this.getModuleConfig(modules[0].id))
+    );
   }
 
   getTemplates(moduleId: number) {
     return this.httpClient.get(`${this.baseUrl}/${moduleId}/templates`).toPromise();
   }
 
-  async saveModule(module: Module): Promise<object> {
-    return this.httpClient.post(`${this.baseUrl}/${module.id}`, module).toPromise();
+  saveModule(module: Module): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}`, module);
   }
 
   async requestFeedback(module: Partial<Module>): Promise<object> {
