@@ -1,8 +1,9 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
-import { Observable } from 'rxjs';
+import { Observable, combineLatest } from 'rxjs';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { take, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'module-org-selector',
@@ -24,17 +25,18 @@ export class OrgSelectorComponent implements OnInit {
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
     this.organizationID = this.moduleNavService.lastOrganization.current;
+    if (!this.organizationID) {
+      this.organizations$.pipe(take(1)).subscribe(organizations => this.setOrganization(organizations[0]));
+    }
 
-    this.moduleNavService.organization$.subscribe((orgId: number) => {
-      this.organizations$.subscribe(organizations => {
-        this.currentOrg = organizations.find(
-          org => Number(org.id) === Number(orgId)
-        );
+    combineLatest(this.moduleNavService.organization$, this.organizations$).subscribe(([orgId, organizations]) => {
+      this.currentOrg = organizations.find(
+        org => Number(org.id) === Number(orgId)
+      );
 
-        this.setOrganization(
-          orgId && this.currentOrg ? this.currentOrg : organizations[0]
-        );
-      });
+      this.setOrganization(
+        orgId && this.currentOrg ? this.currentOrg : organizations[0]
+      );
     });
   }
 

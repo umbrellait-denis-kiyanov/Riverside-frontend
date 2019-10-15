@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Module, Step, Input, Organization } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable, BehaviorSubject } from 'rxjs';
-import { filter } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { filter, shareReplay } from 'rxjs/operators';
 
 export interface LoadModuleParams {
   orgId?: string;
@@ -14,7 +14,7 @@ export class ModuleService {
   modules: Module[];
   baseUrl = '/api/modules';
 
-  organizations$ = new BehaviorSubject<Organization[]>(null);
+  organizations$: Observable<Organization[]>;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -93,10 +93,8 @@ export class ModuleService {
   }
 
   getOrganizations(): Observable<Organization[]> {
-    if (!this.organizations$.value) {
-      this.httpClient.get<Organization[]>(`${this.baseUrl}/organizations/list`).subscribe(organizations => {
-        this.organizations$.next(organizations);
-      });
+    if (!this.organizations$) {
+      this.organizations$ = this.httpClient.get<Organization[]>(`${this.baseUrl}/organizations/list`).pipe(shareReplay(1));
     }
 
     return this.organizations$.pipe(filter(orgs => !!orgs));
