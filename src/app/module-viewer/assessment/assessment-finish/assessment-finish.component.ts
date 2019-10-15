@@ -30,7 +30,7 @@ export class AssessmentFinishComponent implements OnInit {
               public router: Router) { }
 
   ngOnInit() {
-    const type$ = this.navService.assesmentType.onChange.pipe(
+    const type$ = this.navService.assessmentType.onChange.pipe(
         filter(t => !!t),
         take(1),
         shareReplay(1),
@@ -45,16 +45,12 @@ export class AssessmentFinishComponent implements OnInit {
 
     this.groups$ = type$.pipe(
       take(1),
-      switchMap((type) => {
-        return this.asmService.getGroups(type);
-      })
+      switchMap((type) => this.asmService.getGroups(type))
     );
 
     this.orgGroups$ = zip(type$, org$).pipe(
       take(1),
-      switchMap(([type, orgId]) => {
-        return this.asmService.getOrgGroups(type, orgId);
-      })
+      switchMap(([type, orgId]) => this.asmService.getOrgGroups(type, orgId))
     );
 
     combineLatest(this.groups$, this.orgGroups$, this.session$).subscribe(([groups, orgGroups, session]) => {

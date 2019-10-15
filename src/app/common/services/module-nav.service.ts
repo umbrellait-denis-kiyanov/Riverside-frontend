@@ -72,7 +72,7 @@ export class ModuleNavService {
   lastOrganization = new ResourceFromStorage<number>('last_organization');
   module = new ResourceFromStorage<Module>('last_module');
   stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
-  assesmentType = new ResourceFromStorage<number>('last_type');
+  assessmentType = new ResourceFromStorage<number>('last_type');
 
   onApprove = new EventEmitter<boolean>(false);
   onUnapprove = new EventEmitter<boolean>(false);
@@ -91,13 +91,11 @@ export class ModuleNavService {
 
   get assessmentType$() {
     if (!this.activeAssessmentType$) {
-      this.activeAssessmentType$ = this.assesmentType.onChange.pipe(
-        startWith(this.assesmentType.current || 1),
+      this.activeAssessmentType$ = this.assessmentType.onChange.pipe(
+        startWith(this.assessmentType.current || 1),
         distinctUntilChanged(),
         filter(t => !!t),
-        switchMap((type_id: number) => {
-          return this.asmService.getType(type_id);
-        })
+        switchMap((type_id: number) => this.asmService.getType(type_id))
       );
     }
 
@@ -196,7 +194,7 @@ export class ModuleNavService {
   }
 
   setAssessmentType(type: AssessmentType) {
-    this.assesmentType.current = type.id;
+    this.assessmentType.current = type.id;
   }
 
   private moveToStep(offset: number) {

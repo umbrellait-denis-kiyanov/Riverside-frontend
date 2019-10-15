@@ -71,17 +71,18 @@ export class AssessmentMenuComponent implements OnInit {
 
     this.groupCompleted$.pipe(
       filter(r => r),
-      switchMap(_ => combineLatest(this.activeGroup$, this.activeType$, this.orgGroups$).pipe(take(1))))
-        .subscribe(([active, type, orgGroups]) => {
-          const next = type.groups.find(g => (Number(g.position) > Number(active.position)) && (!orgGroups[g.id] || !orgGroups[g.id].isDone));
+      switchMap(_ => combineLatest(this.activeGroup$, this.activeType$, this.orgGroups$).pipe(take(1)))
+    )
+      .subscribe(([active, type, orgGroups]) => {
+        const next = type.groups.find(g => (Number(g.position) > Number(active.position)) && (!orgGroups[g.id] || !orgGroups[g.id].isDone));
 
-          if (next) {
-            this.setGroup(next);
-          } else if (Object.values(orgGroups).length) {
-            this.finish();
-          }
-        });
-  }
+        if (next) {
+          this.setGroup(next);
+        } else if (Object.values(orgGroups).length) {
+          this.finish();
+        }
+      });
+}
 
   private setFirstUncompletedGroup() {
     if (this.groups$ && this.orgGroups$) {
@@ -98,7 +99,7 @@ export class AssessmentMenuComponent implements OnInit {
   }
 
   setType(type: AssessmentType) {
-    this.navService.assesmentType.current = type.id;
+    this.navService.assessmentType.current = type.id;
   }
 
   setGroup(group: AssessmentGroup) {

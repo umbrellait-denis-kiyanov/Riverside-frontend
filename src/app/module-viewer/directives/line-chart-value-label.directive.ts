@@ -40,7 +40,7 @@ export class LineChartValueLabelDirective {
         g.setAttribute('class', 'datapoint-value');
 
         // hide nearby points to avoid cluttering the chart with overlapping numbers
-        const [x, y] = point.split(',').map(p => Number(p));
+        const [x, y] = point.split(',').map(Number);
         if (map.find(p => Math.abs(x - p[0]) < 30 && Math.abs(y - p[1]) < 30)) {
           g.setAttribute('style', 'display: none');
         }

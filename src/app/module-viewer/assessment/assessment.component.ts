@@ -38,9 +38,7 @@ export class AssessmentComponent implements OnInit {
     );
 
     this.answers$ = combineLatest(this.activeGroup$, this.navService.organization$, this.answerUpdated$).pipe(
-      switchMap(([group, orgId]) => {
-        return this.asmService.getAnswers(group, orgId);
-      })
+      switchMap(([group, orgId]) => this.asmService.getAnswers(group, orgId))
     );
   }
 
