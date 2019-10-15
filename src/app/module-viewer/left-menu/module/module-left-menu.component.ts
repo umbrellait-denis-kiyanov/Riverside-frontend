@@ -9,8 +9,8 @@ import User from 'src/app/common/interfaces/user.model';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { Observable } from 'rxjs';
 import { combineLatest } from 'rxjs';
+import { filter } from 'rxjs/operators';
 
 declare global {
   interface Window { $: any; }
@@ -38,8 +38,7 @@ export class LeftMenuComponent implements OnInit {
     private userService: UserService,
     private leftMenuService: LeftMenuService,
     private navService: ModuleNavService,
-    private route: ActivatedRoute,
-    private router: Router
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -49,12 +48,7 @@ export class LeftMenuComponent implements OnInit {
       this.module = module;
     });
 
-    combineLatest(this.navService.organization$, this.route.params).subscribe(([orgId, params]) => {
-
-      if (!orgId) {
-        return;
-      }
-
+    combineLatest(this.navService.organization$.pipe(filter(o => !!o)), this.route.params).subscribe(([orgId, params]) => {
       this.orgId = orgId;
 
       if (params.moduleId) {
@@ -80,7 +74,7 @@ export class LeftMenuComponent implements OnInit {
   }
 
   updateProgress() {
-    this.navService.updateProgress(this.module);
+    this.moduleService.updateProgress(this.module);
   }
 
   openElement(element: Step['elements'][number]) {

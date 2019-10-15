@@ -136,12 +136,6 @@ export class ModuleNavService {
     return this.router;
   }
 
-  updateProgress(module: Module) {
-    const numerator = module.steps.filter(s => !s.is_section_break).map(s => Number(!!s.is_approved)).reduce((prev, curr) => prev + curr);
-    const denominator = module.steps.filter(s => !s.is_section_break).length;
-    module.percComplete = Math.round(100 * numerator / denominator);
-  }
-
   getStepId() {
     return this.module.current.steps[this.stepIndex.current].id;
   }
@@ -158,7 +152,7 @@ export class ModuleNavService {
   getModule(id: number, orgId: number) {
     return this.moduleService.getModule(id, orgId).then(async (moduleData: Module) => {
         this.module.current = moduleData;
-        this.updateProgress(this.module.current);
+        this.moduleService.updateProgress(this.module.current);
         return moduleData;
     });
   }
@@ -181,51 +175,10 @@ export class ModuleNavService {
     this.stepIndex.current = Number(index) + offset;
     const step = this.module.current.steps[this.stepIndex.current];
     if (!step.is_section_break) {
-      console.log()
       this.router.navigate(['org', this.organization$.value, 'module', this.module.current.id, 'step', step.id]);
     } else {
       return offset === 1 ? this.nextStep() : this.previousStep();
     }
   }
 
-  async markAsDone(stepId: number, is_checked: boolean = true) {
-    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.organization$.value + '/step/' + stepId + '/done', {is_checked}).toPromise()
-      .then(() => {
-        const stepIndex = this.setStepFromId(stepId);
-        const step = this.module.current.steps[stepIndex];
-        if (step) {
-          step.is_checked = is_checked;
-        }
-        this.updateProgress(this.module.current);
-      });
-  }
-
-  async markAsApproved(stepId: number, is_approved: boolean = true) {
-    return this.http.post('/api/modules/' + this.module.current.id + '/org/' + this.organization$.value + '/step/' + stepId + '/done', {is_approved, org_id: this.organization$.value}).toPromise()
-      .then((response: number[]) => {
-        const stepIndex = this.setStepFromId(stepId);
-        const step = this.module.current.steps[stepIndex];
-        if (step) {
-          step.is_approved = is_approved;
-          if (step.is_approved) {
-            this.onApprove.emit(true);
-            this.iceService.onApprove.emit();
-            if (!this.currentStep.requires_feedback) {
-              this.nextStep();
-            }
-          } else {
-            this.onUnapprove.emit();
-            if (!this.currentStep.requires_feedback) {
-              this.reloadModule();
-            }
-          }
-        }
-
-        response.forEach(id => this.module.current.steps.find(st => st.id === id).is_approved = is_approved);
-
-        this.updateProgress(this.module.current);
-      });
-  }
 }
-
-

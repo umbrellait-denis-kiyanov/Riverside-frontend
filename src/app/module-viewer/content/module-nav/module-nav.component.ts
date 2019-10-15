@@ -5,6 +5,7 @@ import Message from '../../inbox/message.model';
 import { IceService } from '../../ice/ice.service';
 import { Subscription } from 'rxjs';
 import { ActivatedRoute } from '@angular/router';
+import { ModuleService } from 'src/app/common/services/module.service';
 
 type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedback' | 'provide_final_feedback' | 'approve';
 @Component({
@@ -27,6 +28,7 @@ export class ModuleNavComponent implements OnInit {
 
   constructor(
     private navService: ModuleNavService,
+    private moduleService: ModuleService,
     private userService: UserService,
     private iceService: IceService,
     private route: ActivatedRoute
@@ -80,19 +82,55 @@ export class ModuleNavComponent implements OnInit {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     const newState = state !== null ? state : !this[key];
     const { stepId } = this.route.snapshot.params;
-    this.navService.markAsDone(stepId, newState).then(() => {
-      this[key] = newState;
-      this[key] && this.navService.nextStep();
-    });
+    const module = this.navService.module.current;
+    this.moduleService.markAsDone(module, this.navService.lastOrganization.current, stepId, newState)
+      .subscribe(_ => {
+        this[key] = newState;
+        this[key] && this.navService.nextStep();
+
+        const stepIndex = this.navService.setStepFromId(stepId);
+        const step = module.steps[stepIndex];
+        if (step) {
+          step.is_checked = newState;
+        }
+        this.moduleService.updateProgress(module);
+      });
   }
 
   markAsApproved(isSubaction: boolean = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     const newState = state !== null ? state : !this[key];
     const { stepId } = this.route.snapshot.params;
-    this.navService.markAsApproved(stepId, newState).then(() => {
-      this[key] = newState;
-    });
+    const module = this.navService.module.current;
+
+    this.moduleService.markAsApproved(module, this.navService.lastOrganization.current, stepId, newState)
+      .subscribe((response: number[]) => {
+
+        const stepIndex = this.navService.setStepFromId(stepId);
+        const step = module.steps[stepIndex];
+
+        if (step) {
+          step.is_approved = newState;
+          if (step.is_approved) {
+            this.navService.onApprove.emit(true);
+            this.iceService.onApprove.emit();
+            if (!this.navService.currentStep.requires_feedback) {
+              this.navService.nextStep();
+            }
+          } else {
+            this.navService.onUnapprove.emit();
+            if (!this.navService.currentStep.requires_feedback) {
+              this.navService.reloadModule();
+            }
+          }
+        }
+
+        response.forEach(id => module.steps.find(st => st.id === id).is_approved = state);
+
+        this.moduleService.updateProgress(module);
+
+        this[key] = newState;
+      });
   }
 
   buttonClicked(action?: actions, isSubaction: boolean = false) {
