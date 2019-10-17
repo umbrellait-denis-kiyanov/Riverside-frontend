@@ -100,11 +100,12 @@
 
 <div
   class="template-footer"
-  *ngIf="contentData.instructions"
+  *ngIf="contentData.instructions && !disabled"
   [innerHtml]="contentData.instructions | safehtml"
 ></div>
 
 <feedback-source
+    *ngIf="!disabled"
     (submit)="feedbackClicked($event)"
     (messageChanged)="message=$event"
     (currentTabChanged)="currentTab=$event"
@@ -112,6 +113,7 @@
 </feedback-source>
 
 <module-nav
+  *ngIf="!disabled"
   [action]="action"
   (feedback)="feedbackClicked(message)"
   [submitting]="submitting"

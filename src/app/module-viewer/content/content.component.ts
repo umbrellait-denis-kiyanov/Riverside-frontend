@@ -35,6 +35,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   unsubOnApprove: Subscription;
   unsubContentChange: Subscription;
   debounceSaveTime = 500;
+  canModify = false;
 
   @ViewChild(RiversideStepTemplateComponent)
   templateComponent: RiversideStepTemplateComponent;
@@ -132,10 +133,13 @@ export class ContentComponent implements OnInit, OnDestroy {
           inputs,
           template_params_json,
           template_component,
+          can_modify,
           is_approved
         }
       }
     } = this.moduleContentService;
+
+    this.canModify = can_modify;
 
     is_approved &&
       !this.userService.me.roles.is_riverside_managing_director &&
@@ -144,11 +148,13 @@ export class ContentComponent implements OnInit, OnDestroy {
       ...data,
       inputs,
       template_params_json,
-      disabled: this.disableInputs
+      canModify: can_modify,
+      disabled: this.disableInputs || !can_modify
     };
     this.templateData = new TemplateContentData({
       data: templateData,
-      me: this.me
+      me: this.me,
+      canModify: can_modify
     });
     this.templateComponentName = template_component as keyof typeof Templates;
     this.unsubOnApprove && this.unsubOnApprove.unsubscribe();

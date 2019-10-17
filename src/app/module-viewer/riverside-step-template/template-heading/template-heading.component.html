@@ -4,7 +4,7 @@
     [innerHtml]="contentData.title | safehtml"
   ></h2>
   <div class="timer-container">
-    <span class="timer-control" (click)="toggleTimer()">
+    <span class="timer-control" *ngIf="!disabled" (click)="toggleTimer()">
       <mat-icon *ngIf="!isTimerOn">play_arrow</mat-icon>
       <mat-icon *ngIf="isTimerOn">pause</mat-icon>
     </span>

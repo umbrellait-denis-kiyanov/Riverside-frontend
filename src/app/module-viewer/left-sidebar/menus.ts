@@ -59,7 +59,7 @@ export const menus: MenusInterface = [
     'mat-icon': 'business_center',
     label: 'RMCF SALES EXCELLENCE DASHBOARD',
     link: '/master-dashboard',
-    restrict: ({ user }) => user.permissions.riversideRMCFDashboard
+    restrict: ({ user }) => user.permissions.riversideRMCFDashboard || user.roles.is_riverside_rmcf_admin
   },
   {
     'mat-icon': 'dashboard',
@@ -92,14 +92,15 @@ export const menus: MenusInterface = [
     render: () => feedback_svg,
     label: 'REQUEST FEEDBACK',
     modalComponent: RequestFeedbackComponent,
-    restrict: ({ user }) => user.permissions.riversideRequestFeedback
+    restrict: ({ user }) => user.permissions.riversideRequestFeedback && !user.roles.is_riverside_rmcf_admin
   },
   {
     'mat-icon': 'email',
     className: 'material-icons-outlined',
     label: 'INBOX',
     link: '/inbox',
-    counter: 0
+    counter: 0,
+    restrict: ({ user }) => !user.roles.is_riverside_rmcf_admin
   },
   {
     render: () => review_svg,
