@@ -142,7 +142,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     this.canModify = can_modify;
 
     is_approved &&
-      !this.userService.me.permissions.riversideRequestFeedback &&
+      !this.userService.me.permissions.riversideProvideFeedback &&
       (this.iceService.shouldShowWarning = true);
     const templateData = {
       ...data,
