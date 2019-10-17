@@ -50,7 +50,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   protected initAction() {
-    if (this.userService.me.roles.is_riverside_managing_director) {
+    if (this.userService.me.permissions.riversideProvideFeedback) {
       this.action = 'approve';
     } else { this.action = ''; }
   }

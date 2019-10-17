@@ -68,7 +68,7 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
   }
 
   protected initAction() {
-    if (this.userService.me.roles.is_riverside_managing_director) {
+    if (this.userService.me.permissions.riversideProvideFeedback) {
       this.action = 'provide_final_feedback';
       this.subaction = 'approve';
     } else { this.action = 'final_feedback'; }
