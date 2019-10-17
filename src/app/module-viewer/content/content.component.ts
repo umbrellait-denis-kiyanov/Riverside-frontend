@@ -149,7 +149,7 @@ export class ContentComponent implements OnInit, OnDestroy {
       inputs,
       template_params_json,
       canModify: can_modify,
-      disabled: this.disableInputs
+      disabled: this.disableInputs || !can_modify
     };
     this.templateData = new TemplateContentData({
       data: templateData,

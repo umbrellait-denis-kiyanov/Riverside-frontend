@@ -17,7 +17,6 @@ class User extends BaseModel {
     riversideSalesDashboard: false,
     riversideModuleEditor: false,
     riversideRequestFeedback: false,
-    riversideCanSelectMultipleOrgs: false,
   };
   org = {
     id: 0

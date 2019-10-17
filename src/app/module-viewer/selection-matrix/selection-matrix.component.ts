@@ -26,6 +26,9 @@ export class SelectionMatrixComponent  {
   @Input()
   inputIds: any;
 
+  @Input()
+  disabled: boolean;
+
   ngOnInit() {
     this.options = this.options.map(opt => opt.option || opt);
   }
