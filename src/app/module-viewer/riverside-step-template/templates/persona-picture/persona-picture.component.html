@@ -5,11 +5,11 @@
   </div>
   <div class="persona-row" *ngFor="let persona of inputIds.fromPreviousStep; let i=index">
       <div class="persona-name-column CT-hide" *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)">
-        <div class="persona-picture" *ngIf="!inputs[inputIds.personas[i]].content" (click)="openModal(inputIds.personas[i])" >
+        <div class="persona-picture" *ngIf="!inputs[inputIds.personas[i]].content" (click)="!disabled && openModal(inputIds.personas[i])" >
           <button mat-icon-button ><mat-icon>add</mat-icon></button>
 
         </div>
-        <img class="persona-picture" (click)="openModal(inputIds.personas[i])" [src]="inputs[inputIds.personas[i]].content | safeurl" *ngIf="inputs[inputIds.personas[i]].content">
+        <img class="persona-picture" (click)="!disabled && openModal(inputIds.personas[i])" [src]="inputs[inputIds.personas[i]].content | safeurl" *ngIf="inputs[inputIds.personas[i]].content">
         <div class="persona-name-title">
           <div class="persona-name" >{{textContent(inputs[persona.name].content)}}</div>
           <div class="persona-title">{{textContent(inputs[persona.title].content)}}</div>
@@ -20,4 +20,4 @@
   </div>
 </div>
 
-<module-nav [action]="action"></module-nav>
+<module-nav *ngIf="!disabled" [action]="action"></module-nav>

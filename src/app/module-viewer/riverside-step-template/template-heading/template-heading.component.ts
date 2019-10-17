@@ -13,6 +13,8 @@ export class TemplateHeadingComponent implements OnInit, OnDestroy {
 
   @Input() content: TemplateContentData;
 
+  @Input() disabled: boolean;
+
   savedTimer = new ResourceFromStorage<object>('module_viewer_timers');
 
   time = 0;
@@ -58,7 +60,9 @@ export class TemplateHeadingComponent implements OnInit, OnDestroy {
     this.accumulatedTime = (this.savedTimer.current ? this.savedTimer.current[this.uuid] : 0) || 0;
     this.time = this.accumulatedTime;
 
-    this.toggleTimer();
+    if (!this.disabled) {
+      this.toggleTimer();
+    }
   }
 
   toggleTimer() {

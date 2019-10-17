@@ -2,4 +2,4 @@
   <div [innerHtml]="contentData.content | safehtml"></div>
 </div>
 
-<module-nav [action]="action"></module-nav>
+<module-nav *ngIf="!disabled" [action]="action"></module-nav>
