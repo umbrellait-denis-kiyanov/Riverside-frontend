@@ -6,10 +6,12 @@ import User from 'src/app/common/interfaces/user.model';
 interface TemplateContentDataProps {
   data: TemplateContentDataType;
   me: User;
+  canModify: boolean;
 }
 export class TemplateContentData {
   data: TemplateContentDataType;
   me: User;
+  canModify: boolean;
 
   constructor({data, me}: TemplateContentDataProps) {
     this.data = data;

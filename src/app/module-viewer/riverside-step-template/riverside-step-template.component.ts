@@ -12,6 +12,7 @@ import { TemplateComponent } from './templates/template-base.cass';
 export class RiversideStepTemplateComponent implements OnInit {
 
   templates = Templates;
+  @Input() canModify: boolean;
   @Input() template: string;
   @Input() data: TemplateContentData;
   @ViewChild(RTemplateDirective) templateHost: RTemplateDirective;

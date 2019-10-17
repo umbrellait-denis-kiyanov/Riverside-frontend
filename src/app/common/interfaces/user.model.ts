@@ -9,6 +9,7 @@ class User extends BaseModel {
   roles = {
     riverside_facilitator: false,
     is_riverside_managing_director: false,
+    is_riverside_rmcf_admin: false,
     super_admin: false
   };
   permissions = {
@@ -31,6 +32,7 @@ class User extends BaseModel {
         return {
           riverside_facilitator: !!data.is_riverside_facilitator,
           is_riverside_managing_director: !!data.is_riverside_managing_director,
+          is_riverside_rmcf_admin: !!data.is_riverside_rmcf_admin,
           super_admin: !!data.is_super_admin,
         };
       }

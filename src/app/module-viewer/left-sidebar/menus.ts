@@ -99,7 +99,8 @@ export const menus: MenusInterface = [
     className: 'material-icons-outlined',
     label: 'INBOX',
     link: '/inbox',
-    counter: 0
+    counter: 0,
+    restrict: ({ user }) => !user.roles.is_riverside_rmcf_admin
   },
   {
     render: () => review_svg,
