@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Module, Step, Input } from '../interfaces/module.interface';
+import { Module, Step, Input, Template } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
 import { shareReplay, switchMap, map } from 'rxjs/operators';
@@ -47,8 +47,8 @@ export class ModuleService {
     );
   }
 
-  getTemplates(moduleId: number) {
-    return this.httpClient.get(`${this.baseUrl}/${moduleId}/templates`).toPromise();
+  getTemplates(moduleId: number): Observable<Template[]> {
+    return this.httpClient.get<Template[]>(`${this.baseUrl}/${moduleId}/templates`);
   }
 
   saveModule(module: Module): Observable<any> {

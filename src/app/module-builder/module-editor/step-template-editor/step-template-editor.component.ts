@@ -1,8 +1,10 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Step } from 'src/app/common/interfaces/module.interface';
+import { Step, Template } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from '../../../common/services/module.service';
 import { Templates } from '../../../module-viewer/riverside-step-template/templates';
+import { BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-step-template-editor',
@@ -16,34 +18,34 @@ export class StepTemplateEditorComponent implements OnInit {
 
   stepEdit: Step;
 
-  templates: any;
+  templates$ = new BehaviorSubject<Template[]>(null);
 
   templateFields: any;
 
   templateConfig: any;
 
-  initialized = false;
-
-  description: '';
+  description = '';
 
   constructor(public modal: NgbActiveModal,
               private moduleService: ModuleService) {}
 
-  async ngOnInit() {
+  ngOnInit() {
     this.stepEdit = JSON.parse(JSON.stringify(this.step));
     if ('[]' === JSON.stringify(this.stepEdit.template_params_json)) {
       this.stepEdit.template_params_json = {};
     }
 
-    this.templates = await this.moduleService.getTemplates(this.step.module_id);
-    this.templates.map(tpl => {
-      const inst = new Templates[tpl.id]();
-      tpl.name = inst.getName();
-      tpl.description = inst.getDescription();
+    this.moduleService.getTemplates(this.step.module_id).pipe(
+      map(templates => templates.map(tpl => {
+        const inst = new Templates[tpl.id]();
+        tpl.name = inst.getName();
+        tpl.description = inst.getDescription();
+        return tpl;
+      }))
+    ).subscribe(tpls => {
+      this.templates$.next(tpls);
+      this.onTemplateChange(this.stepEdit.template_component);
     });
-
-    this.onTemplateChange();
-    this.initialized = true;
   }
 
   save() {
@@ -52,8 +54,9 @@ export class StepTemplateEditorComponent implements OnInit {
     this.modal.close();
   }
 
-  onTemplateChange() {
-    const template = this.templates.filter(tpl => tpl.id === this.stepEdit.template_component).shift();
+  onTemplateChange(templateId: string) {
+    const template = this.templates$.value.find(tpl => tpl.id === templateId);
+
     const fields = template ? template.params_json.
       replace(/\s/g, '').
       split(/inputs\:\s{0,}\[\]/).join('inputs:Array<{key: string}>').

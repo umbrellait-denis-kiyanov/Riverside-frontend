@@ -4,38 +4,26 @@
     <span aria-hidden="true">&times;</span>
   </button>
 </div>
-<div class="modal-body" *ngIf="initialized">
+<div class="modal-body">
   <div class="form-group">
     <label>Template</label>
     <select
+      *ngIf="(templates$ | async) as templates"
       [ngModelOptions]="{standalone: true}"
       [(ngModel)]="stepEdit.template_component"
       (ngModelChange)="onTemplateChange($event)"
       class="site-tbox"
       required="required"
     >
-      <option *ngFor="let template of templates" [ngValue]="template.id">{{ template.name }}</option>
+      <option *ngFor="let tpl of templates" [ngValue]="tpl.id">{{ tpl.name }}</option>
     </select>
   </div>
 
-  <div class="well template-description" *ngIf="description">{{ template.description }}</div>
-
-  <div class="form-group" *ngIf="!templateFields">
-    <label>Template Configuration</label>
-    <textarea
-      [ngModelOptions]="{standalone: true}"
-      [(ngModel)]="stepEdit.template_params_json"
-      class="site-tbox"
-    ></textarea>
-  </div>
+  <div class="well template-description" *ngIf="description">{{ description }}</div>
 
   <div class="form-group" *ngIf="templateFields">
     <app-step-template-field *ngFor="let field of templateFields" [field]="field" [(json)]="stepEdit.template_params_json[field[0]]"></app-step-template-field>
   </div>
-</div>
-
-<div class="modal-body initializing" *ngIf="!initialized">
-  <span class="fa fa-pulse fa-spinner"></span>
 </div>
 
 <div class="modal-footer">

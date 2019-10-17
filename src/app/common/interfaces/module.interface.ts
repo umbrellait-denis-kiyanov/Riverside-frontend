@@ -54,6 +54,13 @@ export interface Section {
   steps: Step[];
 }
 
+export interface Template {
+  id: string;
+  params_json: string;
+  name?: string;
+  description?: string;
+}
+
 function literalArray<T extends string>(array: T[]): T[] {
   return array;
 }
