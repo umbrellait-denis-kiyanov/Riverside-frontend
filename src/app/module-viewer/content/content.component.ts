@@ -142,7 +142,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     this.canModify = can_modify;
 
     is_approved &&
-      !this.userService.me.roles.is_riverside_managing_director &&
+      !this.userService.me.permissions.riversideProvideFeedback &&
       (this.iceService.shouldShowWarning = true);
     const templateData = {
       ...data,
@@ -181,9 +181,7 @@ export class ContentComponent implements OnInit, OnDestroy {
         data: { feedback_requested, feedback_started }
       }
     } = this.moduleContentService;
-    const {
-      roles: { is_riverside_managing_director }
-    } = this.me;
+    const is_riverside_managing_director = this.me.permissions.riversideProvideFeedback;
     feedback_requested &&
       !feedback_started &&
       is_riverside_managing_director &&
