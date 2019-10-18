@@ -18,9 +18,6 @@ class User extends BaseModel {
     riversideModuleEditor: false,
     riversideRequestFeedback: false,
   };
-  org = {
-    id: 0
-  };
 
   protected transform() {
     return {

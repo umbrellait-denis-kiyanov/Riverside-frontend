@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, Input, ComponentFactoryResolver } from '@angular/core';
+import { Component, OnInit, OnChanges, ViewChild, Input, ComponentFactoryResolver } from '@angular/core';
 import { RTemplateDirective } from './riverside-step-template-host.directive';
 import { Templates } from './templates';
 import { TemplateContentData } from './templates/template-data.class';
@@ -9,7 +9,7 @@ import { TemplateComponent } from './templates/template-base.cass';
   templateUrl: './riverside-step-template.component.html',
   styleUrls: ['./riverside-step-template.component.sass']
 })
-export class RiversideStepTemplateComponent implements OnInit {
+export class RiversideStepTemplateComponent implements OnChanges {
 
   templates = Templates;
   @Input() canModify: boolean;
@@ -21,7 +21,7 @@ export class RiversideStepTemplateComponent implements OnInit {
 
   constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
 
-  ngOnInit() {
+  ngOnChanges() {
     const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.templates[this.template]);
     const viewContainerRef = this.templateHost.viewContainerRef;
     viewContainerRef.clear();
@@ -29,9 +29,6 @@ export class RiversideStepTemplateComponent implements OnInit {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.templateInstance = (componentRef.instance as TemplateComponent);
     this.templateInstance.data = this.data;
-  }
-
-  prepareData() {
-    return this.templateInstance.prepareData();
+    console.log(this.data);
   }
 }

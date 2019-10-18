@@ -69,7 +69,6 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
         });
       });
     });
-    // this.contentData = this.data.data.template_params_json;
   }
 
   initIds() {
@@ -109,8 +108,8 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
 
   feedbackClicked(msg: string) {
     const partialMessage: Partial<Message> = {
-      module_id: this.navService.module.current.id,
-      step_id: this.navService.currentStep.id
+      module_id: this.navService.module.current,
+      step_id: this.navService.step.current
     };
     const {orgId} = this.route.parent.snapshot.params;
     if (['feedback', 'final_feedback'].includes(this.action)) {

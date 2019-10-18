@@ -45,22 +45,22 @@ export class ModuleNavComponent implements OnInit {
   }
 
   prepareActionFlag(doneKey: string, action: actions) {
-    const {currentStep: {is_checked, is_approved, waiting_for_feedback, feedback_received}} = this.navService;
-    switch (action) {
-      case 'feedback':
-      case 'final_feedback':
-        this[doneKey] = waiting_for_feedback;
-        break;
-      case 'provide_feedback':
-      case 'provide_final_feedback':
-        this[doneKey] = feedback_received;
-        break;
-      case 'approve':
-        this[doneKey] = is_approved;
-        break;
-      default:
-        this[doneKey] = is_checked;
-    }
+    // const {currentStep: {is_checked, is_approved, waiting_for_feedback, feedback_received}} = this.navService;
+    // switch (action) {
+    //   case 'feedback':
+    //   case 'final_feedback':
+    //     this[doneKey] = waiting_for_feedback;
+    //     break;
+    //   case 'provide_feedback':
+    //   case 'provide_final_feedback':
+    //     this[doneKey] = feedback_received;
+    //     break;
+    //   case 'approve':
+    //     this[doneKey] = is_approved;
+    //     break;
+    //   default:
+    //     this[doneKey] = is_checked;
+    // }
   }
 
   next() {
@@ -83,18 +83,18 @@ export class ModuleNavComponent implements OnInit {
     const newState = state !== null ? state : !this[key];
     const { stepId } = this.route.snapshot.params;
     const module = this.navService.module.current;
-    this.moduleService.markAsDone(module, this.navService.lastOrganization.current, stepId, newState)
-      .subscribe(_ => {
-        this[key] = newState;
-        this[key] && this.navService.nextStep();
+    // this.moduleService.markAsDone(module, this.navService.lastOrganization.current, stepId, newState)
+    //   .subscribe(_ => {
+    //     this[key] = newState;
+    //     this[key] && this.navService.nextStep();
 
-        const stepIndex = this.navService.setStepFromId(stepId);
-        const step = module.steps[stepIndex];
-        if (step) {
-          step.is_checked = newState;
-        }
-        this.moduleService.updateProgress(module);
-      });
+    //     const stepIndex = this.navService.setStepFromId(stepId);
+    //     const step = module.steps[stepIndex];
+    //     if (step) {
+    //       step.is_checked = newState;
+    //     }
+    //     this.moduleService.updateProgress(module);
+    //   });
   }
 
   markAsApproved(isSubaction: boolean = false, state: boolean = null) {
@@ -103,34 +103,34 @@ export class ModuleNavComponent implements OnInit {
     const { stepId } = this.route.snapshot.params;
     const module = this.navService.module.current;
 
-    this.moduleService.markAsApproved(module, this.navService.lastOrganization.current, stepId, newState)
-      .subscribe((response: number[]) => {
+    // this.moduleService.markAsApproved(module, this.navService.lastOrganization.current, stepId, newState)
+    //   .subscribe((response: number[]) => {
 
-        const stepIndex = this.navService.setStepFromId(stepId);
-        const step = module.steps[stepIndex];
+    //     const stepIndex = this.navService.setStepFromId(stepId);
+    //     const step = module.steps[stepIndex];
 
-        if (step) {
-          step.is_approved = newState;
-          if (step.is_approved) {
-            this.navService.onApprove.emit(true);
-            this.iceService.onApprove.emit();
-            if (!this.navService.currentStep.requires_feedback) {
-              this.navService.nextStep();
-            }
-          } else {
-            this.navService.onUnapprove.emit();
-            if (!this.navService.currentStep.requires_feedback) {
-              this.navService.reloadModule();
-            }
-          }
-        }
+    //     if (step) {
+    //       step.is_approved = newState;
+    //       if (step.is_approved) {
+    //         this.navService.onApprove.emit(true);
+    //         this.iceService.onApprove.emit();
+    //         if (!this.navService.currentStep.requires_feedback) {
+    //           this.navService.nextStep();
+    //         }
+    //       } else {
+    //         this.navService.onUnapprove.emit();
+    //         if (!this.navService.currentStep.requires_feedback) {
+    //           this.navService.reloadModule();
+    //         }
+    //       }
+    //     }
 
-        response.forEach(id => module.steps.find(st => st.id === id).is_approved = state);
+    //     response.forEach(id => module.steps.find(st => st.id === id).is_approved = state);
 
-        this.moduleService.updateProgress(module);
+    //     this.moduleService.updateProgress(module);
 
-        this[key] = newState;
-      });
+    //     this[key] = newState;
+    //   });
   }
 
   buttonClicked(action?: actions, isSubaction: boolean = false) {

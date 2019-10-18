@@ -3,8 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Module } from '../../common/interfaces/module.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { InboxService } from '../inbox/inbox.service';
-import { UserService } from 'src/app/common/services/user.service';
-import { MatTabChangeEvent } from '@angular/material/tabs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-request-feedback',
@@ -15,8 +14,7 @@ export class RequestFeedbackComponent implements OnInit {
 
   @Input() params: any;
 
-  ready = false;
-  module: Module;
+  module$: Observable<Module>;
   submitting = false;
   message: string = '';
   currentTab: string = 'text';
@@ -24,24 +22,20 @@ export class RequestFeedbackComponent implements OnInit {
   constructor(
     public modal: NgbActiveModal,
     private navService: ModuleNavService,
-    private inboxService: InboxService,
-    private userService: UserService
+    private inboxService: InboxService
   ) { }
 
   ngOnInit() {
-    setTimeout(async () => {
-      this.module = await this.navService.module.getLast();
-      this.ready = true;
-    });
+    this.module$ = this.navService.moduleData$;
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
   }
 
   submit(message: string) {
     this.inboxService.save({
       message,
-      module_id: this.module.id,
-      step_id: this.navService.getStepId(),
-      from_org_id: this.userService.me.org.id
+      module_id: this.navService.module.current,
+      step_id: this.navService.step.current,
+      from_org_id: this.navService.lastOrganization.current
     }).then(() => {
       this.modal.dismiss();
     });

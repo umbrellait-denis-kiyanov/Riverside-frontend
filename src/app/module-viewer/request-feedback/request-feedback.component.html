@@ -1,6 +1,6 @@
 <div class="modal-header">
   <h3>Request feedback</h3>
-  
+
   <button
     type="button"
     class="close"
@@ -10,10 +10,10 @@
     <span aria-hidden="true">&times;</span>
   </button>
 
-  
+
 </div>
 
-<div class="modal-body" *ngIf="ready">
+<div class="modal-body" *ngIf="(module$ | async) as module">
   <p *ngIf="module">
     You are requesting feedback for the module <b>{{module.name}}</b>.
     <a class="pointer">(Change module)</a>

@@ -2,11 +2,9 @@ import { Injectable, EventEmitter } from '@angular/core';
 import { Module } from '../interfaces/module.interface';
 import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject, from, Observable } from 'rxjs';
-import { HttpClient } from '@angular/common/http';
-import { IceService } from 'src/app/module-viewer/ice/ice.service';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
-import { filter, startWith, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, take } from 'rxjs/operators';
 import { AssessmentService } from './assessment.service';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
@@ -70,8 +68,11 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
 @Injectable()
 export class ModuleNavService {
   lastOrganization = new ResourceFromStorage<number>('last_organization');
-  module = new ResourceFromStorage<Module>('last_module');
+  module = new ResourceFromStorage<number>('last_module');
+
+  // todo: remove
   stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
+  step = new ResourceFromStorage<number>('last_step_id', 0, 'number');
   assessmentType = new ResourceFromStorage<number>('last_type');
 
   onApprove = new EventEmitter<boolean>(false);
@@ -83,11 +84,28 @@ export class ModuleNavService {
 
   activeAssessmentType$: Observable<AssessmentType>;
 
-  organization$ = this.lastOrganization.onChange.pipe(filter(org => !!org));
+  organization$ = this.lastOrganization.onChange.pipe(
+      filter(org => !!org),
+      startWith(this.lastOrganization.current),
+      distinctUntilChanged()
+    );
 
-  get currentStep() {
-    return this.module.current.steps[this.stepIndex.current];
-  }
+  module$ = this.module.onChange.pipe(
+      filter(m => !!m),
+      startWith(Number(this.module.current)),
+      distinctUntilChanged()
+    );
+
+  step$ = this.step.onChange.pipe(
+      filter(m => !!m),
+      startWith(Number(this.step.current)),
+      distinctUntilChanged()
+    );
+
+  moduleData$ = this.module$.pipe(
+      switchMap(id => this.moduleService.getModuleConfig(id)),
+      shareReplay(1)
+    );
 
   get assessmentType$() {
     if (!this.activeAssessmentType$) {
@@ -105,34 +123,32 @@ export class ModuleNavService {
   constructor(
     private router: Router,
     private route: ActivatedRoute,
-    private http: HttpClient,
-    private iceService: IceService,
     private moduleService: ModuleService,
     private asmService: AssessmentService
   ) {
 
-    this.onUnapprove.subscribe(() => {
-      if (this.currentStep.requires_feedback) {
-        this.shouldReloadModule = true;
-      }
-    });
-    this.onApprove.subscribe(() => {
-      if (this.currentStep.requires_feedback) {
-        this.shouldReloadModule = true;
-      } else {
-        this.shouldMoveToNext = true;
-      }
-    });
-    this.onSave.subscribe(() => {
-      if (this.shouldReloadModule) {
-        this.reloadModule();
-        this.shouldReloadModule = false;
-      }
-      if (this.shouldMoveToNext) {
-        this.nextStep();
-        this.shouldMoveToNext = false;
-      }
-    });
+    // this.onUnapprove.subscribe(() => {
+    //   if (this.currentStep.requires_feedback) {
+    //     this.shouldReloadModule = true;
+    //   }
+    // });
+    // this.onApprove.subscribe(() => {
+    //   if (this.currentStep.requires_feedback) {
+    //     this.shouldReloadModule = true;
+    //   } else {
+    //     this.shouldMoveToNext = true;
+    //   }
+    // });
+    // this.onSave.subscribe(() => {
+    //   if (this.shouldReloadModule) {
+    //     this.reloadModule();
+    //     this.shouldReloadModule = false;
+    //   }
+    //   if (this.shouldMoveToNext) {
+    //     this.nextStep();
+    //     this.shouldMoveToNext = false;
+    //   }
+    // });
 
     this.moduleService.getOrganizations().subscribe(organizations => {
       const currentOrg = parseInt(this.route.snapshot.params.orgId, 10) || this.lastOrganization.current;
@@ -164,26 +180,14 @@ export class ModuleNavService {
     module.percComplete = Math.round(100 * numerator / denominator);
   }
 
-  getStepId() {
-    return this.module.current.steps[this.stepIndex.current].id;
-  }
-
-  setStepFromId(id: number) {
-    this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
-    return this.stepIndex.current;
-  }
+  // setStepFromId(id: number) {
+  //   this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
+  //   return this.stepIndex.current;
+  // }
 
   reloadModule() {
-    // this.getModule(this.module.current.id, this.lastOrganization.current);
-  }
 
-  // getModule(id: number, orgId: number) {
-  //   return this.moduleService.getOrgModule(id, orgId).then(async (moduleData: Module) => {
-  //       this.module.current = moduleData;
-  //       this.moduleService.updateProgress(this.module.current);
-  //       return moduleData;
-  //   });
-  // }
+  }
 
   nextStep() {
     this.moveToStep(1);
@@ -198,19 +202,16 @@ export class ModuleNavService {
   }
 
   private moveToStep(offset: number) {
-    const { stepId } = this.route.snapshot.params;
-    stepId && this.setStepFromId(stepId);
-    const index = this.stepIndex.current;
-    if (this.module.current.steps.length === index + offset || index + offset < 0) {
-      return;
-    }
-    this.stepIndex.current = Number(index) + offset;
-    const step = this.module.current.steps[this.stepIndex.current];
-    if (!step.is_section_break) {
-      this.router.navigate(['org', this.lastOrganization.current, 'module', this.module.current.id, 'step', step.id]);
-    } else {
-      return offset === 1 ? this.nextStep() : this.previousStep();
-    }
+    this.moduleData$.pipe(take(1)).subscribe(module => {
+      let index = module.steps.findIndex(s => s.id === this.step.current);
+      let step = null;
+      do {
+        index = Math.min(Math.max(0, index + offset), module.steps.length - 1);
+        step = module.steps[index];
+      } while (step.is_section_break || !index || index === module.steps.length - 1);
+
+      this.router.navigate(['org', this.lastOrganization.current, 'module', this.module.current, 'step', step.id]);
+    });
   }
 }
 

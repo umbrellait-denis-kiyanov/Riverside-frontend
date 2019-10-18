@@ -30,15 +30,21 @@ export class IceComponent implements OnInit {
   @Input() box: number;
   @Input() disabled: boolean;
   @Input() data: {
+    id: number;
     textContent: string;
     content: string;
     selections$: BehaviorSubject<string[]>;
     comments_json: any[];
+    org_id: number;
+    module_id: number;
   } = {
+    id: 0,
     textContent: '',
     content: '',
     selections$: new BehaviorSubject([]),
-    comments_json: []
+    comments_json: [],
+    org_id: 0,
+    module_id: 0,
   };
 
   @Input() allowRemoveSelections = false;
@@ -73,15 +79,17 @@ export class IceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    if (!this.data)
-    {
-      this.data = {
-        textContent: '',
-        content: '',
-        selections$: new BehaviorSubject([]),
-        comments_json: []
-      };
-    }
+    // if (!this.data)
+    // {
+    //   this.data = {
+    //     textContent: '',
+    //     content: '',
+    //     selections$: new BehaviorSubject([]),
+    //     comments_json: []
+    //   };
+    // }
+
+    console.log(this.data);
 
     this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
 

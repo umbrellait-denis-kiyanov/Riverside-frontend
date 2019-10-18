@@ -57,10 +57,6 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${module.id}`, module);
   }
 
-  async requestFeedback(module: Partial<Module>): Promise<object> {
-    return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback`, module).toPromise();
-  }
-
   async feedbackStarted(module: Partial<Module> & {orgId?: number}): Promise<object> {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/start`, module).toPromise();
   }
@@ -90,6 +86,7 @@ export class ModuleService {
       console.error('No input data provided');
       return;
     }
+    console.log(input);
     const dataToSend =  (({ comments_json, content, element_key }) => ({ comments_json, content, element_key }))(input);
     return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
   }

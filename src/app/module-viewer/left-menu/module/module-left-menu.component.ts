@@ -46,13 +46,13 @@ export class LeftMenuComponent implements OnInit {
     this.route.params.pipe(
       switchMap(params => this.moduleService.getModuleConfig(params.id)),
       catchError(err => this.moduleService.getDefaultModule())
-    ).subscribe(module => this.navService.module.current = module);
+    ).subscribe(module => this.navService.module.current = module.id);
 
     this.module$ = combineLatest(this.navService.organization$,
                                  this.navService.module.onChange.pipe(startWith(this.navService.module.current), filter(m => !!m)))
       .pipe(
         tap(([orgId]) => this.orgId = orgId),
-        switchMap(([orgId, module]) => this.moduleService.getOrgModule(module.id, orgId))
+        switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId))
       );
 
     window.$('#datepicker').datepicker({
@@ -80,5 +80,9 @@ export class LeftMenuComponent implements OnInit {
 
   stepRouterLink(module: Module, step: Step) {
     return ['/org', this.orgId, 'module', module.id , 'step', step.id ];
+  }
+
+  setOrganization(organization: Organization) {
+    this.navService.lastOrganization.current = organization.id;
   }
 }

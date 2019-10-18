@@ -74,18 +74,17 @@ export const menus: MenusInterface = [
   {
     'mat-icon': 'view_module',
     labelFn: ({nav}) => {
-      return (nav.module.current || {name: ''}).name.toUpperCase()
+      // todo: return (nav.module.current || {name: ''}).name.toUpperCase()
     },
     linkFn(nav: ModuleNavService) {
-      const module = nav.module.current;
-      return `/org/${nav.lastOrganization.current}/module/${module.id}`;
+      return `/org/${nav.lastOrganization.current}/module/${nav.module.current}`;
     }
   },
   {
     'mat-icon': 'build',
     label: 'EDITOR',
     linkFn(nav: ModuleNavService) {
-      return `/builder/${nav.module.current.id || 1}`;
+      return `/builder/${nav.module.current || 1}`;
     },
     restrict: ({ user }) => user.permissions.riversideModuleEditor
   },
@@ -110,13 +109,11 @@ export const menus: MenusInterface = [
     className: 'material-icons-outlined',
     labelFn: ({nav}) => {
       const module = nav.module.current;
-      return module.steps[module.steps.length - 1].description.toUpperCase() + ' - ' +
-            (nav.module.current || {name: ''}).name.toUpperCase();
+      // todo: return module.steps[module.steps.length - 1].description.toUpperCase() + ' - ' +
+      //       (nav.module.current || {name: ''}).name.toUpperCase();
     },
     linkFn(nav: ModuleNavService) {
-      const module = nav.module.current;
-      const stepId = module.steps[module.steps.length - 1].id;
-      return `/org/${nav.lastOrganization.current}/module/${module.id}/step/${stepId}`;
+      return `/org/${nav.lastOrganization.current}/module/${nav.module.current}/step/${nav.step.current}`;
     }
   },
   {
@@ -124,6 +121,7 @@ export const menus: MenusInterface = [
     label: 'ASSESSMENT',
     linkFn(nav: ModuleNavService) {
       return `/org/${nav.lastOrganization.current}/assessment`;
-    }
+    },
+    restrict: ({ user }) => true
   }
 ];

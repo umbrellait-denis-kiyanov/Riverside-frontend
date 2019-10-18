@@ -127,9 +127,6 @@ export class AssessmentMenuComponent implements OnInit {
 
   setOrganization(organization: Organization) {
     this.navService.lastOrganization.current = organization.id;
-    const moduleId = this.navService.module.current.id;
-    const stepId = this.navService.getStepId();
-
     this.router.navigate(['org', organization.id, 'assessment']);
   }
 
