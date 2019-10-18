@@ -289,7 +289,7 @@ export class IceComponent implements OnInit {
 
   @HostListener('click', ['$event'])
   onClick() {
-    if (this.iceService.shouldShowWarning) {
+    if (this.iceService.shouldShowWarning && !this.disabled) {
 
       this.dialogService.open({
         content: this.iceService.warningText,

@@ -1,1 +1,78 @@
-<span [class.red]="score < 0" [class.yellow]="score <= 10" *ngIf="score">{{ score }}</span>
+<div class="page-content" *ngIf="(activeGroup$ | async) as activeGroup">
+  <ng-container *ngIf="(answers$ | async) as answers">
+  <ng-container *ngIf="(questions$ | async) as questions">
+
+  <h2>{{ activeGroup.name }}</h2>
+  <div class="description">
+      {{ activeGroup.description }}
+  </div>
+
+  <table class="table table-borderless table-striped questions">
+    <thead>
+      <tr>
+        <th></th>
+        <th class="answer">Yes</th>
+        <th class="answer">No</th>
+        <th>Notes</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let question of questions; trackBy: questionTrack" [class.asm-error]="errors[question.id]">
+        <td class="question">{{ question.position}}. {{ question.question}}</td>
+        <td class="answer">
+          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 1)" [checked]="answers && answers.answers[question.id]?.answer == 1"></mat-radio-button>
+        </td>
+        <td class="answer">
+          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
+        </td>
+        <td class="notes">
+          <textarea mat-autosize matAutosizeMaxRows="5"
+            *ngIf="answers?.answers"
+            [ngModel]="answers.answers[question.id]?.notes"
+            (ngModelChange)="answers.answers[question.id] = answers.answers[question.id] || {}; answers.answers[question.id].notes = $event"
+            (change)="saveNotes(question, answers.answers[question.id])">
+          </textarea>
+        </td>
+      </tr>
+      <tr class="importance">
+        <td class="importance-label">
+          On a scale from 1-5, how important is this to your business?
+          (1 = least important, 5 = most important)
+        </td>
+        <td class="importance-select" colspan="2">
+          <select [(ngModel)]="answers.importance" (change)="setImportance(activeGroup, answers.importance)">
+            <option *ngFor="let imp of importance">{{ imp }}</option>
+          </select>
+        </td>
+      </tr>
+    </tbody>
+  </table>
+
+  <table class="summary table table-bordered">
+    <tbody>
+      <tr>
+        <td>Sum Total</td>
+        <td class="score">{{ answers.rawScore || 0 }}</td>
+      </tr>
+      <tr>
+        <td>Weighted Total</td>
+        <td class="score">{{ answers.score || 0 }}</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="done">
+    <button
+      *ngIf="!answers.isDone"
+      mat-raised-button
+      [color]="!isSectionReady(questions, answers) || 'accent'"
+      (click)="markAsDone(activeGroup, questions, answers)">Mark As Done</button>
+
+    <button *ngIf="answers.isDone" mat-raised-button>Done</button>
+
+    <div class="alert alert-danger" *ngIf="(errors | keyvalue)?.length">Please answer all questions to mark this section as done</div>
+  </div>
+
+  </ng-container>
+  </ng-container>
+</div>

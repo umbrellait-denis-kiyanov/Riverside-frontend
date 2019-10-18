@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { Module, Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { map, shareReplay } from 'rxjs/operators';
+import { map, shareReplay, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
@@ -37,6 +37,10 @@ export class DashboardComponent implements OnInit {
     const id = this.route.snapshot.params.orgId;
     this.organizations$.subscribe(organizations =>
         this.setOrganization(id ? organizations.find(org => org.id.toString() === id) : organizations[0]));
+
+    if (window.history.state && window.history.state.section) {
+      this.view = window.history.state.section;
+    }
   }
 
   prepareStatus(module: Module) {

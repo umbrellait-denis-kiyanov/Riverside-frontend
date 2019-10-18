@@ -17,6 +17,7 @@
 <ckeditor class="ckeditor" [editor]="Editor" [(ngModel)]="message"></ckeditor>
 
 <module-nav
+  *ngIf="!disabled"
   [action]="action"
   (feedback)="feedbackClicked($event)"
   [submitting]="submitting"

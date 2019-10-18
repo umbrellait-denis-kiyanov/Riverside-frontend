@@ -1,16 +1,131 @@
-\:host span
-    display: inline-block
-    width: 4.5em
-    border: 2px solid #58ad3f
-    border-radius: 5px
-    font-size: 1.2em
-    color: #58ad3f
+@import "src/app/common/sass/variables.sass"
+
+\:host
+    padding: 2em
+    padding-left: 4em
+    font-family: Montserrat
+    width: 100%
+
+h2
+    font-size: 25px
+    text-transform: uppercase
+
+.description
+    font-size: 16px
+
+table.questions
+    margin-top: 2em
+
+    th
+        text-transform: uppercase
+        padding-bottom: 2px
+        text-align: left
+        font-weight: normal
+
+        &.answer
+            text-align: center
+
+    td
+        height: 4em
+        vertical-align: middle
+        padding
+
+        &.question
+            width: 60%
+            padding: 0.5em 3em 0.5em 1em
+
+        &.answer
+            text-align: center
+            padding: 0
+            width: 65px
+
+            \::ng-deep
+                .mat-radio-button
+                    width: 100%
+                    height: 100%
+                    cursor: pointer
+
+                .mat-radio-label
+                    width: 100%
+                    height: 100%
+                    display: block
+                    margin: 0
+
+                    .mat-radio-label-content
+                        height: calc(50% + 15px)
+                        padding-left: 0
+                        vertical-align: bottom
+
+
+        &.notes
+            padding: 5px
+            background-color: white
+            border: 1px solid #ddd
+
+            textarea
+                border: 0
+                padding: 0
+                width: 100%
+                min-height: 100%
+                min-width: 15vw
+                outline: 0 !important
+
+    tr.asm-error
+        color: $red
+
+        td.answer
+            border-color: $red
+            border-width: 1px
+
+    tr.importance
+        td
+            height: 0
+            border: 0
+
+        td.importance-label
+            text-align: right
+            font-size: 12px
+
+        td.importance-select
+            padding: 0
+
+            select
+                width: 100%
+                height: 100%
+                font-size: 20px
+                border: 0
+                text-align-last: center
+                padding: 5px
+                background-color: lightgrey
+
+                &.yellow
+                    background-color: $yellow
+                    color: black
+
+                &.red
+                    background-color: $red
+
+table.summary
+    margin: 0 auto
+    width: auto
+    margin-top: 2em
+    text-transform: uppercase
+    text-align: right
+
+    td.score
+        padding-left: 2em
+        padding-right: 2em
+
+.done
     text-align: center
+    margin-top: 2em
 
-    &.red
-        color: #cc0000 !important
-        border-color: #cc0000 !important
+    .btn
+        text-transform: uppercase
+        padding: 10px 20px
 
-    &.yellow
-        color: #f7cd4b
-        border-color: #f7cd4b
+        &.success
+            background-color: $green
+
+    .alert
+        margin-top: 2em

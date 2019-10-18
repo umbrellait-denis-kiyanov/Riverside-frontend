@@ -1,14 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Module, Step, Input, Template } from '../interfaces/module.interface';
+import { Module, Step, Input, Template, Organization } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError } from 'rxjs';
-import { shareReplay, switchMap, map } from 'rxjs/operators';
+import { shareReplay, switchMap, map, filter } from 'rxjs/operators';
 
 @Injectable()
 export class ModuleService {
 
   modules: Module[];
   baseUrl = '/api/modules';
+
+  organizations$: Observable<Organization[]>;
 
   constructor(private httpClient: HttpClient) { }
 
@@ -92,8 +94,12 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
   }
 
-  getOrganizations(): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/organizations/list`);
+  getOrganizations(): Observable<Organization[]> {
+    if (!this.organizations$) {
+      this.organizations$ = this.httpClient.get<Organization[]>(`${this.baseUrl}/organizations/list`).pipe(shareReplay(1));
+    }
+
+    return this.organizations$.pipe(filter(orgs => !!orgs));
   }
 
   exportUrl() {

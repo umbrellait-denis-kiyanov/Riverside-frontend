@@ -8,7 +8,7 @@ export class IceService {
   onApprove = new EventEmitter<boolean>(false);
   onUnapprove = new EventEmitter<boolean>(false);
   shouldShowWarning = false;
-  warningText = 'This is already been approved by the managing director. Editing it will require it to be approved again.';
+  warningText = 'This has already been approved by the managing director. Editing it will require it to be approved again.';
 
   closeAll() {
     this.allComponents.forEach(c => c.closeComment());

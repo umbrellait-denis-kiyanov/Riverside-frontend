@@ -26,6 +26,7 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
+    console.log(this.data);
     this.inputIds = {
       personas: this.activePersonas.map(persona => persona.split('_').join('_behavior_'))
     };

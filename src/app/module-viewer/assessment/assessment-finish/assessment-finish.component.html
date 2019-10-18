@@ -1,0 +1,17 @@
+<div class="page-content" *ngIf="(session$ | async) as session">
+  <h2>
+    Finish Assessment
+    <button class="btn btn-primary" (click)="isLineChart = !isLineChart" style="box-shadow: none !important">
+      <mat-icon *ngIf="isLineChart">bar_chart</mat-icon>
+      <mat-icon *ngIf="!isLineChart">show_chart</mat-icon>
+    </button>
+  </h2>
+
+  <div class="chart">
+    <assessment-chart *ngIf="chart" [series]="chart" [isLineChart]="isLineChart"></assessment-chart>
+  </div>
+
+  <div class="done">
+    <button class="btn btn-success" (click)="finish(session)">Finish & Record</button>
+  </div>
+</div>

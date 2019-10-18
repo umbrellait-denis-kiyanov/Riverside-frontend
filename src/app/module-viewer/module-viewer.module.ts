@@ -72,12 +72,20 @@ import { NgLetDirective } from '../common/directives/nglet.directive';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ModuleLinkComponent } from './dashboard/module-link/module-link.component';
 import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.component';
-import { OrgSelectorComponent } from './left-menu/module/org-selector/org-selector.component';
+import { OrgSelectorComponent } from './left-menu/org-selector/org-selector.component';
 import { TemplateHeadingComponent } from './riverside-step-template/template-heading/template-heading.component';
 import { MatInputModule } from '@angular/material/input';
 import { ToggleModuleComponent } from './dashboard/toggle-module/toggle-module.component';
 import { DueDateComponent } from './dashboard/due-date/due-date.component';
 import { AssessmentComponent } from './assessment/assessment.component';
+import { AssessmentScoreComponent } from './assessment-score/assessment.component';
+import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
+import { AssessmentService } from '../common/services/assessment.service';
+import { AssessmentFinishComponent } from './assessment/assessment-finish/assessment-finish.component';
+import { ViewAssessmentsComponent } from './dashboard/view-assessments/view-assessments.component';
+import { ChartLabelTooltipsDirective } from './directives/chart-label-tooltips.directive';
+import { LineChartValueLabelDirective } from './directives/line-chart-value-label.directive';
+import { AssessmentChartComponent } from './assessment-chart/assessment-chart.component';
 
 @NgModule({
   imports: [
@@ -154,7 +162,14 @@ import { AssessmentComponent } from './assessment/assessment.component';
     TemplateHeadingComponent,
     ToggleModuleComponent,
     DueDateComponent,
-    AssessmentComponent
+    AssessmentComponent,
+    AssessmentScoreComponent,
+    AssessmentMenuComponent,
+    AssessmentFinishComponent,
+    ViewAssessmentsComponent,
+    ChartLabelTooltipsDirective,
+    LineChartValueLabelDirective,
+    AssessmentChartComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -176,6 +191,7 @@ import { AssessmentComponent } from './assessment/assessment.component';
     TemplateHeadingComponent
   ],
   providers: [
+    AssessmentService,
     ModuleService,
     ModuleNavService,
     ModuleContentService,

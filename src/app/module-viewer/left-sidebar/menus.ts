@@ -40,6 +40,8 @@ const hardCodePictures = (user: User) => {
     case 'joederosa@safebuilt.com':
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
+    case 'dhaynes@riversidecompany.com':
+       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg'
     default:
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
   }
@@ -59,31 +61,31 @@ export const menus: MenusInterface = [
     'mat-icon': 'business_center',
     label: 'RMCF SALES EXCELLENCE DASHBOARD',
     link: '/master-dashboard',
-    restrict: ({ user }) => user.permissions.riversideRMCFDashboard
+    restrict: ({ user }) => user.permissions.riversideRMCFDashboard || user.roles.is_riverside_rmcf_admin
   },
   {
     'mat-icon': 'dashboard',
     label: 'SALES EXCELLENCE DASHBOARD',
     linkFn(nav: ModuleNavService) {
-      return `/dashboard/${nav.organization$.value}`;
+      return `/dashboard/${nav.lastOrganization.current}`;
     },
     restrict: ({ user }) => user.permissions.riversideSalesDashboard
   },
   {
     'mat-icon': 'view_module',
     labelFn: ({nav}) => {
-      return (nav.module.current || {name: ''}).name.toUpperCase();
+      return (nav.module.current || {name: ''}).name.toUpperCase()
     },
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
-      return `/org/${nav.organization$.value}/module/${module ? module.id : 1}`;
+      return `/org/${nav.lastOrganization.current}/module/${module.id}`;
     }
   },
   {
     'mat-icon': 'build',
     label: 'EDITOR',
     linkFn(nav: ModuleNavService) {
-      return `/builder/${nav.module.current ? nav.module.current.id : ''}`;
+      return `/builder/${nav.module.current.id || 1}`;
     },
     restrict: ({ user }) => user.permissions.riversideModuleEditor
   },
@@ -92,14 +94,15 @@ export const menus: MenusInterface = [
     render: () => feedback_svg,
     label: 'REQUEST FEEDBACK',
     modalComponent: RequestFeedbackComponent,
-    restrict: ({ user }) => user.permissions.riversideRequestFeedback
+    restrict: ({ user }) => user.permissions.riversideRequestFeedback && !user.roles.is_riverside_rmcf_admin
   },
   {
     'mat-icon': 'email',
     className: 'material-icons-outlined',
     label: 'INBOX',
     link: '/inbox',
-    counter: 0
+    counter: 0,
+    restrict: ({ user }) => !user.roles.is_riverside_rmcf_admin
   },
   {
     render: () => review_svg,
@@ -113,7 +116,14 @@ export const menus: MenusInterface = [
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
       const stepId = module.steps[module.steps.length - 1].id;
-      return `/org/${nav.organization$.value}/module/${module.id}/step/${stepId}`;
+      return `/org/${nav.lastOrganization.current}/module/${module.id}/step/${stepId}`;
     }
   },
+  {
+    'mat-icon': 'assessment',
+    label: 'ASSESSMENT',
+    linkFn(nav: ModuleNavService) {
+      return `/org/${nav.lastOrganization.current}/assessment`;
+    }
+  }
 ];

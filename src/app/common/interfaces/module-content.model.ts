@@ -17,6 +17,7 @@ class ModuleContent extends BaseModel {
   is_section_break: boolean = false;
   requires_feedback: boolean = false;
   is_approved: boolean = false;
+  can_modify: boolean = false;
 
   protected transform() {
     return {

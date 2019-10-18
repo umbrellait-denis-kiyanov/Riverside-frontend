@@ -1,0 +1,45 @@
+<module-org-selector (changed)="setOrganization($event)"></module-org-selector>
+
+<div class="row">
+  <div class="col-sm-8">
+    <div class="btn-group">
+      <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" (click)="setType(type)">{{ type.name }}</button>
+    </div>
+  </div>
+  <div class="col-sm-4">
+    <div class="btn-group view-completed">
+      <button type="button" class="btn btn-default" (click)="viewPastAssessments()" title="View past assessments">&nbsp;<mat-icon>show_chart</mat-icon></button>
+    </div>
+  </div>
+</div>
+
+<div *ngIf="activeType$ | async">
+  <h2>{{ (activeType$ | async).name }} Strategy Assessment</h2>
+
+  <table *ngIf="(orgGroups$ | async) as orgGroups">
+    <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)" class="step-list-item" [class.active]="(activeGroup$ | async)?.id == group.id">
+      <td class="group-status">
+        <mat-icon *ngIf="orgGroups[group.id]?.isDone">check</mat-icon>
+      </td>
+      <td class="step-num-td">
+        <span class="step-number" [class.double]="group.position >= 10">{{group.position}}<span class="dot">.</span></span>
+      </td>
+      <td class="group-name">{{ group.shortName }}</td>
+      <td class="score">{{ orgGroups[group.id]?.score || 0 }}</td>
+    </tr>
+    <tr class="step-list-item finish"  [class.active]="!(activeGroup$ | async)">
+      <td class="group-status"></td>
+      <td class="step-num-td">
+        <span class="step-number double"><mat-icon>check</mat-icon></span>
+      </td>
+
+      <td colspan="2" (click)="finish(null)">
+        Finish Assessment
+      </td>
+    </tr>
+  </table>
+
+  <div class="alert alert-danger" *ngIf="(finishError$ | async)">
+    Please complete all sections first
+  </div>
+</div>

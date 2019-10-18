@@ -1,0 +1,68 @@
+@import "src/app/common/sass/variables.sass"
+
+\:host
+    width: 100%
+    height: 100%
+    display: block
+
+    \::ng-deep
+        ngx-charts-line-chart, ngx-charts-bar-vertical
+            text
+                fill: #999
+
+            .gridline-path-vertical
+                display: none
+
+            [ngx-charts-x-axis-ticks]
+                text
+                    transform: rotate(300deg)
+                    text-transform: uppercase
+
+            path
+                stroke-width: 3
+
+            [ngx-charts-bar-label]
+                text
+                    transform: translate(-5px, -5px)
+                    position: relative
+
+                    &[text-anchor="end"]
+                        transform: translate(5px, 5px)
+
+                &:last-of-type
+                    text
+                        font-size: 1.5em
+                        fill: $green
+                        transform: translate(-15px, -10px)
+
+                        &[text-anchor="end"]
+                            fill: $red
+                            transform: translate(17px, 15px)
+
+            [ngx-charts-x-axis]
+                height: 250px
+
+            [ngx-charts-x-axis-ticks]
+                g:last-of-type
+                    text
+                        font-size: 1.3em !important
+
+            [ngx-charts-y-axis-ticks]
+                text
+                    fill: #ddd
+
+            g.line-series.active g.datapoint-value
+                display: block !important
+
+            g[ngx-charts-y-axis] + [clip-path]
+                g.ng-trigger-animationState
+                    transform: translate(0, 0)
+
+                    &+g.ng-trigger-animationState
+                        transform: translate(1px,2px)
+
+                        &+g.ng-trigger-animationState
+                            transform: translate(2px,-2px)
+
+                            &+g.ng-trigger-animationState
+                                transform: translate(3px,4px)

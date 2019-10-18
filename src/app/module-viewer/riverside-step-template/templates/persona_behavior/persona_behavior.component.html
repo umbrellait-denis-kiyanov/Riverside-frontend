@@ -25,6 +25,7 @@
 <div class="persona-behavior-wrapper" *ngFor="let matrix of contentData.selection_matrix">
   <app-selection-matrix
     *ngIf="activePersonas.length"
+    [disabled]="disabled"
     [question]="matrix.question"
     [personas]="activePersonas"
     [options]="matrix.options"
@@ -62,4 +63,4 @@
   </div>
 </div>
 
-<module-nav [action]="action"></module-nav>
+<module-nav *ngIf="!disabled" [action]="action"></module-nav>

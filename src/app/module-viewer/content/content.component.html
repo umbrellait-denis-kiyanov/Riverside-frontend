@@ -4,6 +4,6 @@
 <!-- <button (click)="requestFeedback()" *ngIf="me.roles.riverside_facilitator">Request feedback</button> -->
 <!-- <button (click)="finishFeedback()" *ngIf="showFinishFeedback">Finalize feedback</button> -->
 <div class="content-wrapper">
-    <riverside-step-template *ngIf="templateData" [template]="templateComponentName" [data]="templateData"></riverside-step-template>
+    <riverside-step-template *ngIf="templateData" [canModify]="canModify" [template]="templateComponentName" [data]="templateData"></riverside-step-template>
 </div>
 
