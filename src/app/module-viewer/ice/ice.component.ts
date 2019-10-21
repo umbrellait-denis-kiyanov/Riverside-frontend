@@ -79,18 +79,6 @@ export class IceComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    // if (!this.data)
-    // {
-    //   this.data = {
-    //     textContent: '',
-    //     content: '',
-    //     selections$: new BehaviorSubject([]),
-    //     comments_json: []
-    //   };
-    // }
-
-    console.log(this.data);
-
     this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
 
     const el: HTMLDivElement = document.createElement('div');
