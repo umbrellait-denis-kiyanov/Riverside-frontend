@@ -3,6 +3,9 @@ import { RequestFeedbackComponent } from '../request-feedback/request-feedback.c
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { feedback_svg } from './feedback.icon';
 import { review_svg } from './review.icon';
+import { map } from 'rxjs/operators';
+import { combineLatest, of, BehaviorSubject } from 'rxjs';
+
 interface RestrictOptions {
   nav: ModuleNavService;
   user: User;
@@ -50,9 +53,11 @@ const hardCodePictures = (user: User) => {
 export const menus: MenusInterface = [
   {
     render(user: User) {
-      return `<img
-        src=${hardCodePictures(user)}
-        style="width: 35px; height: 35px; border-radius: 35px">`;
+      return of(user).pipe(
+        map((usr: User) => `<img
+                      src=${hardCodePictures(usr)}
+                      style="width: 35px; height: 35px; border-radius: 35px">`)
+      );
     },
     label: 'ACCOUNT',
     link: '/account',
@@ -67,30 +72,38 @@ export const menus: MenusInterface = [
     'mat-icon': 'dashboard',
     label: 'SALES EXCELLENCE DASHBOARD',
     linkFn(nav: ModuleNavService) {
-      return `/dashboard/${nav.lastOrganization.current}`;
+      return nav.organization$.pipe(
+        map(org => `/dashboard/${org}`)
+      );
     },
     restrict: ({ user }) => user.permissions.riversideSalesDashboard
   },
   {
     'mat-icon': 'view_module',
-    labelFn: ({nav}) => {
-      // todo: return (nav.module.current || {name: ''}).name.toUpperCase()
+    labelFn: (nav: ModuleNavService) => {
+      return nav.moduleData$.pipe(
+        map(mod => mod.name.toUpperCase())
+      );
     },
     linkFn(nav: ModuleNavService) {
-      return `/org/${nav.lastOrganization.current}/module/${nav.module.current}`;
+      return combineLatest(nav.organization$, nav.module$).pipe(
+        map(([org, mod]) => `/org/${org}/module/${mod}`)
+      );
     }
   },
   {
     'mat-icon': 'build',
     label: 'EDITOR',
     linkFn(nav: ModuleNavService) {
-      return `/builder/${nav.module.current || 1}`;
+      return nav.module$.pipe(
+        map(mod => `/builder/${mod}`)
+      );
     },
     restrict: ({ user }) => user.permissions.riversideModuleEditor
   },
 
   {
-    render: () => feedback_svg,
+    render: () => new BehaviorSubject(feedback_svg),
     label: 'REQUEST FEEDBACK',
     modalComponent: RequestFeedbackComponent,
     restrict: ({ user }) => user.permissions.riversideRequestFeedback
@@ -104,23 +117,29 @@ export const menus: MenusInterface = [
     restrict: ({ user }) => user.permissions.riversideRequestFeedback || user.permissions.riversideProvideFeedback
   },
   {
-    render: () => review_svg,
+    render: () => new BehaviorSubject(review_svg),
     restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
     className: 'material-icons-outlined',
-    labelFn: ({nav}) => {
-      const module = nav.module.current;
-      // todo: return module.steps[module.steps.length - 1].description.toUpperCase() + ' - ' +
-      //       (nav.module.current || {name: ''}).name.toUpperCase();
+    labelFn(nav: ModuleNavService) {
+      return combineLatest(nav.moduleData$, nav.step$).pipe(
+        map(([mod, stepId]) =>
+          (mod.steps.find(s => s.id === stepId) || {description: ''}).description.toUpperCase() + ' - ' + mod.name.toUpperCase()
+        )
+      );
     },
     linkFn(nav: ModuleNavService) {
-      return `/org/${nav.lastOrganization.current}/module/${nav.module.current}/step/${nav.step.current}`;
+      return combineLatest(nav.organization$, nav.module$, nav.step$).pipe(
+        map(([org, mod, step]) => `/org/${org}/module/${mod}/step/${step}`)
+      );
     }
   },
   {
     'mat-icon': 'assessment',
     label: 'ASSESSMENT',
     linkFn(nav: ModuleNavService) {
-      return `/org/${nav.lastOrganization.current}/assessment`;
+      return nav.organization$.pipe(
+        map(org => `/org/${org}/assessment`)
+      );
     },
     restrict: ({ user }) => true
   }

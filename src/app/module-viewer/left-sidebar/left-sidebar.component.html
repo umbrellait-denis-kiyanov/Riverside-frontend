@@ -12,7 +12,6 @@
       <div class="menu-item-icon">
         <mat-icon>menu</mat-icon>
       </div>
-
     </a>
   </li>
 
@@ -20,21 +19,21 @@
     class="menu-item"
     *ngFor="let menu of menus"
     [hidden]="!showMenuItem(menu)"
-    e3-tooltip="{{menu.labelFn?menu.labelFn({nav: navService}):menu.label}}"
+    [e3-tooltip]="menu.label || (menu.labelObservable | async)"
     placement="right"
   >
-    <ng-container *ngIf="showMenuItem(menu)">
+    <ng-container *ngIf="!menu.restrictObservable || (menu.restrictObservable | async)">
       <a
         [routerLink]="menu.link"
         routerLinkActive="active"
-        *ngIf="menu.link "
+        *ngIf="menu.link"
       >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
       <a
-        [routerLink]="menu.linkFn(navService)"
+        [routerLink]="menu.linkObservable | async"
         routerLinkActive="active"
-        *ngIf="menu.linkFn"
+        *ngIf="menu.linkObservable"
       >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
@@ -56,11 +55,9 @@
       <ng-template #menuItem>
         <div class="menu-item-icon" >
           <mat-icon [ngClass]="menu.className" *ngIf="menu['mat-icon']">{{menu['mat-icon']}}</mat-icon>
-          <span *ngIf="menu.render" [innerHtml]="menu.render(me) | safehtml"></span>
+          <span *ngIf="menu.renderObservable" [innerHtml]="menu.renderObservable | async | safehtml"></span>
           <span class="menu-item-counter" [hidden]="!menu.counter">{{menu.counter}}</span>
         </div>
-
-
       </ng-template>
     </ng-container>
   </li>

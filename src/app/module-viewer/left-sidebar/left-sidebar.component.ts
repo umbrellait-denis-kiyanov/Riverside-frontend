@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { menus } from './menus';
 import { LeftMenuService } from '../../common/services/left-menu.service';
 import { UserService } from '../../common/services/user.service';
@@ -6,7 +7,8 @@ import User from '../../common/interfaces/user.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxService } from '../inbox/inbox.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-
+import { of, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'left-sidebar',
@@ -26,7 +28,8 @@ export class LeftSidebarComponent implements OnInit {
     private inboxService: InboxService,
     public navService: ModuleNavService,
     private el: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -36,6 +39,26 @@ export class LeftSidebarComponent implements OnInit {
     });
     this.me = this.userService.me;
     this.initialLoad();
+
+    this.menus.forEach(item => {
+      if (item.linkFn) {
+        item.linkObservable = item.linkFn(this.navService);
+      }
+
+      if (item.labelFn) {
+        item.labelObservable = item.labelFn(this.navService);
+      }
+
+      if (item.render) {
+        item.renderObservable = item.render(this.me);
+      }
+
+      if (item.restrict) {
+        item.restrictObservable = combineLatest(of(this.me), this.route.params).pipe(
+          map(([user]) => item.restrict({user, nav: this.navService}))
+        );
+      }
+    });
   }
 
   toggleMenu() {
@@ -70,3 +93,4 @@ export class LeftSidebarComponent implements OnInit {
     });
   }
 }
+
