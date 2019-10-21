@@ -103,11 +103,11 @@ export class ModuleNavComponent implements OnInit {
         this.moduleService.moduleChanged$.next(true);
 
         if (newState) {
-          if (!step.requires_feedback) {
-            this.navService.nextStep();
-          }
-
           this.iceService.onApprove.emit();
+
+          if (!step.requires_feedback) {
+            setTimeout(_ => this.navService.nextStep());
+          }
         }
 
         this[key] = newState;

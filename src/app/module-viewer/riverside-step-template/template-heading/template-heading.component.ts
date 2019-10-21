@@ -15,7 +15,7 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() disabled: boolean;
 
-  savedTimer = new ResourceFromStorage<object>('module_timerss');
+  savedTimer = new ResourceFromStorage<object>('module_timers');
 
   time = 0;
   timeStart: number;

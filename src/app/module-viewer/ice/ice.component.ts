@@ -129,7 +129,7 @@ export class IceComponent implements OnInit {
       this.tracker.element.blur();
       this.iceService.onApprove.subscribe(() => {
         this.tracker.acceptAll();
-        this.changed.emit();
+        this.onBlur();
       });
     });
 
