@@ -120,6 +120,7 @@
 
 <module-nav
   *ngIf="!disabled"
+  [step]="data"
   [action]="action"
   (feedback)="feedbackClicked(message)"
   [submitting]="submitting"

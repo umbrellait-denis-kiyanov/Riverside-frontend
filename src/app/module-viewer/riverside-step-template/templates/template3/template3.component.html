@@ -18,6 +18,7 @@
 
 <module-nav
   *ngIf="!disabled"
+  [step]="data"
   [action]="action"
   (feedback)="feedbackClicked($event)"
   [submitting]="submitting"

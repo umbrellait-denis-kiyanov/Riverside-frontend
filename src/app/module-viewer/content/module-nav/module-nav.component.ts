@@ -1,11 +1,10 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { UserService } from 'src/app/common/services/user.service';
 import Message from '../../inbox/message.model';
 import { IceService } from '../../ice/ice.service';
 import { Subscription } from 'rxjs';
-import { ActivatedRoute } from '@angular/router';
 import { ModuleService } from 'src/app/common/services/module.service';
+import { TemplateContentData } from '../../riverside-step-template/templates/template-data.class';
 
 type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedback' | 'provide_final_feedback' | 'approve';
 @Component({
@@ -16,6 +15,7 @@ type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedbac
 export class ModuleNavComponent implements OnInit {
   showPrevious = true;
   showNext = true;
+  @Input() step: TemplateContentData;
   @Input() action: actions;
   @Input() subaction: actions;
   @Input() submitting: boolean;
@@ -29,14 +29,14 @@ export class ModuleNavComponent implements OnInit {
   constructor(
     private navService: ModuleNavService,
     private moduleService: ModuleService,
-    private userService: UserService,
     private iceService: IceService,
-    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
     this.prepareActionFlag('is_done', this.action);
     this.subaction && this.prepareActionFlag('is_subaction_done', this.subaction);
+
+    // todo - what does it do?
     this.unApproveSub && this.unApproveSub.unsubscribe();
     this.unApproveSub = this.iceService.onUnapprove.subscribe(() => {
       this.markAsApproved(!!this.subaction, false);
@@ -45,22 +45,22 @@ export class ModuleNavComponent implements OnInit {
   }
 
   prepareActionFlag(doneKey: string, action: actions) {
-    // const {currentStep: {is_checked, is_approved, waiting_for_feedback, feedback_received}} = this.navService;
-    // switch (action) {
-    //   case 'feedback':
-    //   case 'final_feedback':
-    //     this[doneKey] = waiting_for_feedback;
-    //     break;
-    //   case 'provide_feedback':
-    //   case 'provide_final_feedback':
-    //     this[doneKey] = feedback_received;
-    //     break;
-    //   case 'approve':
-    //     this[doneKey] = is_approved;
-    //     break;
-    //   default:
-    //     this[doneKey] = is_checked;
-    // }
+    const {data: {is_checked, is_approved, waiting_for_feedback, feedback_received}} = this.step;
+    switch (action) {
+      case 'feedback':
+      case 'final_feedback':
+        this[doneKey] = waiting_for_feedback;
+        break;
+      case 'provide_feedback':
+      case 'provide_final_feedback':
+        this[doneKey] = feedback_received;
+        break;
+      case 'approve':
+        this[doneKey] = is_approved;
+        break;
+      default:
+        this[doneKey] = is_checked;
+    }
   }
 
   next() {
@@ -72,69 +72,51 @@ export class ModuleNavComponent implements OnInit {
   }
 
   feedbackClicked() {
-
     this.feedback.emit();
     this.is_done = true;
-    // this.navService.nextStep();
   }
 
   markAsDone(isSubaction: boolean = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     const newState = state !== null ? state : !this[key];
-    const { stepId } = this.route.snapshot.params;
-    const module = this.navService.module.current;
-    // this.moduleService.markAsDone(module, this.navService.lastOrganization.current, stepId, newState)
-    //   .subscribe(_ => {
-    //     this[key] = newState;
-    //     this[key] && this.navService.nextStep();
+    const step = this.step.data;
 
-    //     const stepIndex = this.navService.setStepFromId(stepId);
-    //     const step = module.steps[stepIndex];
-    //     if (step) {
-    //       step.is_checked = newState;
-    //     }
-    //     this.moduleService.updateProgress(module);
-    //   });
+    this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
+      .subscribe(_ => {
+        this.moduleService.moduleChanged$.next(true);
+
+        if (newState) {
+          this.navService.nextStep();
+        }
+
+        this[key] = newState;
+      });
   }
 
   markAsApproved(isSubaction: boolean = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     const newState = state !== null ? state : !this[key];
-    const { stepId } = this.route.snapshot.params;
-    const module = this.navService.module.current;
+    const step = this.step.data;
 
-    // this.moduleService.markAsApproved(module, this.navService.lastOrganization.current, stepId, newState)
-    //   .subscribe((response: number[]) => {
+    this.moduleService.markAsApproved(step.module_id, step.org_id, step.step_id, newState)
+      .subscribe((response: number[]) => {
+        this.moduleService.moduleChanged$.next(true);
 
-    //     const stepIndex = this.navService.setStepFromId(stepId);
-    //     const step = module.steps[stepIndex];
+        if (newState) {
+          if (!step.requires_feedback) {
+            this.navService.nextStep();
+          }
 
-    //     if (step) {
-    //       step.is_approved = newState;
-    //       if (step.is_approved) {
-    //         this.navService.onApprove.emit(true);
-    //         this.iceService.onApprove.emit();
-    //         if (!this.navService.currentStep.requires_feedback) {
-    //           this.navService.nextStep();
-    //         }
-    //       } else {
-    //         this.navService.onUnapprove.emit();
-    //         if (!this.navService.currentStep.requires_feedback) {
-    //           this.navService.reloadModule();
-    //         }
-    //       }
-    //     }
+          this.iceService.onApprove.emit();
+        }
 
-    //     response.forEach(id => module.steps.find(st => st.id === id).is_approved = state);
-
-    //     this.moduleService.updateProgress(module);
-
-    //     this[key] = newState;
-    //   });
+        this[key] = newState;
+      });
   }
 
   buttonClicked(action?: actions, isSubaction: boolean = false) {
     action = action || this.action;
+
     switch (action) {
       case 'feedback':
       case 'provide_feedback':

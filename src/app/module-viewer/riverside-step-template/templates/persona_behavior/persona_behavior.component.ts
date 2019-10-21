@@ -47,7 +47,5 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
         }
       });
     });
-
-    console.log(this.inputs);
   }
 }

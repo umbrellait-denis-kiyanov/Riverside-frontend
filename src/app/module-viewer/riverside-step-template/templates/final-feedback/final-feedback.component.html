@@ -51,6 +51,7 @@
                 <ice
 
                 id="{{item.inputId(i)}}"
+                *ngIf="inputs[item.inputId(i)]"
                 [hideChanges]="hideChanges"
                 [user]="me"
                 [disabled]="disabled"
@@ -66,6 +67,7 @@
                 <ice
 
                 id="{{item.inputId(i)}}"
+                *ngIf="inputs[item.inputId(i)]"
                 [hideChanges]="hideChanges"
                 [user]="me"
                 [disabled]="disabled"
@@ -81,6 +83,7 @@
                   <ice
 
                   id="{{item.inputId(i)}}"
+                  *ngIf="inputs[item.inputId(i)]"
                   [hideChanges]="hideChanges"
                   [user]="me"
                   [disabled]="disabled"
@@ -114,6 +117,7 @@
 
 <module-nav
   *ngIf="!disabled"
+  [step]="data"
   [action]="action"
   (feedback)="feedbackClicked(message)"
   [submitting]="submitting"

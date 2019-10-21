@@ -1,15 +1,16 @@
 import { BehaviorSubject } from 'rxjs';
 import { TemplateContentDataType } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
+import ModuleContent from 'src/app/common/interfaces/module-content.model';
 
 
 interface TemplateContentDataProps {
-  data: TemplateContentDataType;
+  data: ModuleContent;
   me: User;
   canModify: boolean;
 }
 export class TemplateContentData {
-  data: TemplateContentDataType;
+  data: ModuleContent;
   me: User;
   canModify: boolean;
 
