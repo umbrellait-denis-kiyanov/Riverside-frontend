@@ -1,0 +1,16 @@
+<div *ngIf="status == STATUS.DISPLAY">
+  <div class="img-button" (click)="selectImage()">
+      <img [src]="fileUrl.value" *ngIf="fileUrl.value">
+      <div class="letter-image"*ngIf="!fileUrl.value">
+        {{firstLetter()}}
+      </div>
+      <span >Change</span>
+  </div>
+  
+    
+</div>
+<profile-picture-selector 
+  *ngIf="status == STATUS.SELECT"
+  (imageUploaded)="onImageUploaded($event)"
+>
+</profile-picture-selector>

@@ -1,0 +1,30 @@
+<input type="file" (change)="fileChangeEvent($event)" />
+<div [hidden]="!imageChangedEvent">
+  <div class="preview-wrapper">
+    <div>
+      <h4>Preview</h4>
+      <img [src]="croppedImage" />
+    </div>
+    <div>
+      <h4>Crop Image</h4>
+      <image-cropper
+        [imageChangedEvent]="imageChangedEvent"
+        [maintainAspectRatio]="true"
+        [aspectRatio]="4 / 4"
+        [resizeToWidth]="128"
+        format="png"
+        (imageCropped)="imageCropped($event)"
+      ></image-cropper>
+    </div>
+  </div>
+  <div>
+    <button
+      class="btn btn-primary"
+      type="button"
+      [disabled]="saving"
+      (click)="upload()"
+    >
+      Upload
+    </button>
+  </div>
+</div>

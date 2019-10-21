@@ -1,0 +1,76 @@
+<div class="page-container">
+  <div class="page-content">
+    <h3>Profile</h3>
+    <div>
+      <form
+        *ngIf="account$ | async as account; else loading"
+        [formGroup]="form"
+        (ngSubmit)="save()"
+      >
+        <div formGroupName="meta">
+          
+          <profile-picture-input
+            [(fileUrl)]="form.controls.meta.controls.profile_picture"
+          ></profile-picture-input>
+        </div>
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input id="fname" class="site-tbox" formControlName="fname" />
+          <div
+            *ngIf="
+              form.controls.fname.errors?.required &&
+              form.controls.fname.touched
+            "
+            class="error"
+          >
+            *Required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input id="lname" class="site-tbox" formControlName="lname" />
+          <div
+            *ngIf="
+              form.controls.lname.errors?.required &&
+              form.controls.lname.touched
+            "
+            class="error"
+          >
+            *Required
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            class="site-tbox"
+            [disabled]="true"
+            formControlName="email"
+          />
+          <div
+            *ngIf="
+              form.controls.email.errors?.required &&
+              form.controls.email.touched
+            "
+            class="error"
+          >
+            *Required
+          </div>
+        </div>
+        <button
+          class="btn btn-primary"
+          type="button"
+          [disabled]="saving"
+          (click)="save()"
+        >
+          Save
+        </button>
+      </form>
+      <ng-template #loading>
+        <h4>Loading...</h4>
+      </ng-template>
+    </div>
+  </div>
+</div>
