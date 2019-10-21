@@ -53,7 +53,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
   }
 
   protected initAction() {
-    if (this.userService.me.roles.is_riverside_managing_director) {
+    if (this.userService.me.permissions.riversideProvideFeedback) {
       this.action = 'provide_feedback';
       this.subaction = 'approve';
     } else { this.action = 'feedback'; }

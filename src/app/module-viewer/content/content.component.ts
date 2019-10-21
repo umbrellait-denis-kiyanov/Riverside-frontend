@@ -75,7 +75,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   render(moduleContent: ModuleContent) {
     const { feedback_requested, feedback_started, can_modify } = moduleContent;
-    const is_riverside_managing_director = this.me.roles.is_riverside_managing_director;
+    const is_riverside_managing_director = this.me.permissions.riversideProvideFeedback;
 
     if (feedback_requested && !feedback_started && is_riverside_managing_director) {
       this.moduleService.feedbackStarted({ id: moduleContent.module_id }).subscribe();
@@ -83,7 +83,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
     this.canModify = can_modify;
 
-    this.iceService.shouldShowWarning = moduleContent.is_approved && !this.userService.me.roles.is_riverside_managing_director;
+    this.iceService.shouldShowWarning = moduleContent.is_approved && !is_riverside_managing_director;
 
     moduleContent.disabled = (!is_riverside_managing_director && feedback_started) || !can_modify;
 
