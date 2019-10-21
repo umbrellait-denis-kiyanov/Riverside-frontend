@@ -37,7 +37,8 @@ export class LeftMenuComponent implements OnInit {
     private userService: UserService,
     private leftMenuService: LeftMenuService,
     private navService: ModuleNavService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnInit() {
@@ -83,7 +84,8 @@ export class LeftMenuComponent implements OnInit {
     return ['/org', this.orgId, 'module', module.id , 'step', step.id ];
   }
 
-  setOrganization(organization: Organization) {
+  setOrganization(organization: Organization, module: Module) {
     this.navService.lastOrganization.current = organization.id;
+    this.router.navigate(['org', organization.id, 'module', module.id, 'step', this.navService.step.current]);
   }
 }
