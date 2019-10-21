@@ -48,15 +48,9 @@ export class ContentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.me = this.userService.me;
 
-    // todo: move to service?
-    this.routeWatch = combineLatest(this.route.params, this.route.parent.params)
-      .subscribe(
-        ([params, parentParams]) => {
-          this.navService.lastOrganization.current = Number(parentParams.orgId);
-          this.navService.module.current = Number(parentParams.moduleId);
-          this.navService.step.current = Number(params.stepId);
-        }
-      );
+    this.routeWatch = this.route.params.subscribe(
+      params => this.navService.step.current = Number(params.stepId)
+    );
 
     this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, this.navService.step$.pipe(startWith(1)))
       .pipe(

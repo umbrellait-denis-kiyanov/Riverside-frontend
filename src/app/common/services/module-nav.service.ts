@@ -151,6 +151,10 @@ export class ModuleNavService {
     this.assessmentType.current = type.id;
   }
 
+  goToStep(id: number) {
+    this.router.navigate(['org', this.lastOrganization.current, 'module', this.module.current, 'step', id]);
+  }
+
   private moveToStep(offset: number) {
     this.moduleData$.pipe(take(1)).subscribe(module => {
       let index = module.steps.findIndex(s => s.id === this.step.current);
@@ -160,7 +164,7 @@ export class ModuleNavService {
         step = module.steps[index];
       } while (step.is_section_break || !index || index === module.steps.length - 1);
 
-      this.router.navigate(['org', this.lastOrganization.current, 'module', this.module.current, 'step', step.id]);
+      this.goToStep(step.id);
     });
   }
 }
