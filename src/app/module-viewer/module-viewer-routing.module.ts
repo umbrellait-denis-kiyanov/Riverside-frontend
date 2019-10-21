@@ -85,11 +85,6 @@ const routes: Routes = [
       {
         path: '',
         component: DashboardComponent
-      },
-      {
-        path: '',
-        component: LeftMenuComponent,
-        outlet: 'left-menu'
       }
     ]
   },
@@ -100,11 +95,6 @@ const routes: Routes = [
       {
         path: '',
         component: MasterDashboardComponent
-      },
-      {
-        path: '',
-        component: LeftMenuComponent,
-        outlet: 'left-menu'
       }
     ]
   },
