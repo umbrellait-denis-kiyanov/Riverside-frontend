@@ -18,6 +18,10 @@ class ModuleContent extends BaseModel {
   requires_feedback: boolean = false;
   is_approved: boolean = false;
   can_modify: boolean = false;
+  disabled: boolean = false;
+  is_checked: boolean = false;
+  waiting_for_feedback: boolean = false;
+  feedback_received: boolean = false;
 
   protected transform() {
     return {

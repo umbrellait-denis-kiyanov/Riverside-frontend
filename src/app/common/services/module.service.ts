@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { Module, Step, Input, Template, Organization } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError } from 'rxjs';
+import { Observable, throwError, BehaviorSubject } from 'rxjs';
 import { shareReplay, switchMap, map, filter } from 'rxjs/operators';
 
 @Injectable()
@@ -11,6 +11,8 @@ export class ModuleService {
   baseUrl = '/api/modules';
 
   organizations$: Observable<Organization[]>;
+
+  moduleChanged$ = new BehaviorSubject(true);
 
   constructor(private httpClient: HttpClient) { }
 
@@ -39,6 +41,10 @@ export class ModuleService {
     );
   }
 
+  reloadModule() {
+    this.moduleChanged$.next(true);
+  }
+
   getModules(): Observable<Module[]> {
     return this.httpClient.get<Module[]>(this.baseUrl).pipe(shareReplay(1));
   }
@@ -57,12 +63,8 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${module.id}`, module);
   }
 
-  async feedbackStarted(module: Partial<Module> & {orgId?: number}): Promise<object> {
-    return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/start`, module).toPromise();
-  }
-
-  async finalizeFeedback(module: Partial<Module> & {orgId?: number}): Promise<object> {
-    return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/finish`, module).toPromise();
+  feedbackStarted(module: Partial<Module> & {orgId?: number}): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/feedback/start`, module);
   }
 
   getCategories(orgId: number): Observable<any> {
@@ -86,7 +88,7 @@ export class ModuleService {
       console.error('No input data provided');
       return;
     }
-    console.log(input);
+
     const dataToSend =  (({ comments_json, content, element_key }) => ({ comments_json, content, element_key }))(input);
     return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
   }
@@ -113,11 +115,11 @@ export class ModuleService {
     module.percComplete = Math.round(100 * numerator / denominator);
   }
 
-  markAsDone(module: Module, orgId: number, stepId: number, is_checked: boolean = true): Observable<any> {
-    return this.httpClient.post('/api/modules/' + module.id + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
+  markAsDone(moduleId: number, orgId: number, stepId: number, is_checked: boolean = true): Observable<any> {
+    return this.httpClient.post('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
   }
 
-  markAsApproved(module: Module, orgId: number, stepId: number, is_approved: boolean = true): Observable<number[]> {
-    return this.httpClient.post<number[]>('/api/modules/' + module.id + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, org_id: orgId});
+  markAsApproved(moduleId: number, orgId: number, stepId: number, is_approved: boolean = true): Observable<number[]> {
+    return this.httpClient.post<number[]>('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, org_id: orgId});
   }
 }

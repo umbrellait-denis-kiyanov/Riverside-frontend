@@ -49,7 +49,9 @@ export class LeftMenuComponent implements OnInit {
     ).subscribe(module => this.navService.module.current = module.id);
 
     this.module$ = combineLatest(this.navService.organization$,
-                                 this.navService.module.onChange.pipe(startWith(this.navService.module.current), filter(m => !!m)))
+                                 this.navService.module.onChange.pipe(startWith(this.navService.module.current), filter(m => !!m)),
+                                 this.moduleService.moduleChanged$
+                                )
       .pipe(
         tap(([orgId]) => this.orgId = orgId),
         switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId))

@@ -29,6 +29,5 @@ export class RiversideStepTemplateComponent implements OnChanges {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.templateInstance = (componentRef.instance as TemplateComponent);
     this.templateInstance.data = this.data;
-    console.log(this.data);
   }
 }

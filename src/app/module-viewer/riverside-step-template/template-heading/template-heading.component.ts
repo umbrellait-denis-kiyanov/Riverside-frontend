@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Renderer2, OnDestroy, OnChanges } from '@angular/core';
 import { TemplateContentData } from '../templates/template-data.class';
-import { interval, Observable, Subscription } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { interval, Observable, Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import { tap } from 'rxjs/operators';
 import { ResourceFromStorage } from 'src/app/common/services/module-nav.service';
 
 @Component({
@@ -15,16 +15,16 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
 
   @Input() disabled: boolean;
 
-  savedTimer = new ResourceFromStorage<object>('module_viewer_timers');
+  savedTimer = new ResourceFromStorage<object>('module_timerss');
 
   time = 0;
-  accumulatedTime = 0;
   timeStart: number;
   timerInterval: any;
 
   isTimerOn = false;
 
-  timeInterval$: Observable<void>;
+  timeInterval$: Observable<any>;
+  uuid$ = new BehaviorSubject<string>(null);
 
   sub: Subscription;
 
@@ -35,9 +35,17 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
   constructor(private renderer: Renderer2) { }
 
   ngOnInit() {
+    if (!this.savedTimer.current) {
+      this.savedTimer.current = {};
+    }
+
     this.timeInterval$ = interval(500).pipe(
-      map(() => {
-        this.time = this.accumulatedTime + Math.floor((Date.now() - this.timeStart) / 1000);
+      tap((x) => {
+        this.time = (this.savedTimer.current[this.uuid] || 0) + ((Date.now() - this.timeStart) / 1000);
+
+        if (!(x % 10)) {
+          this.saveTimer(this.uuid);
+        }
       })
     );
 
@@ -57,23 +65,25 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  ngOnChanges() {
+  ngOnChanges(changes) {
+    if (this.uuid) {
+      this.saveTimer(this.uuid);
+    }
+
+    this.timeStart = Date.now();
     this.contentData = this.content.data.template_params_json;
 
-    const inputs = Object.values(this.content.data.inputs).map(i => i.id);
-    this.uuid = inputs.slice(0, 2).concat(inputs.slice(-2, inputs.length)).join('-') + '-' + this.contentData.title;
+    const cd = this.content.data;
+    this.uuid = cd.org_id + '-' + cd.module_id + '-' + cd.step_id;
 
-    this.accumulatedTime = (this.savedTimer.current ? this.savedTimer.current[this.uuid] : 0) || 0;
-    this.time = this.accumulatedTime;
+    this.time = this.savedTimer.current[this.uuid] || 0;
   }
 
   toggleTimer() {
     this.isTimerOn = !this.isTimerOn;
 
     if (!this.isTimerOn) {
-      this.accumulatedTime = this.time;
-
-      this.savedTimer.current = Object.assign(this.savedTimer.current || {}, {[this.uuid]: this.accumulatedTime});
+      this.saveTimer(this.uuid);
 
       this.sub.unsubscribe();
     } else {
@@ -83,7 +93,14 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.saveTimer(this.uuid);
+
     this.toggleTimer();
     this.sub.unsubscribe();
+  }
+
+  saveTimer(uuid) {
+    this.timeStart = Date.now();
+    this.savedTimer.current = Object.assign(JSON.parse(JSON.stringify(this.savedTimer.current)), {[this.uuid]: Math.floor(this.time)});
   }
 }

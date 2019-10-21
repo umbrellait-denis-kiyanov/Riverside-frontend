@@ -20,6 +20,7 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
     this.type = type;
     this.onChange.next(this.current);
   }
+
   set current(value: T) {
     if (value === this._current) {
       return;
@@ -28,6 +29,7 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
     window.localStorage.setItem(this.storageKey, this.processToStorage());
     this.onChange.next(value);
   }
+
   get current(): T {
     if (this._current !== undefined) {
       return this._current;
@@ -48,8 +50,8 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
     if (this.type === 'number') {
       return Number(fromStorage);
     }
-    return fromStorage;
 
+    return fromStorage;
   }
 
   processToStorage() {
@@ -59,30 +61,17 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
       return JSON.stringify(this._current);
     }
   }
-
-  async getLast(): Promise<T | null> {
-    return this.current;
-  }
 }
 
 @Injectable()
 export class ModuleNavService {
   lastOrganization = new ResourceFromStorage<number>('last_organization');
   module = new ResourceFromStorage<number>('last_module');
-
-  // todo: remove
-  stepIndex = new ResourceFromStorage<number>('last_step', 0, 'number');
   step = new ResourceFromStorage<number>('last_step_id', 0, 'number');
+
   assessmentType = new ResourceFromStorage<number>('last_type');
-
-  onApprove = new EventEmitter<boolean>(false);
-  onUnapprove = new EventEmitter<boolean>(false);
-  onSave = new EventEmitter(false);
-  shouldReloadModule = false;
-  shouldMoveToNext = false;
-  assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
-
   activeAssessmentType$: Observable<AssessmentType>;
+  assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
 
   organization$ = this.lastOrganization.onChange.pipe(
       filter(org => !!org),
@@ -126,30 +115,6 @@ export class ModuleNavService {
     private moduleService: ModuleService,
     private asmService: AssessmentService
   ) {
-
-    // this.onUnapprove.subscribe(() => {
-    //   if (this.currentStep.requires_feedback) {
-    //     this.shouldReloadModule = true;
-    //   }
-    // });
-    // this.onApprove.subscribe(() => {
-    //   if (this.currentStep.requires_feedback) {
-    //     this.shouldReloadModule = true;
-    //   } else {
-    //     this.shouldMoveToNext = true;
-    //   }
-    // });
-    // this.onSave.subscribe(() => {
-    //   if (this.shouldReloadModule) {
-    //     this.reloadModule();
-    //     this.shouldReloadModule = false;
-    //   }
-    //   if (this.shouldMoveToNext) {
-    //     this.nextStep();
-    //     this.shouldMoveToNext = false;
-    //   }
-    // });
-
     this.moduleService.getOrganizations().subscribe(organizations => {
       const currentOrg = parseInt(this.route.snapshot.params.orgId, 10) || this.lastOrganization.current;
       this.lastOrganization.current = Number(currentOrg) ? Number(currentOrg) : Number(organizations[0].id);
@@ -178,15 +143,6 @@ export class ModuleNavService {
     const numerator = module.steps.filter(s => !s.is_section_break).map(s => Number(!!s.is_approved)).reduce((prev, curr) => prev + curr);
     const denominator = module.steps.filter(s => !s.is_section_break).length;
     module.percComplete = Math.round(100 * numerator / denominator);
-  }
-
-  // setStepFromId(id: number) {
-  //   this.stepIndex.current = this.module.current.steps.findIndex(step => Number(step.id) === Number(id)) || 0;
-  //   return this.stepIndex.current;
-  // }
-
-  reloadModule() {
-
   }
 
   nextStep() {
