@@ -23,7 +23,7 @@ export interface AssessmentGroup {
     shortName: string;
     description: string;
     position: number;
-    questions: AssessmentQuestion[]
+    questions: AssessmentQuestion[];
 }
 
 export interface AssessmentQuestion {

@@ -15,6 +15,9 @@ type MenusInterface = MenuItemType[];
 
 // For SUPER temporary use
 const hardCodePictures = (user: User) => {
+  if (user.profile_picture) {
+    return user.profile_picture;
+  }
   switch (user.email) {
     case 'dan@riverside.com':
     case 'dperry@omnigo.com':
@@ -41,18 +44,20 @@ const hardCodePictures = (user: User) => {
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
     case 'dhaynes@riversidecompany.com':
-       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg'
+       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg';
     default:
-      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
+      return '';
   }
 };
 
 export const menus: MenusInterface = [
   {
     render(user: User) {
-      return `<img
-        src=${hardCodePictures(user)}
-        style="width: 35px; height: 35px; border-radius: 35px">`;
+      const src = user.profile_picture || hardCodePictures(user);
+      return src ? `<img
+        src=${src}
+        style="width: 35px; height: 35px; border-radius: 35px">`
+        : `<div class="letter-image">${user.name[0].toUpperCase() + user.lname[0].toUpperCase()}</div>`;
     },
     label: 'ACCOUNT',
     link: '/account',
@@ -74,7 +79,7 @@ export const menus: MenusInterface = [
   {
     'mat-icon': 'view_module',
     labelFn: ({nav}) => {
-      return (nav.module.current || {name: ''}).name.toUpperCase()
+      return (nav.module.current || {name: ''}).name.toUpperCase();
     },
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;

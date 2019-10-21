@@ -6,6 +6,7 @@ class User extends BaseModel {
   lname: string = '';
   email: string = '';
   id: string = '';
+  profile_picture: string = '';
   roles = {
     riverside_facilitator: false,
     is_riverside_managing_director: false,
