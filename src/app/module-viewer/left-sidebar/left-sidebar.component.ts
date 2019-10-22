@@ -78,9 +78,4 @@ export class LeftSidebarComponent implements OnInit {
       }
     });
   }
-
-  forcePictureReload() {
-    const i = this.menus.findIndex((m) => m.label === 'ACCOUNT');
-    this.menus[i] = Object.assign({}, this.menus[i]);
-  }
 }
