@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
-import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { filter, take, distinctUntilChanged, switchMap } from 'rxjs/operators';
@@ -12,7 +12,7 @@ import { Router, ActivatedRoute } from '@angular/router';
   templateUrl: './assessment-menu.component.html',
   styleUrls: ['./assessment-menu.component.sass']
 })
-export class AssessmentMenuComponent implements OnInit {
+export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
               private route: ActivatedRoute,
@@ -35,6 +35,9 @@ export class AssessmentMenuComponent implements OnInit {
 
   finishError$ = new BehaviorSubject<boolean>(false);
 
+  nextGroupWatch: Subscription;
+  activateTypeWatch: Subscription;
+
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
 
@@ -48,7 +51,7 @@ export class AssessmentMenuComponent implements OnInit {
       })
     );
 
-    this.activeType$.subscribe(_ => this.setFirstUncompletedGroup());
+    this.activateTypeWatch = this.activeType$.subscribe(_ => this.setFirstUncompletedGroup());
 
     this.orgGroups$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
       switchMap(([type, orgId]) => {
@@ -61,15 +64,7 @@ export class AssessmentMenuComponent implements OnInit {
     this.activeGroup$ = this.navService.assessmentGroup$;
 
     // move to next group if current is done
-    this.orgGroups$.subscribe(groups => {
-      if (this.activeGroup$.value && groups[this.activeGroup$.value.id]) {
-        this.groupCompleted$.next(groups[this.activeGroup$.value.id].isDone);
-      }
-    });
-
-    this.activeGroup$.subscribe(_ => this.groupCompleted$.next(false));
-
-    this.groupCompleted$.pipe(
+    this.nextGroupWatch = this.asmService.moveToNextGroup$.pipe(
       filter(r => r),
       switchMap(_ => combineLatest(this.activeGroup$, this.activeType$, this.orgGroups$).pipe(take(1)))
     )
@@ -82,7 +77,12 @@ export class AssessmentMenuComponent implements OnInit {
           this.finish();
         }
       });
-}
+  }
+
+  ngOnDestroy() {
+    this.activateTypeWatch.unsubscribe();
+    this.nextGroupWatch.unsubscribe();
+  }
 
   private setFirstUncompletedGroup() {
     if (this.groups$ && this.orgGroups$) {
@@ -127,8 +127,6 @@ export class AssessmentMenuComponent implements OnInit {
 
   setOrganization(organization: Organization) {
     this.navService.lastOrganization.current = organization.id;
-    const moduleId = this.navService.module.current.id;
-    const stepId = this.navService.getStepId();
 
     this.router.navigate(['org', organization.id, 'assessment']);
   }
