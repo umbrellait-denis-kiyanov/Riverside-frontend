@@ -56,7 +56,7 @@
       <ng-template #menuItem>
         <div class="menu-item-icon" >
           <mat-icon [ngClass]="menu.className" *ngIf="menu['mat-icon']">{{menu['mat-icon']}}</mat-icon>
-          <span *ngIf="menu.render" [innerHtml]="menu.render(me) | safehtml"></span>
+          <span *ngIf="menu.renderObservable" [innerHtml]="menu.renderObservable | async | safehtml"></span>
           <span class="menu-item-counter" [hidden]="!menu.counter">{{menu.counter}}</span>
         </div>
 

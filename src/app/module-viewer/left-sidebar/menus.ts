@@ -3,6 +3,8 @@ import { RequestFeedbackComponent } from '../request-feedback/request-feedback.c
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { feedback_svg } from './feedback.icon';
 import { review_svg } from './review.icon';
+import { of, BehaviorSubject } from 'rxjs';
+import { map } from 'rxjs/operators';
 interface RestrictOptions {
   nav: ModuleNavService;
   user: User;
@@ -15,6 +17,9 @@ type MenusInterface = MenuItemType[];
 
 // For SUPER temporary use
 const hardCodePictures = (user: User) => {
+  if (user.profile_picture) {
+    return user.profile_picture;
+  }
   switch (user.email) {
     case 'dan@riverside.com':
     case 'dperry@omnigo.com':
@@ -41,18 +46,24 @@ const hardCodePictures = (user: User) => {
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
     case 'dhaynes@riversidecompany.com':
-       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg'
+       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg';
     default:
-      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
+      return '';
   }
 };
 
 export const menus: MenusInterface = [
   {
-    render(user: User) {
-      return `<img
-        src=${hardCodePictures(user)}
-        style="width: 35px; height: 35px; border-radius: 35px">`;
+    render(user: BehaviorSubject<User>) {
+      return user.pipe(
+        map((usr: User) => {
+          const src = usr.profile_picture || hardCodePictures(usr);
+          if (src) {
+            return `<img src=${src} style="width: 35px; height: 35px; border-radius: 35px">`;
+          } else { return `<div class="letter-image">${usr.abbreviation}</div>`; }
+
+        })
+      );
     },
     label: 'ACCOUNT',
     link: '/account',
@@ -74,7 +85,7 @@ export const menus: MenusInterface = [
   {
     'mat-icon': 'view_module',
     labelFn: ({nav}) => {
-      return (nav.module.current || {name: ''}).name.toUpperCase()
+      return (nav.module.current || {name: ''}).name.toUpperCase();
     },
     linkFn(nav: ModuleNavService) {
       const module = nav.module.current;
@@ -91,7 +102,7 @@ export const menus: MenusInterface = [
   },
 
   {
-    render: () => feedback_svg,
+    render: () => new BehaviorSubject(feedback_svg),
     label: 'REQUEST FEEDBACK',
     modalComponent: RequestFeedbackComponent,
     restrict: ({ user }) => user.permissions.riversideRequestFeedback
@@ -105,7 +116,7 @@ export const menus: MenusInterface = [
     restrict: ({ user }) => user.permissions.riversideRequestFeedback || user.permissions.riversideProvideFeedback
   },
   {
-    render: () => review_svg,
+    render: () => new BehaviorSubject(review_svg),
     restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
     className: 'material-icons-outlined',
     labelFn: ({nav}) => {

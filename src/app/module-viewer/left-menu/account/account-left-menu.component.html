@@ -5,7 +5,9 @@
       </div>
   </div>
   <div style="padding: 20px">
-    <a href="/signout">Sign out</a>
+    <div><a [routerLink]="['/account/profile']" routerLinkActive="active">Profile</a></div>
+    <div><a [routerLink]="['/account/password']" routerLinkActive="active">Change Password</a></div>
+    <div><a href="/signout">Sign out</a></div>
   </div>
 </div>
 

@@ -1,4 +1,5 @@
 import { Component, OnInit, ElementRef, Renderer2 } from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
 import { menus } from './menus';
 import { LeftMenuService } from '../../common/services/left-menu.service';
 import { UserService } from '../../common/services/user.service';
@@ -6,7 +7,8 @@ import User from '../../common/interfaces/user.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxService } from '../inbox/inbox.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-
+import { of, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'left-sidebar',
@@ -26,7 +28,8 @@ export class LeftSidebarComponent implements OnInit {
     private inboxService: InboxService,
     public navService: ModuleNavService,
     private el: ElementRef,
-    private renderer: Renderer2
+    private renderer: Renderer2,
+    private route: ActivatedRoute
   ) { }
 
   ngOnInit() {
@@ -36,6 +39,12 @@ export class LeftSidebarComponent implements OnInit {
     });
     this.me = this.userService.me;
     this.initialLoad();
+
+    this.menus.forEach(item => {
+      if (item.render) {
+        item.renderObservable = item.render(this.userService.meChanged);
+      }
+    });
   }
 
   toggleMenu() {

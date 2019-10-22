@@ -4,7 +4,7 @@ import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModuleViewerRootComponent } from './module-viewer-root.component';
-import { FormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { MainComponent } from './main/main.component';
 import { AppRoutingModule } from './module-viewer-routing.module';
 import { RouterModule } from '@angular/router';
@@ -86,7 +86,11 @@ import { ViewAssessmentsComponent } from './dashboard/view-assessments/view-asse
 import { ChartLabelTooltipsDirective } from './directives/chart-label-tooltips.directive';
 import { LineChartValueLabelDirective } from './directives/line-chart-value-label.directive';
 import { AssessmentChartComponent } from './assessment-chart/assessment-chart.component';
-
+import { ProfileComponent } from './account/profile/profile.component';
+import { ChangePasswordComponent } from './account/change-password/change-password.component';
+import { ProfilePictureInputComponent } from './account/profile/profile-picture-input/profile-picture-input.component';
+import { ProfilePictureSelectorComponent } from './account/profile/profile-picture-selector/profile-picture-selector.component';
+import { ImageCropperModule } from 'ngx-image-cropper';
 @NgModule({
   imports: [
     BrowserModule,
@@ -110,7 +114,9 @@ import { AssessmentChartComponent } from './assessment-chart/assessment-chart.co
     AudioRecorderModule,
     NgbModule,
     NgxChartsModule,
-    MatInputModule
+    MatInputModule,
+    ReactiveFormsModule,
+    ImageCropperModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -169,7 +175,11 @@ import { AssessmentChartComponent } from './assessment-chart/assessment-chart.co
     ViewAssessmentsComponent,
     ChartLabelTooltipsDirective,
     LineChartValueLabelDirective,
-    AssessmentChartComponent
+    AssessmentChartComponent,
+    ProfileComponent,
+    ChangePasswordComponent,
+    ProfilePictureInputComponent,
+    ProfilePictureSelectorComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

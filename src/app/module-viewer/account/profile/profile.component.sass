@@ -1,0 +1,28 @@
+@mixin content-size
+    width: 100%
+    max-width: 1200px
+
+\:host
+  width: 100%
+  padding: 2em
+  
+
+  .site-tbox
+      margin: 0
+
+.page-container
+    display: flex
+    flex-direction: column
+    height: 100%
+
+    .page-content
+        position: relative
+        padding: 25px 30px
+        -webkit-transition: 0.3s ease
+        transition: 0.3s ease
+        box-shadow: 0 0 30px rgba(0, 0, 0, 0.1)
+        margin: 0px auto
+        @include content-size
+
+profile-picture-input
+    margin-bottom: 20px
