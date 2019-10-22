@@ -53,7 +53,10 @@ export class ProfilePictureSelectorComponent implements OnInit {
         });
       }
       ,
-      () => {
+      (e) => {
+        if (e.error && e.error.failure && e.error.failure === 'INVALID_EXTENSION') {
+          return toastr.error('Invalid file extension');
+        }
         toastr.error('Could not upload picture');
       }
     );

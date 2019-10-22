@@ -3,6 +3,8 @@ import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/common/services/user.service';
 
 import toastr from 'src/app/common/lib/toastr';
+import { first } from 'rxjs/operators';
+import { Subscription } from 'rxjs';
 
 const ERROR_MESSAGES = {
   INVALID_PASSWORD: 'New password is invalid',
@@ -17,7 +19,7 @@ const ERROR_MESSAGES = {
 })
 export class ChangePasswordComponent implements OnInit {
   form: FormGroup;
-  saving = false;
+  saving: Subscription = null;
   error: string;
 
   constructor(
@@ -35,11 +37,9 @@ export class ChangePasswordComponent implements OnInit {
 
   save() {
     if (this.form.valid) {
-      this.saving = true;
       this.error = '';
-      this.userService.updatePassword(this.form.value).subscribe(
+      this.saving = this.userService.updatePassword(this.form.value).pipe(first()).subscribe(
         () => {
-          this.saving = false;
           toastr.success('Saved!');
         },
         (e) => {
@@ -53,8 +53,6 @@ export class ChangePasswordComponent implements OnInit {
           if (e.error.failure === 'CURRENT_PASSWORD_INVALID') {
             this.form.controls.curPwd.setErrors({incorrect: true});
           }
-
-          this.saving = false;
         }
       );
     }

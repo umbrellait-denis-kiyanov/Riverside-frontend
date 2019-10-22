@@ -1,9 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { UserService } from 'src/app/common/services/user.service';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { AccountProfile } from 'src/app/common/interfaces/account.interface';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
-import { tap } from 'rxjs/operators';
+import { tap, first } from 'rxjs/operators';
 import toastr from 'src/app/common/lib/toastr';
 
 @Component({
@@ -14,7 +14,7 @@ import toastr from 'src/app/common/lib/toastr';
 export class ProfileComponent implements OnInit {
   account$: Observable<AccountProfile>;
   form: FormGroup;
-  saving = false;
+  saving: Subscription = null;
 
   constructor(
     private formBuilder: FormBuilder,
@@ -38,9 +38,7 @@ export class ProfileComponent implements OnInit {
 
   save() {
     if (this.form.valid) {
-      this.saving = true;
-      this.userService.saveAccount(this.form.value).subscribe(() => {
-        this.saving = false;
+      this.saving = this.userService.saveAccount(this.form.value).pipe(first()).subscribe(() => {
         this.userService.me.profile_picture = this.form.value.meta.profile_picture;
         this.userService.meChanged.next(this.userService.me);
         toastr.success('Saved!');

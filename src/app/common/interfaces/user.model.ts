@@ -5,6 +5,7 @@ class User extends BaseModel {
   fname: string = '';
   lname: string = '';
   email: string = '';
+  abbreviation: string = '';
   id: string = '';
   profile_picture: string = '';
   permissions = {
@@ -22,7 +23,10 @@ class User extends BaseModel {
     return {
       name: (val: any, data: any) => {
         return `${data.fname} ${data.lname}`;
-      }
+      },
+      abbreviation: (val: any, data: any) => {
+        return `${data.fname[0].toUpperCase()}${data.lname[0].toUpperCase()}`;
+      },
     };
   }
 

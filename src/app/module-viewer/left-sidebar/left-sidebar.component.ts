@@ -45,8 +45,6 @@ export class LeftSidebarComponent implements OnInit {
         item.renderObservable = item.render(this.userService.meChanged);
       }
     });
-
-    this.userService.meChanged.subscribe(this.forcePictureReload.bind(this));
   }
 
   toggleMenu() {

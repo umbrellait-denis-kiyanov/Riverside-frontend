@@ -60,7 +60,7 @@ export const menus: MenusInterface = [
           const src = usr.profile_picture || hardCodePictures(usr);
           if (src) {
             return `<img src=${src} style="width: 35px; height: 35px; border-radius: 35px">`;
-          } else { return `<div class="letter-image">${usr.name[0].toUpperCase() + usr.lname[0].toUpperCase()}</div>`; }
+          } else { return `<div class="letter-image">${usr.abbreviation}</div>`; }
 
         })
       );

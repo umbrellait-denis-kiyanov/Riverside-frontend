@@ -1,8 +1,8 @@
-<div *ngIf="status == STATUS.DISPLAY">
+<div *ngIf="isSelect">
   <div class="img-button" (click)="selectImage()">
       <img [src]="fileUrl.value" *ngIf="fileUrl.value">
       <div class="letter-image"*ngIf="!fileUrl.value">
-        {{firstLetter()}}
+        {{user.abbreviation}}
       </div>
       <span >Change</span>
   </div>
@@ -10,7 +10,7 @@
     
 </div>
 <profile-picture-selector 
-  *ngIf="status == STATUS.SELECT"
+  *ngIf="!isSelect"
   (imageUploaded)="onImageUploaded($event)"
 >
 </profile-picture-selector>

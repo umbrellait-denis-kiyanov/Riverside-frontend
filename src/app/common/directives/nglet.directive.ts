@@ -1,4 +1,4 @@
-import { Directive, Input, TemplateRef, ViewContainerRef } from "@angular/core";
+import { Directive, Input, TemplateRef, ViewContainerRef } from '@angular/core';
 
 interface NgLetContext {
   $implicit: any;
@@ -6,7 +6,7 @@ interface NgLetContext {
 }
 
 @Directive({
-  selector: "[ngLet]"
+  selector: '[ngLet]'
 })
 export class NgLetDirective {
   @Input()

@@ -3,10 +3,6 @@ import { FormControl } from '@angular/forms';
 import { UserService } from 'src/app/common/services/user.service';
 import User from 'src/app/common/interfaces/user.model';
 
-const STATUS = {
-  DISPLAY: 'DISPLAY',
-  SELECT: 'SELECT'
-};
 
 @Component({
   selector: 'profile-picture-input',
@@ -16,8 +12,7 @@ const STATUS = {
 export class ProfilePictureInputComponent implements OnInit {
   @Input() fileUrl: FormControl;
   @Output() fileUrlChange = new EventEmitter();
-  status = STATUS.DISPLAY;
-  STATUS = STATUS;
+  isSelect = false;
   user: User;
   className = '';
 
@@ -29,17 +24,13 @@ export class ProfilePictureInputComponent implements OnInit {
     this.user = this.userService.me;
   }
 
-  firstLetter() {
-    return this.user.name[0].toUpperCase() + this.user.lname[0].toUpperCase();
-  }
-
   selectImage() {
-    this.status = STATUS.SELECT;
+    this.isSelect = true;
   }
 
   onImageUploaded(src: string) {
     this.fileUrl.setValue(src + '?v=' + Date.now());
     this.fileUrlChange.emit(this.fileUrl );
-    this.status = STATUS.DISPLAY;
+    this.isSelect = false;
   }
 }
