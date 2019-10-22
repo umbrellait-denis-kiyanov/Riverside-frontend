@@ -180,19 +180,27 @@ table.list-view
         td.notes
             padding: 5px
             vertical-align: middle
+            min-width: 300px
 
             &:focus-within
                 border: 1px solid #dee2e6
 
-            textarea
+            textarea, input
                 display: block
                 width: 100%
-                min-width: 200px
                 min-height: 1.5em
                 margin: 0
                 padding: 0
                 border: 0
                 outline: 0
+
+            &.assigned-to
+                min-width: 0
+                max-width: 120px;
+
+                input
+                    min-width: 120px;
+                    max-width: 120px;
 
         .progress-container
             display: flex

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Module, Step, Input, Organization } from '../interfaces/module.interface';
+import { Module, Step, Input, Organization, ModuleStatus } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable } from 'rxjs';
 import { filter, shareReplay } from 'rxjs/operators';
@@ -79,8 +79,12 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/due-date`, {date});
   }
 
-  saveNotes(module: Partial<Module>, orgId: number, notes: string): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/notes`, {notes});
+  saveNotes(module: Partial<Module>, orgId: number, notes: string): Observable<ModuleStatus> {
+    return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/notes`, {notes});
+  }
+
+  saveAssignedTo(module: Partial<Module>, orgId: number, assigned_to: string): Observable<ModuleStatus> {
+    return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/assign`, {assigned_to});
   }
 
   saveInput(input: Input): Observable<any> {

@@ -4,6 +4,7 @@ export interface ModuleStatus {
   is_late?: boolean;
   progress: number;
   notes: string;
+  assigned_to: string;
   assessment_mkt: number;
   assessment_sales: number;
 }
