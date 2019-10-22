@@ -109,12 +109,6 @@ export class ModuleService {
     return this.httpClient.get(`${this.baseUrl}/sync`);
   }
 
-  updateProgress(module: Module) {
-    const numerator = module.steps.filter(s => !s.is_section_break).map(s => Number(!!s.is_approved)).reduce((prev, curr) => prev + curr);
-    const denominator = module.steps.filter(s => !s.is_section_break).length;
-    module.percComplete = Math.round(100 * numerator / denominator);
-  }
-
   markAsDone(moduleId: number, orgId: number, stepId: number, is_checked: boolean = true): Observable<any> {
     return this.httpClient.post('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
   }
