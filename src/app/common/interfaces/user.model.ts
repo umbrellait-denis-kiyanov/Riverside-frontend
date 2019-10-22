@@ -7,17 +7,12 @@ class User extends BaseModel {
   email: string = '';
   id: string = '';
   profile_picture: string = '';
-  roles = {
-    riverside_facilitator: false,
-    is_riverside_managing_director: false,
-    is_riverside_rmcf_admin: false,
-    super_admin: false
-  };
   permissions = {
     riversideRMCFDashboard: false,
     riversideSalesDashboard: false,
     riversideModuleEditor: false,
     riversideRequestFeedback: false,
+    riversideProvideFeedback: false,
   };
   org = {
     id: 0
@@ -27,14 +22,6 @@ class User extends BaseModel {
     return {
       name: (val: any, data: any) => {
         return `${data.fname} ${data.lname}`;
-      },
-      roles: (val: any, data: any) => {
-        return {
-          riverside_facilitator: !!data.is_riverside_facilitator,
-          is_riverside_managing_director: !!data.is_riverside_managing_director,
-          is_riverside_rmcf_admin: !!data.is_riverside_rmcf_admin,
-          super_admin: !!data.is_super_admin,
-        };
       }
     };
   }

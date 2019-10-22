@@ -48,7 +48,7 @@ export class Template3Component extends TemplateComponent implements OnInit {
     this.inboxService = this.injectorObj.get(InboxService);
 
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
-    if (this.userService.me.roles.is_riverside_managing_director) {
+    if (this.userService.me.permissions.riversideProvideFeedback) {
       this.action = 'provide_feedback';
     } else { this.action = 'feedback'; }
   }
