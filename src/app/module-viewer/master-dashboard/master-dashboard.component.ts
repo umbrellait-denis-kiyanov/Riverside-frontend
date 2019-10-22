@@ -55,7 +55,16 @@ export class MasterDashboardComponent implements OnInit {
 
             const defValue = -1 === direction ? defHiValue : defLowValue;
 
-            return ((a[field] || defValue) < (b[field] || defValue)) ? -1 * direction : direction;
+            let aVal = a[field];
+            let bVal = b[field];
+            if (typeof aVal === 'string') {
+              aVal = aVal.toUpperCase();
+            }
+            if (typeof bVal === 'string') {
+              bVal = bVal.toUpperCase();
+            }
+
+            return ((aVal || defValue) < (bVal || defValue)) ? -1 * direction : direction;
           });
       }));
 
