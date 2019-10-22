@@ -3,6 +3,8 @@ import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { UserService } from 'src/app/common/services/user.service';
 import toastr from 'src/app/common/lib/toastr';
 import { HttpClient } from '@angular/common/http';
+import { Subscription } from 'rxjs';
+import { first } from 'rxjs/operators';
 
 @Component({
   selector: 'profile-picture-selector',
@@ -13,6 +15,8 @@ export class ProfilePictureSelectorComponent implements OnInit {
   imageChangedEvent: any = '';
   croppedImage: any = '';
   @Output() imageUploaded = new EventEmitter();
+
+  saving: Subscription = null;
 
   constructor(
     private userService: UserService,
@@ -45,10 +49,10 @@ export class ProfilePictureSelectorComponent implements OnInit {
       (res: any) => {
         const {url, key} = res;
         const buffer = this.dataURItoBlob(this.croppedImage);
-        this.http.put(url, buffer, {headers: {
+        this.saving = this.http.put(url, buffer, {headers: {
           'Content-Type': 'image/' + type,
           'Content-Encoding': 'base64'
-        }}).subscribe(() => {
+        }}).pipe(first()).subscribe(() => {
           this.imageUploaded.emit(key);
         });
       }
