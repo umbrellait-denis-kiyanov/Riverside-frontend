@@ -65,8 +65,8 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
 
 @Injectable()
 export class ModuleNavService {
-  lastOrganization = new ResourceFromStorage<number>('last_organization');
-  module = new ResourceFromStorage<number>('last_module');
+  lastOrganization = new ResourceFromStorage<number>('last_organization_id');
+  module = new ResourceFromStorage<number>('last_module_id');
   step = new ResourceFromStorage<number>('last_step_id', 0, 'number');
 
   assessmentType = new ResourceFromStorage<number>('last_type');

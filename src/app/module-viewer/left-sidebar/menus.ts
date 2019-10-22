@@ -44,7 +44,7 @@ const hardCodePictures = (user: User) => {
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
     case 'dhaynes@riversidecompany.com':
-       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg'
+       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg';
     default:
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
   }
@@ -121,15 +121,19 @@ export const menus: MenusInterface = [
     restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
     className: 'material-icons-outlined',
     labelFn(nav: ModuleNavService) {
-      return combineLatest(nav.moduleData$, nav.step$).pipe(
-        map(([mod, stepId]) =>
-          (mod.steps.find(s => s.id === stepId) || {description: ''}).description.toUpperCase() + ' - ' + mod.name.toUpperCase()
+      return combineLatest(nav.moduleData$).pipe(
+        map(([mod]) => {
+            return mod.steps[mod.steps.length - 1].description.toUpperCase() + ' - ' + mod.name.toUpperCase();
+          }
         )
       );
     },
     linkFn(nav: ModuleNavService) {
-      return combineLatest(nav.organization$, nav.module$, nav.step$).pipe(
-        map(([org, mod, step]) => `/org/${org}/module/${mod}/step/${step}`)
+      return combineLatest(nav.organization$, nav.moduleData$).pipe(
+        map(([org, mod]) => {
+          const stepId = mod.steps[mod.steps.length - 1].id;
+          return `/org/${org}/module/${mod.id}/step/${stepId}`;
+        })
       );
     }
   },
