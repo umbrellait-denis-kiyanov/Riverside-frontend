@@ -9,6 +9,7 @@ interface RestrictOptions {
 }
 interface MenuItemType {
   [key: string]: any;
+  label?: string;
   restrict?(params: Partial<RestrictOptions>): boolean;
 }
 type MenusInterface = MenuItemType[];

@@ -35,6 +35,7 @@ export class LeftSidebarComponent implements OnInit {
       expand ? this.renderer.addClass(this.el.nativeElement, 'expanded') : this.renderer.removeClass(this.el.nativeElement, 'expanded');
     });
     this.me = this.userService.me;
+    this.userService.pictureChanged.subscribe(this.forcePictureReload.bind(this));
     this.initialLoad();
   }
 
@@ -68,5 +69,10 @@ export class LeftSidebarComponent implements OnInit {
         menu.counter = Number(res.counter);
       }
     });
+  }
+
+  forcePictureReload() {
+    const i = this.menus.findIndex((m) => m.label === 'ACCOUNT');
+    this.menus[i] = Object.assign({}, this.menus[i]);
   }
 }

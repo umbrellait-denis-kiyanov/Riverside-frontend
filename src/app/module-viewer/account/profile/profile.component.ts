@@ -4,6 +4,7 @@ import { Observable } from 'rxjs';
 import { AccountProfile } from 'src/app/common/interfaces/account.interface';
 import { FormBuilder, FormGroup, Validators, FormControl } from '@angular/forms';
 import { tap } from 'rxjs/operators';
+import toastr from 'src/app/common/lib/toastr';
 
 @Component({
   selector: 'profile',
@@ -38,7 +39,12 @@ export class ProfileComponent implements OnInit {
   save() {
     if (this.form.valid) {
       this.saving = true;
-      this.userService.saveAccount(this.form.value).subscribe(() => this.saving = false);
+      this.userService.saveAccount(this.form.value).subscribe(() => {
+        this.saving = false;
+        this.userService.me.profile_picture = this.form.value.meta.profile_picture;
+        this.userService.pictureChanged.emit();
+        toastr.success('Saved!');
+      });
     }
   }
 }

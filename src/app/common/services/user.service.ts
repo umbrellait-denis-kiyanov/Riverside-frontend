@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, EventEmitter } from '@angular/core';
 import User from '../interfaces/user.model';
 import {
   AccountProfile,
@@ -12,6 +12,7 @@ import { HttpClient } from '@angular/common/http';
 export class UserService {
   me: User;
   accountBaseUrl = '/api/account';
+  pictureChanged = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {}
 
