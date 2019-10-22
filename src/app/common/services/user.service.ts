@@ -5,14 +5,22 @@ import {
   UpdatePassword,
   PresignedProfilePictureUrl
 } from '../interfaces/account.interface';
-import { Observable } from 'rxjs';
+import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 
 @Injectable()
 export class UserService {
-  me: User;
+
+  get me(): User {
+    return this.meChanged.getValue();
+  }
+  set me(_value: User) {
+    this.meChanged.next(_value);
+  }
+
+  meChanged: BehaviorSubject<User> = new BehaviorSubject(null);
+
   accountBaseUrl = '/api/account';
-  pictureChanged = new EventEmitter();
 
   constructor(private httpClient: HttpClient) {}
 

@@ -42,7 +42,7 @@ export class ProfileComponent implements OnInit {
       this.userService.saveAccount(this.form.value).subscribe(() => {
         this.saving = false;
         this.userService.me.profile_picture = this.form.value.meta.profile_picture;
-        this.userService.pictureChanged.emit();
+        this.userService.meChanged.next(this.userService.me);
         toastr.success('Saved!');
       });
     }

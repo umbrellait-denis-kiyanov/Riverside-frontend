@@ -41,24 +41,12 @@ export class LeftSidebarComponent implements OnInit {
     this.initialLoad();
 
     this.menus.forEach(item => {
-      if (item.linkFn) {
-        item.linkObservable = item.linkFn(this.navService);
-      }
-
-      if (item.labelFn) {
-        item.labelObservable = item.labelFn(this.navService);
-      }
-
       if (item.render) {
-        item.renderObservable = item.render(this.me);
-      }
-
-      if (item.restrict) {
-        item.restrictObservable = combineLatest(of(this.me), this.route.params).pipe(
-          map(([user]) => item.restrict({user, nav: this.navService}))
-        );
+        item.renderObservable = item.render(this.userService.meChanged);
       }
     });
+
+    this.userService.meChanged.subscribe(this.forcePictureReload.bind(this));
   }
 
   toggleMenu() {

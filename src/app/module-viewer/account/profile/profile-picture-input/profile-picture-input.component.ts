@@ -38,8 +38,8 @@ export class ProfilePictureInputComponent implements OnInit {
   }
 
   onImageUploaded(src: string) {
-    this.fileUrl.setValue(src);
-    this.fileUrlChange.emit(this.fileUrl);
+    this.fileUrl.setValue(src + '?v=' + Date.now());
+    this.fileUrlChange.emit(this.fileUrl );
     this.status = STATUS.DISPLAY;
   }
 }
