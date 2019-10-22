@@ -1,4 +1,4 @@
-<div *ngIf="isSelect">
+<div *ngIf="!isSelect">
   <div class="img-button" (click)="selectImage()">
       <img [src]="fileUrl.value" *ngIf="fileUrl.value">
       <div class="letter-image"*ngIf="!fileUrl.value">
@@ -10,7 +10,7 @@
     
 </div>
 <profile-picture-selector 
-  *ngIf="!isSelect"
+  *ngIf="isSelect"
   (imageUploaded)="onImageUploaded($event)"
 >
 </profile-picture-selector>

@@ -7,8 +7,8 @@ import { FormGroup } from '@angular/forms';
   styleUrls: ['./e3-required.component.sass']
 })
 export class E3RequiredComponent implements OnInit {
-  @Input() form: FormGroup;
-  @Input() formControlName: string;
+  @Input() formGroup: FormGroup;
+  @Input() controlName: string;
 
   constructor() { }
 
