@@ -54,10 +54,7 @@ export class AssessmentService {
   }
 
   getOrgGroups(type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup[]> {
-    const obs = this.httpClient.get<AssessmentOrgGroup[]>(`${this.baseUrl}/org-groups/${type.id}/org/${orgID}`);
-    const sub = obs.subscribe();
-    console.log();
-    return obs;
+    return this.httpClient.get<AssessmentOrgGroup[]>(`${this.baseUrl}/org-groups/${type.id}/org/${orgID}`);
   }
 
   saveAnswer(question: AssessmentQuestion, orgID: number, answer: boolean): Observable<any> {
