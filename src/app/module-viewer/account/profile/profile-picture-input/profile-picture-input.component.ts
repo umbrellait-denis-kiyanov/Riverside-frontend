@@ -29,7 +29,7 @@ export class ProfilePictureInputComponent implements OnInit {
   }
 
   onImageUploaded(src: string) {
-    this.fileUrl.setValue(src + '?v=' + Date.now());
+    this.fileUrl.setValue(src + '?v=' + ((new Date()).getTime() / 1000));
     this.fileUrlChange.emit(this.fileUrl );
     this.isSelect = false;
   }
