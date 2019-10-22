@@ -39,11 +39,11 @@ export class ProfilePictureSelectorComponent implements OnInit {
   }
 
   upload() {
+    const type = this.croppedImage.split(';')[0].split('/')[1];
 
-    this.userService.presignedProfilePictureUpload('png').subscribe(
+    this.userService.presignedProfilePictureUpload(type).subscribe(
       (res: any) => {
         const {url, key} = res;
-        const type = this.croppedImage.split(';')[0].split('/')[1];
         const buffer = this.dataURItoBlob(this.croppedImage);
         this.http.put(url, buffer, {headers: {
           'Content-Type': 'image/' + type,
