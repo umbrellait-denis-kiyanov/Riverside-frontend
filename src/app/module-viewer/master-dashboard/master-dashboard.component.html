@@ -45,8 +45,9 @@
     <table class="table dashboard-table list-view" matSort (matSortChange)="setListSort($event)" [matSortDisableClear]="true" matSortActive="name" matSortDirection="asc">
       <thead>
         <tr>
-          <th class="text-center" mat-sort-header="name">Portco</th>
-          <th mat-sort-header="assessment">Assessment</th>
+          <th class="text-center" mat-sort-header="name">Portfolio Company</th>
+          <th mat-sort-header="assessment_mkt">Mkt Assessment</th>
+          <th mat-sort-header="assessment_sales">Sales Assessment</th>
           <th *ngFor="let q of quarters" [mat-sort-header]="q" [class.current-quarter]="q == currentQuarter" class="org-progress">
             <div class="q-complete"><span>% Complete</span></div>
             <span class="button-inner"><span>{{ q }}</span><span class="q-current">(Current)</span></span>
@@ -65,7 +66,10 @@
             </div>
           </td>
           <td class="assessment">
-            <app-assessment-score [score]="organization.assessment"></app-assessment-score>
+            <app-assessment-score [score]="organization.assessment_mkt"></app-assessment-score>
+          </td>
+          <td class="assessment">
+            <app-assessment-score [score]="organization.assessment_sales"></app-assessment-score>
           </td>
           <td *ngFor="let q of quarters" class="org-progress" [class.current-quarter]="q == currentQuarter">
             <div *ngIf="organization[q]" [class.red]="organization[q] < 30" [class.yellow]="organization[q] < 50">{{ organization[q] }}</div>
