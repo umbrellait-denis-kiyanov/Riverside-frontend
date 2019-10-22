@@ -45,20 +45,20 @@ const hardCodePictures = (user: User) => {
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
     case 'dhaynes@riversidecompany.com':
-       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg';
+       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg'
     default:
-      return '';
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
   }
 };
 
 export const menus: MenusInterface = [
   {
     render(user: User) {
-      const src = user.profile_picture || hardCodePictures(user);
-      return src ? `<img
-        src=${src}
-        style="width: 35px; height: 35px; border-radius: 35px">`
-        : `<div class="letter-image">${user.name[0].toUpperCase() + user.lname[0].toUpperCase()}</div>`;
+      return of(user).pipe(
+        map((usr: User) => `<img
+                      src=${hardCodePictures(usr)}
+                      style="width: 35px; height: 35px; border-radius: 35px">`)
+      );
     },
     label: 'ACCOUNT',
     link: '/account',
@@ -73,31 +73,38 @@ export const menus: MenusInterface = [
     'mat-icon': 'dashboard',
     label: 'SALES EXCELLENCE DASHBOARD',
     linkFn(nav: ModuleNavService) {
-      return `/dashboard/${nav.lastOrganization.current}`;
+      return nav.organization$.pipe(
+        map(org => `/dashboard/${org}`)
+      );
     },
     restrict: ({ user }) => user.permissions.riversideSalesDashboard
   },
   {
     'mat-icon': 'view_module',
-    labelFn: ({nav}) => {
-      return (nav.module.current || {name: ''}).name.toUpperCase();
+    labelFn: (nav: ModuleNavService) => {
+      return nav.moduleData$.pipe(
+        map(mod => mod.name.toUpperCase())
+      );
     },
     linkFn(nav: ModuleNavService) {
-      const module = nav.module.current;
-      return `/org/${nav.lastOrganization.current}/module/${module.id}`;
+      return combineLatest(nav.organization$, nav.module$).pipe(
+        map(([org, mod]) => `/org/${org}/module/${mod}`)
+      );
     }
   },
   {
     'mat-icon': 'build',
     label: 'EDITOR',
     linkFn(nav: ModuleNavService) {
-      return `/builder/${nav.module.current.id || 1}`;
+      return nav.module$.pipe(
+        map(mod => `/builder/${mod}`)
+      );
     },
     restrict: ({ user }) => user.permissions.riversideModuleEditor
   },
 
   {
-    render: () => feedback_svg,
+    render: () => new BehaviorSubject(feedback_svg),
     label: 'REQUEST FEEDBACK',
     modalComponent: RequestFeedbackComponent,
     restrict: ({ user }) => user.permissions.riversideRequestFeedback
@@ -111,25 +118,30 @@ export const menus: MenusInterface = [
     restrict: ({ user }) => user.permissions.riversideRequestFeedback || user.permissions.riversideProvideFeedback
   },
   {
-    render: () => review_svg,
+    render: () => new BehaviorSubject(review_svg),
     restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
     className: 'material-icons-outlined',
-    labelFn: ({nav}) => {
-      const module = nav.module.current;
-      return module.steps[module.steps.length - 1].description.toUpperCase() + ' - ' +
-            (nav.module.current || {name: ''}).name.toUpperCase();
+    labelFn(nav: ModuleNavService) {
+      return combineLatest(nav.moduleData$, nav.step$).pipe(
+        map(([mod, stepId]) =>
+          (mod.steps.find(s => s.id === stepId) || {description: ''}).description.toUpperCase() + ' - ' + mod.name.toUpperCase()
+        )
+      );
     },
     linkFn(nav: ModuleNavService) {
-      const module = nav.module.current;
-      const stepId = module.steps[module.steps.length - 1].id;
-      return `/org/${nav.lastOrganization.current}/module/${module.id}/step/${stepId}`;
+      return combineLatest(nav.organization$, nav.module$, nav.step$).pipe(
+        map(([org, mod, step]) => `/org/${org}/module/${mod}/step/${step}`)
+      );
     }
   },
   {
     'mat-icon': 'assessment',
     label: 'ASSESSMENT',
     linkFn(nav: ModuleNavService) {
-      return `/org/${nav.lastOrganization.current}/assessment`;
-    }
+      return nav.organization$.pipe(
+        map(org => `/org/${org}/assessment`)
+      );
+    },
+    restrict: ({ user }) => true
   }
 ];
