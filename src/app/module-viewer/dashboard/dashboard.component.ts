@@ -27,7 +27,7 @@ export class DashboardComponent implements OnInit {
 
   organization: Organization;
 
-  view = 'grid';
+  view = 'list';
 
   listSortOrder$ = new BehaviorSubject<Sort>({active: 'idx', direction: 'asc'});
 
@@ -131,6 +131,12 @@ export class DashboardComponent implements OnInit {
 
   saveNotes(module: Module) {
     this.moduleService.saveNotes(module, this.organization.id, module.status.notes).subscribe(newStatus => {
+      module.status = newStatus;
+    });
+  }
+
+  saveAssignedTo(module: Module) {
+    this.moduleService.saveAssignedTo(module, this.organization.id, module.status.assigned_to).subscribe(newStatus => {
       module.status = newStatus;
     });
   }

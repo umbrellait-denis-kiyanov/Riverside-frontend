@@ -76,7 +76,7 @@ export const menus: MenusInterface = [
   },
   {
     'mat-icon': 'dashboard',
-    label: 'SALES EXCELLENCE DASHBOARD',
+    label: 'SALES EXCELLENCE TRANSFORMATIONAL ROADMAP',
     linkFn(nav: ModuleNavService) {
       return `/dashboard/${nav.lastOrganization.current}`;
     },

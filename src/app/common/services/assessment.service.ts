@@ -11,6 +11,8 @@ export class AssessmentService {
 
   groupsUpdated$ = new BehaviorSubject<boolean>(false);
 
+  moveToNextGroup$ = new BehaviorSubject<boolean>(false);
+
   updateGroups = tap(_ => this.groupsUpdated$.next(true));
 
   types$: Observable<AssessmentType[]>;
@@ -72,7 +74,11 @@ export class AssessmentService {
   }
 
   markAsDone(group: AssessmentGroup, orgID: number): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/done/${group.id}/org/${orgID}`, {}).pipe(this.updateGroups);
+    return this.httpClient.post(`${this.baseUrl}/done/${group.id}/org/${orgID}`, {})
+      .pipe(
+        this.updateGroups,
+        tap(_ => this.moveToNextGroup$.next(true))
+      );
   }
 
   getCompletedSessions(type: AssessmentType, orgID: number): Observable<AssessmentSession[]> {
