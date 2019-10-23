@@ -5,7 +5,7 @@
         class="floating-btn bg-save flt-btn-group"
         (click)="onClickSave()"
       >
-        <ng-container *ngIf="!saving; else elseTemplate">
+        <ng-container *ngIf="!saving || saving.closed; else elseTemplate">
           <img src="/public/img/page builder icons/save-filled.png">
         </ng-container>
 

@@ -6,6 +6,7 @@ import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/dr
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepTemplateEditorComponent } from './step-template-editor/step-template-editor.component';
 import { StepLinkEditorComponent } from './step-link-editor/step-link-editor.component';
+import { Subscription } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 
 @Component({
@@ -18,7 +19,7 @@ export class ModuleEditorComponent implements OnInit {
   sections: Section[];
   elementTypes = LearningElementTypes;
   ready = false;
-  saving = false;
+  saving: Subscription;
   lastSavedModule: string;
 
   hasChanges = () => {
@@ -107,11 +108,9 @@ export class ModuleEditorComponent implements OnInit {
   }
 
   onClickSave() {
-    this.saving = true;
     this.moduleData.steps = this.generateStepsData();
-    this.moduleService.saveModule(this.moduleData).subscribe(_ => {
+    this.saving = this.moduleService.saveModule(this.moduleData).subscribe(_ => {
       this.setPristineState();
-      this.saving = false;
     });
   }
 
