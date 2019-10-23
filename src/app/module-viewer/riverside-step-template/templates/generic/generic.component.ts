@@ -22,4 +22,8 @@ export class GenericTemplateComponent extends TemplateComponent {
   getName() {
     return 'Generic Content';
   }
+
+  hasInputs() {
+    return false;
+  }
 }

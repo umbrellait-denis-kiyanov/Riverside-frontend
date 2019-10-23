@@ -57,6 +57,10 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
   protected init() {}
 
+  hasInputs() {
+    return true;
+  }
+
   prepareData() {
     const data: any = {inputs: {}};
 

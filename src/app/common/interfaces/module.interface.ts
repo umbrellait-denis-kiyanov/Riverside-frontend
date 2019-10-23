@@ -60,6 +60,7 @@ export interface Template {
   params_json: string;
   name?: string;
   description?: string;
+  hasInputs: boolean;
 }
 
 function literalArray<T extends string>(array: T[]): T[] {
