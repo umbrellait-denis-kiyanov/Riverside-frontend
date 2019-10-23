@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
-import { Subscription } from 'rxjs';
+import { Subscription, combineLatest } from 'rxjs';
 import { Module } from 'src/app/common/interfaces/module.interface';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { map, filter, switchMap } from 'rxjs/operators';
@@ -34,8 +34,13 @@ export class MainComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.routeWatch = this.route.params.subscribe(
         params => {
-          this.navService.lastOrganization.current = Number(params.orgId);
-          this.navService.module.current = Number(params.moduleId);
+          if (params.orgId) {
+            this.navService.lastOrganization.current = Number(params.orgId);
+          }
+
+          if (params.moduleId) {
+            this.navService.module.current = Number(params.moduleId);
+          }
         }
       );
 
@@ -43,7 +48,7 @@ export class MainComponent implements OnInit, OnDestroy {
       map(mod => mod.steps.find(s => !s.is_section_break).id)
     );
 
-    this.stepWatch = this.route.url.pipe(
+    this.stepWatch = combineLatest(this.navService.organization$, this.navService.module$, this.route.url).pipe(
       map(_ => !this.route.children.find(route => route.outlet === 'primary')),
       filter(f => !!f),
       switchMap(_ => firstStep)

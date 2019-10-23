@@ -3,11 +3,10 @@ import { ActivatedRoute } from '@angular/router';
 import { menus } from './menus';
 import { LeftMenuService } from '../../common/services/left-menu.service';
 import { UserService } from '../../common/services/user.service';
-import User from '../../common/interfaces/user.model';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { InboxService } from '../inbox/inbox.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { of, combineLatest } from 'rxjs';
+import { combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
 @Component({
@@ -18,7 +17,6 @@ import { map } from 'rxjs/operators';
 export class LeftSidebarComponent implements OnInit {
   menus = menus;
   showMenu = false;
-  me: User;
   expand: boolean;
 
   constructor(
@@ -37,7 +35,7 @@ export class LeftSidebarComponent implements OnInit {
       this.showMenu = !expand;
       expand ? this.renderer.addClass(this.el.nativeElement, 'expanded') : this.renderer.removeClass(this.el.nativeElement, 'expanded');
     });
-    this.me = this.userService.me;
+
     this.initialLoad();
 
     this.menus.forEach(item => {
@@ -50,11 +48,11 @@ export class LeftSidebarComponent implements OnInit {
       }
 
       if (item.render) {
-        item.renderObservable = item.render(this.me);
+        item.renderObservable = item.render(this.userService.meChanged);
       }
 
       if (item.restrict) {
-        item.restrictObservable = combineLatest(of(this.me), this.route.params).pipe(
+        item.restrictObservable = combineLatest(this.userService.meChanged, this.route.params).pipe(
           map(([user]) => item.restrict({user, nav: this.navService}))
         );
       }
@@ -63,13 +61,6 @@ export class LeftSidebarComponent implements OnInit {
 
   toggleMenu() {
     this.leftMenuService.expand = !this.leftMenuService.expand;
-  }
-
-  showMenuItem(menuItem: typeof menus[number]) {
-    return menuItem.restrict ? menuItem.restrict({
-      user: this.me,
-      nav: this.navService
-    }) : true;
   }
 
   openModal(component: any, params?: any) {

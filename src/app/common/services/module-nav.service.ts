@@ -1,24 +1,25 @@
-import { Injectable, EventEmitter } from '@angular/core';
-import { Module } from '../interfaces/module.interface';
+import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
-import { BehaviorSubject, from, Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
-import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, take } from 'rxjs/operators';
+import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, take, map } from 'rxjs/operators';
 import { AssessmentService } from './assessment.service';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
   private storageKey: string;
   private default: T;
+  private defaultObservable: Observable<T>;
   private type: 'json' | 'string' | 'number';
   public onChange =  new BehaviorSubject<T>(null);
 
-  constructor(storageKey: string,  defaultValue: T = null, type: 'json' | 'string' | 'number' = 'json') {
+  constructor(storageKey: string,  defaultObservable: Observable<T> = null, type: 'json' | 'string' | 'number' = 'json') {
     this.storageKey = storageKey;
-    this.default = defaultValue;
     this.type = type;
     this.onChange.next(this.current);
+    this.defaultObservable = defaultObservable;
+    this.loadDefaultValue();
   }
 
   set current(value: T) {
@@ -31,11 +32,25 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
   }
 
   get current(): T {
-    if (this._current !== undefined) {
-      return this._current;
-    } else {
+    if (this._current === undefined) {
       const fromStorage = window.localStorage.getItem(this.storageKey);
-      return fromStorage ? this.processFromStorage(fromStorage) : this.default;
+      if (fromStorage) {
+        this._current = this.processFromStorage(fromStorage);
+      }
+    }
+
+    if (this._current === undefined) {
+      this.loadDefaultValue(true);
+    }
+
+    return this._current;
+  }
+
+  loadDefaultValue(force?: boolean) {
+    if ((force || !this.current) && this.defaultObservable) {
+      this.defaultObservable.pipe(take(1)).subscribe(value => {
+        this.current = value;
+      });
     }
   }
 
@@ -65,35 +80,43 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
 
 @Injectable()
 export class ModuleNavService {
-  lastOrganization = new ResourceFromStorage<number>('last_organization_id');
-  module = new ResourceFromStorage<number>('last_module_id');
-  step = new ResourceFromStorage<number>('last_step_id', 0, 'number');
-
   assessmentType = new ResourceFromStorage<number>('last_type');
   activeAssessmentType$: Observable<AssessmentType>;
   assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
 
+  lastOrganization = new ResourceFromStorage<number>('last_organization_id',
+                        this.moduleService.getDefaultOrganization().pipe(map(org => org.id)),
+                        'number');
+
   organization$ = this.lastOrganization.onChange.pipe(
-      filter(org => !!org),
       startWith(this.lastOrganization.current),
+      filter(org => !!org),
       distinctUntilChanged()
     );
+
+  module = new ResourceFromStorage<number>('last_module_id',
+              this.moduleService.getDefaultModule().pipe(map(mod => mod.id)),
+              'number');
 
   module$ = this.module.onChange.pipe(
-      filter(m => !!m),
       startWith(Number(this.module.current)),
-      distinctUntilChanged()
-    );
-
-  step$ = this.step.onChange.pipe(
       filter(m => !!m),
-      startWith(Number(this.step.current)),
       distinctUntilChanged()
     );
 
   moduleData$ = this.module$.pipe(
       switchMap(id => this.moduleService.getModuleConfig(id)),
       shareReplay(1)
+    );
+
+  step = new ResourceFromStorage<number>('last_step_id',
+            this.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id)),
+            'number');
+
+  step$ = this.step.onChange.pipe(
+      startWith(Number(this.step.current)),
+      filter(m => !!m),
+      distinctUntilChanged()
     );
 
   get assessmentType$() {

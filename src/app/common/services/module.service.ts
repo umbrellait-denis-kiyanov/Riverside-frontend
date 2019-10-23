@@ -7,7 +7,6 @@ import { shareReplay, switchMap, map, filter } from 'rxjs/operators';
 @Injectable()
 export class ModuleService {
 
-  modules: Module[];
   baseUrl = '/api/modules';
 
   organizations$: Observable<Organization[]>;
@@ -16,12 +15,20 @@ export class ModuleService {
 
   constructor(private httpClient: HttpClient) { }
 
+  private moduleCache = {};
+
+  private modules: Observable<Module[]>;
+
   getModuleConfig(id: number): Observable<Module> {
     if (!Number(id)) {
       throw throwError('Invalid ID');
     }
 
-    return this.httpClient.get<Module>(`${this.baseUrl}/${id}`);
+    if (!this.moduleCache[id]) {
+      this.moduleCache[id] = this.httpClient.get<Module>(`${this.baseUrl}/${id}`).pipe(shareReplay(1));
+    }
+
+    return this.moduleCache[id];
   }
 
   getOrgModule(id: number, org_id: number): Observable<Module> {
@@ -46,7 +53,11 @@ export class ModuleService {
   }
 
   getModules(): Observable<Module[]> {
-    return this.httpClient.get<Module[]>(this.baseUrl).pipe(shareReplay(1));
+    if (!this.modules) {
+      this.modules = this.httpClient.get<Module[]>(this.baseUrl).pipe(shareReplay(1));
+    }
+
+    return this.modules;
   }
 
   getDefaultModule(): Observable<Module> {
@@ -99,6 +110,10 @@ export class ModuleService {
     }
 
     return this.organizations$.pipe(filter(orgs => !!orgs));
+  }
+
+  getDefaultOrganization(): Observable<Organization> {
+    return this.getOrganizations().pipe(map(orgs => orgs[0]));
   }
 
   exportUrl() {

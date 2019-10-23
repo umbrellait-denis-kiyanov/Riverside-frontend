@@ -14,7 +14,7 @@
       style="height: 10px"
         mode="determinate"
         color="accent"
-        [value]="module.status.progress">
+        [value]="module.status?.progress">
       </mat-progress-bar>
     </div>
 
@@ -28,19 +28,10 @@
         [ngClass]="{'section-break': step.is_section_break}"
         routerLinkActive="active"
       >
-        <a
-          *ngIf="step.is_section_break"
+        <a *ngIf="step.is_section_break">{{step.description}}</a>
 
-        >{{step.description}}</a>
-
-        <a
-          [routerLink]="stepRouterLink(module, step)"
-
-          *ngIf="!step.is_section_break"
-        >
-
+        <a *ngIf="!step.is_section_break" [routerLink]="stepRouterLink(module, step)">
           <span class="checkmark" [ngClass]="{'checked': isChecked(step)}">
-
             <mat-icon [ngClass]="{'approved': step.is_approved}" >done</mat-icon>
           </span>
 

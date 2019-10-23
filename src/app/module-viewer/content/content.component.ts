@@ -6,9 +6,9 @@ import User from 'src/app/common/interfaces/user.model';
 import { TemplateContentData } from 'src/app/module-viewer/riverside-step-template/templates/template-data.class';
 import { RiversideStepTemplateComponent } from 'src/app/module-viewer/riverside-step-template/riverside-step-template.component';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
-import { switchMap, startWith, catchError, map, tap } from 'rxjs/operators';
+import { switchMap, catchError, filter, tap, map } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { combineLatest, Subscription, Observable } from 'rxjs';
+import { combineLatest, Subscription, Observable, race } from 'rxjs';
 import { Templates } from '../riverside-step-template/templates';
 import { IceService } from '../ice/ice.service';
 import ModuleContent from 'src/app/common/interfaces/module-content.model';
@@ -48,11 +48,13 @@ export class ContentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.me = this.userService.me;
 
-    this.routeWatch = this.route.params.subscribe(
+    this.routeWatch = this.route.params.pipe(filter(params => params.stepId)).subscribe(
       params => this.navService.step.current = Number(params.stepId)
     );
 
-    this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, this.navService.step$.pipe(startWith(1)))
+    const defaultStep = this.navService.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id));
+
+    this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, race(this.navService.step$, defaultStep))
       .pipe(
         switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
           catchError(_ => this.navService.moduleData$.pipe(

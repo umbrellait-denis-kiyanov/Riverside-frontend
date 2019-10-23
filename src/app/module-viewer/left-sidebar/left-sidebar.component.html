@@ -15,14 +15,13 @@
     </a>
   </li>
 
-  <li
-    class="menu-item"
-    *ngFor="let menu of menus"
-    [hidden]="!showMenuItem(menu)"
-    [e3-tooltip]="menu.label || (menu.labelObservable | async)"
-    placement="right"
-  >
-    <ng-container *ngIf="!menu.restrictObservable || (menu.restrictObservable | async)">
+  <ng-container *ngFor="let menu of menus">
+    <li
+      class="menu-item"
+      *ngIf="!menu.restrictObservable || (menu.restrictObservable | async)"
+      [e3-tooltip]="menu.label || (menu.labelObservable | async)"
+      placement="right"
+    >
       <a
         [routerLink]="menu.link"
         routerLinkActive="active"
@@ -59,6 +58,6 @@
           <span class="menu-item-counter" [hidden]="!menu.counter">{{menu.counter}}</span>
         </div>
       </ng-template>
-    </ng-container>
-  </li>
+    </li>
+  </ng-container>
 </ul>
