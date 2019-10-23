@@ -93,4 +93,3 @@ export class LeftSidebarComponent implements OnInit {
     });
   }
 }
-

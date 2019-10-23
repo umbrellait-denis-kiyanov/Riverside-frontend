@@ -18,6 +18,9 @@ type MenusInterface = MenuItemType[];
 
 // For SUPER temporary use
 const hardCodePictures = (user: User) => {
+  if (user.profile_picture) {
+    return user.profile_picture;
+  }
   switch (user.email) {
     case 'dan@riverside.com':
     case 'dperry@omnigo.com':
@@ -44,7 +47,7 @@ const hardCodePictures = (user: User) => {
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
     case 'dhaynes@riversidecompany.com':
-       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg';
+       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg'
     default:
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic16.jpg';
   }
@@ -52,11 +55,15 @@ const hardCodePictures = (user: User) => {
 
 export const menus: MenusInterface = [
   {
-    render(user: User) {
-      return of(user).pipe(
-        map((usr: User) => `<img
-                      src=${hardCodePictures(usr)}
-                      style="width: 35px; height: 35px; border-radius: 35px">`)
+    render(user: BehaviorSubject<User>) {
+      return user.pipe(
+        map((usr: User) => {
+          const src = usr.profile_picture || hardCodePictures(usr);
+          if (src) {
+            return `<img src=${src} style="width: 35px; height: 35px; border-radius: 35px">`;
+          } else { return `<div class="letter-image">${usr.abbreviation}</div>`; }
+
+        })
       );
     },
     label: 'ACCOUNT',
