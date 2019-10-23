@@ -3,7 +3,7 @@
 <div class="container-fluid">
   <div class="row">
     <div class="col-lg-9 col-md-12">
-      <h1>SALES EXCELLENCE DASHBOARD</h1>
+      <h1>SALES EXCELLENCE TRANSFORMATIONAL ROADMAP</h1>
     </div>
     <div class="col-lg-3 col-md-12 dashboard-menu text-right">
       <div class="dashboard-menu-wrapper">
@@ -71,11 +71,12 @@
         <tr>
           <th *ngIf="canActivate" class="toggle-module"></th>
           <th class="text-center" mat-sort-header="idx">Module</th>
-          <th mat-sort-header="assessment_mkt">Mkt<br />Assessment</th>
+          <th mat-sort-header="assessment_mkt">Marketing<br />Assessment</th>
           <th mat-sort-header="assessment_sales">Sales<br />Assessment</th>
           <th mat-sort-header="due_date">Target Date</th>
           <th mat-sort-header="progress_status">Status</th>
           <th mat-sort-header="notes">Notes</th>
+          <th mat-sort-header="assigned_to">Assigned To</th>
         </tr>
       </thead>
 
@@ -111,6 +112,10 @@
           <td class="notes">
             <textarea mat-autosize matAutosizeMaxRows="5" *ngIf="module.status && canActivate" [(ngModel)]="module.status.notes" (change)="saveNotes(module)"></textarea>
             <span *ngIf="module.status && !canActivate">{{ module.status?.notes }}</span>
+          </td>
+          <td class="notes assigned-to">
+            <input type="text" *ngIf="module.status && canActivate" [(ngModel)]="module.status.assigned_to" (change)="saveAssignedTo(module)" />
+            <span *ngIf="module.status && !canActivate">{{ module.status?.assigned_to }}</span>
           </td>
         </tr>
       </tbody>

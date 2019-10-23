@@ -43,7 +43,7 @@
             flex: 2
 
             .module-group:first-of-type
-                padding-right: 1em;
+                padding-right: 1em
 
         .card-header
             text-transform: uppercase
@@ -75,7 +75,7 @@
 
                 &:nth-of-type(2)
                     border-left: 1px solid #ccc
-                    padding-left: 1em;
+                    padding-left: 1em
 
             .module-item
                 height: 8em
@@ -182,19 +182,27 @@ table.list-view
         td.notes
             padding: 5px
             vertical-align: middle
+            min-width: 300px
 
             &:focus-within
                 border: 1px solid #dee2e6
 
-            textarea
+            textarea, input
                 display: block
                 width: 100%
-                min-width: 200px
                 min-height: 1.5em
                 margin: 0
                 padding: 0
                 border: 0
                 outline: 0
+
+            &.assigned-to
+                min-width: 0
+                max-width: 120px
+
+                input
+                    min-width: 120px
+                    max-width: 120px
 
         .progress-container
             display: flex
