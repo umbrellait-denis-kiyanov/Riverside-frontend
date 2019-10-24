@@ -89,7 +89,6 @@ export class ModuleNavService {
                         'number');
 
   organization$ = this.lastOrganization.onChange.pipe(
-      startWith(this.lastOrganization.current),
       filter(org => !!org),
       distinctUntilChanged()
     );
@@ -99,14 +98,12 @@ export class ModuleNavService {
               'number');
 
   module$ = this.module.onChange.pipe(
-      startWith(Number(this.module.current)),
       filter(m => !!m),
       distinctUntilChanged()
     );
 
   moduleData$ = this.module$.pipe(
-      switchMap(id => this.moduleService.getModuleConfig(id)),
-      shareReplay(1)
+      switchMap(id => this.moduleService.getModuleConfig(id))
     );
 
   step = new ResourceFromStorage<number>('last_step_id',
@@ -114,7 +111,6 @@ export class ModuleNavService {
             'number');
 
   step$ = this.step.onChange.pipe(
-      startWith(Number(this.step.current)),
       filter(m => !!m),
       distinctUntilChanged()
     );

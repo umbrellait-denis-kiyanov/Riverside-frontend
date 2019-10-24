@@ -24,12 +24,9 @@ export class OrgSelectorComponent implements OnInit {
 
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
-    this.organizationID = this.moduleNavService.lastOrganization.current;
-    if (!this.organizationID) {
-      this.organizations$.pipe(take(1)).subscribe(organizations => this.setOrganization(organizations[0]));
-    }
+    this.moduleNavService.organization$.pipe(take(1)).subscribe(orgId => this.organizationID);
 
-    combineLatest(this.moduleNavService.organization$, this.organizations$).subscribe(([orgId, organizations]) => {
+    combineLatest(this.moduleNavService.organization$, this.organizations$).pipe(take(1)).subscribe(([orgId, organizations]) => {
       this.currentOrg = organizations.find(
         org => Number(org.id) === Number(orgId)
       );

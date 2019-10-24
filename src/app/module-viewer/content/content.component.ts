@@ -1,5 +1,5 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import User from 'src/app/common/interfaces/user.model';
@@ -33,7 +33,6 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
-    private router: Router,
     private moduleService: ModuleService,
     private userService: UserService,
     private moduleContentService: ModuleContentService,
@@ -52,15 +51,13 @@ export class ContentComponent implements OnInit, OnDestroy {
       params => this.navService.step.current = Number(params.stepId)
     );
 
-    const defaultStep = this.navService.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id));
-
-    this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, race(this.navService.step$, defaultStep))
+    this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, this.navService.step$)
       .pipe(
         switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
           catchError(_ => this.navService.moduleData$.pipe(
             switchMap(moduleData => {
               const firstStep = moduleData.steps.find(stepData => !stepData.is_section_break).id;
-              this.router.navigate(['org', org, 'module', moduleData.id, 'step', firstStep]);
+              this.navService.goToStep(firstStep);
               return this.moduleContentService.load(moduleData.id, firstStep, org);
             })
           ))
