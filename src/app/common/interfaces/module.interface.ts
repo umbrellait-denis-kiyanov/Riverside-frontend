@@ -47,7 +47,6 @@ export interface Step {
   template_component?: string;
   template_params_json: object;
   position?: number;
-  elements: LearningElement[];
 }
 
 export interface Section {
@@ -65,11 +64,4 @@ export interface Template {
 
 function literalArray<T extends string>(array: T[]): T[] {
   return array;
-}
-export const LearningElementTypes = literalArray(['pdf', 'activity', 'youtube', 'gdoc']);
-
-export interface LearningElement {
-  type: typeof LearningElementTypes[number];
-  data: string;
-  tooltip?: string;
 }

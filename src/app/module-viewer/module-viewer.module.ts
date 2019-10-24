@@ -12,7 +12,6 @@ import { ModuleService } from '../common/services/module.service';
 import { LeftMenuComponent } from './left-menu/module/module-left-menu.component';
 import { ContentComponent } from './content/content.component';
 import { LoadingComponent } from '../common/components/loading/loading.component';
-import { LearningElementComponent } from './modals/learning-element/learning-element.component';
 import { UserService } from '../common/services/user.service';
 import { IceComponent } from './ice/ice.component';
 import { RiversideStepTemplateComponent } from './riverside-step-template/riverside-step-template.component';
@@ -130,8 +129,6 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     FormatDatePipe,
     ReadableDatePipe,
     CanModifyPipe,
-    LearningElementComponent,
-
     IceComponent,
     RiversideStepTemplateComponent,
     RTemplateDirective,
@@ -183,7 +180,6 @@ import { ImageCropperModule } from 'ngx-image-cropper';
   ],
   entryComponents: [
     ModuleViewerRootComponent,
-    LearningElementComponent,
     RequestFeedbackComponent,
     Template1Component,
     Template2Component,
