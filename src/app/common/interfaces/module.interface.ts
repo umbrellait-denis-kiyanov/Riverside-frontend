@@ -61,7 +61,3 @@ export interface Template {
   description?: string;
   hasInputs: boolean;
 }
-
-function literalArray<T extends string>(array: T[]): T[] {
-  return array;
-}

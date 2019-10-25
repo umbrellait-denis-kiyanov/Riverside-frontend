@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Module, Step, Section } from '../../common/interfaces/module.interface';
 import { ActivatedRoute } from '@angular/router';
 import { ModuleService } from '../../common/services/module.service';
@@ -15,11 +15,12 @@ import toastr from 'src/app/common/lib/toastr';
   templateUrl: './module-editor.component.html',
   styleUrls: ['./module-editor.component.sass']
 })
-export class ModuleEditorComponent implements OnInit {
+export class ModuleEditorComponent implements OnInit, OnDestroy {
   moduleData: Module;
   sections: Section[];
   ready = false;
   saving: Subscription;
+  moduleSub: Subscription;
   lastSavedModule: string;
 
   hasChanges = () => {
@@ -38,7 +39,7 @@ export class ModuleEditorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.pipe(
+    this.moduleSub = this.route.params.pipe(
       switchMap(params => this.moduleService.getModuleConfig(Number(params.id))),
       catchError(err => this.moduleService.getDefaultModule())
     ).subscribe(moduleData => {
@@ -47,6 +48,10 @@ export class ModuleEditorComponent implements OnInit {
       this.ready = true;
       this.setPristineState();
     });
+  }
+
+  ngOnDestroy() {
+    this.moduleSub.unsubscribe();
   }
 
   onClickAddStep(sectionIndex: number) {
