@@ -65,8 +65,8 @@ export class AssessmentService {
     return this.httpClient.post<AssessmentQuestion[]>(`${this.baseUrl}/note/${question.id}/org/${orgID}`, {notes});
   }
 
-  getAnswers(group: AssessmentGroup, orgID: number): Observable<AssessmentOrgGroup> {
-    return this.httpClient.get<AssessmentOrgGroup>(`${this.baseUrl}/answers/${group.id}/org/${orgID}`);
+  getAnswers(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup> {
+    return this.httpClient.get<AssessmentOrgGroup>(`${this.baseUrl}/answers/${group.id}/type/${type.id}/org/${orgID}`);
   }
 
   setImportance(group: AssessmentGroup, orgID: number, importance: number): Observable<any> {
