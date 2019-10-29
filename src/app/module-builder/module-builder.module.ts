@@ -22,6 +22,7 @@ import { StepLinkEditorComponent } from './module-editor/step-link-editor/step-l
 import { StepTemplateFieldComponent } from './module-editor/step-template-editor/step-template-field/step-template-field.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatIconModule} from '@angular/material/icon';
+import { BuilderSelectOptionPipe } from './module-editor/builder-select-option.pipe';
 
 @NgModule({
   imports: [
@@ -46,6 +47,7 @@ import { MatIconModule} from '@angular/material/icon';
     StepTemplateEditorComponent,
     StepLinkEditorComponent,
     StepTemplateFieldComponent,
+    BuilderSelectOptionPipe,
     // E3CheckboxComponent
 
   ],

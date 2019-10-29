@@ -16,6 +16,7 @@ export class StepTemplateFieldComponent implements OnInit {
 
   name: string;
   type: any;
+  selectValues: string[];
 
   hasSubFields = false;
   rtEditor: any;
@@ -40,10 +41,15 @@ export class StepTemplateFieldComponent implements OnInit {
     }
 
     if (this.type instanceof Array) {
-      this.hasSubFields = true;
+      if (this.name.substr(-7) === '_select') {
+        this.selectValues = this.type;
+        this.type = 'select';
+      } else {
+        this.hasSubFields = true;
 
-      if (!(this.json instanceof Array)) {
-        this.json = [{}];
+        if (!(this.json instanceof Array)) {
+          this.json = [{}];
+        }
       }
     }
   }

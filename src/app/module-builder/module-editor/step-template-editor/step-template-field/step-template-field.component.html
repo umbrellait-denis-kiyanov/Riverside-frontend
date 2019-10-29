@@ -18,6 +18,15 @@
     class="site-tbox"
   />
 
+  <select *ngIf="type == 'select'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="json"
+    (change)="valueChange()"
+    class="site-tbox"
+  >
+    <option *ngFor="let opt of selectValues" [value]="opt">{{ opt | builderSelectOption }}</option>
+  </select>
+
   <textarea *ngIf="type == 'json'"
     [ngModelOptions]="{standalone: true}"
     [(ngModel)]="json"
