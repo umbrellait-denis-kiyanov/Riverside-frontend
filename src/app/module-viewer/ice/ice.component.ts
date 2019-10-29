@@ -29,6 +29,7 @@ export class IceComponent implements OnInit {
   @Input() user: User;
   @Input() box: number;
   @Input() disabled: boolean;
+  @Input() placeholder: string = '';
   @Input() data: {
     id: number;
     textContent: string;
@@ -104,25 +105,39 @@ export class IceComponent implements OnInit {
 
     setTimeout(() => {
       const text = this.el.nativeElement.querySelector('#textbody');
-      const tracker = new window.ice.InlineChangeEditor({
-        element: text,
-        handleEvents: true,
-        currentUser: this.user,
-        plugins: [
-          'IceAddTitlePlugin',
-          'IceSmartQuotesPlugin',
-          'IceEmdashPlugin',
-          {
-            name: 'IceCopyPastePlugin',
-            settings: {
-              pasteType: 'formattedClean',
-              preserve: 'ol,ul,li'
-            }
-          }
-        ]
-      }).startTracking();
 
-      this.tracker = tracker;
+      try {
+        const tracker = new window.ice.InlineChangeEditor({
+          element: text,
+          handleEvents: true,
+          currentUser: this.user,
+          plugins: [
+            'IceAddTitlePlugin',
+            'IceSmartQuotesPlugin',
+            'IceEmdashPlugin',
+            {
+              name: 'IceCopyPastePlugin',
+              settings: {
+                pasteType: 'formattedClean',
+                preserve: 'ol,ul,li'
+              }
+            }
+          ]
+        }).startTracking();
+
+        if (tracker.element.innerHTML === '<p><br></p>') {
+          tracker.element.innerHTML = '';
+        }
+
+        tracker.element.setAttribute('placeholder', this.placeholder);
+
+        this.tracker = tracker;
+      } catch (e) {
+        console.log(e.message);
+        text.contentEditable = 'false';
+        return;
+      }
+
       if (this.disabled) {
         this.tracker.element.contentEditable = 'false';
       }

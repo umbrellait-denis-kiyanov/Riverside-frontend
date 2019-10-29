@@ -45,7 +45,9 @@ $triangleColor: orange;
       top: 0;
       left: 0;
 
-
+  &[contenteditable][placeholder]:empty:before
+    content: attr(placeholder)
+    color: #aaa
 
   // &.hasComment:after
   //   content: "";
