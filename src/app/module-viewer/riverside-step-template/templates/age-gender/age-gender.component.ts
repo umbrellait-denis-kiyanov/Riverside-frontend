@@ -49,7 +49,7 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
     ['fromPreviousSteps'].forEach(key => {
       this.inputIds[key].forEach((persona) => {
         Object.values(persona).forEach((id2: string) => {
-          this.inputs[id2] = this.inputs[id2] || '';
+          this.inputs[id2].content = this.inputs[id2].content || '';
           this.allIds.push(id2);
         });
       });

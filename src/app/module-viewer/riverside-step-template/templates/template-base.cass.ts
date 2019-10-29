@@ -12,7 +12,7 @@ import { Input } from 'src/app/common/interfaces/module.interface';
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit {
   data: TemplateContentData;
   hideChanges: boolean;
-  inputs: any;
+  inputs: {[key: string]: Input};
   disabled: boolean;
   me: User;
   action: string;

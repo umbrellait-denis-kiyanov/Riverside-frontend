@@ -56,7 +56,7 @@ export class Template3Component extends TemplateComponent implements OnInit {
   protected init() {
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach(id => {
-        this.inputs[id] = this.inputs[id] || '';
+        this.inputs[id].content = this.inputs[id].content || '';
       });
     });
   }

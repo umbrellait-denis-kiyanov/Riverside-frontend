@@ -36,7 +36,7 @@ export class Template2Component extends TemplateComponent {
   protected init() {
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach(id => {
-        this.inputs[id] = this.inputs[id] || '';
+        this.inputs[id].content = this.inputs[id].content || '';
       });
     });
     this.contentData = this.data.data.template_params_json as Template2Data['template_params_json'];

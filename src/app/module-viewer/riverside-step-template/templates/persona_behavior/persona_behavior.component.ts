@@ -32,17 +32,17 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
 
     this.contentData = this.data.data.template_params_json as PersonaBehaviorTemplateData['template_params_json'];
 
-    const defaultContent = { content: this.contentData.formatAsList ? this.defaultListContent : '<p></p>' };
+    const defaultContent = this.contentData.formatAsList ? this.defaultListContent : '<p></p>' ;
     const sufix = this.contentData.input_sufix || '';
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach((id, i) => {
         if (typeof id === 'string') {
           id = id + '_' + sufix;
           this.inputIds[key][i] = id;
-          this.inputs[id] = this.inputs[id] || {...defaultContent};
+          this.inputs[id].content = this.inputs[id].content || defaultContent;
         } else {
           Object.values(id).forEach((id2: string) => {
-            this.inputs[id2] = this.inputs[id2] || {...defaultContent};
+            this.inputs[id2].content = this.inputs[id2].content || defaultContent;
           });
         }
       });

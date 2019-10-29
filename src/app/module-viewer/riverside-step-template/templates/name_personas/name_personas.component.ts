@@ -31,7 +31,7 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
 
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach(id => {
-        this.inputs[id] = this.inputs[id] || '';
+        this.inputs[id].content = this.inputs[id].content || '';
       });
     });
     this.contentData = this.data.data.template_params_json as NamePersonasTemplateData['template_params_json'];
