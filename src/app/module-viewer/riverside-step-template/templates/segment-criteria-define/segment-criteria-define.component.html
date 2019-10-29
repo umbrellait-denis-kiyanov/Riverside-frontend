@@ -1,0 +1,127 @@
+<table class="market-segments">
+  <thead>
+    <tr>
+      <th>
+        <div *ngIf="step === 1">Enter segment name</div>
+      </th>
+      <th *ngIf="step < 3" [class.inactive]="step > 1">
+        <div>What industries do your customers belong to?</div>
+        <div class="example" *ngIf="step === 1">Healthcare, education, insurance, corporate, manufacturing, etc.</div>
+      </th>
+      <th *ngIf="step < 3" [class.inactive]="step > 1">
+        What are their pain points?
+      </th>
+      <th *ngIf="step > 1">
+        Brainstorm criteria for your ICP
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let segment of activeSegments; index as i;">
+      <td class="segment-label">
+        <ice
+          placeholder="Segment {{ segment }}"
+          [hideChanges]="hideChanges"
+          [user]="me"
+          [disabled]="disabled || step > 1"
+          (changed)="contentChanged($event)"
+          [(data)]="inputs['segment_criteria_define_name_' + segment]"
+        ></ice>
+
+        <div *ngIf="step === 1 && activeSegments.length > 1">
+          <a (click)="removeSegment(i)" class="add-rem">REMOVE segment</a>
+        </div>
+      </td>
+      <td *ngIf="step < 3">
+        <ice
+          class="ice-textarea"
+          [hideChanges]="hideChanges"
+          [user]="me"
+          [disabled]="disabled || step > 1"
+          (changed)="contentChanged($event)"
+          [(data)]="inputs['segment_criteria_define_industries_' + segment]"
+        ></ice>
+      </td>
+      <td *ngIf="step < 3">
+        <ice
+          class="ice-textarea"
+          [hideChanges]="hideChanges"
+          [user]="me"
+          [disabled]="disabled || step > 1"
+          (changed)="contentChanged($event)"
+          [(data)]="inputs['segment_criteria_define_pain_points_' + segment]"
+        ></ice>
+      </td>
+      <td *ngIf="step > 1">
+        <ice
+          class="ice-textarea"
+          [hideChanges]="hideChanges"
+          [user]="me"
+          [disabled]="disabled || step > 2"
+          (changed)="contentChanged($event)"
+          [(data)]="inputs['segment_criteria_define_brainstorm_' + segment]"
+        ></ice>
+      </td>
+    </tr>
+    <tr *ngIf="step === 1">
+      <td></td>
+      <td>
+        <a (click)="addSegment()" class="add-rem">Add market segment</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div
+  class="template-instructions"
+  [innerHtml]="contentData.instructions | safehtml"
+  *ngIf="contentData.instructions"
+></div>
+
+<div *ngIf="step === 3">
+  <div class="segment-container" *ngFor="let segment of activeSegments">
+    <h2>Segment {{ segment }}</h2>
+    <div class="row criterias">
+      <div class="col-sm-1 propensitity">
+        Propensity to buy criteria
+      </div>
+      <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
+        <div class="input-circle">
+          <ice
+            [hideChanges]="hideChanges"
+            [user]="me"
+            [disabled]="disabled || step > 3"
+            (changed)="syncCriteria(segment)"
+            [(data)]="criteria.name"
+          ></ice>
+        </div>
+        <ice
+          [hideChanges]="hideChanges"
+          [user]="me"
+          [disabled]="disabled || step > 3"
+          (changed)="syncCriteria(segment)"
+          [(data)]="criteria.description"
+          class="criteria-description"
+        ></ice>
+
+        <a *ngIf="criterias[segment].length > 3" (click)="removeCriteria(segment, i)" class="add-rem">REMOVE criteria</a>
+      </div>
+      <div class="col-sm-2 add-criteria" *ngIf="criterias[segment].length < 5">
+        <a (click)="addCriteria(segment)" class="add-rem">ADD criteria</a>
+      </div>
+    </div>
+
+    <div>Where and how will you mine the necessary data to support your decision?</div>
+    <ice
+      class="ice-textarea"
+      [hideChanges]="hideChanges"
+      [user]="me"
+      [disabled]="disabled || step > 3"
+      (changed)="contentChanged($event)"
+      [(data)]="inputs['segment_criteria_define_where_mine_' + segment]"
+    ></ice>
+
+  </div>
+</div>
+
+<module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

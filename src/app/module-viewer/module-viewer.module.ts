@@ -47,6 +47,7 @@ import { GenericTemplateComponent } from './riverside-step-template/templates/ge
 import { NamePersonasTemplateComponent } from './riverside-step-template/templates/name_personas/name_personas.component';
 import { PersonaBehaviorTemplateComponent } from './riverside-step-template/templates/persona_behavior/persona_behavior.component';
 import { FeedbackSectionTemplateComponent } from './riverside-step-template/templates/feedback_section/feedback_section.component';
+import { SegmentCriteriaDefineComponent } from './riverside-step-template/templates/segment-criteria-define/segment-criteria-define.component';
 import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { CanModifyPipe } from '../common/pipes/canModify.pipe';
@@ -147,6 +148,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     NamePersonasTemplateComponent,
     PersonaBehaviorTemplateComponent,
     FeedbackSectionTemplateComponent,
+    SegmentCriteriaDefineComponent,
     PersonaPictureTemplateComponent,
     PersonaPictureListComponent,
     FinalFeedbackComponent,
@@ -194,7 +196,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     FinalFeedbackComponent,
     QuestionImageComponent,
     AgeGenderComponent,
-    TemplateHeadingComponent
+    TemplateHeadingComponent,
+    SegmentCriteriaDefineComponent
   ],
   providers: [
     AssessmentService,

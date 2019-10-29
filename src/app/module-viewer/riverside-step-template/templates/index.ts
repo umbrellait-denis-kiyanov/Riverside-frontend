@@ -10,6 +10,7 @@ import { PersonaPictureTemplateComponent } from './persona-picture/persona-pictu
 import { FinalFeedbackComponent } from './final-feedback/final-feedback.component';
 import { AgeGenderComponent } from './age-gender/age-gender.component';
 import { QuestionImageComponent } from './question-image/question-image.component';
+import { SegmentCriteriaDefineComponent } from './segment-criteria-define/segment-criteria-define.component';
 
 export const Templates = {
   template1: Template1Component,
@@ -19,6 +20,7 @@ export const Templates = {
   generic: GenericTemplateComponent,
   name_personas: NamePersonasTemplateComponent,
   persona_behavior: PersonaBehaviorTemplateComponent,
+  segment_criteria_define: SegmentCriteriaDefineComponent,
   feedback_section: FeedbackSectionTemplateComponent,
   persona_picture: PersonaPictureTemplateComponent,
   final_feedback: FinalFeedbackComponent,

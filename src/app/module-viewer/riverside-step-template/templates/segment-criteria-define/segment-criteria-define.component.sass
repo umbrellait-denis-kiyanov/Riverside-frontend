@@ -1,0 +1,105 @@
+@import "src/app/module-viewer/riverside-step-template/templates/template.sass"
+@import "src/app/common/sass/variables.sass"
+
+table.market-segments
+  margin-top: 30px
+  table-layout: fixed
+
+  th
+    width: 25%
+    max-width: 25%
+    text-align: center
+    font-size: 16px
+    padding: 0 20px
+
+    &.inactive, .example
+      color: #aaa
+
+  td
+    width: 25%
+    max-width: 25%
+    padding: 7px
+
+    ice
+      margin: 0
+      padding: 0
+
+  .segment-label
+    vertical-align: top
+    width: 15%
+
+.segment-container
+  margin: 25px 0
+
+  h2
+    margin-bottom: 1em
+
+.row.criterias
+  margin-bottom: 30px
+
+  .col-sm-1
+    writing-mode: vertical-rl
+    font-weight: 700
+    text-align: center
+    transform: rotate(-180deg)
+    text-transform: uppercase
+    color: white
+    background-color: #aaa
+    height: 210px
+    font-size: 15px
+    padding: 0
+    display: flex
+    align-items: center
+    max-width: 6.5%
+
+  .col-sm-2
+    text-align: center
+    position: relative;
+
+    &.add-criteria
+      line-height: 100px
+      text-align: left
+
+    &:before
+      content: '+'
+      color: $blue
+      position: absolute
+      height: 100px
+      top: 0
+      left: -12px
+      line-height: 90px
+      font-size: 50px
+
+    &:nth-of-type(2):before,
+    &.add-criteria:before
+      display: none
+
+  .input-circle
+    background-color: $blue
+    padding: 10px
+    width: 100px
+    height: 100px
+    border-radius: 100%
+    display: inline-flex
+    align-items: center
+    margin-bottom: 10px
+
+    ice ::ng-deep #textbody
+      max-height: 50px
+      text-align: left
+      overflow: auto
+      padding: 3px
+      font-size: 12px
+
+  .criteria-description ::ng-deep #textbody
+    height: 100px
+    text-align: left
+    overflow: auto
+
+a.add-rem
+  color: $blue !important
+  cursor: pointer
+
+.ice-textarea ::ng-deep #textbody
+  height: 150px
+  overflow: auto

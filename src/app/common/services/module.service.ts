@@ -104,8 +104,14 @@ export class ModuleService {
       return;
     }
 
-    const dataToSend =  (({ comments_json, content, element_key }) => ({ comments_json, content, element_key }))(input);
+    const dataToSend = (({ comments_json, content, id }) => ({ comments_json, content, id }))(input);
     return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
+  }
+
+  saveMultipleInputs(inputs: Input[]): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/${inputs[0].module_id}/org/${inputs[0].org_id}/inputs`, inputs.map(
+      input => (({ comments_json, content, id }) => ({ comments_json, content, id }))(input)
+    ));
   }
 
   getOrganizations(): Observable<Organization[]> {
