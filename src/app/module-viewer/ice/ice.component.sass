@@ -1,6 +1,7 @@
-$padding: 5px;
+$padding: 0;
 $triangleSize: 10px;
 $triangleColor: orange;
+
 \:host
   display: block
   padding: 0 $padding
@@ -11,6 +12,11 @@ $triangleColor: orange;
       display: inline-flex
     .has-comment
       display: none
+
+  &.side-comment
+    .add-comment
+      top: -5px
+      right: -1em
 
 .add-comment
   display: none
@@ -30,11 +36,13 @@ $triangleColor: orange;
   border: solid 2px #BFBFBF;
   background: white;
   outline: none;
+  min-height: 2.2em
+
   \::ng-deep
     > ul
       padding-left: 20px
-  &[disabled="true"]
 
+  &[disabled="true"]
     &:before
       content: "";
       position: absolute;
@@ -49,26 +57,8 @@ $triangleColor: orange;
     content: attr(placeholder)
     color: #aaa
 
-  // &.hasComment:after
-  //   content: "";
-  //   width: 0;
-  //   height: 0;
-  //   border-top: $triangleSize solid transparent;
-  //   border-bottom: $triangleSize solid transparent;
-
-  //   border-left: $triangleSize solid $triangleColor;
-  //   position: absolute;
-  //   top: -1*$padding;
-  //   right: $padding;
-  //   transform: rotate(-45deg);
-
   &.showComment
     border-color: $triangleColor
-
-
-// .comment-triangle.hasComment
-
-
 
 .comment-wrapper
 

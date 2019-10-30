@@ -1,4 +1,4 @@
-<table class="market-segments">
+<table class="market-segments" *ngIf="step < 3">
   <thead>
     <tr>
       <th>
@@ -64,9 +64,8 @@
       </td>
     </tr>
     <tr *ngIf="step === 1">
-      <td></td>
       <td>
-        <a (click)="addSegment()" class="add-rem">Add market segment</a>
+        <a (click)="addSegment()" class="add-rem">ADD market segment</a>
       </td>
     </tr>
   </tbody>
@@ -80,34 +79,40 @@
 
 <div *ngIf="step === 3">
   <div class="segment-container" *ngFor="let segment of activeSegments">
-    <h2>Segment {{ segment }}</h2>
-    <div class="row criterias">
-      <div class="col-sm-1 propensitity">
-        Propensity to buy criteria
-      </div>
-      <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
-        <div class="input-circle">
+    <h2 [innerHTML]="inputs['segment_criteria_define_name_' + segment].content | safehtml"></h2>
+
+    <div [innerHTML]="inputs['segment_criteria_define_brainstorm_' + segment].content | safehtml"></div>
+
+    <div class="container-fluid">
+      <div class="row criterias">
+        <div class="col-sm-1 propensitity">
+          Propensity to buy criteria
+        </div>
+        <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
+          <div class="input-circle">
+            <ice
+              [hideChanges]="hideChanges"
+              [user]="me"
+              [disabled]="disabled || step > 3"
+              (changed)="syncCriteria(segment)"
+              [(data)]="criteria.name"
+              class="side-comment"
+            ></ice>
+          </div>
           <ice
             [hideChanges]="hideChanges"
             [user]="me"
             [disabled]="disabled || step > 3"
             (changed)="syncCriteria(segment)"
-            [(data)]="criteria.name"
+            [(data)]="criteria.description"
+            class="criteria-description"
           ></ice>
-        </div>
-        <ice
-          [hideChanges]="hideChanges"
-          [user]="me"
-          [disabled]="disabled || step > 3"
-          (changed)="syncCriteria(segment)"
-          [(data)]="criteria.description"
-          class="criteria-description"
-        ></ice>
 
-        <a *ngIf="criterias[segment].length > 3" (click)="removeCriteria(segment, i)" class="add-rem">REMOVE criteria</a>
-      </div>
-      <div class="col-sm-2 add-criteria" *ngIf="criterias[segment].length < 5">
-        <a (click)="addCriteria(segment)" class="add-rem">ADD criteria</a>
+          <a *ngIf="criterias[segment].length > 3" (click)="removeCriteria(segment, i)" class="add-rem">REMOVE criteria</a>
+        </div>
+        <div class="col-sm-2 add-criteria" *ngIf="criterias[segment].length < 5">
+          <a (click)="addCriteria(segment)" class="add-rem">ADD criteria</a>
+        </div>
       </div>
     </div>
 

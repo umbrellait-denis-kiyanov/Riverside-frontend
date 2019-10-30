@@ -56,7 +56,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   initSegments() {
     // console.log(this.inputs);
-    this.activeSegments = this.allSegments.filter(num => this.getInput('', num).content);
+    this.activeSegments = this.allSegments.filter(num => this.getInput('on', num).content);
 
     if (!this.activeSegments.length) {
       this.addSegment();
@@ -123,7 +123,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
       const num = this.activeSegments.length + 1;
       this.activeSegments.push(num);
 
-      const inp = this.getInput('', num);
+      const inp = this.getInput('on', num);
       inp.content = num.toString();
 
       this.moduleService.saveInput(inp).subscribe();
@@ -135,7 +135,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
       return;
     }
 
-    const inp = this.getInput('', this.activeSegments[idx]);
+    const inp = this.getInput('on', this.activeSegments[idx]);
     inp.content = null;
     this.moduleService.saveInput(inp).subscribe();
 
@@ -169,6 +169,6 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   getInput(fieldName: string, num: number): Input {
-    return this.inputs[pref + (fieldName ? '_' : '') + fieldName + '_' + String(num)];
+    return this.inputs[pref + '_' + fieldName + '_' + String(num)];
   }
 }

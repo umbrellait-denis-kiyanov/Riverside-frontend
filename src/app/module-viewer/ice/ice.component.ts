@@ -138,6 +138,10 @@ export class IceComponent implements OnInit {
         return;
       }
 
+      const w = String(this.el.nativeElement.clientWidth) + 'px';
+      this.el.nativeElement.style.width = w;
+      this.el.nativeElement.style.maxWidth = w;
+
       if (this.disabled) {
         this.tracker.element.contentEditable = 'false';
       }
