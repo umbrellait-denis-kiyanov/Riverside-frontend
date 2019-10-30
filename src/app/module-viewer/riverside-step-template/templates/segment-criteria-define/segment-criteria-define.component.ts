@@ -13,7 +13,6 @@ const inputs = ['', 'industries', 'pain_points', 'brainstorm', 'where_mine',�
 interface SegmentCriteria {
   name: {content: string, comments_json: string};
   description: {content: string, comments_json: string};
-  value?: number;
   weight?: number;
 }
 
@@ -55,7 +54,6 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   initSegments() {
-    // console.log(this.inputs);
     this.activeSegments = this.allSegments.filter(num => this.getInput('on', num).content);
 
     if (!this.activeSegments.length) {
@@ -63,12 +61,11 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     }
 
     this.step = Number(this.contentData.step_select.substr(0, 1));
-    // console.log(this.contentData);
   }
 
   getEmptyCriteria() {
     const emptyDef = JSON.stringify({content: '', comments_json: ''});
-    return {name: JSON.parse(emptyDef), description: JSON.parse(emptyDef)};
+    return {name: JSON.parse(emptyDef), description: JSON.parse(emptyDef), weight: 0};
   }
 
   initCriterias() {
@@ -82,6 +79,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
       return segments;
     }, {});
+
+    console.log(this.criterias);
   }
 
   // remove empty segments in the middle of the list
@@ -155,14 +154,22 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     }
   }
 
+  pointsSum(criteria: SegmentCriteria[]) {
+    return criteria.reduce((sum, cr) => sum + (cr.weight || 0), 0);
+  }
+
+  allWeightsSelected(criteria: SegmentCriteria[]) {
+    return !criteria.find(cr => !cr.weight);
+  }
+
   syncCriteria(seg: number) {
     const input = this.getInput('criteria', seg);
 
-    console.log(this.criterias[seg]);
-
     input.content = JSON.stringify(this.criterias[seg].map(c =>
       ({description: {comments_json: c.description.comments_json, content: c.description.content},
-        name:        {comments_json: c.name.comments_json, content: c.name.content}}))
+        name:        {comments_json: c.name.comments_json, content: c.name.content},
+        weight:      c.weight
+      }))
     );
 
     this.moduleService.saveInput(input).subscribe();

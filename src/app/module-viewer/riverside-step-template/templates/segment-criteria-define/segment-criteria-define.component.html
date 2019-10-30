@@ -129,4 +129,47 @@
   </div>
 </div>
 
+<div *ngIf="step === 4">
+  <div class="segment-container" *ngFor="let segment of activeSegments">
+    <h2 [innerHTML]="inputs['segment_criteria_define_name_' + segment].content | safehtml"></h2>
+
+    <div class="container-fluid" *ngIf="criterias">
+      <div class="row criterias" [class.compact]="criterias[segment].length === 5">
+        <div class="col-sm-1 propensitity">
+          Propensity to buy criteria
+        </div>
+        <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
+          <div class="input-circle">
+            <div [innerHTML]="criteria.name.content | safehtml"></div>
+          </div>
+          <div class="input-circle grey-circle">
+            <input type="number" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" [disabled]="disabled" />
+            <input type="range" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" *ngIf="!disabled" />
+          </div>
+
+          <div [innerHTML]="criteria.description.content | safehtml"></div>
+        </div>
+        <div class="col-sm-2 total-score" *ngLet="pointsSum(criterias[segment]) as sum">
+          <ng-container *ngLet="allWeightsSelected(criterias[segment]) as allSelected;">
+            <div class="input-circle">
+              TOTAL SCORE
+            </div>
+            <div class="input-circle grey-circle" [class.complete]="sum === 100">
+                {{ sum }}/100 POINTS
+            </div>
+
+            <div *ngIf="allSelected">
+              <strong>{{ sum }}</strong> points selected.
+            </div>
+            <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
+            <div *ngIf="allSelected && sum < 100"><strong>Increase</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+            <div *ngIf="allSelected && sum > 100"><strong>Decrease</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+          </ng-container>
+        </div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
 <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

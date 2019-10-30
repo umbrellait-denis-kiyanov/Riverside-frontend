@@ -85,6 +85,18 @@ table.market-segments
     display: inline-flex
     align-items: center
     margin-bottom: 10px
+    text-align: center
+
+    input[type=range]
+      display: none !important
+      position: absolute
+      max-width: 50% !important
+      margin-top: 2em !important
+      margin-left: 5% !important
+
+    &:hover
+      input[type=range]
+        display: inline-block !important
 
     ice ::ng-deep #textbody
       max-height: 50px
@@ -93,10 +105,29 @@ table.market-segments
       padding: 3px
       font-size: 12px
 
+    &.grey-circle
+      background-color: #aaa
+
+      &.complete
+        background-color: $green
+
+      input
+        max-width: 80%
+        display: inline-block
+        margin: 0 auto
+
   .criteria-description ::ng-deep #textbody
     height: 100px
     text-align: left
     overflow: auto
+
+  &.compact
+    .col-sm-2
+      max-width: 15%
+
+      &:before
+        font-size: 30px
+        left: -4px
 
 a.add-rem
   color: $blue !important

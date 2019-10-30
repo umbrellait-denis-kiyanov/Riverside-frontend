@@ -1,8 +1,8 @@
 import { Injectable } from '@angular/core';
 import { Module, Step, Input, Template, Organization, ModuleStatus } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
-import { Observable, throwError, BehaviorSubject } from 'rxjs';
-import { shareReplay, switchMap, map, filter } from 'rxjs/operators';
+import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
+import { shareReplay, switchMap, map, filter, debounceTime, distinctUntilChanged, share, take, tap } from 'rxjs/operators';
 
 @Injectable()
 export class ModuleService {
@@ -18,6 +18,9 @@ export class ModuleService {
   private moduleCache = {};
 
   private modules: Observable<Module[]>;
+
+  inputDebounce: {[key: number]: Subject<Input>} = {};
+  inputObservable: {[key: number]: Observable<Input>} = {};
 
   getModuleConfig(id: number): Observable<Module> {
     if (!Number(id)) {
@@ -104,8 +107,28 @@ export class ModuleService {
       return;
     }
 
-    const dataToSend = (({ comments_json, content, id }) => ({ comments_json, content, id }))(input);
-    return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
+    if (!this.inputDebounce[input.id]) {
+      this.inputDebounce[input.id] = new Subject();
+      this.inputObservable[input.id] = this.inputDebounce[input.id].pipe(
+        debounceTime(500),
+        distinctUntilChanged((i, p) => i.id === p.id),
+        switchMap(inp => {
+          const dataToSend = (({ comments_json, content, id }) => ({ comments_json, content, id }))(inp);
+          return this.httpClient.post<Input>(`${this.baseUrl}/${inp.module_id}/org/${inp.org_id}/input/${inp.id}`, dataToSend).pipe(
+            tap(_ => {
+              this.inputDebounce[input.id].complete();
+              this.inputDebounce[input.id] = null;
+              this.inputObservable[input.id] = null;
+            })
+          );
+        }),
+        take(1),
+        shareReplay(1));
+    }
+
+    this.inputDebounce[input.id].next(input);
+
+    return this.inputObservable[input.id];
   }
 
   saveMultipleInputs(inputs: Input[]): Observable<any> {
