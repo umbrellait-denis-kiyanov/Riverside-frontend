@@ -79,9 +79,9 @@
 
 <div *ngIf="step === 3">
   <div class="segment-container" *ngFor="let segment of activeSegments">
-    <h2 [innerHTML]="inputs['segment_criteria_define_name_' + segment].content | safehtml"></h2>
+    <h2 inputText="name" [num]="segment"></h2>
 
-    <div [innerHTML]="inputs['segment_criteria_define_brainstorm_' + segment].content | safehtml"></div>
+    <div inputText="brainstorm" [num]="segment"></div>
 
     <div class="container-fluid">
       <div class="row criterias">
@@ -140,11 +140,15 @@
         </div>
         <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
           <div class="input-circle">
-            <div [inputText]="criteria.name"></div>
+            <div class="circle-container">
+              <span [inputText]="criteria.name"></span>
+            </div>
           </div>
           <div class="input-circle grey-circle">
-            <input type="number" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" [disabled]="disabled" />
-            <input type="range" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" *ngIf="!disabled" />
+            <div class="circle-container">
+              <input type="number" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" [disabled]="disabled" />
+              <input type="range" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" *ngIf="!disabled" />
+            </div>
           </div>
 
           <div [inputText]="criteria.description"></div>
@@ -152,13 +156,18 @@
         <div class="col-sm-2 total-score" *ngLet="pointsSum(criterias[segment]) as sum">
           <ng-container *ngLet="allWeightsSelected(criterias[segment]) as allSelected;">
             <div class="input-circle">
-              TOTAL SCORE
+              <div class="circle-container">
+                TOTAL<br />SCORE
+              </div>
             </div>
             <div class="input-circle grey-circle" [class.complete]="sum === 100">
-                {{ sum }}/100 POINTS
+              <div class="circle-container">
+                <span *ngIf="sum !== 100">{{ sum }}/100 POINTS</span>
+                <span *ngIf="sum === 100">100<br />POINTS</span>
+              </div>
             </div>
 
-            <div *ngIf="allSelected">
+            <div *ngIf="allSelected && (sum !== 100)">
               <strong>{{ sum }}</strong> points selected.
             </div>
             <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
