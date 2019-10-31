@@ -1,5 +1,5 @@
 import { TemplateContentData } from './template-data.class';
-import { OnInit, ElementRef, Component } from '@angular/core';
+import { OnInit, ElementRef, Component, forwardRef } from '@angular/core';
 import { TemplateComponentInterface, TemplateContentDataType } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
@@ -18,6 +18,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   action: string;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
   activePersonas: any[];
+
+  public prefix = '';
 
   constructor(
       protected el: ElementRef,
@@ -100,5 +102,9 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
   isEnabled() {
     return true;
+  }
+
+  getInput(fieldName: string, num: number): Input {
+    return this.inputs[this.prefix + fieldName + '_' + String(num)];
   }
 }

@@ -131,7 +131,7 @@
 
 <div *ngIf="step === 4">
   <div class="segment-container" *ngFor="let segment of activeSegments">
-    <h2 [innerHTML]="inputs['segment_criteria_define_name_' + segment].content | safehtml"></h2>
+    <h2 inputText="name" [num]="segment"></h2>
 
     <div class="container-fluid" *ngIf="criterias">
       <div class="row criterias" [class.compact]="criterias[segment].length === 5">
@@ -140,14 +140,14 @@
         </div>
         <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
           <div class="input-circle">
-            <div [innerHTML]="criteria.name.content | safehtml"></div>
+            <div [inputText]="criteria.name"></div>
           </div>
           <div class="input-circle grey-circle">
             <input type="number" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" [disabled]="disabled" />
             <input type="range" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" *ngIf="!disabled" />
           </div>
 
-          <div [innerHTML]="criteria.description.content | safehtml"></div>
+          <div [inputText]="criteria.description"></div>
         </div>
         <div class="col-sm-2 total-score" *ngLet="pointsSum(criterias[segment]) as sum">
           <ng-container *ngLet="allWeightsSelected(criterias[segment]) as allSelected;">

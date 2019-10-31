@@ -91,6 +91,7 @@ import { ChangePasswordComponent } from './account/change-password/change-passwo
 import { ProfilePictureInputComponent } from './account/profile/profile-picture-input/profile-picture-input.component';
 import { ProfilePictureSelectorComponent } from './account/profile/profile-picture-selector/profile-picture-selector.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { InputTextComponent } from './input-text/input-text.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -178,7 +179,8 @@ import { ImageCropperModule } from 'ngx-image-cropper';
     ProfileComponent,
     ChangePasswordComponent,
     ProfilePictureInputComponent,
-    ProfilePictureSelectorComponent
+    ProfilePictureSelectorComponent,
+    InputTextComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

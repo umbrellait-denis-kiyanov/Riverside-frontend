@@ -1,12 +1,10 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, ElementRef, forwardRef } from '@angular/core';
 import { PersonaInputs } from '../persona-ids.class';
 import { TemplateComponent } from '../template-base.cass';
 import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define.interface';
 import { Input } from 'src/app/common/interfaces/module.interface';
 
 const maxSegments = 5;
-
-const pref = 'segment_criteria_define';
 
 const inputs = ['', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
 
@@ -19,7 +17,8 @@ interface SegmentCriteria {
 @Component({
   selector: 'app-segment-criteria-define',
   templateUrl: './segment-criteria-define.component.html',
-  styleUrls: ['./segment-criteria-define.component.sass']
+  styleUrls: ['./segment-criteria-define.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => SegmentCriteriaDefineComponent) }]
 })
 export class SegmentCriteriaDefineComponent extends TemplateComponent implements OnInit {
   allIds: string[] = [];
@@ -32,6 +31,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   step: number;
 
   criterias: {[key: number]: SegmentCriteria[]};
+
+  public prefix = 'segment_criteria_define_';
 
   getDescription() {
     return '';
@@ -173,9 +174,5 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     );
 
     this.moduleService.saveInput(input).subscribe();
-  }
-
-  getInput(fieldName: string, num: number): Input {
-    return this.inputs[pref + '_' + fieldName + '_' + String(num)];
   }
 }
