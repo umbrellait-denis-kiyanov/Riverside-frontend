@@ -90,14 +90,16 @@
         </div>
         <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
           <div class="input-circle">
-            <ice
-              [hideChanges]="hideChanges"
-              [user]="me"
-              [disabled]="disabled || step > 3"
-              (changed)="syncCriteria(segment)"
-              [(data)]="criteria.name"
-              class="side-comment"
-            ></ice>
+            <div class="circle-container">
+              <ice
+                [hideChanges]="hideChanges"
+                [user]="me"
+                [disabled]="disabled || step > 3"
+                (changed)="syncCriteria(segment)"
+                [(data)]="criteria.name"
+                class="side-comment"
+              ></ice>
+            </div>
           </div>
           <ice
             [hideChanges]="hideChanges"
@@ -162,7 +164,7 @@
             </div>
             <div class="input-circle grey-circle" [class.complete]="sum === 100">
               <div class="circle-container">
-                <span *ngIf="sum !== 100">{{ sum }}/100 POINTS</span>
+                <span *ngIf="sum !== 100">{{ sum }}/100<br />POINTS</span>
                 <span *ngIf="sum === 100">100<br />POINTS</span>
               </div>
             </div>

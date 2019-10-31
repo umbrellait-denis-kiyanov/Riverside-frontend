@@ -107,6 +107,8 @@ export class ModuleService {
       return;
     }
 
+    console.log(input.id, !!this.inputDebounce[input.id]);
+
     if (!this.inputDebounce[input.id]) {
       this.inputDebounce[input.id] = new Subject();
       this.inputObservable[input.id] = this.inputDebounce[input.id].pipe(
@@ -122,11 +124,11 @@ export class ModuleService {
             })
           );
         }),
-        take(1),
-        shareReplay(1));
+        shareReplay(1)
+      );
     }
 
-    this.inputDebounce[input.id].next(input);
+    setTimeout(_ => this.inputDebounce[input.id].next(input));
 
     return this.inputObservable[input.id];
   }

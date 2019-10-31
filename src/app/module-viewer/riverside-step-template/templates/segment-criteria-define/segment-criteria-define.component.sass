@@ -58,6 +58,10 @@ table.market-segments
     text-align: center
     position: relative;
 
+    &.total-score:before
+      content: '='
+      left: -12px
+
     &.add-criteria
       line-height: 100px
       text-align: left
@@ -97,6 +101,7 @@ table.market-segments
       display: inline-flex
       align-items: center
       justify-content: center
+      padding: 10px
 
     input[type=number]
       padding: 3px

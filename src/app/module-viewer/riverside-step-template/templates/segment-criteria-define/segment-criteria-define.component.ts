@@ -152,6 +152,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   removeCriteria(seg: number, idx: number) {
     if (this.criterias[seg].length > 3) {
       this.criterias[seg].splice(idx, 1);
+      this.syncCriteria(seg);
     }
   }
 
