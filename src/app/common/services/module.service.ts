@@ -107,8 +107,6 @@ export class ModuleService {
       return;
     }
 
-    console.log(input.id, !!this.inputDebounce[input.id]);
-
     if (!this.inputDebounce[input.id]) {
       this.inputDebounce[input.id] = new Subject();
       this.inputObservable[input.id] = this.inputDebounce[input.id].pipe(

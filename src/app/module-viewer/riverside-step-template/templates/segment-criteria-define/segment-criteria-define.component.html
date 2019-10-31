@@ -179,8 +179,97 @@
         </div>
       </div>
     </div>
-
   </div>
+</div>
+
+<div *ngIf="step == 5">
+  <div class="grade-container row" *ngFor="let customerIndex of grades">
+    <div class="col-sm-1 text-center">
+      <h2>{{ customerIndex }}</h2>
+    </div>
+    <div class="col-sm-11" *ngLet="inputs['segment_criteria_define_' + gradePrefix + '_segment_' + customerIndex] as segmentSel">
+
+      <div class="row inputs-wrapper">
+        <label class="col-sm-3">Customer Name:</label>
+        <div class="col-sm-9">
+          <ice
+            [hideChanges]="hideChanges"
+            [user]="me"
+            [disabled]="disabled"
+            (changed)="contentChanged($event)"
+            [(data)]="inputs['segment_criteria_define_' + gradePrefix + '_name_' + customerIndex]"
+          ></ice>
+        </div>
+      </div>
+
+      <div class="row inputs-wrapper">
+        <label class="col-sm-3">Select a segment:</label>
+        <div class="col-sm-9">
+          <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel); resetGradeSelection(customerIndex);">
+            <option *ngFor="let segment of activeSegments" [value]="segment">
+              <span inputText="name" [num]="segment"></span>
+            </option>
+          </select>
+        </div>
+      </div>
+
+      <div class="segment-container" *ngLet="segmentSel.content as segment">
+
+        <div class="container-fluid" *ngIf="criterias[segment]">
+          <div class="row criterias" [class.compact]="criterias[segment].length === 5">
+            <div class="col-sm-1 propensitity">
+              Propensity to buy criteria
+            </div>
+            <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
+              <div class="input-circle">
+                <div class="circle-container">
+                  <span [inputText]="criteria.name"></span>
+                </div>
+              </div>
+              <div class="input-circle grey-circle">
+                <div class="circle-container">
+                  <input type="number" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[customerIndex][i]" (ngModelChange)="syncGrade(customerIndex)" [disabled]="disabled" />
+                  <input type="range" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[customerIndex][i]" (ngModelChange)="syncGrade(customerIndex)" *ngIf="!disabled" />
+                </div>
+              </div>
+
+              <div [inputText]="criteria.description"></div>
+            </div>
+            <div class="col-sm-2 total-score" *ngLet="gradeSum(customerIndex) as sum">
+              <ng-container *ngLet="allGradesSelected(customerIndex) as allSelected;">
+                <div class="input-circle">
+                  <div class="circle-container">
+                    GRADE
+                  </div>
+                </div>
+                <div class="input-circle grey-circle" [class.complete]="allSelected && sum >= 80" [class.average]="allSelected && sum >= 60 && sum < 80" [class.bad]="allSelected && sum < 60">
+                  <div class="circle-container letter-score">
+                    <div *ngIf="!allSelected">
+                      ?
+                    </div>
+                    <div *ngIf="allSelected">
+                      <span *ngIf="sum >= 90">A</span>
+                      <span *ngIf="sum >= 80 && sum < 90">B</span>
+                      <span *ngIf="sum >= 70 && sum < 80">C</span>
+                      <span *ngIf="sum >= 60 && sum < 70">D</span>
+                      <span *ngIf="sum < 60">F</span>
+                    </div>
+                  </div>
+                </div>
+
+                <div *ngIf="allSelected">
+                  <strong>{{ sum }}</strong> points
+                </div>
+                <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
+              </ng-container>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </div>
+  </div>
+
 </div>
 
 <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

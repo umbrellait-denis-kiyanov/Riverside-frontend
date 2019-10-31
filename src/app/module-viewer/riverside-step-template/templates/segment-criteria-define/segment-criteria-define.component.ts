@@ -31,8 +31,13 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   step: number;
 
   criterias: {[key: number]: SegmentCriteria[]};
+  selectedGrades: {[customerIndex: number]: {[criteriaIndex: number]: number}} = {};
 
   public prefix = 'segment_criteria_define_';
+
+  gradePrefix = '';
+
+  grades = [];
 
   getDescription() {
     return '';
@@ -52,6 +57,47 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     this.initSegments();
     this.condenseSegments();
     this.initCriterias();
+
+    if (5 === this.step) {
+      this.gradePrefix = this.contentData.inputs.split(',').map(s => s.trim()).find(s => s.substr(-5) === '_name').slice(0, -5);
+      this.grades = Array.from(Array(this.contentData.number_of_inputs + 1).keys()).slice(1);
+
+      this.initGrades();
+    }
+  }
+
+  initGrades() {
+    this.selectedGrades = this.grades.reduce((grades, seg) => {
+      const inp = this.getInput(this.gradePrefix, seg);
+      grades[seg] = inp && inp.content ? JSON.parse(inp.content) : {};
+
+      Array.from(Array(6).keys()).slice(1).forEach(k => grades[seg][k] = grades[seg][k] || null);
+
+      return grades;
+    }, {});
+  }
+
+  syncGrade(customerIndex: number) {
+    const input = this.getInput(this.gradePrefix, customerIndex);
+
+    input.content = JSON.stringify(this.selectedGrades[customerIndex]);
+
+    this.moduleService.saveInput(input).subscribe();
+  }
+
+  gradeSum(customerIndex: number) {
+    return Object.values(this.selectedGrades[customerIndex] || {}).reduce((total, grade) => total + grade, 0);
+  }
+
+  allGradesSelected(customerIndex: number) {
+    const seg = this.getInput(this.gradePrefix + '_segment', customerIndex).content;
+    return Object.values(this.selectedGrades[customerIndex]).filter(a => a !== null).length === this.criterias[seg].length;
+  }
+
+  resetGradeSelection(customerIndex: number) {
+    this.selectedGrades[customerIndex] = {};
+    this.syncGrade(customerIndex);
+    this.initGrades();
   }
 
   initSegments() {
@@ -80,8 +126,6 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
       return segments;
     }, {});
-
-    console.log(this.criterias);
   }
 
   // remove empty segments in the middle of the list

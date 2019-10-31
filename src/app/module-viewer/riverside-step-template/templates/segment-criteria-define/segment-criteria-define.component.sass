@@ -103,6 +103,9 @@ table.market-segments
       justify-content: center
       padding: 10px
 
+      &.letter-score
+        font-size: 40px
+
     input[type=number]
       padding: 3px
 
@@ -129,6 +132,12 @@ table.market-segments
       &.complete
         background-color: $green
 
+      &.average
+        background-color: $yellow
+
+      &.bad
+        background-color: $red
+
       input
         max-width: 80%
         display: inline-block
@@ -150,3 +159,12 @@ a.add-rem
 .ice-textarea ::ng-deep #textbody
   height: 150px
   overflow: auto
+
+.inputs-wrapper
+  margin-bottom: 1em
+
+  select
+    width: 100%
+
+.grade-container
+  margin-top: 2em
