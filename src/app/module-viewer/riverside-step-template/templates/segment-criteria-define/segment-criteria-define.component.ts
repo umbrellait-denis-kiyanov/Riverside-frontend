@@ -1,12 +1,8 @@
-import { Component, OnInit, ElementRef, forwardRef } from '@angular/core';
-import { PersonaInputs } from '../persona-ids.class';
+import { Component, OnInit, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define.interface';
-import { Input } from 'src/app/common/interfaces/module.interface';
 
-const maxSegments = 5;
-
-const inputs = ['', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
+const inputs = ['on', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
 
 interface SegmentCriteria {
   name: {content: string, comments_json: string};
@@ -21,8 +17,6 @@ interface SegmentCriteria {
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => SegmentCriteriaDefineComponent) }]
 })
 export class SegmentCriteriaDefineComponent extends TemplateComponent implements OnInit {
-  allIds: string[] = [];
-  inputIds: PersonaInputs;
   contentData: SegmentCriteriaDefineTemplateData['template_params_json'];
 
   allSegments = [1, 2, 3, 4, 5];
@@ -163,7 +157,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   addSegment() {
-    if (this.activeSegments.length < maxSegments) {
+    if (this.activeSegments.length < this.allSegments.length) {
       const num = this.activeSegments.length + 1;
       this.activeSegments.push(num);
 

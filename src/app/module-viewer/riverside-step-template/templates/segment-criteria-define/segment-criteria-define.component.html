@@ -148,8 +148,8 @@
           </div>
           <div class="input-circle grey-circle">
             <div class="circle-container">
-              <input type="number" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" [disabled]="disabled" />
-              <input type="range" min="1" max="100" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" *ngIf="!disabled" />
+              <input type="number" min="1" max="99" maxlength="2" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" [disabled]="disabled" />
+              <input type="range" min="1" max="99" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" *ngIf="!disabled" />
             </div>
           </div>
 
@@ -228,7 +228,7 @@
               </div>
               <div class="input-circle grey-circle">
                 <div class="circle-container">
-                  <input type="number" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[customerIndex][i]" (ngModelChange)="syncGrade(customerIndex)" [disabled]="disabled" />
+                  <input type="number" min="0" maxlength="2" [max]="criteria.weight" [(ngModel)]="selectedGrades[customerIndex][i]" (ngModelChange)="syncGrade(customerIndex)" [disabled]="disabled" />
                   <input type="range" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[customerIndex][i]" (ngModelChange)="syncGrade(customerIndex)" *ngIf="!disabled" />
                 </div>
               </div>
