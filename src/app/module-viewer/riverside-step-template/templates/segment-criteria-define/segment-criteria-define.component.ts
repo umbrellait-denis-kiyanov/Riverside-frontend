@@ -2,7 +2,7 @@ import { Component, OnInit, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define.interface';
 
-const inputs = ['on', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
+const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
 
 interface SegmentCriteria {
   name: {content: string, comments_json: string};
@@ -34,15 +34,11 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   grades = [];
 
   getDescription() {
-    return '';
+    return 'Ideal Customer Profiles';
   }
 
   getName() {
-    return 'Segment-Criteria Input';
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
+    return 'ICP: Segment-Criteria';
   }
 
   protected init() {
