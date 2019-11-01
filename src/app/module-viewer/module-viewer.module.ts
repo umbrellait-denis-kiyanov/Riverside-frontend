@@ -92,6 +92,7 @@ import { ProfilePictureInputComponent } from './account/profile/profile-picture-
 import { ProfilePictureSelectorComponent } from './account/profile/profile-picture-selector/profile-picture-selector.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { InputTextComponent } from './input-text/input-text.component';
+import { VideoComponent } from './riverside-step-template/templates/video/video.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -180,7 +181,8 @@ import { InputTextComponent } from './input-text/input-text.component';
     ChangePasswordComponent,
     ProfilePictureInputComponent,
     ProfilePictureSelectorComponent,
-    InputTextComponent
+    InputTextComponent,
+    VideoComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -199,7 +201,8 @@ import { InputTextComponent } from './input-text/input-text.component';
     QuestionImageComponent,
     AgeGenderComponent,
     TemplateHeadingComponent,
-    SegmentCriteriaDefineComponent
+    SegmentCriteriaDefineComponent,
+    VideoComponent
   ],
   providers: [
     AssessmentService,

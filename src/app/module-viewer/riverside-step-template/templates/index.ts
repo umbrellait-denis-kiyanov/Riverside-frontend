@@ -11,6 +11,7 @@ import { FinalFeedbackComponent } from './final-feedback/final-feedback.componen
 import { AgeGenderComponent } from './age-gender/age-gender.component';
 import { QuestionImageComponent } from './question-image/question-image.component';
 import { SegmentCriteriaDefineComponent } from './segment-criteria-define/segment-criteria-define.component';
+import { VideoComponent } from './video/video.component';
 
 export const Templates = {
   template1: Template1Component,
@@ -26,4 +27,5 @@ export const Templates = {
   final_feedback: FinalFeedbackComponent,
   age_gender: AgeGenderComponent,
   question_image: QuestionImageComponent,
+  video: VideoComponent
 };

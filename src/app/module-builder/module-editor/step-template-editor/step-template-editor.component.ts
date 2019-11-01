@@ -77,8 +77,6 @@ export class StepTemplateEditorComponent implements OnInit {
 
     this.templateFields = JSON.parse('[' + fields + ']').map(field => field.length === 2 ? field : [field[0], field.slice(1)]);
 
-    console.log(this.templateFields);
-
     if (template.hasInputs) {
       this.templateFields.push(['number_of_inputs', 'number']);
     }
