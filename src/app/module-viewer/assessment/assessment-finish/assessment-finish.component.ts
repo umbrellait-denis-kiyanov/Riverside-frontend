@@ -55,7 +55,7 @@ export class AssessmentFinishComponent implements OnInit {
 
     combineLatest(this.groups$, this.orgGroups$, this.session$).subscribe(([groups, orgGroups, session]) => {
       const series = groups.map((group, idx) => {
-        return {value: Number(orgGroups[group.id].score), name: (idx + 1), label: group.shortName};
+        return {value: Number((orgGroups[group.id] || {score: 0}).score), name: (idx + 1), label: group.shortName};
       });
 
       series.push({value: Math.round(session.score * 10) / 10, name: (series.length + 1), label: 'Average'});

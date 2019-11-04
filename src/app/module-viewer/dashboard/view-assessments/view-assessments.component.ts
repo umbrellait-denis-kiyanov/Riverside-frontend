@@ -1,16 +1,16 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
-import { Observable, BehaviorSubject, combineLatest, zip } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { switchMap, filter, take, distinctUntilChanged } from 'rxjs/operators';
+import { switchMap, filter, take, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-assessments',
   templateUrl: './view-assessments.component.html',
   styleUrls: ['./view-assessments.component.sass']
 })
-export class ViewAssessmentsComponent implements OnInit {
+export class ViewAssessmentsComponent implements OnInit, OnDestroy {
 
   types$: Observable<AssessmentType[]>;
 
@@ -34,6 +34,8 @@ export class ViewAssessmentsComponent implements OnInit {
 
   activatedSeries: number;
 
+  chartSubscription: Subscription;
+
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
@@ -54,14 +56,19 @@ export class ViewAssessmentsComponent implements OnInit {
 
     const colors = ['red', 'green', '#f3e562', '#ff9800', '#ff4514', '#afdf0a', '#00b862', 'orange', 'blue', '#ff5722', '#58ad3f'];
 
-    zip(this.sessions$, this.activeType$.pipe(filter(t => !!t))).subscribe(([sessions, type]) => {
+    this.chartSubscription = this.sessions$.pipe(withLatestFrom(this.activeType$)).subscribe(([sessions, type]) => {
+      if (!type) {
+        return;
+      }
+
       this.chart = sessions.map((session, sIdx) => {
-        const series = Object.values(session.groups).map((group, idx) => {
+        const series = Object.values(session.groups).sort((a, b) => Number(a.position) > Number(b.position) ? 1 : -1).map((group, idx) => {
           return {
             value: Number(group.score),
             formattedValue: Number(group.score),
             name: (idx + 1),
-            label: type.groups.find(g => g.id == group.group_id).shortName};
+            label: (type.groups.find(g => Number(g.id) === Number(group.group_id)) || {shortName: ''}).shortName
+          };
         });
 
         const score = Math.round(session.score * 10) / 10;
@@ -75,6 +82,10 @@ export class ViewAssessmentsComponent implements OnInit {
 
       this.colors = colors.slice(-1 * this.chart.length);
     });
+  }
+
+  ngOnDestroy(): void {
+    this.chartSubscription.unsubscribe();
   }
 
   setType(type: AssessmentType) {

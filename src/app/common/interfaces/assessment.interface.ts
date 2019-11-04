@@ -44,4 +44,5 @@ export interface AssessmentOrgGroup {
     isDone: boolean;
     score: number;
     answers: AssessmentAnswer[];
+    position?: number;
 }
