@@ -51,7 +51,7 @@ export class MasterDashboardComponent implements OnInit {
             let defLowValue = isNaN(parseInt(a[field], 10)) && isNaN(parseInt(b[field], 10)) || ('due_date' === field) ? 'ZZZ' : 9999;
             let defHiValue = '' as any;
 
-            if ('assessment' === field) {
+            if ('assessment' === field.substring(0, 10)) {
               defLowValue = 9999 * direction;
               defHiValue = 9999 * direction;
             }
