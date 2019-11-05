@@ -1,7 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Module, Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { map, shareReplay, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
@@ -12,7 +12,7 @@ import { Sort } from '@angular/material/sort';
   templateUrl: './dashboard.component.html',
   styleUrls: ['./dashboard.component.sass']
 })
-export class DashboardComponent implements OnInit {
+export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private moduleService: ModuleService,
               private route: ActivatedRoute,
@@ -31,11 +31,13 @@ export class DashboardComponent implements OnInit {
 
   listSortOrder$ = new BehaviorSubject<Sort>({active: 'idx', direction: 'asc'});
 
+  organizationSubscription: Subscription;
+
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
 
     const id = this.route.snapshot.params.orgId;
-    this.organizations$.subscribe(organizations =>
+    this.organizationSubscription = this.organizations$.subscribe(organizations =>
         this.setOrganization(id ? organizations.find(org => org.id.toString() === id) : organizations[0]));
 
     if (window.history.state && window.history.state.section) {
@@ -43,31 +45,21 @@ export class DashboardComponent implements OnInit {
     }
   }
 
-  prepareStatus(module: Module) {
-    // if (module.status) {
-    //   if (module.status.due_date && !module.status.progress) {
-    //     module.status.progress = Math.floor(Math.random() * 100);
-    //     if (module.status.progress > 70) {
-    //       module.status.progress = 100;
-    //     }
-    //   }
-
-    //   module.status.assessment_mkt = -10;
-    //   module.status.assessment_sales = 10;
-    // }
-    return module;
+  ngOnDestroy() {
+    this.organizationSubscription.unsubscribe();
   }
 
   setOrganization(organization: Organization) {
     this.organization = organization;
 
-    this.router.navigate(['dashboard', organization.id]);
+    if (Number(this.route.snapshot.params.orgId) !== Number(organization.id)) {
+      this.router.navigate(['dashboard', organization.id]);
+    }
 
     this.modulesRequest$ = this.moduleService.getCategories(this.organization.id).pipe(shareReplay(1));
+
     this.modules$ = this.modulesRequest$.pipe(map(response => {
       return response.body.map(category => {
-        category.modules.map(this.prepareStatus);
-
         if (category.modules.length >= 12) {
           const chunkSize = Math.ceil(category.modules.length / 2);
           category.columns = [category.modules.slice(0, chunkSize), category.modules.slice(chunkSize)];
@@ -79,14 +71,12 @@ export class DashboardComponent implements OnInit {
       });
     }));
 
-
     this.listModules$ = combineLatest([this.modulesRequest$, this.listSortOrder$]).
       pipe(map(([response, listSortOrder]) => {
 
         const items = response.body
           .map(category => category.modules)
           .reduce((a, b) => a.concat(b), [])
-          .map(this.prepareStatus)
           .map((module, idx) => { module.idx = idx + 1; return module; })
           ;
 
