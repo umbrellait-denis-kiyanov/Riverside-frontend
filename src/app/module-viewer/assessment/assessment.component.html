@@ -40,10 +40,10 @@
           Answer all
         </td>
         <td class="answer">
-          <mat-radio-button name="answer_all" (click)="setAnswerAll(1)"></mat-radio-button>
+          <mat-radio-button name="answer_all" (click)="answerAll(activeGroup, type, 1)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
         <td class="answer">
-          <mat-radio-button name="answer_all" (click)="setAnswerAll(0)"></mat-radio-button>
+          <mat-radio-button name="answer_all" (click)="answerAll(activeGroup, type, 0)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
       </tr>
       <tr class="importance">

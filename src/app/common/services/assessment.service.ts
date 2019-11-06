@@ -65,6 +65,10 @@ export class AssessmentService {
     return this.httpClient.post(`${this.baseUrl}/answer/${question.id}/type/${type.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
   }
 
+  answerAll(group: AssessmentGroup, type: AssessmentType, orgID: number, answer: boolean): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/answer-all/${group.id}/type/${type.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
+  }
+
   saveNotes(question: AssessmentQuestion, type: AssessmentType, orgID: number, notes: string): Observable<any> {
     return this.httpClient.post<AssessmentQuestion[]>(`${this.baseUrl}/note/${question.id}/type/${type.id}/org/${orgID}`, {notes});
   }
