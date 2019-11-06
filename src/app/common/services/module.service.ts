@@ -108,8 +108,8 @@ export class ModuleService {
     return this.httpClient.post(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}`, dataToSend);
   }
 
-  getOrganizations(): Observable<Organization[]> {
-    if (!this.organizations$) {
+  getOrganizations(forceNew = false): Observable<Organization[]> {
+    if (!this.organizations$ || forceNew) {
       this.organizations$ = this.httpClient.get<Organization[]>(`${this.baseUrl}/organizations/list`).pipe(shareReplay(1));
     }
 

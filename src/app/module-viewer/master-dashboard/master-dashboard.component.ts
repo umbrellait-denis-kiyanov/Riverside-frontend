@@ -35,7 +35,7 @@ export class MasterDashboardComponent implements OnInit {
   currentQuarter = '';
 
   ngOnInit() {
-    this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
+    this.organizations$ = combineLatest([this.moduleService.getOrganizations(true), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
       pipe(map(([items, sortOrder, listSortOrder, sortAsc]) => {
         this.currentQuarter = items[0].current_quarter;
         const quarters = ['q1', 'q2', 'q3', 'q4'];
