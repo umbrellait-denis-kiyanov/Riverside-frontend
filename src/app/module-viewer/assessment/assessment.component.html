@@ -35,6 +35,17 @@
           </textarea>
         </td>
       </tr>
+      <tr class="answer-all">
+        <td class="answer-label">
+          Answer all
+        </td>
+        <td class="answer">
+          <mat-radio-button name="answer_all" (click)="setAnswerAll(1)"></mat-radio-button>
+        </td>
+        <td class="answer">
+          <mat-radio-button name="answer_all" (click)="setAnswerAll(0)"></mat-radio-button>
+        </td>
+      </tr>
       <tr class="importance">
         <td class="importance-label">
           On a scale from 1-5, how important is this to your business?
