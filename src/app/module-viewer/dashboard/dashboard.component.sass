@@ -154,6 +154,11 @@
             display: none
 
 table.list-view
+
+    ::ng-deep .mat-sort-header-container:not(.mat-sort-header-sorted):not(:hover) .mat-sort-header-arrow
+        opacity: 0.25 !important
+        transform: translateY(0px) !important
+
     .toggle-module
         width: 20px
         padding-left: 1em
@@ -167,8 +172,14 @@ table.list-view
 
         td.assessment
             text-align: center
+            width: 50px
+
+        td.module_name
+            width: 120px
+            white-space: nowrap
 
         td.due-date
+            width: 50px
             span
                 cursor: pointer
 
@@ -197,12 +208,11 @@ table.list-view
                 outline: 0
 
             &.assigned-to
-                min-width: 0
-                max-width: 120px
+                width: 120px
 
                 input
                     min-width: 120px
-                    max-width: 120px
+                    max-width: 100%
 
         .progress-container
             display: flex

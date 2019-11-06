@@ -71,7 +71,7 @@
       <thead>
         <tr>
           <th *ngIf="canActivate" class="toggle-module"></th>
-          <th class="text-center" mat-sort-header="idx">Module</th>
+          <th class="text-center module_name" mat-sort-header="idx">Module</th>
           <th mat-sort-header="assessment_mkt">Marketing<br />Assessment</th>
           <th mat-sort-header="assessment_sales">Sales<br />Assessment</th>
           <th mat-sort-header="due_date">Target Date</th>
@@ -86,7 +86,7 @@
           <td class="toggle-module" *ngIf="canActivate">
             <app-toggle-module [module]="module" [organization]="organization"></app-toggle-module>
           </td>
-          <td>
+          <td class="module_name">
             {{ module.idx }}. <app-module-link [module]="module"></app-module-link>
           </td>
           <td class="assessment">

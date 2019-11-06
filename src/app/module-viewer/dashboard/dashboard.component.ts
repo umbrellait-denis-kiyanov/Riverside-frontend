@@ -33,7 +33,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   view = 'list';
 
-  listSortOrder$ = new BehaviorSubject<Sort>({active: 'idx', direction: 'asc'});
+  listSortOrder$ = new BehaviorSubject<Sort>({active: 'due_date', direction: 'asc'});
 
   organizationSubscription: Subscription;
 
