@@ -193,7 +193,6 @@ table.list-view
         td.notes
             padding: 5px
             vertical-align: middle
-            min-width: 300px
 
             &:focus-within
                 border: 1px solid #dee2e6
@@ -208,11 +207,14 @@ table.list-view
                 outline: 0
 
             &.assigned-to
-                width: 120px
+                width: 150px
 
                 input
-                    min-width: 120px
+                    min-width: 150px
                     max-width: 100%
+
+        td.org-progress
+            width: 150px
 
         .progress-container
             display: flex
