@@ -81,7 +81,7 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody *ngLet="(assessmentScores$ | async) as assessment">
         <tr *ngFor="let module of listModules" class="module-item container-fluid" [class.active]="module.status?.is_activated == 1" [class.no-progress]="!module.status?.is_activated" [class.late]="module.status?.is_late" [class.completed]="module.status?.progress == 100" [class.has-due-date]="module.status?.due_date">
           <td class="toggle-module" *ngIf="canActivate">
             <app-toggle-module [module]="module" [organization]="organization"></app-toggle-module>
@@ -90,10 +90,10 @@
             {{ module.idx }}. <app-module-link [module]="module"></app-module-link>
           </td>
           <td class="assessment">
-            <app-assessment-score [score]="module.status?.assessment_mkt"></app-assessment-score>
+            <app-assessment-score [score]="assessment[module.id]?.mkt"></app-assessment-score>
           </td>
           <td class="assessment">
-            <app-assessment-score [score]="module.status?.assessment_sales"></app-assessment-score>
+            <app-assessment-score [score]="assessment[module.id]?.sales"></app-assessment-score>
           </td>
           <td class="due-date">
             <div *ngIf="module.status?.is_activated">

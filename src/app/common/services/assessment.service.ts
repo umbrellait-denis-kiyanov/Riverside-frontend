@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession } from '../interfaces/assessment.interface';
+import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession, ModuleScores } from '../interfaces/assessment.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, shareReplay, map, take } from 'rxjs/operators';
@@ -35,6 +35,10 @@ export class AssessmentService {
       map(t => t[0]),
       take(1)
     );
+  }
+
+  getModuleScores(orgId: number): Observable<ModuleScores> {
+    return this.httpClient.get<ModuleScores>(`${this.baseUrl}/module/org/${orgId}`);
   }
 
   getGroups(type: AssessmentType): Observable<AssessmentGroup[]> {

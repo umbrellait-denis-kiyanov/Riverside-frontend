@@ -1,11 +1,13 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Module, Organization } from 'src/app/common/interfaces/module.interface';
+import { ModuleScores } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
 import { map, shareReplay, filter } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
+import { AssessmentService } from 'src/app/common/services/assessment.service';
 
 @Component({
   selector: 'app-dashboard',
@@ -15,6 +17,7 @@ import { Sort } from '@angular/material/sort';
 export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private moduleService: ModuleService,
+              private asmService: AssessmentService,
               private route: ActivatedRoute,
               private router: Router
             ) { }
@@ -22,6 +25,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
   modulesRequest$: Observable<any>;
   modules$: Observable<any>;
   listModules$: Observable<any>;
+  assessmentScores$: Observable<ModuleScores>;
 
   organizations$: Observable<Organization[]>;
 
@@ -58,6 +62,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.modulesRequest$ = this.moduleService.getCategories(this.organization.id).pipe(shareReplay(1));
 
+    this.assessmentScores$ = this.asmService.getModuleScores(organization.id).pipe(shareReplay(1));
+
     this.modules$ = this.modulesRequest$.pipe(map(response => {
       return response.body.map(category => {
         if (category.modules.length >= 12) {
@@ -71,8 +77,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
       });
     }));
 
-    this.listModules$ = combineLatest([this.modulesRequest$, this.listSortOrder$]).
-      pipe(map(([response, listSortOrder]) => {
+    this.listModules$ = combineLatest([this.modulesRequest$, this.listSortOrder$, this.assessmentScores$]).
+      pipe(map(([response, listSortOrder, assessmentScores]) => {
 
         const items = response.body
           .map(category => category.modules)
@@ -88,22 +94,21 @@ export class DashboardComponent implements OnInit, OnDestroy {
               field = 'progress';
             }
 
-            const aValue = 'idx' === field ? a[field] : (a.status ? a.status[field] : null);
-            const bValue = 'idx' === field ? b[field] : (b.status ? b.status[field] : null);
-
-            // keep rows with empty column values at the bottom of the table
-            if ((aValue === null && bValue)) {
-              return 1;
-            }
-
-            if ((bValue === null && aValue)) {
-              return -1;
+            let aValue;
+            let bValue;
+            if (field.substring(0, 10) === 'assessment') {
+              const type = field.substring(11);
+              aValue = assessmentScores[a.id] ? assessmentScores[a.id][type] : null;
+              bValue = assessmentScores[b.id] ? assessmentScores[b.id][type] : null;
+            } else {
+              aValue = 'idx' === field ? a[field] : (a.status ? a.status[field] : null);
+              bValue = 'idx' === field ? b[field] : (b.status ? b.status[field] : null);
             }
 
             let defLowValue = isNaN(parseInt(aValue, 10)) && isNaN(parseInt(bValue, 10)) || ('due_date' === field) ? 'ZZZ' : 9999;
             let defHiValue = '' as any;
 
-            if ('assessment' === field) {
+            if ('assessment' === field.substring(0, 10)) {
               defLowValue = 9999 * direction;
               defHiValue = 9999 * direction;
             }
