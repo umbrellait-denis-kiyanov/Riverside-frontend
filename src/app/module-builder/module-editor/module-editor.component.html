@@ -17,13 +17,25 @@
   </div>
 
   <div class="form-group">
-    <label class="control-label module-title">Module Name</label>
+      <label class="control-label module-title">Module Name</label>
+
+      <input
+        type="text"
+        class="site-tbox margin_0"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="moduleData.name"
+        required="required"
+      />
+    </div>
+
+  <div class="form-group">
+    <label class="control-label module-title">Short Name</label>
 
     <input
       type="text"
       class="site-tbox margin_0"
       [ngModelOptions]="{standalone: true}"
-      [(ngModel)]="moduleData.name"
+      [(ngModel)]="moduleData.shortName"
       required="required"
     />
   </div>

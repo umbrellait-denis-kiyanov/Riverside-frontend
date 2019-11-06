@@ -1,4 +1,5 @@
-<div class="page-content" *ngLet="(modulesRequest$ | async | canModify) as canActivate">
+<div class="page-content" *ngIf="modulesRequest$ | async">
+<ng-container *ngLet="(modulesRequest$ | async | canModify) as canActivate">
 
 <div class="container-fluid">
   <div class="row">
@@ -70,7 +71,7 @@
       <thead>
         <tr>
           <th *ngIf="canActivate" class="toggle-module"></th>
-          <th class="text-center" mat-sort-header="idx">Module</th>
+          <th class="text-center module_name" mat-sort-header="idx">Module</th>
           <th mat-sort-header="assessment_mkt">Marketing<br />Assessment</th>
           <th mat-sort-header="assessment_sales">Sales<br />Assessment</th>
           <th mat-sort-header="due_date">Target Date</th>
@@ -80,19 +81,19 @@
         </tr>
       </thead>
 
-      <tbody>
+      <tbody *ngLet="(assessmentScores$ | async) as assessment">
         <tr *ngFor="let module of listModules" class="module-item container-fluid" [class.active]="module.status?.is_activated == 1" [class.no-progress]="!module.status?.is_activated" [class.late]="module.status?.is_late" [class.completed]="module.status?.progress == 100" [class.has-due-date]="module.status?.due_date">
           <td class="toggle-module" *ngIf="canActivate">
             <app-toggle-module [module]="module" [organization]="organization"></app-toggle-module>
           </td>
-          <td>
+          <td class="module_name">
             {{ module.idx }}. <app-module-link [module]="module"></app-module-link>
           </td>
           <td class="assessment">
-            <app-assessment-score [score]="module.status?.assessment_mkt"></app-assessment-score>
+            <app-assessment-score [score]="assessment[module.id]?.mkt"></app-assessment-score>
           </td>
           <td class="assessment">
-            <app-assessment-score [score]="module.status?.assessment_sales"></app-assessment-score>
+            <app-assessment-score [score]="assessment[module.id]?.sales"></app-assessment-score>
           </td>
           <td class="due-date">
             <div *ngIf="module.status?.is_activated">
@@ -123,4 +124,5 @@
   </div>
 </div>
 
+</ng-container>
 </div>

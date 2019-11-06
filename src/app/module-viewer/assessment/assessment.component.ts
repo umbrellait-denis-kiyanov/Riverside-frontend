@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
-import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentGroup, AssessmentQuestion, AssessmentOrgGroup, AssessmentAnswer, AssessmentType } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { switchMap, filter } from 'rxjs/operators';
@@ -10,7 +10,7 @@ import { switchMap, filter } from 'rxjs/operators';
   templateUrl: './assessment.component.html',
   styleUrls: ['./assessment.component.sass']
 })
-export class AssessmentComponent implements OnInit {
+export class AssessmentComponent implements OnInit, OnDestroy {
 
   questions$: Observable<AssessmentQuestion[]>;
 
@@ -25,6 +25,9 @@ export class AssessmentComponent implements OnInit {
   importance = [1, 2, 3, 4, 5];
 
   errors = {};
+
+  resetSelectAll = false;
+  resetSelectAllSub: Subscription;
 
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
@@ -41,14 +44,27 @@ export class AssessmentComponent implements OnInit {
       })
     );
 
+    this.resetSelectAllSub = combineLatest(this.activeGroup$, this.navService.assessmentType$, this.navService.organization$).subscribe(_ => {
+      this.resetSelectAll = true;
+      setTimeout(_ => this.resetSelectAll = false);
+    });
+
     this.answers$ = combineLatest(this.activeGroup$, this.navService.assessmentType$, this.navService.organization$, this.answerUpdated$).pipe(
       switchMap(([group, type, orgId]) => this.asmService.getAnswers(group, type, orgId))
     );
   }
 
+  ngOnDestroy() {
+    this.resetSelectAllSub.unsubscribe();
+  }
+
   setAnswer(q: AssessmentQuestion, t: AssessmentType, answer: boolean) {
     delete this.errors[q.id];
     this.asmService.saveAnswer(q, t, this.navService.lastOrganization.current, answer).subscribe(_ => this.answerUpdated$.next(true));
+  }
+
+  answerAll(g: AssessmentGroup, t: AssessmentType, answer: boolean) {
+    this.asmService.answerAll(g, t, this.navService.lastOrganization.current, answer).subscribe(_ => this.answerUpdated$.next(true));
   }
 
   saveNotes(q: AssessmentQuestion, t: AssessmentType, a: AssessmentAnswer) {

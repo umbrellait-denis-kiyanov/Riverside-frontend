@@ -28,7 +28,7 @@
 <div *ngIf="organizations$ | async as organizations">
 
   <div class="organizations row" [style.max-height]="gridHeight$ | async" *ngIf="view == 'grid'">
-    <div #orgItem class="organization-item col-sm-2" *ngFor="let organization of organizations" [class.has-progress]="organization.progress">
+    <div #orgItem class="organization-item col-sm-2" *ngFor="let organization of organizations">
       <div class="org-item-container">
         <div class="org-name" [routerLink]="'/dashboard/' + organization.id">
           {{ organization.name }}
@@ -59,17 +59,17 @@
       </thead>
 
       <tbody>
-        <tr *ngFor="let organization of organizations" [class.no-progress]="!organization.progress">
+        <tr *ngFor="let organization of organizations">
           <td>
             <div class="org-name" [routerLink]="'/dashboard/' + organization.id">
               {{ organization.name }}
             </div>
           </td>
           <td class="assessment">
-            <app-assessment-score [score]="organization.assessment_mkt"></app-assessment-score>
+            <app-assessment-score (click)="viewAssessment(organization, 1)" [score]="organization.assessment_mkt"></app-assessment-score>
           </td>
           <td class="assessment">
-            <app-assessment-score [score]="organization.assessment_sales"></app-assessment-score>
+            <app-assessment-score (click)="viewAssessment(organization, 2)" [score]="organization.assessment_sales"></app-assessment-score>
           </td>
           <td *ngFor="let q of quarters" class="org-progress" [class.current-quarter]="q == currentQuarter">
             <div *ngIf="organization[q]" [class.red]="organization[q] < 30" [class.yellow]="organization[q] < 50">{{ organization[q] }}</div>
