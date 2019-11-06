@@ -1,1 +1,1 @@
-<span [class.red]="score < 0" [class.yellow]="score <= 10" *ngIf="score">{{ score }}</span>
+<span [class.red]="score < 0" [class.yellow]="score <= 10" *ngIf="score !== null">{{ score }}</span>
