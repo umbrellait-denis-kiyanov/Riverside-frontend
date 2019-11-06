@@ -27,7 +27,7 @@ export class ProfileComponent implements OnInit {
       lname: ['', Validators.required],
       email: new FormControl({value: '', disabled: true}, Validators.required),
       meta: this.formBuilder.group({
-        profile_picture: ['', Validators.required]
+        profile_picture: ['']
       })
     });
 
