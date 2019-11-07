@@ -13,6 +13,12 @@
   </div>
 </div>
 
+<ng-container *ngIf="session$ | async as session">
+  <div class="alert alert-warning" *ngIf="session.isDone">
+    This assessment is being reviewed by your managing director
+  </div>
+</ng-container>
+
 <div *ngIf="activeType$ | async">
   <h2>{{ (activeType$ | async).name }} Strategy Assessment</h2>
 

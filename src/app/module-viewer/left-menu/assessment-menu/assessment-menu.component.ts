@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
+import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { filter, take, distinctUntilChanged, switchMap } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
@@ -26,6 +26,8 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   orgGroups$: Observable<AssessmentOrgGroup[]>;
 
   activeType$: Observable<AssessmentType>;
+
+  session$: Observable<AssessmentSession>;
 
   orgObserver$: Observable<number>;
 
@@ -56,6 +58,12 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     this.orgGroups$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
       switchMap(([type, orgId]) => {
         return this.asmService.getOrgGroups(type, orgId);
+      })
+    );
+
+    this.session$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
+      switchMap(([type, orgId]) => {
+        return this.asmService.getSession(type, orgId)
       })
     );
 
