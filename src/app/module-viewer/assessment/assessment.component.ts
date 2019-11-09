@@ -1,9 +1,10 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentGroup, AssessmentQuestion, AssessmentOrgGroup, AssessmentAnswer, AssessmentType } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, map, shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assessment',
@@ -13,6 +14,8 @@ import { switchMap, filter } from 'rxjs/operators';
 export class AssessmentComponent implements OnInit, OnDestroy {
 
   questions$: Observable<AssessmentQuestion[]>;
+
+  answersRequest$: Observable<HttpResponse<AssessmentOrgGroup>>;
 
   answers$: Observable<AssessmentOrgGroup>;
 
@@ -49,9 +52,14 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       setTimeout(_ => this.resetSelectAll = false);
     });
 
-    this.answers$ = combineLatest(this.activeGroup$, this.navService.assessmentType$, this.navService.organization$, this.answerUpdated$).pipe(
-      switchMap(([group, type, orgId]) => this.asmService.getAnswers(group, type, orgId))
+    this.answersRequest$ = combineLatest(this.activeGroup$, this.navService.assessmentType$, this.navService.organization$, this.answerUpdated$).pipe(
+      switchMap(([group, type, orgId]) => this.asmService.getAnswers(group, type, orgId)),
+      shareReplay(1)
     );
+
+    this.answers$ = this.answersRequest$.pipe(map(response => {
+      return response.body;
+    }));
   }
 
   ngOnDestroy() {

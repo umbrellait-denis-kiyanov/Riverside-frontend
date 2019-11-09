@@ -11,7 +11,14 @@
     <assessment-chart *ngIf="chart" [series]="chart" [isLineChart]="isLineChart"></assessment-chart>
   </div>
 
-  <div class="done">
-    <button class="btn btn-success" (click)="finish(session)">Finish & Record</button>
+  <div class="done" *ngIf="(sessionRequest$ | async | canModify) && !isSubmittedForReview">
+    <button class="btn btn-success" (click)="finish(session)">
+      <span *ngIf="sessionRequest$ | async | canModify:'X-Can-Record'; else submit">Finish & Record</span>
+      <ng-template #submit>Finish & Submit</ng-template>
+    </button>
+  </div>
+
+  <div *ngIf="isSubmittedForReview" class="alert alert-warning">
+    This assessment has been submitted for review to your managing director
   </div>
 </div>

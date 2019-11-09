@@ -1,9 +1,10 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { Observable, combineLatest } from 'rxjs';
-import { switchMap, filter } from 'rxjs/operators';
+import { switchMap, filter, map, tap } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
@@ -14,6 +15,7 @@ import { Router } from '@angular/router';
 export class AssessmentFinishComponent implements OnInit {
 
   session$: Observable<AssessmentSession>;
+  sessionRequest$: Observable<HttpResponse<AssessmentSession>>;
 
   types$: Observable<AssessmentType[]>;
 
@@ -25,21 +27,22 @@ export class AssessmentFinishComponent implements OnInit {
 
   isLineChart = true;
 
+  isSubmittedForReview = false;
+
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService,
               public router: Router) { }
 
   ngOnInit() {
-    const type$ = this.navService.assessmentType.onChange.pipe(
-        filter(t => !!t),
-        switchMap(typeID => this.asmService.getType(typeID))
-      );
+    const type$ = this.navService.assessmentType$;
 
     const org$ = this.navService.organization$;
 
-    this.session$ = combineLatest(type$, org$).pipe(
+    this.sessionRequest$ = combineLatest(type$, org$).pipe(
       switchMap(([type, orgId]) => this.asmService.getSession(type, orgId))
     );
+
+    this.session$ = this.sessionRequest$.pipe(map(response => response.body));
 
     this.groups$ = type$.pipe(
       switchMap((type) => this.asmService.getGroups(type))
@@ -65,10 +68,13 @@ export class AssessmentFinishComponent implements OnInit {
   }
 
   finish(session: AssessmentSession) {
-    this.asmService.finishSession(session).subscribe(_ => {
-      this.router.navigate(['dashboard', this.navService.lastOrganization.current],
-          { state: { section: 'assessments', type: session.type_id } });
+    this.asmService.finishSession(session).subscribe(response => {
+      if (response.is_approved) {
+        this.router.navigate(['dashboard', this.navService.lastOrganization.current],
+            { state: { section: 'assessments', type: session.type_id } });
+      } else {
+        this.isSubmittedForReview = true;
       }
-    );
+    });
   }
 }

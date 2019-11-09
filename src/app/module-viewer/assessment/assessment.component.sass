@@ -16,6 +16,16 @@ h2
 table.questions
     margin-top: 2em
 
+    &.readonly ::ng-deep
+        .mat-radio-button.mat-accent
+            pointer-events: none
+
+            &.mat-radio-checked .mat-radio-outer-circle
+                border-color: rgba(0, 0, 0, 0.54)
+
+            .mat-radio-inner-circle
+                background-color: rgba(0, 0, 0, 0.54)
+
     th
         text-transform: uppercase
         padding-bottom: 2px
@@ -69,6 +79,7 @@ table.questions
                 min-height: 100%
                 min-width: 15vw
                 outline: 0 !important
+                background-color: white
 
     tr.asm-error
         color: $red

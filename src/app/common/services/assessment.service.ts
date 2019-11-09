@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession, ModuleScores } from '../interfaces/assessment.interface';
-import { HttpClient } from '@angular/common/http';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, shareReplay, map, take } from 'rxjs/operators';
 
@@ -49,8 +49,8 @@ export class AssessmentService {
     return new BehaviorSubject<AssessmentQuestion[]>(group.questions);
   }
 
-  getSession(type: AssessmentType, orgID: number): Observable<AssessmentSession> {
-    return this.httpClient.get<AssessmentSession>(`${this.baseUrl}/session/${type.id}/org/${orgID}`);
+  getSession(type: AssessmentType, orgID: number): Observable<HttpResponse<AssessmentSession>> {
+    return this.httpClient.get<AssessmentSession>(`${this.baseUrl}/session/${type.id}/org/${orgID}`, {observe: 'response'});
   }
 
   finishSession(session: AssessmentSession): Observable<any> {
@@ -73,12 +73,14 @@ export class AssessmentService {
     return this.httpClient.post<AssessmentQuestion[]>(`${this.baseUrl}/note/${question.id}/type/${type.id}/org/${orgID}`, {notes});
   }
 
-  getAnswers(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup> {
-    return this.httpClient.get<AssessmentOrgGroup>(`${this.baseUrl}/answers/${group.id}/type/${type.id}/org/${orgID}`);
+  getAnswers(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<HttpResponse<AssessmentOrgGroup>> {
+    return this.httpClient.get<AssessmentOrgGroup>(`${this.baseUrl}/answers/${group.id}/type/${type.id}/org/${orgID}`,
+                                                    {observe: 'response'});
   }
 
   setImportance(group: AssessmentGroup, type: AssessmentType, orgID: number, importance: number): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/type/${type.id}/org/${orgID}`, {importance}).pipe(this.updateGroups);
+    return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/type/${type.id}/org/${orgID}`, {importance})
+                          .pipe(this.updateGroups);
   }
 
   markAsDone(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<any> {

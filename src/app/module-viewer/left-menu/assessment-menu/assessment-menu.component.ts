@@ -3,7 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { filter, take, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { filter, take, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 
@@ -63,7 +63,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
     this.session$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
       switchMap(([type, orgId]) => {
-        return this.asmService.getSession(type, orgId)
+        return this.asmService.getSession(type, orgId).pipe(map(response => response.body));
       })
     );
 
