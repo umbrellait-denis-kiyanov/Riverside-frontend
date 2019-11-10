@@ -3,9 +3,10 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { filter, take, distinctUntilChanged, switchMap, map } from 'rxjs/operators';
+import { filter, take, distinctUntilChanged, switchMap, map, shareReplay } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-assessment-menu',
@@ -28,6 +29,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   activeType$: Observable<AssessmentType>;
 
   session$: Observable<AssessmentSession>;
+  sessionRequest$: Observable<HttpResponse<AssessmentSession>>;
 
   orgObserver$: Observable<number>;
 
@@ -58,14 +60,18 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     this.orgGroups$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
       switchMap(([type, orgId]) => {
         return this.asmService.getOrgGroups(type, orgId);
-      })
+      }),
+      shareReplay(1)
     );
 
-    this.session$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
+    this.sessionRequest$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
       switchMap(([type, orgId]) => {
-        return this.asmService.getSession(type, orgId).pipe(map(response => response.body));
-      })
+        return this.asmService.getSession(type, orgId);
+      }),
+      shareReplay(1)
     );
+
+    this.session$ = this.sessionRequest$.pipe(map(response => response.body));
 
     this.setFirstUncompletedGroup();
 

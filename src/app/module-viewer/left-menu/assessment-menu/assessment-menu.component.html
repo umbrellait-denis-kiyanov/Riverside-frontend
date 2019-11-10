@@ -15,7 +15,8 @@
 
 <ng-container *ngIf="session$ | async as session">
   <div class="alert alert-warning" *ngIf="session.isDone">
-    This assessment is being reviewed by your managing director
+    <span *ngIf="(sessionRequest$ | async | canModify); else review_pending">Please review this assessment</span>
+    <ng-template #review_pending>This assessment is being reviewed by your managing director</ng-template>
   </div>
 </ng-container>
 

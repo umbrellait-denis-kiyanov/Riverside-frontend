@@ -4,7 +4,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
 import { Observable, combineLatest } from 'rxjs';
-import { switchMap, filter, map, tap } from 'rxjs/operators';
+import { switchMap, map, shareReplay, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
 @Component({
@@ -39,7 +39,8 @@ export class AssessmentFinishComponent implements OnInit {
     const org$ = this.navService.organization$;
 
     this.sessionRequest$ = combineLatest(type$, org$).pipe(
-      switchMap(([type, orgId]) => this.asmService.getSession(type, orgId))
+      switchMap(([type, orgId]) => this.asmService.getSession(type, orgId)),
+      shareReplay(1)
     );
 
     this.session$ = this.sessionRequest$.pipe(map(response => response.body));
@@ -49,10 +50,11 @@ export class AssessmentFinishComponent implements OnInit {
     );
 
     this.orgGroups$ = combineLatest(type$, org$).pipe(
-      switchMap(([type, orgId]) => this.asmService.getOrgGroups(type, orgId))
+      switchMap(([type, orgId]) => this.asmService.getOrgGroups(type, orgId)),
+      shareReplay(1)
     );
 
-    combineLatest(this.groups$, this.orgGroups$, this.session$).subscribe(([groups, orgGroups, session]) => {
+    combineLatest(this.groups$, this.orgGroups$, this.session$).pipe(take(1)).subscribe(([groups, orgGroups, session]) => {
       const series = groups.map((group, idx) => {
         return {value: Number((orgGroups[group.id] || {score: 0}).score), name: (idx + 1), label: group.shortName};
       });
