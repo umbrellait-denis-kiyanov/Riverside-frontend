@@ -54,7 +54,7 @@ export class InboxComponent implements OnInit {
   }
 
   private markAsReadIfNeeded() {
-    if (this.message.is_pending && this.message.to_org_id) {
+    if (this.message.is_pending) {
     this.inboxService.markAsRead(this.message.id).then(() => {
       const resource = this.inboxService.allMessages;
       const msg = resource.data.find(m => m.id === this.message.id);
@@ -78,6 +78,7 @@ export class InboxComponent implements OnInit {
 
   provideFeedback(message: string) {
     this.inboxService.save({
+      assessment_session_id: this.message.assessment_session_id,
       to_org_id: this.message.from_org_id,
       module_id: this.message.module_id,
       parent_id: this.message.id,
