@@ -1,0 +1,115 @@
+<div class="container-fluid" *ngIf="criterias">
+  <div class="row criterias" [class.compact]="criterias.length === 5">
+    <div class="col-sm-1 propensitity">
+      Propensity to buy criteria
+    </div>
+    <div class="col-sm-2" *ngFor="let criteria of criterias; index as i;">
+      <div class="input-circle">
+        <div class="circle-container">
+          <span *ngIf="mode != 'criteria'" [inputText]="criteria.name"></span>
+          <ice
+            *ngIf="mode == 'criteria'"
+            [hideChanges]="hideChanges"
+            [user]="me"
+            [disabled]="disabled || step > 3"
+            (changed)="syncCriteria()"
+            [(data)]="criteria.name"
+            class="side-comment"
+          ></ice>
+        </div>
+      </div>
+      <div class="input-circle grey-circle" *ngIf="mode != 'criteria'">
+        <div class="circle-container">
+
+          <div *ngIf="mode == 'weight'">
+            <input type="number" min="1" max="99" maxlength="2" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria()" [disabled]="disabled" />
+            <input type="range" min="1" max="99" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria()" *ngIf="!disabled" />
+          </div>
+
+          <div *ngIf="mode == 'grade'">
+            <input type="number" min="0" maxlength="2" [max]="criteria.weight" [(ngModel)]="selectedGrades[i]" (ngModelChange)="syncGrade()" [disabled]="disabled" />
+            <input type="range" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[i]" (ngModelChange)="syncGrade()" *ngIf="!disabled" />
+          </div>
+
+        </div>
+      </div>
+
+      <div *ngIf="mode == 'criteria'">
+        <ice *ngIf="mode == 'criteria'"
+          [hideChanges]="hideChanges"
+          [user]="me"
+          [disabled]="disabled"
+          (changed)="syncCriteria()"
+          [(data)]="criteria.description"
+          class="criteria-description"
+        ></ice>
+
+        <a *ngIf="criterias.length > 3" (click)="removeCriteria(i)" class="add-rem">REMOVE criteria</a>
+      </div>
+
+      <div *ngIf="mode != 'criteria'" [inputText]="criteria.description"></div>
+    </div>
+
+    <ng-container *ngIf="mode == 'criteria'">
+      <div class="col-sm-2 add-criteria" *ngIf="criterias.length < 5">
+        <a (click)="addCriteria()" class="add-rem">ADD criteria</a>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="mode == 'weight'">
+      <div class="col-sm-2 total-score" *ngLet="pointsSum(criterias) as sum">
+        <ng-container *ngLet="allWeightsSelected(criterias) as allSelected;">
+          <div class="input-circle">
+            <div class="circle-container">
+              TOTAL<br />SCORE
+            </div>
+          </div>
+          <div class="input-circle grey-circle" [class.complete]="sum === 100">
+            <div class="circle-container">
+              <span *ngIf="sum !== 100">{{ sum }}/100<br />POINTS</span>
+              <span *ngIf="sum === 100">100<br />POINTS</span>
+            </div>
+          </div>
+
+          <div *ngIf="allSelected && (sum !== 100)">
+            <strong>{{ sum }}</strong> points selected.
+          </div>
+          <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
+          <div *ngIf="allSelected && sum < 100"><strong>Increase</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+          <div *ngIf="allSelected && sum > 100"><strong>Decrease</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+        </ng-container>
+      </div>
+    </ng-container>
+
+    <ng-container *ngIf="mode == 'grade'">
+      <div class="col-sm-2 total-score" *ngLet="gradeSum() as sum">
+        <ng-container *ngLet="allGradesSelected() as allSelected;">
+          <div class="input-circle">
+            <div class="circle-container">
+              GRADE
+            </div>
+          </div>
+          <div class="input-circle grey-circle" [class.complete]="allSelected && sum >= 80" [class.average]="allSelected && sum >= 60 && sum < 80" [class.bad]="allSelected && sum < 60">
+            <div class="circle-container letter-score">
+              <div *ngIf="!allSelected">
+                ?
+              </div>
+              <div *ngIf="allSelected">
+                <span *ngIf="sum >= 90">A</span>
+                <span *ngIf="sum >= 80 && sum < 90">B</span>
+                <span *ngIf="sum >= 70 && sum < 80">C</span>
+                <span *ngIf="sum >= 60 && sum < 70">D</span>
+                <span *ngIf="sum < 60">F</span>
+              </div>
+            </div>
+          </div>
+
+          <div *ngIf="allSelected">
+            <strong>{{ sum }}</strong> points
+          </div>
+          <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
+        </ng-container>
+      </div>
+    </ng-container>
+  </div>
+</div>

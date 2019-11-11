@@ -10,6 +10,7 @@ import { Input } from 'src/app/common/interfaces/module.interface';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit {
+  contentData: any;
   data: TemplateContentData;
   hideChanges: boolean;
   inputs: {[key: string]: Input};

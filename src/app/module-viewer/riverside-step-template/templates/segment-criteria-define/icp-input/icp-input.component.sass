@@ -1,0 +1,118 @@
+@import "src/app/module-viewer/riverside-step-template/templates/template.sass"
+@import "src/app/common/sass/variables.sass"
+
+.row.criterias
+  margin-bottom: 30px
+
+  .col-sm-1
+    writing-mode: vertical-rl
+    font-weight: 700
+    text-align: center
+    transform: rotate(-180deg)
+    text-transform: uppercase
+    color: white
+    background-color: #aaa
+    height: 210px
+    font-size: 15px
+    padding: 0
+    display: flex
+    align-items: center
+    max-width: 6.5%
+
+  .col-sm-2
+    text-align: center
+    position: relative;
+
+    &.total-score:before
+      content: '='
+      left: -12px
+
+    &.add-criteria
+      line-height: 100px
+      text-align: left
+
+    &:before
+      content: '+'
+      color: $blue
+      position: absolute
+      height: 100px
+      top: 0
+      left: -14px
+      line-height: 90px
+      font-size: 50px
+
+    &:nth-of-type(2):before,
+    &.add-criteria:before
+      display: none
+
+  .input-circle
+    background-color: $blue
+    color: white
+    width: 100%
+    height: 0
+    padding-bottom: 100%
+    border-radius: 100%
+    margin-bottom: 10px
+    font-size: 15px
+    font-weight: 700
+    position: relative
+
+    .circle-container
+      position: absolute
+      top: 0
+      left: 0
+      width: 100%
+      height: 100%
+      display: inline-flex
+      align-items: center
+      justify-content: center
+      padding: 10px
+
+      &.letter-score
+        font-size: 40px
+
+    input[type=number]
+      padding: 3px
+
+    input[type=range]
+      display: none !important
+      position: absolute
+      max-width: 50% !important
+      margin-top: 1.9em !important
+
+    &:hover
+      input[type=range]
+        display: inline-block !important
+
+    ice ::ng-deep #textbody
+      max-height: 50px
+      text-align: left
+      overflow: auto
+      padding: 3px
+      font-size: 12px
+
+    &.grey-circle
+      background-color: #aaa
+
+      &.complete
+        background-color: $green
+
+      &.average
+        background-color: $yellow
+
+      &.bad
+        background-color: $red
+
+      input
+        max-width: 80%
+        display: inline-block
+        margin: 0 auto
+
+  .criteria-description ::ng-deep #textbody
+    height: 100px
+    text-align: left
+    overflow: auto
+
+  &.compact
+    .col-sm-2
+      max-width: 15%

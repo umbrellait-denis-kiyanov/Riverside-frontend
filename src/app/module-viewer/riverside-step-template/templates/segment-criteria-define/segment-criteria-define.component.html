@@ -83,40 +83,11 @@
 
     <div inputText="brainstorm" [num]="segment"></div>
 
-    <div class="container-fluid">
-      <div class="row criterias">
-        <div class="col-sm-1 propensitity">
-          Propensity to buy criteria
-        </div>
-        <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
-          <div class="input-circle">
-            <div class="circle-container">
-              <ice
-                [hideChanges]="hideChanges"
-                [user]="me"
-                [disabled]="disabled || step > 3"
-                (changed)="syncCriteria(segment)"
-                [(data)]="criteria.name"
-                class="side-comment"
-              ></ice>
-            </div>
-          </div>
-          <ice
-            [hideChanges]="hideChanges"
-            [user]="me"
-            [disabled]="disabled || step > 3"
-            (changed)="syncCriteria(segment)"
-            [(data)]="criteria.description"
-            class="criteria-description"
-          ></ice>
-
-          <a *ngIf="criterias[segment].length > 3" (click)="removeCriteria(segment, i)" class="add-rem">REMOVE criteria</a>
-        </div>
-        <div class="col-sm-2 add-criteria" *ngIf="criterias[segment].length < 5">
-          <a (click)="addCriteria(segment)" class="add-rem">ADD criteria</a>
-        </div>
-      </div>
-    </div>
+    <app-icp-input
+      [criterias]="criterias[segment]"
+      [inputIndex]="segment"
+      mode="criteria"
+    ></app-icp-input>
 
     <div>Where and how will you mine the necessary data to support your decision?</div>
     <ice
@@ -135,54 +106,16 @@
   <div class="segment-container" *ngFor="let segment of activeSegments">
     <h2 inputText="name" [num]="segment"></h2>
 
-    <div class="container-fluid" *ngIf="criterias">
-      <div class="row criterias" [class.compact]="criterias[segment].length === 5">
-        <div class="col-sm-1 propensitity">
-          Propensity to buy criteria
-        </div>
-        <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
-          <div class="input-circle">
-            <div class="circle-container">
-              <span [inputText]="criteria.name"></span>
-            </div>
-          </div>
-          <div class="input-circle grey-circle">
-            <div class="circle-container">
-              <input type="number" min="1" max="99" maxlength="2" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" [disabled]="disabled" />
-              <input type="range" min="1" max="99" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(segment)" *ngIf="!disabled" />
-            </div>
-          </div>
+    <app-icp-input
+      [criterias]="criterias[segment]"
+      [inputIndex]="segment"
+      mode="weight"
+    ></app-icp-input>
 
-          <div [inputText]="criteria.description"></div>
-        </div>
-        <div class="col-sm-2 total-score" *ngLet="pointsSum(criterias[segment]) as sum">
-          <ng-container *ngLet="allWeightsSelected(criterias[segment]) as allSelected;">
-            <div class="input-circle">
-              <div class="circle-container">
-                TOTAL<br />SCORE
-              </div>
-            </div>
-            <div class="input-circle grey-circle" [class.complete]="sum === 100">
-              <div class="circle-container">
-                <span *ngIf="sum !== 100">{{ sum }}/100<br />POINTS</span>
-                <span *ngIf="sum === 100">100<br />POINTS</span>
-              </div>
-            </div>
-
-            <div *ngIf="allSelected && (sum !== 100)">
-              <strong>{{ sum }}</strong> points selected.
-            </div>
-            <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
-            <div *ngIf="allSelected && sum < 100"><strong>Increase</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
-            <div *ngIf="allSelected && sum > 100"><strong>Decrease</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
-          </ng-container>
-        </div>
-      </div>
-    </div>
   </div>
 </div>
 
-<div *ngIf="step == 5">
+<div *ngIf="step == 7">
   <div class="grade-container row" *ngFor="let customerIndex of grades">
     <div class="col-sm-1 text-center">
       <h2>{{ customerIndex }}</h2>
@@ -205,7 +138,7 @@
       <div class="row inputs-wrapper">
         <label class="col-sm-3">Select a segment:</label>
         <div class="col-sm-9">
-          <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel); resetGradeSelection(customerIndex);">
+          <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel);">
             <option *ngFor="let segment of activeSegments" [value]="segment">
               <span inputText="name" [num]="segment"></span>
             </option>
@@ -213,58 +146,14 @@
         </div>
       </div>
 
-      <div class="segment-container" *ngLet="segmentSel.content as segment">
+      <div class="segment-container">
 
-        <div class="container-fluid" *ngIf="criterias[segment]">
-          <div class="row criterias" [class.compact]="criterias[segment].length === 5">
-            <div class="col-sm-1 propensitity">
-              Propensity to buy criteria
-            </div>
-            <div class="col-sm-2" *ngFor="let criteria of criterias[segment]; index as i;">
-              <div class="input-circle">
-                <div class="circle-container">
-                  <span [inputText]="criteria.name"></span>
-                </div>
-              </div>
-              <div class="input-circle grey-circle">
-                <div class="circle-container">
-                  <input type="number" min="0" maxlength="2" [max]="criteria.weight" [(ngModel)]="selectedGrades[customerIndex][i]" (ngModelChange)="syncGrade(customerIndex)" [disabled]="disabled" />
-                  <input type="range" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[customerIndex][i]" (ngModelChange)="syncGrade(customerIndex)" *ngIf="!disabled" />
-                </div>
-              </div>
-
-              <div [inputText]="criteria.description"></div>
-            </div>
-            <div class="col-sm-2 total-score" *ngLet="gradeSum(customerIndex) as sum">
-              <ng-container *ngLet="allGradesSelected(customerIndex) as allSelected;">
-                <div class="input-circle">
-                  <div class="circle-container">
-                    GRADE
-                  </div>
-                </div>
-                <div class="input-circle grey-circle" [class.complete]="allSelected && sum >= 80" [class.average]="allSelected && sum >= 60 && sum < 80" [class.bad]="allSelected && sum < 60">
-                  <div class="circle-container letter-score">
-                    <div *ngIf="!allSelected">
-                      ?
-                    </div>
-                    <div *ngIf="allSelected">
-                      <span *ngIf="sum >= 90">A</span>
-                      <span *ngIf="sum >= 80 && sum < 90">B</span>
-                      <span *ngIf="sum >= 70 && sum < 80">C</span>
-                      <span *ngIf="sum >= 60 && sum < 70">D</span>
-                      <span *ngIf="sum < 60">F</span>
-                    </div>
-                  </div>
-                </div>
-
-                <div *ngIf="allSelected">
-                  <strong>{{ sum }}</strong> points
-                </div>
-                <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
-              </ng-container>
-            </div>
-          </div>
-        </div>
+        <app-icp-input
+          [criterias]="criterias[segmentSel.content]"
+          [inputPrefix]="gradePrefix"
+          [inputIndex]="customerIndex"
+          mode="grade"
+        ></app-icp-input>
 
       </div>
     </div>

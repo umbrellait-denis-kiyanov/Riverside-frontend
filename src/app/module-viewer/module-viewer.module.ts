@@ -93,6 +93,7 @@ import { ProfilePictureSelectorComponent } from './account/profile/profile-pictu
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { InputTextComponent } from './input-text/input-text.component';
 import { VideoComponent } from './riverside-step-template/templates/video/video.component';
+import { IcpInputComponent } from './riverside-step-template/templates/segment-criteria-define/icp-input/icp-input.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -182,7 +183,8 @@ import { VideoComponent } from './riverside-step-template/templates/video/video.
     ProfilePictureInputComponent,
     ProfilePictureSelectorComponent,
     InputTextComponent,
-    VideoComponent
+    VideoComponent,
+    IcpInputComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
