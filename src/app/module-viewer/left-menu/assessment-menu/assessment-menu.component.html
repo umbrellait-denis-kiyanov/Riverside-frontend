@@ -1,7 +1,7 @@
-<module-org-selector (changed)="setOrganization($event)"></module-org-selector>
+<module-org-selector [warning]="pendingSessions$ | async" (changed)="setOrganization($event)"></module-org-selector>
 
 <div class="row" *ngLet="(pendingSessions$ | async) as pendingApproval">
-  <div class="col-sm-9">
+  <div class="col-sm-9" *ngLet="(orgObserver$ | async) as org_id">
     <div class="btn-group">
       <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" [class.pending-approval]="((pendingApproval || {})[org_id] || {})[type.id]" (click)="setType(type)">{{ type.name }} <mat-icon class="pending">warning</mat-icon></button>
     </div>

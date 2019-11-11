@@ -44,8 +44,6 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   nextGroupWatch: Subscription;
   activateTypeWatch: Subscription;
 
-  org_id: number;
-
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
 
@@ -149,7 +147,6 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   setOrganization(organization: Organization) {
     this.navService.lastOrganization.current = organization.id;
-    this.org_id = organization.id;
 
     this.router.navigate(['org', organization.id, 'assessment']);
   }
