@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
-import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession, ModuleScores } from '../interfaces/assessment.interface';
+import { AssessmentGroup, AssessmentQuestion, AssessmentType,
+         AssessmentOrgGroup, AssessmentSession, ModuleScores, PendingSessions } from '../interfaces/assessment.interface';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, shareReplay, map, take } from 'rxjs/operators';
@@ -81,6 +82,10 @@ export class AssessmentService {
   setImportance(group: AssessmentGroup, type: AssessmentType, orgID: number, importance: number): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/type/${type.id}/org/${orgID}`, {importance})
                           .pipe(this.updateGroups);
+  }
+
+  getSessionsPendingApproval(): Observable<PendingSessions> {
+    return this.httpClient.get<PendingSessions>(`${this.baseUrl}/pending-sessions`);
   }
 
   markAsDone(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<any> {

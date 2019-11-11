@@ -1,7 +1,7 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession } from 'src/app/common/interfaces/assessment.interface';
+import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession, PendingSessions } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { filter, take, distinctUntilChanged, switchMap, map, shareReplay } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
@@ -35,12 +35,16 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   activeGroup$: BehaviorSubject<AssessmentGroup>;
 
+  pendingSessions$: Observable<PendingSessions>;
+
   groupCompleted$ = new BehaviorSubject<boolean>(false);
 
   finishError$ = new BehaviorSubject<boolean>(false);
 
   nextGroupWatch: Subscription;
   activateTypeWatch: Subscription;
+
+  org_id: number;
 
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
@@ -76,6 +80,8 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     this.setFirstUncompletedGroup();
 
     this.activeGroup$ = this.navService.assessmentGroup$;
+
+    this.pendingSessions$ = this.asmService.getSessionsPendingApproval();
 
     // move to next group if current is done
     this.nextGroupWatch = this.asmService.moveToNextGroup$.pipe(
@@ -143,6 +149,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   setOrganization(organization: Organization) {
     this.navService.lastOrganization.current = organization.id;
+    this.org_id = organization.id;
 
     this.router.navigate(['org', organization.id, 'assessment']);
   }
