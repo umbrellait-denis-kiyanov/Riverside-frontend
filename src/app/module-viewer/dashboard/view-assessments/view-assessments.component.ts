@@ -40,17 +40,17 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
               public navService: ModuleNavService) { }
 
   ngOnInit() {
-    if (window.history.state && window.history.state.type) {
-      this.asmService.getType(window.history.state.type).subscribe(type => this.setType(type));
-    }
-
     this.types$ = this.asmService.getTypes();
 
-    this.navService.assessmentType$.pipe(take(1)).subscribe(type => this.activeType$.next(type));
+    if (window.history.state && window.history.state.type) {
+      this.asmService.getType(window.history.state.type).pipe(take(1)).subscribe(type => this.setType(type));
+    } else {
+      this.navService.assessmentType$.pipe(take(1)).subscribe(type => this.activeType$.next(type));
+    }
 
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
-    this.sessions$ = combineLatest(this.activeType$.pipe(filter(t => !!t)), this.orgObserver$).pipe(
+    this.sessions$ = combineLatest(this.activeType$.pipe(distinctUntilChanged(), filter(t => !!t)), this.orgObserver$).pipe(
       switchMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
     );
 
@@ -89,6 +89,10 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
   }
 
   setType(type: AssessmentType) {
+    if (this.activeType$.value && (this.activeType$.value.id === type.id)) {
+      return;
+    }
+
     this.chart = null;
     setTimeout(_ => this.activeType$.next(type));
   }

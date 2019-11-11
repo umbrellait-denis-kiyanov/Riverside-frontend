@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession } from '../interfaces/assessment.interface';
+import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession, ModuleScores } from '../interfaces/assessment.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, shareReplay, map, take } from 'rxjs/operators';
@@ -37,6 +37,10 @@ export class AssessmentService {
     );
   }
 
+  getModuleScores(orgId: number): Observable<ModuleScores> {
+    return this.httpClient.get<ModuleScores>(`${this.baseUrl}/module/org/${orgId}`);
+  }
+
   getGroups(type: AssessmentType): Observable<AssessmentGroup[]> {
     return new BehaviorSubject<AssessmentGroup[]>(type.groups);
   }
@@ -59,6 +63,10 @@ export class AssessmentService {
 
   saveAnswer(question: AssessmentQuestion, type: AssessmentType, orgID: number, answer: boolean): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/answer/${question.id}/type/${type.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
+  }
+
+  answerAll(group: AssessmentGroup, type: AssessmentType, orgID: number, answer: boolean): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/answer-all/${group.id}/type/${type.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
   }
 
   saveNotes(question: AssessmentQuestion, type: AssessmentType, orgID: number, notes: string): Observable<any> {

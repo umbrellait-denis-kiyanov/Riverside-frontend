@@ -2,9 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
-import { Observable, zip, combineLatest } from 'rxjs';
-import { switchMap, take, shareReplay, filter } from 'rxjs/operators';
-import { Router, NavigationExtras } from '@angular/router';
+import { Observable, combineLatest } from 'rxjs';
+import { switchMap, filter } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-assessment-finish',
@@ -32,24 +32,20 @@ export class AssessmentFinishComponent implements OnInit {
   ngOnInit() {
     const type$ = this.navService.assessmentType.onChange.pipe(
         filter(t => !!t),
-        take(1),
-        shareReplay(1),
         switchMap(typeID => this.asmService.getType(typeID))
       );
 
-    const org$ = this.navService.organization$.pipe(take(1), shareReplay(1));
+    const org$ = this.navService.organization$;
 
     this.session$ = combineLatest(type$, org$).pipe(
       switchMap(([type, orgId]) => this.asmService.getSession(type, orgId))
     );
 
     this.groups$ = type$.pipe(
-      take(1),
       switchMap((type) => this.asmService.getGroups(type))
     );
 
-    this.orgGroups$ = zip(type$, org$).pipe(
-      take(1),
+    this.orgGroups$ = combineLatest(type$, org$).pipe(
       switchMap(([type, orgId]) => this.asmService.getOrgGroups(type, orgId))
     );
 

@@ -46,3 +46,10 @@ export interface AssessmentOrgGroup {
     answers: AssessmentAnswer[];
     position?: number;
 }
+
+export interface ModuleScores
+{
+    [key: number]: {
+        [key: string]: number
+    }
+}
