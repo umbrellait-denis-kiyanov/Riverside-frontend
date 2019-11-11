@@ -33,7 +33,7 @@
       </div>
 
       <div class="col-sm-8">
-        <assessment-chart *ngIf="chart" [series]="chart" [colors]="colors" (activatedSeriesChange)="setActiveSeries($event)" [activeEntries]="activeEntries" [isLineChart]="true"></assessment-chart>
+        <assessment-chart *ngIf="chart && chart.length" [series]="chart" [colors]="colors" (activatedSeriesChange)="setActiveSeries($event)" [activeEntries]="activeEntries" [isLineChart]="true"></assessment-chart>
       </div>
     </div>
 

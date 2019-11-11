@@ -76,6 +76,8 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
         } else if (Object.values(orgGroups).length) {
           this.finish();
         }
+
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
   }
 

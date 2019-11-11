@@ -57,24 +57,24 @@ export class AssessmentService {
     return this.httpClient.get<AssessmentOrgGroup[]>(`${this.baseUrl}/org-groups/${type.id}/org/${orgID}`);
   }
 
-  saveAnswer(question: AssessmentQuestion, orgID: number, answer: boolean): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/answer/${question.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
+  saveAnswer(question: AssessmentQuestion, type: AssessmentType, orgID: number, answer: boolean): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/answer/${question.id}/type/${type.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
   }
 
-  saveNotes(question: AssessmentQuestion, orgID: number, notes: string): Observable<any> {
-    return this.httpClient.post<AssessmentQuestion[]>(`${this.baseUrl}/note/${question.id}/org/${orgID}`, {notes});
+  saveNotes(question: AssessmentQuestion, type: AssessmentType, orgID: number, notes: string): Observable<any> {
+    return this.httpClient.post<AssessmentQuestion[]>(`${this.baseUrl}/note/${question.id}/type/${type.id}/org/${orgID}`, {notes});
   }
 
-  getAnswers(group: AssessmentGroup, orgID: number): Observable<AssessmentOrgGroup> {
-    return this.httpClient.get<AssessmentOrgGroup>(`${this.baseUrl}/answers/${group.id}/org/${orgID}`);
+  getAnswers(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup> {
+    return this.httpClient.get<AssessmentOrgGroup>(`${this.baseUrl}/answers/${group.id}/type/${type.id}/org/${orgID}`);
   }
 
-  setImportance(group: AssessmentGroup, orgID: number, importance: number): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/org/${orgID}`, {importance}).pipe(this.updateGroups);
+  setImportance(group: AssessmentGroup, type: AssessmentType, orgID: number, importance: number): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/type/${type.id}/org/${orgID}`, {importance}).pipe(this.updateGroups);
   }
 
-  markAsDone(group: AssessmentGroup, orgID: number): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/done/${group.id}/org/${orgID}`, {})
+  markAsDone(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/done/${group.id}/type/${type.id}/org/${orgID}`, {})
       .pipe(
         this.updateGroups,
         tap(_ => this.moveToNextGroup$.next(true))

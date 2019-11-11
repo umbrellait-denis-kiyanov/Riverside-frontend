@@ -1,6 +1,7 @@
 <div class="page-content" *ngIf="(activeGroup$ | async) as activeGroup">
   <ng-container *ngIf="(answers$ | async) as answers">
   <ng-container *ngIf="(questions$ | async) as questions">
+  <ng-container *ngIf="(activeType$ | async) as type">
 
   <h2>{{ activeGroup.name }}</h2>
   <div class="description">
@@ -20,17 +21,17 @@
       <tr *ngFor="let question of questions; trackBy: questionTrack" [class.asm-error]="errors[question.id]">
         <td class="question">{{ question.position}}. {{ question.question}}</td>
         <td class="answer">
-          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 1)" [checked]="answers && answers.answers[question.id]?.answer == 1"></mat-radio-button>
+          <mat-radio-button [name]="question.id" (click)="setAnswer(question, type, 1)" [checked]="answers && answers.answers[question.id]?.answer == 1"></mat-radio-button>
         </td>
         <td class="answer">
-          <mat-radio-button [name]="question.id" (click)="setAnswer(question, 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
+          <mat-radio-button [name]="question.id" (click)="setAnswer(question, type, 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
         </td>
         <td class="notes">
           <textarea mat-autosize matAutosizeMaxRows="5"
             *ngIf="answers?.answers"
             [ngModel]="answers.answers[question.id]?.notes"
             (ngModelChange)="answers.answers[question.id] = answers.answers[question.id] || {}; answers.answers[question.id].notes = $event"
-            (change)="saveNotes(question, answers.answers[question.id])">
+            (change)="saveNotes(question, type, answers.answers[question.id])">
           </textarea>
         </td>
       </tr>
@@ -40,7 +41,7 @@
           (1 = least important, 5 = most important)
         </td>
         <td class="importance-select" colspan="2">
-          <select [(ngModel)]="answers.importance" (change)="setImportance(activeGroup, answers.importance)">
+          <select [(ngModel)]="answers.importance" (change)="setImportance(activeGroup, type, answers.importance)">
             <option *ngFor="let imp of importance">{{ imp }}</option>
           </select>
         </td>
@@ -66,13 +67,14 @@
       *ngIf="!answers.isDone"
       mat-raised-button
       [color]="!isSectionReady(questions, answers) || 'accent'"
-      (click)="markAsDone(activeGroup, questions, answers)">Mark As Done</button>
+      (click)="markAsDone(activeGroup, type, questions, answers)">Mark As Done</button>
 
     <button *ngIf="answers.isDone" mat-raised-button>Done</button>
 
     <div class="alert alert-danger" *ngIf="(errors | keyvalue)?.length">Please answer all questions to mark this section as done</div>
   </div>
 
+  </ng-container>
   </ng-container>
   </ng-container>
 </div>

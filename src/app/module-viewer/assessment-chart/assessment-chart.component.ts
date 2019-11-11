@@ -37,6 +37,7 @@ export class AssessmentChartComponent implements OnInit {
 
   ngOnInit() {
     const maxLen = 20;
+
     this.series[0].series.forEach((group, idx) => {
       this.labels[idx + 1] = group.label.length <= maxLen ? group.label : group.label.substr(0, maxLen - 2) + '...';
       this.fullLabels[idx + 1] = group.label;
