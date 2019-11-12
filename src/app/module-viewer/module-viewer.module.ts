@@ -94,6 +94,7 @@ import { ImageCropperModule } from 'ngx-image-cropper';
 import { InputTextComponent } from './input-text/input-text.component';
 import { VideoComponent } from './riverside-step-template/templates/video/video.component';
 import { IcpInputComponent } from './riverside-step-template/templates/segment-criteria-define/icp-input/icp-input.component';
+import { ModuleFeedbackComponent } from './riverside-step-template/module-feedback/module-feedback.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -184,7 +185,8 @@ import { IcpInputComponent } from './riverside-step-template/templates/segment-c
     ProfilePictureSelectorComponent,
     InputTextComponent,
     VideoComponent,
-    IcpInputComponent
+    IcpInputComponent,
+    ModuleFeedbackComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

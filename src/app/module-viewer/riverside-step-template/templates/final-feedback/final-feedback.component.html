@@ -107,21 +107,4 @@
   [innerHtml]="contentData.instructions | safehtml"
 ></div>
 
-<feedback-source
-    *ngIf="!disabled"
-    (submit)="feedbackClicked($event)"
-    (messageChanged)="message=$event"
-    (currentTabChanged)="currentTab=$event"
-    >
-</feedback-source>
-
-<module-nav
-  *ngIf="!disabled"
-  [step]="data"
-  [action]="action"
-  (feedback)="feedbackClicked(message)"
-  [submitting]="submitting"
-  [hideActionButton]="currentTab != 'text'"
-  [subaction]="subaction"
-  >
-</module-nav>
+<module-feedback></module-feedback>

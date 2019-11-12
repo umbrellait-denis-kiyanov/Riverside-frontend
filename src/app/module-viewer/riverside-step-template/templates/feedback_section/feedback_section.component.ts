@@ -1,37 +1,22 @@
-import { Component, OnInit } from '@angular/core';
-
+import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { data } from './exampleData';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
-import Message from 'src/app/module-viewer/inbox/message.model';
-import { InboxService } from 'src/app/module-viewer/inbox/inbox.service';
 import { PersonaInputs } from '../persona-ids.class';
-import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { ActivatedRoute } from '@angular/router';
-
 
 @Component({
   selector: 'app-feedback_section',
   templateUrl: './feedback_section.component.html',
-  styleUrls: ['./feedback_section.component.sass']
+  styleUrls: ['./feedback_section.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FeedbackSectionTemplateComponent) }]
 })
-export class FeedbackSectionTemplateComponent extends TemplateComponent implements OnInit {
+export class FeedbackSectionTemplateComponent extends TemplateComponent {
   allIds: string[] = [];
   inputIds: PersonaInputs;
 
   Editor = InlineEditor;
-  message: string = '';
-  submitting: boolean = false;
-  // contentData: FinalFeedbackTemplateData['template_params_json'];
   contentData = data;
-  action: string;
-  subaction: string;
   currentSection: string;
-  currentTab = 'text';
-
-  private inboxService: InboxService;
-  private navService: ModuleNavService;
-  private route: ActivatedRoute;
 
   getDescription() {
     return '';
@@ -39,24 +24,6 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
 
   getName() {
     return 'Request Feedback';
-  }
-
-  ngOnInit() {
-    super.ngOnInit();
-
-    this.inboxService = this.injectorObj.get(InboxService);
-    this.navService = this.injectorObj.get(ModuleNavService);
-    this.route = this.injectorObj.get(ActivatedRoute);
-
-    this.inboxService.message.saving.subscribe(s => this.submitting = s);
-    this.initAction();
-  }
-
-  protected initAction() {
-    if (this.userService.me.permissions.riversideProvideFeedback) {
-      this.action = 'provide_feedback';
-      this.subaction = 'approve';
-    } else { this.action = 'feedback'; }
   }
 
   protected init() {
@@ -106,26 +73,6 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
     return behaviorInputs;
   }
 
-  feedbackClicked(msg: string) {
-    const partialMessage: Partial<Message> = {
-      module_id: this.navService.module.current,
-      step_id: this.navService.step.current
-    };
-    const {orgId} = this.route.parent.snapshot.params;
-    if (['feedback', 'final_feedback'].includes(this.action)) {
-      partialMessage.from_org_id = orgId;
-    } else {
-      partialMessage.to_org_id = orgId;
-    }
-    const message = {
-      message: msg,
-      ...partialMessage
-    };
-    this.inboxService.save(message).then(() => {
-      this.moduleService.reloadModule();
-    });
-  }
-
   onSectionChange(sectionId: string) {
     this.currentSection = sectionId;
   }
@@ -135,7 +82,6 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent implemen
       top: document.querySelector('#' + section).getBoundingClientRect().top - 75,
       left: 0, behavior: 'smooth'
     });
-    // setTimeout(()=>window.scrollBy(0, -75));
   }
 
 }

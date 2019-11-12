@@ -16,7 +16,6 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   inputs: {[key: string]: Input};
   disabled: boolean;
   me: User;
-  action: string;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
   activePersonas: any[];
 
@@ -49,13 +48,6 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     }).filter(i => i);
 
     this.init();
-    this.initAction();
-  }
-
-  protected initAction() {
-    if (this.userService.me.permissions.riversideProvideFeedback) {
-      this.action = 'approve';
-    } else { this.action = ''; }
   }
 
   protected init() {}

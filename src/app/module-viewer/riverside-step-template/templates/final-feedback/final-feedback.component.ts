@@ -1,19 +1,13 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
-import { PersonaInputs } from '../persona-ids.class';
-import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
-import { FinalFeedbackTemplateData } from './final-feedback.interface';
-import { ModuleContentService } from 'src/app/common/services/module-content.service';
-import { InboxService } from 'src/app/module-viewer/inbox/inbox.service';
-import { UserService } from 'src/app/common/services/user.service';
+import { Component, OnInit, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
-import Message from 'src/app/module-viewer/inbox/message.model';
 import { data } from './exampleData';
 import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_section.component';
 
 @Component({
   selector: 'app-final-feedback',
   templateUrl: './final-feedback.component.html',
-  styleUrls: ['./final-feedback.component.sass']
+  styleUrls: ['./final-feedback.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FinalFeedbackComponent) }]
 })
 export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent implements OnInit  {
   contentData = data;
@@ -65,12 +59,5 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
 
   getName() {
     return 'Final Feedback';
-  }
-
-  protected initAction() {
-    if (this.userService.me.permissions.riversideProvideFeedback) {
-      this.action = 'provide_final_feedback';
-      this.subaction = 'approve';
-    } else { this.action = 'final_feedback'; }
   }
 }
