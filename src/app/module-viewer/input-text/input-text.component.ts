@@ -24,7 +24,7 @@ export class InputTextComponent implements OnInit {
     const input = this.isInput(this.inputText) ? this.inputText : this.template.getInput(this.inputText, this.num);
 
     const div = document.createElement('div');
-    div.innerHTML = input.content;
+    div.innerHTML = input.content.split('<br>').join('\n');
     this.text = div.textContent || div.innerText || '';
   }
 }
