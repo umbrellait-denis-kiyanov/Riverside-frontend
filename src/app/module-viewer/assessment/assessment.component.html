@@ -18,14 +18,14 @@
         <th>Notes</th>
       </tr>
     </thead>
-    <tbody>
+    <tbody [class.highlight-yes]="highlight == 'yes'" [class.highlight-no]="highlight == 'no'">
       <tr *ngFor="let question of questions; trackBy: questionTrack" [class.asm-error]="errors[question.id]">
         <td class="question">{{ question.position}}. {{ question.question}}</td>
-        <td class="answer">
-          <mat-radio-button [name]="question.id" (click)="canAnswer && setAnswer(question, type, 1)" [checked]="answers && answers.answers[question.id]?.answer == 1"></mat-radio-button>
+        <td class="answer answer-yes">
+          <mat-radio-button *ngLet="(answers && answers.answers[question.id]?.answer == 1) as checked" [name]="question.id" (click)="canAnswer && setAnswer(question, type, checked ? null : 1)" [checked]="checked"></mat-radio-button>
         </td>
-        <td class="answer">
-          <mat-radio-button [name]="question.id" (click)="canAnswer && setAnswer(question, type, 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
+        <td class="answer answer-no">
+          <mat-radio-button *ngLet="(answers && answers.answers[question.id]?.answer == 0) as checked" [name]="question.id" (click)="canAnswer && setAnswer(question, type, checked ? null : 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
         </td>
         <td class="notes">
           <textarea mat-autosize matAutosizeMaxRows="5"
@@ -37,15 +37,18 @@
           </textarea>
         </td>
       </tr>
-      <tr class="answer-all">
+      <tr class="answer-all" (mouseleave)="highlight = ''">
         <td class="answer-label">
-          Answer all
+          Select all
         </td>
-        <td class="answer">
+        <td class="answer" (mouseenter)="highlight = 'yes'">
           <mat-radio-button name="answer_all" (click)="canAnswer && answerAll(activeGroup, type, 1)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
-        <td class="answer">
+        <td class="answer" (mouseenter)="highlight = 'no'">
           <mat-radio-button name="answer_all" (click)="canAnswer && answerAll(activeGroup, type, 0)" *ngIf="!resetSelectAll"></mat-radio-button>
+        </td>
+        <td class="clear-all" *ngIf="(answersRequest$ | async | canModify:'X-Can-Record')">
+          <a href="" (click)="clearAll(activeGroup, type)">Clear all answers</a>
         </td>
       </tr>
       <tr class="importance">

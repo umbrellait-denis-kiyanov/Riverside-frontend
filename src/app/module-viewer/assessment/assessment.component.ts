@@ -66,13 +66,19 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     this.resetSelectAllSub.unsubscribe();
   }
 
-  setAnswer(q: AssessmentQuestion, t: AssessmentType, answer: boolean) {
+  setAnswer(q: AssessmentQuestion, t: AssessmentType, answer: boolean | null) {
     delete this.errors[q.id];
     this.asmService.saveAnswer(q, t, this.navService.lastOrganization.current, answer).subscribe(_ => this.answerUpdated$.next(true));
   }
 
   answerAll(g: AssessmentGroup, t: AssessmentType, answer: boolean) {
     this.asmService.answerAll(g, t, this.navService.lastOrganization.current, answer).subscribe(_ => this.answerUpdated$.next(true));
+  }
+
+  clearAll(g: AssessmentGroup, t: AssessmentType) {
+    if (confirm('Really clear all answers in ' + g.name + '?')) {
+      this.asmService.answerAll(g, t, this.navService.lastOrganization.current, null).subscribe(_ => this.answerUpdated$.next(true));
+    }
   }
 
   saveNotes(q: AssessmentQuestion, t: AssessmentType, a: AssessmentAnswer) {
