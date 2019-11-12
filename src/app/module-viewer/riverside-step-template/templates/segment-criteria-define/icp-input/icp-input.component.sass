@@ -21,7 +21,9 @@
 
   .col-sm-2
     text-align: center
-    position: relative;
+    position: relative
+    flex: 0 0 18%
+    max-width: 18%
 
     &.total-score:before
       content: '='
@@ -73,12 +75,14 @@
 
     input[type=number]
       padding: 3px
+      font-size: 0.6em
 
     input[type=range]
       display: none !important
       position: absolute
       max-width: 50% !important
-      margin-top: 1.9em !important
+      margin-top: 1.5em !important
+      left: 25%
 
     &:hover
       input[type=range]
@@ -93,6 +97,10 @@
 
     &.grey-circle
       background-color: #aaa
+      font-size: 1.5em
+
+      &.summary-score
+        font-size: 1em
 
       &.complete
         background-color: $green
@@ -116,3 +124,7 @@
   &.compact
     .col-sm-2
       max-width: 15%
+
+a.add-rem
+  color: $blue !important
+  cursor: pointer

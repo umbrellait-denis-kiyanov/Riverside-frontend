@@ -14,6 +14,7 @@ export class IcpInputComponent implements OnChanges {
   @Input() inputPrefix;
   @Input() criterias;
   @Input() inputIndex: number;
+  @Input() review = false;
 
   selectedGrades: {[criteriaIndex: number]: number} = {};
 

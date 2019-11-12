@@ -102,7 +102,7 @@
   </div>
 </div>
 
-<div *ngIf="step === 4">
+<div *ngIf="step === 4 || step === 5">
   <div class="segment-container" *ngFor="let segment of activeSegments">
     <h2 inputText="name" [num]="segment"></h2>
 
@@ -110,6 +110,7 @@
       [criterias]="criterias[segment]"
       [inputIndex]="segment"
       mode="weight"
+      [review]="step === 5"
     ></app-icp-input>
 
   </div>
@@ -158,7 +159,9 @@
       </div>
     </div>
   </div>
-
 </div>
 
-<module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
+<module-feedback *ngIf="step == 5 || step == 8; else nav"></module-feedback>
+<ng-template #nav>
+  <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
+</ng-template>
