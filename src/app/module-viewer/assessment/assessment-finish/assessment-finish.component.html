@@ -11,14 +11,20 @@
     <assessment-chart *ngIf="chart" [series]="chart" [isLineChart]="isLineChart"></assessment-chart>
   </div>
 
+  <div *ngIf="!isSubmittedForReview && !(sessionRequest$ | async | canModify:'X-Can-Record')" class="alert alert-warning">
+    NOTE: Once your assessment has been submitted you will not be able to change your answers
+  </div>
+
   <div class="done" *ngIf="(sessionRequest$ | async | canModify) && !isSubmittedForReview">
-    <button class="btn btn-success" (click)="finish(session)">
+    <button class="btn btn-success" (click)="(!isFinishing || !isFinishing.closed) && finish(session)">
       <span *ngIf="sessionRequest$ | async | canModify:'X-Can-Record'; else submit">Finish & Record</span>
       <ng-template #submit>Finish & Submit</ng-template>
+      <span *ngIf="(isFinishing && !isFinishing.closed)" class="fa fa-pulse fa-spinner"></span>
     </button>
   </div>
 
   <div *ngIf="isSubmittedForReview" class="alert alert-warning">
     This assessment has been submitted for review to your managing director
   </div>
+
 </div>

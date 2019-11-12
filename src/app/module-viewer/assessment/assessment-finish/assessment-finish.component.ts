@@ -3,7 +3,7 @@ import { HttpResponse } from '@angular/common/http';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, Subscription } from 'rxjs';
 import { switchMap, map, shareReplay, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
@@ -28,6 +28,8 @@ export class AssessmentFinishComponent implements OnInit {
   isLineChart = true;
 
   isSubmittedForReview = false;
+
+  isFinishing: Subscription;
 
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService,
@@ -70,7 +72,7 @@ export class AssessmentFinishComponent implements OnInit {
   }
 
   finish(session: AssessmentSession) {
-    this.asmService.finishSession(session).subscribe(response => {
+    this.isFinishing = this.asmService.finishSession(session).subscribe(response => {
       if (response.is_approved) {
         this.router.navigate(['dashboard', this.navService.lastOrganization.current],
             { state: { section: 'assessments', type: session.type_id } });

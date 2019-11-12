@@ -41,10 +41,10 @@
         <td class="answer-label">
           Select all
         </td>
-        <td class="answer" (mouseenter)="highlight = 'yes'">
+        <td class="answer" (mouseenter)="canAnswer && highlight = 'yes'">
           <mat-radio-button name="answer_all" (click)="canAnswer && answerAll(activeGroup, type, 1)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
-        <td class="answer" (mouseenter)="highlight = 'no'">
+        <td class="answer" (mouseenter)="canAnswer && highlight = 'no'">
           <mat-radio-button name="answer_all" (click)="canAnswer && answerAll(activeGroup, type, 0)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
         <td class="clear-all" *ngIf="(answersRequest$ | async | canModify:'X-Can-Record')">
