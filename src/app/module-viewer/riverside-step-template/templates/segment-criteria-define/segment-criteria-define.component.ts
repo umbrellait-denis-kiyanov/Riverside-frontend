@@ -27,6 +27,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   grades = [];
 
+  gradeSections: {prefix: string, title: string, grades: number[]}[];
+
   getDescription() {
     return 'Ideal Customer Profiles';
   }
@@ -45,6 +47,24 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     if (7 === this.step) {
       this.gradePrefix = this.contentData.inputs.split(',').map(s => s.trim()).find(s => s.substr(-5) === '_name').slice(0, -5);
       this.grades = Array.from(Array(this.contentData.number_of_inputs + 1).keys()).slice(1);
+    }
+
+    if (8 === this.step) {
+      console.log(this.data);
+      const getSection = (prefix: string, title: string) => {
+        const grades = [];
+        for (let k = 1; k <= 6; k++) {
+          const inp = this.getInput(prefix, k);
+          if (inp && inp.content) {
+            grades.push(k);
+          }
+        }
+
+        return {prefix: this.prefix + prefix, title, grades};
+      };
+
+      this.gradeSections = [getSection('grade_customers', 'Existing Customers'),
+                            getSection('grade_new_customers', 'New Customers')];
     }
   }
 
