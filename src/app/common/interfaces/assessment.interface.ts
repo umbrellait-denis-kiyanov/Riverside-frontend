@@ -40,6 +40,7 @@ export interface AssessmentAnswer {
 
 export interface AssessmentOrgGroup {
     group_id: number;
+    session_id: number;
     importance: number;
     isDone: boolean;
     score: number;

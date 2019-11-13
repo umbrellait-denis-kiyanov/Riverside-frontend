@@ -43,6 +43,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   nextGroupWatch: Subscription;
   activateTypeWatch: Subscription;
+  activeSessionWatch: Subscription;
 
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
@@ -75,6 +76,13 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
     this.session$ = this.sessionRequest$.pipe(map(response => response.body));
 
+    this.activeSessionWatch = this.navService.activeAssessmentSessionId$.pipe(
+      distinctUntilChanged(),
+      filter(s => !!s)
+    ).subscribe(s => {
+      this.asmService.groupsUpdated$.next(true);
+    });
+
     this.setFirstUncompletedGroup();
 
     this.activeGroup$ = this.navService.assessmentGroup$;
@@ -102,6 +110,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.activateTypeWatch.unsubscribe();
     this.nextGroupWatch.unsubscribe();
+    this.activeSessionWatch.unsubscribe();
   }
 
   private setFirstUncompletedGroup() {

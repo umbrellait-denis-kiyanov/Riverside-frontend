@@ -4,7 +4,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentGroup, AssessmentQuestion, AssessmentOrgGroup, AssessmentAnswer, AssessmentType } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { switchMap, filter, map, shareReplay } from 'rxjs/operators';
+import { switchMap, filter, map, shareReplay, tap } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assessment',
@@ -57,9 +57,10 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       shareReplay(1)
     );
 
-    this.answers$ = this.answersRequest$.pipe(map(response => {
-      return response.body;
-    }));
+    this.answers$ = this.answersRequest$.pipe(
+      map(response => response.body),
+      tap(answers => this.navService.activeAssessmentSessionId$.next(answers.session_id))
+    );
   }
 
   ngOnDestroy() {
