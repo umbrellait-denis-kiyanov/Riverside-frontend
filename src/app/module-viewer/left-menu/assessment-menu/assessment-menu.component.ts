@@ -3,7 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession, PendingSessions } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { filter, take, distinctUntilChanged, switchMap, map, shareReplay } from 'rxjs/operators';
+import { filter, take, distinctUntilChanged, switchMap, map, shareReplay, takeWhile } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
@@ -92,7 +92,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
         if (next) {
           this.setGroup(next);
         } else if (Object.values(orgGroups).length) {
-          this.finish();
+          this.finish(true);
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -130,14 +130,16 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     }
   }
 
-  finish() {
-    combineLatest(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
-      if (Object.values(orgGroups).filter(g => g.isDone).length === groups.length) {
+  finish(waitUntilReady = false) {
+    const takeFunc = waitUntilReady ? takeWhile(_ => waitUntilReady) : take(1);
+    combineLatest(this.groups$, this.orgGroups$).pipe(takeFunc).subscribe(([groups, orgGroups]) => {
+      if (Object.values(orgGroups).filter(g => (g as AssessmentOrgGroup).isDone).length === groups.length) {
         this.navService.assessmentGroup$.next(null);
 
         this.router.navigate(['finish'], { relativeTo: this.route });
-
-      } else {
+        this.finishError$.next(false);
+        waitUntilReady = false;
+      } else if (!waitUntilReady) {
         this.setFirstUncompletedGroup();
         this.finishError$.next(true);
         setTimeout(_ => this.finishError$.next(false), 5000);
