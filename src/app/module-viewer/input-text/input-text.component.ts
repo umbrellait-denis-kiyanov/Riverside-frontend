@@ -1,18 +1,20 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnChanges, Input } from '@angular/core';
 import { Input as TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: '[inputText]',
   templateUrl: './input-text.component.html',
   styleUrls: ['./input-text.component.sass']
 })
-export class InputTextComponent implements OnInit {
+export class InputTextComponent implements OnChanges {
 
   @Input() inputText: TemplateInput | string;
   @Input() num: number;
+  @Input() inline: boolean;
 
-  text: string;
+  text$: BehaviorSubject<string>;
 
   constructor(private template: TemplateComponent) { }
 
@@ -20,11 +22,10 @@ export class InputTextComponent implements OnInit {
     return obj.content !== undefined;
   }
 
-  ngOnInit() {
-    const input = this.isInput(this.inputText) ? this.inputText : this.template.getInput(this.inputText, this.num);
+  ngOnChanges() {
+    const input = this.isInput(this.inputText) ?
+      this.template.decorateInput(this.inputText) : this.template.getInput(this.inputText, this.num);
 
-    const div = document.createElement('div');
-    div.innerHTML = input.content.split('<br>').join('\n');
-    this.text = div.textContent || div.innerText || '';
+    this.text$ = input.observer;
   }
 }

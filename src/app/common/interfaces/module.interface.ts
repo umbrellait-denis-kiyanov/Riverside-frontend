@@ -1,3 +1,5 @@
+import { BehaviorSubject } from 'rxjs';
+
 export interface ModuleStatus {
   is_activated: boolean;
   due_date?: string;
@@ -25,6 +27,8 @@ export interface Input {
   element_key: string;
   content: string;
   comments_json: string;
+  observer: BehaviorSubject<string>;
+  getValue: () => string;
 }
 
 export interface Organization {

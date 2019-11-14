@@ -7,6 +7,7 @@ import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
 import { Input } from 'src/app/common/interfaces/module.interface';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit {
@@ -56,30 +57,12 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return true;
   }
 
-  prepareData() {
-    const data: any = {inputs: {}};
-
-    Object.keys(this.inputs).forEach(key => {
-      const iceElement = this.el.nativeElement.querySelector(`#${key} #textbody`);
-      if (iceElement) {
-        const input = this.data.data.inputs[key] || {} as any;
-        data.inputs[key] = {
-          comments_json: input.comments_json || [],
-          org_id: input.org_id || null,
-          module_id: input.module_id || null,
-          content: input.content || null,
-          element_key: key
-        };
-      } else if (this.data.data.inputs[key]) {
-        data.inputs[key]  = {...this.data.data.inputs[key], element_key: key};
-      }
-    });
-    return data;
-  }
-
   contentChanged(data: Input) {
     if (data) {
       this.moduleService.saveInput(data).subscribe();
+      if (data.observer) {
+        data.observer.next(data.getValue());
+      }
     }
   }
 
@@ -97,7 +80,26 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return true;
   }
 
+  decorateInput(inp: Input) {
+    if (!inp.getValue) {
+      inp.getValue = () => {
+        if (!inp.content) {
+          return '';
+        }
+        const div = document.createElement('div');
+        div.innerHTML = inp.content.split('<br>').join('\n');
+        const text = (div.textContent || div.innerText || '').trim();
+        div.remove();
+        return text;
+      };
+
+      inp.observer = new BehaviorSubject(inp.getValue());
+    }
+
+    return inp;
+  }
+
   getInput(fieldName: string, num: number): Input {
-    return this.inputs[this.prefix + fieldName + '_' + String(num)];
+    return this.decorateInput(this.inputs[this.prefix + fieldName + '_' + String(num)]);
   }
 }
