@@ -1,7 +1,8 @@
 import { Component, OnChanges, Input } from '@angular/core';
 import { Input as TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
-import { BehaviorSubject } from 'rxjs';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: '[inputText]',
@@ -14,7 +15,7 @@ export class InputTextComponent implements OnChanges {
   @Input() num: number;
   @Input() inline: boolean;
 
-  text$: BehaviorSubject<string>;
+  text$: Observable<string>;
 
   constructor(private template: TemplateComponent) { }
 
@@ -26,6 +27,8 @@ export class InputTextComponent implements OnChanges {
     const input = this.isInput(this.inputText) ?
       this.template.decorateInput(this.inputText) : this.template.getInput(this.inputText, this.num);
 
-    this.text$ = input.observer;
+    if (input) {
+      this.text$ = input.observer.pipe(map(text => text.trim()));
+    }
   }
 }

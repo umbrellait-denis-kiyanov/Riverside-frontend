@@ -33,8 +33,14 @@
           </ng-container>
 
           <ng-container *ngIf="mode == 'grade'">
-            <input type="number" min="0" maxlength="2" [max]="criteria.weight" [(ngModel)]="selectedGrades[i]" (ngModelChange)="syncGrade()" [disabled]="disabled" />
-            <input type="range" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[i]" (ngModelChange)="syncGrade()" *ngIf="!disabled" />
+            <div *ngIf="!review">
+              <input type="number" min="0" maxlength="2" [max]="criteria.weight" [(ngModel)]="selectedGrades[i]" (ngModelChange)="syncGrade()" [disabled]="disabled" />
+              <input type="range" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[i]" (ngModelChange)="syncGrade()" *ngIf="!disabled" />
+            </div>
+
+            <div *ngIf="review">
+              {{ selectedGrades[i] }}
+            </div>
           </ng-container>
 
         </div>

@@ -81,7 +81,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   decorateInput(inp: Input) {
-    if (!inp.getValue) {
+    if (inp && !inp.getValue) {
       inp.getValue = () => {
         if (!inp.content) {
           return '';

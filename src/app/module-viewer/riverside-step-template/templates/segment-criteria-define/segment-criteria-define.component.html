@@ -200,13 +200,14 @@
   <div class="grade-feedback-section" *ngFor="let section of gradeSections">
     <h2>{{ section.title }}</h2>
     <ng-container *ngFor="let customerIndex of section.grades">
-      <div class="grade-container" *ngIf="inputs[section.prefix + '_segment_' + customerIndex].content as segIdx">
-        <h2 inputText="{{ section.prefix }}_name" [num]="customerIndex"></h2>
+      <div class="grade-container" *ngIf="inputs['segment_criteria_define_' + section.prefix + '_segment_' + customerIndex].content as segIdx">
+        <h3 inputText="{{ section.prefix }}_name" [num]="customerIndex"></h3>
+        <h5 inputText="name" [num]="segIdx"></h5>
 
         <div class="segment-container">
           <app-icp-input
             [criterias]="criterias[segIdx]"
-            [inputPrefix]="gradePrefix"
+            [inputPrefix]="section.prefix"
             [inputIndex]="customerIndex"
             [gradeLevels]="userGradeLevels"
             mode="grade"
