@@ -97,17 +97,17 @@
               GRADE
             </div>
           </div>
-          <div class="input-circle grey-circle" [class.complete]="allSelected && sum >= 80" [class.average]="allSelected && sum >= 60 && sum < 80" [class.bad]="allSelected && sum < 60">
+          <div class="input-circle grey-circle" [class.complete]="allSelected && sum >= gradeLevels.B" [class.average]="allSelected && sum >= gradeLevels.D && sum < gradeLevels.B" [class.bad]="allSelected && sum < gradeLevels.F">
             <div class="circle-container letter-score">
               <div *ngIf="!allSelected">
                 ?
               </div>
               <div *ngIf="allSelected">
-                <span *ngIf="sum >= 90">A</span>
-                <span *ngIf="sum >= 80 && sum < 90">B</span>
-                <span *ngIf="sum >= 70 && sum < 80">C</span>
-                <span *ngIf="sum >= 60 && sum < 70">D</span>
-                <span *ngIf="sum < 60">F</span>
+                <span *ngIf="sum >= gradeLevels.A">A</span>
+                <span *ngIf="sum >= gradeLevels.B && sum < gradeLevels.A">B</span>
+                <span *ngIf="sum >= gradeLevels.C && sum < gradeLevels.B">C</span>
+                <span *ngIf="sum >= gradeLevels.D && sum < gradeLevels.C">D</span>
+                <span *ngIf="sum < gradeLevels.D">F</span>
               </div>
             </div>
           </div>

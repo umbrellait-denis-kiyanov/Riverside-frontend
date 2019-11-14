@@ -116,6 +116,40 @@
   </div>
 </div>
 
+<div *ngIf="step == 6">
+  <table class="table assign-grades">
+    <thead>
+      <tr>
+        <th>Example:</th>
+        <th>Assign Percentages</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let grade of gradeLevels">
+        <td>
+          {{ grade.grade }} = {{ grade.level }}
+          <span *ngIf="grade.i == 1"> &lt; </span>
+        </td>
+        <td>
+          <span>{{ grade.grade }} = </span>
+          <ice
+            class="number"
+            [hideChanges]="hideChanges"
+            [user]="me"
+            [disabled]="disabled"
+            (changed)="contentChanged($event)"
+            [(data)]="inputs['segment_criteria_define_grade_pct_' + grade.i]"
+          ></ice>
+        </td>
+      </tr>
+      <tr>
+        <td>F = 48 &gt;</td>
+        <td>F = <span inputText="grade_pct" num="4" inline="true"></span> &gt;</td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
 <div *ngIf="step == 7">
   <div class="grade-container row" *ngFor="let customerIndex of grades">
     <div class="col-sm-1 text-center">
@@ -153,6 +187,7 @@
           [criterias]="criterias[segmentSel.content]"
           [inputPrefix]="gradePrefix"
           [inputIndex]="customerIndex"
+          [gradeLevels]="userGradeLevels"
           mode="grade"
         ></app-icp-input>
 
@@ -169,11 +204,11 @@
         <h2 inputText="{{ section.prefix }}_name" [num]="customerIndex"></h2>
 
         <div class="segment-container">
-
           <app-icp-input
             [criterias]="criterias[segIdx]"
             [inputPrefix]="gradePrefix"
             [inputIndex]="customerIndex"
+            [gradeLevels]="userGradeLevels"
             mode="grade"
             review="true"
           ></app-icp-input>

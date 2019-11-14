@@ -29,6 +29,15 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   gradeSections: {prefix: string, title: string, grades: number[]}[];
 
+  gradeLevels = [
+    {grade: 'A', i: 1, level: 88},
+    {grade: 'B', i: 2, level: 75},
+    {grade: 'C', i: 3, level: 65},
+    {grade: 'D', i: 4, level: 55}
+  ];
+
+  userGradeLevels = {};
+
   getDescription() {
     return 'Ideal Customer Profiles';
   }
@@ -44,13 +53,15 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     this.condenseSegments();
     this.initCriterias();
 
-    if (7 === this.step) {
+    // grade customers
+    if (this.step >= 7) {
       this.gradePrefix = this.contentData.inputs.split(',').map(s => s.trim()).find(s => s.substr(-5) === '_name').slice(0, -5);
       this.grades = Array.from(Array(this.contentData.number_of_inputs + 1).keys()).slice(1);
+      this.userGradeLevels = this.getUserGradeLevels();
     }
 
+    // final feedback step
     if (8 === this.step) {
-      console.log(this.data);
       const getSection = (prefix: string, title: string) => {
         const grades = [];
         for (let k = 1; k <= 6; k++) {
@@ -153,5 +164,13 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
     this.activeSegments.splice(idx, 1);
     this.condenseSegments();
+  }
+
+  private getUserGradeLevels() {
+    return this.gradeLevels.reduce((levels, entry) => {
+      console.log(this.getInput('grade_pct', entry.i));
+      levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue();
+      return levels;
+    }, {});
   }
 }
