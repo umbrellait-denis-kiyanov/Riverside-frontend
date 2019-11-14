@@ -168,6 +168,10 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     this.condenseSegments();
   }
 
+  validate() {
+
+  }
+
   private getUserGradeLevels() {
     return this.gradeLevels.reduce((levels, entry) => {
       levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue();

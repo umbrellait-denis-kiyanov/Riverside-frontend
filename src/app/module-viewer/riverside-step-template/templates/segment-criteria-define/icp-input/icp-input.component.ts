@@ -33,6 +33,12 @@ export class IcpInputComponent implements OnChanges {
   initGrades() {
     const inp = this.template.getInput(this.inputPrefix, this.inputIndex);
     this.selectedGrades = inp && inp.content ? JSON.parse(inp.content) : {};
+
+    // in case the grade weight has been changed, make sure previously set values don't exceed the new threshold
+    this.selectedGrades = Object.entries(this.selectedGrades).reduce((grades, entry) => {
+      grades[entry[0]] = Math.min(entry[1], this.criterias[entry[0]].weight);
+      return grades;
+    }, {});
   }
 
   syncGrade() {
@@ -83,13 +89,19 @@ export class IcpInputComponent implements OnChanges {
     return !criteria.find(cr => !cr.weight);
   }
 
-  syncCriteria() {
+  syncCriteria(validateWeight = false) {
     const input = this.template.getInput('criteria', this.inputIndex);
+
+    if (validateWeight) {
+      if (this.pointsSum(this.criterias) !== 100) {
+        return;
+      }
+    }
 
     input.content = JSON.stringify(this.criterias.map(c =>
       ({description: {comments_json: c.description.comments_json, content: c.description.content},
         name:        {comments_json: c.name.comments_json, content: c.name.content},
-        weight:      c.weight
+        weight:      c.weight || 0
       }))
     );
 

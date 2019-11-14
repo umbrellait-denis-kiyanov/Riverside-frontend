@@ -23,8 +23,8 @@
 
           <ng-container *ngIf="mode == 'weight'">
             <div *ngIf="!review">
-              <input type="number" min="1" max="99" maxlength="2" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria()" [disabled]="disabled" />
-              <input type="range" min="1" max="99" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria()" *ngIf="!disabled" />
+              <input type="number" min="1" max="99" maxlength="2" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(true)" [disabled]="disabled" />
+              <input type="range" min="1" max="99" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(true)" *ngIf="!disabled" />
             </div>
 
             <div *ngIf="review">
@@ -59,7 +59,7 @@
         <a *ngIf="criterias.length > 3" (click)="removeCriteria(i)" class="add-rem">REMOVE criteria</a>
       </div>
 
-      <div *ngIf="mode != 'criteria'" [inputText]="criteria.description"></div>
+      <div *ngIf="mode != 'criteria'" class="criteria-description-container" [inputText]="criteria.description"></div>
     </div>
 
     <ng-container *ngIf="mode == 'criteria'">
@@ -87,9 +87,9 @@
             <div *ngIf="allSelected && (sum !== 100)">
               <strong>{{ sum }}</strong> points selected.
             </div>
-            <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
-            <div *ngIf="allSelected && sum < 100"><strong>Increase</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
-            <div *ngIf="allSelected && sum > 100"><strong>Decrease</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+            <div *ngIf="!allSelected" class="alert alert-danger">Select a weight score for <strong>all criteria.</strong></div>
+            <div *ngIf="allSelected && sum < 100" class="alert alert-danger"><strong>Increase</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+            <div *ngIf="allSelected && sum > 100" class="alert alert-danger"><strong>Decrease</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
           </ng-container>
         </ng-container>
       </div>
@@ -121,7 +121,11 @@
           <div *ngIf="allSelected">
             <strong>{{ sum }}</strong> points
           </div>
-          <div *ngIf="!allSelected">Select a weight score for <strong>all criteria.</strong></div>
+          <div *ngIf="!allSelected">
+            <div class="alert alert-danger">
+              Select a weight score for <strong>all criteria.</strong>
+            </div>
+          </div>
         </ng-container>
       </div>
     </ng-container>
