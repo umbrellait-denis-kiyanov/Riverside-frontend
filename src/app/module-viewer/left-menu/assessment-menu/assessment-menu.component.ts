@@ -145,6 +145,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     this.router.navigate(['org', this.navService.lastOrganization.current, 'assessment']);
     if (!current || (group.id !== current.id)) {
       this.navService.assessmentGroup$.next(group);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
