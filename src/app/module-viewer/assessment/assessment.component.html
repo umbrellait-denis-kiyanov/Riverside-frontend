@@ -1,15 +1,20 @@
-<div class="page-content" *ngIf="(activeGroup$ | async) as activeGroup">
-  <ng-container *ngLet="(answersRequest$ | async | canModify) as canAnswer">
-  <ng-container *ngIf="(answers$ | async) as answers">
-  <ng-container *ngIf="(questions$ | async) as questions">
-  <ng-container *ngIf="(activeType$ | async) as type">
+<div class="page-content"
+  *ngIf="{
+    activeGroup: (activeGroup$ | async),
+    answers: (answers$ | async),
+    questions: (questions$ | async),
+    type: (activeType$ | async),
+    canAnswer: (answersRequest$ | async | canModify)
+  } as val">
 
-  <h2>{{ activeGroup.name }}</h2>
+  <ng-container *ngIf="val.activeGroup">
+
+  <h2>{{ val.activeGroup.name }}</h2>
   <div class="description">
-      {{ activeGroup.description }}
+      {{ val.activeGroup.description }}
   </div>
 
-  <table class="table table-borderless table-striped questions" [class.readonly]="!canAnswer">
+  <table class="table table-borderless table-striped questions" [class.readonly]="!val.canAnswer" *ngIf="val.type as type">
     <thead>
       <tr>
         <th></th>
@@ -18,19 +23,19 @@
         <th>Notes</th>
       </tr>
     </thead>
-    <tbody [class.highlight-yes]="highlight == 'yes'" [class.highlight-no]="highlight == 'no'">
-      <tr *ngFor="let question of questions; trackBy: questionTrack" [class.asm-error]="errors[question.id]">
+    <tbody [class.highlight-yes]="highlight == 'yes'" [class.highlight-no]="highlight == 'no'" *ngIf="val.answers as answers">
+      <tr *ngFor="let question of val.questions; trackBy: questionTrack" [class.asm-error]="errors[question.id]">
         <td class="question">{{ question.position}}. {{ question.question}}</td>
         <td class="answer answer-yes">
-          <mat-radio-button *ngLet="(answers && answers.answers[question.id]?.answer == 1) as checked" [name]="question.id" (click)="canAnswer && setAnswer(question, type, checked ? null : 1)" [checked]="checked"></mat-radio-button>
+          <mat-radio-button *ngIf="{checked: (answers && answers.answers[question.id]?.answer == 1)} as c" [name]="question.id" (click)="val.canAnswer && setAnswer(question, type, c.checked ? null : 1)" [checked]="c.checked"></mat-radio-button>
         </td>
         <td class="answer answer-no">
-          <mat-radio-button *ngLet="(answers && answers.answers[question.id]?.answer == 0) as checked" [name]="question.id" (click)="canAnswer && setAnswer(question, type, checked ? null : 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
+          <mat-radio-button *ngIf="{checked: (answers && answers.answers[question.id]?.answer == 0)} as c" [name]="question.id" (click)="val.canAnswer && setAnswer(question, type, c.checked ? null : 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
         </td>
         <td class="notes">
           <textarea mat-autosize matAutosizeMaxRows="5"
             *ngIf="answers?.answers"
-            [disabled]="!canAnswer"
+            [disabled]="!val.canAnswer"
             [ngModel]="answers.answers[question.id]?.notes"
             (ngModelChange)="answers.answers[question.id] = answers.answers[question.id] || {}; answers.answers[question.id].notes = $event"
             (change)="saveNotes(question, type, answers.answers[question.id])">
@@ -41,14 +46,14 @@
         <td class="answer-label">
           Select all
         </td>
-        <td class="answer" (mouseenter)="canAnswer && highlight = 'yes'">
-          <mat-radio-button name="answer_all" (click)="canAnswer && answerAll(activeGroup, type, 1)" *ngIf="!resetSelectAll"></mat-radio-button>
+        <td class="answer" (mouseenter)="val.canAnswer && highlight = 'yes'">
+          <mat-radio-button name="answer_all" (click)="val.canAnswer && answerAll(val.activeGroup, type, 1)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
-        <td class="answer" (mouseenter)="canAnswer && highlight = 'no'">
-          <mat-radio-button name="answer_all" (click)="canAnswer && answerAll(activeGroup, type, 0)" *ngIf="!resetSelectAll"></mat-radio-button>
+        <td class="answer" (mouseenter)="val.canAnswer && highlight = 'no'">
+          <mat-radio-button name="answer_all" (click)="val.canAnswer && answerAll(val.activeGroup, type, 0)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
         <td class="clear-all" *ngIf="(answersRequest$ | async | canModify:'X-Can-Record')">
-          <a href="" (click)="clearAll(activeGroup, type)">Clear all answers</a>
+          <a href="" (click)="clearAll(val.activeGroup, type)">Clear all answers</a>
         </td>
       </tr>
       <tr class="importance">
@@ -57,7 +62,7 @@
           (1 = least important, 5 = most important)
         </td>
         <td class="importance-select" colspan="2">
-          <select [disabled]="!canAnswer" [(ngModel)]="answers.importance" (change)="canAnswer && setImportance(activeGroup, type, answers.importance)">
+          <select [disabled]="!val.canAnswer" [(ngModel)]="answers.importance" (change)="val.canAnswer && setImportance(val.activeGroup, type, answers.importance)">
             <option *ngFor="let imp of importance">{{ imp }}</option>
           </select>
         </td>
@@ -65,7 +70,7 @@
     </tbody>
   </table>
 
-  <table class="summary table table-bordered">
+  <table class="summary table table-bordered" *ngIf="val.answers as answers">
     <tbody>
       <tr>
         <td>Sum Total</td>
@@ -78,12 +83,12 @@
     </tbody>
   </table>
 
-  <div class="done">
+  <div class="done" *ngIf="val.answers as answers">
     <button
       *ngIf="!answers.isDone"
       mat-raised-button
-      [color]="!isSectionReady(questions, answers) || 'accent'"
-      (click)="markAsDone(activeGroup, type, questions, answers)">Mark As Done</button>
+      [color]="!isSectionReady(val.questions, answers) || 'accent'"
+      (click)="markAsDone(val.activeGroup, val.type, val.questions, answers)">Mark As Done</button>
 
     <button *ngIf="answers.isDone" mat-raised-button>Done</button>
 
@@ -91,7 +96,5 @@
   </div>
 
   </ng-container>
-  </ng-container>
-  </ng-container>
-  </ng-container>
+
 </div>

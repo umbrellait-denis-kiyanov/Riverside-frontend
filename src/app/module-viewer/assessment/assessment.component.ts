@@ -4,7 +4,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentGroup, AssessmentQuestion, AssessmentOrgGroup, AssessmentAnswer, AssessmentType } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { switchMap, filter, map, shareReplay, tap } from 'rxjs/operators';
+import { switchMap, filter, map, shareReplay, tap, takeWhile } from 'rxjs/operators';
 
 @Component({
   selector: 'app-assessment',
@@ -32,10 +32,13 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   resetSelectAll = false;
   resetSelectAllSub: Subscription;
 
+  isDestroyed = false;
+
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService) { }
 
   ngOnInit() {
+
     this.activeType$ = this.navService.assessmentType$;
 
     this.activeGroup$ = this.navService.assessmentGroup$.pipe(filter(g => !!g));
@@ -53,8 +56,9 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     });
 
     this.answersRequest$ = combineLatest(this.activeGroup$, this.navService.assessmentType$, this.navService.organization$, this.answerUpdated$).pipe(
+      takeWhile(_ => !this.isDestroyed),
       switchMap(([group, type, orgId]) => this.asmService.getAnswers(group, type, orgId)),
-      shareReplay(1)
+      shareReplay(1),
     );
 
     this.answers$ = this.answersRequest$.pipe(
@@ -65,6 +69,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.resetSelectAllSub.unsubscribe();
+    this.isDestroyed = true;
   }
 
   setAnswer(q: AssessmentQuestion, t: AssessmentType, answer: boolean | null) {
@@ -106,7 +111,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.asmService.markAsDone(activeGroup, t, this.navService.lastOrganization.current).subscribe(_ => this.answerUpdated$.next(true));
+    this.asmService.markAsDone(activeGroup, t, this.navService.lastOrganization.current).subscribe();
   }
 
   isSectionReady(questions: AssessmentQuestion[], answers) {

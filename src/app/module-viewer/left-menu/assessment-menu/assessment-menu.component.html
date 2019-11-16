@@ -1,9 +1,9 @@
 <module-org-selector [warning]="pendingSessions$ | async" (changed)="setOrganization($event)"></module-org-selector>
 
-<div class="row" *ngLet="(pendingSessions$ | async) as pendingApproval">
-  <div class="col-sm-9" *ngLet="(orgObserver$ | async) as org_id">
+<div class="row" *ngIf="{sessions: (pendingSessions$ | async)} as pendingApproval">
+  <div class="col-sm-9" *ngIf="(orgObserver$ | async) as org_id">
     <div class="btn-group">
-      <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" [class.pending-approval]="((pendingApproval || {})[org_id] || {})[type.id]" (click)="setType(type)">{{ type.name }} <mat-icon class="pending">warning</mat-icon></button>
+      <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" [class.pending-approval]="((pendingApproval.sessions || {})[org_id] || {})[type.id]" (click)="setType(type)">{{ type.name }} <mat-icon class="pending">warning</mat-icon></button>
     </div>
   </div>
   <div class="col-sm-3">
@@ -13,15 +13,13 @@
   </div>
 </div>
 
-<ng-container *ngIf="session$ | async as session">
-<div class="alert alert-warning" *ngIf="session.isDone">
+<div class="alert alert-warning" *ngIf="(session$ | async)?.isDone">
   <span *ngIf="(sessionRequest$ | async | canModify); else review_pending">Please review this assessment</span>
   <ng-template #review_pending>This assessment is being reviewed by your managing director</ng-template>
 </div>
-</ng-container>
 
-<div *ngIf="activeType$ | async">
-  <h2>{{ (activeType$ | async).name }} Strategy Assessment</h2>
+<div *ngIf="activeType$ | async as activeType">
+  <h2>{{ activeType.name }} Strategy Assessment</h2>
 
   <table *ngIf="(orgGroups$ | async) as orgGroups">
     <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)" class="step-list-item" [class.active]="(activeGroup$ | async)?.id == group.id">

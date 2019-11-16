@@ -10,11 +10,11 @@ export class AssessmentService {
 
   baseUrl = '/api/assessment';
 
-  groupsUpdated$ = new BehaviorSubject<boolean>(false);
+  groupsUpdated$ = new BehaviorSubject<number>(0);
 
   moveToNextGroup$ = new BehaviorSubject<boolean>(false);
 
-  updateGroups = tap(_ => this.groupsUpdated$.next(true));
+  updateGroups = tap(_ => this.groupsUpdated$.next(Date.now()));
 
   types$: Observable<AssessmentType[]>;
 
@@ -89,7 +89,7 @@ export class AssessmentService {
   }
 
   getSessionsPendingApproval(): Observable<PendingSessions> {
-    return this.httpClient.get<PendingSessions>(`${this.baseUrl}/pending-sessions`);
+    return this.httpClient.get<PendingSessions>(`${this.baseUrl}/pending-sessions`).pipe(shareReplay(1));
   }
 
   markAsDone(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<any> {
@@ -103,6 +103,4 @@ export class AssessmentService {
   getCompletedSessions(type: AssessmentType, orgID: number): Observable<AssessmentSession[]> {
     return this.httpClient.get<AssessmentSession[]>(`${this.baseUrl}/completed-sessions/${type.id}/org/${orgID}`);
   }
-
-
 }

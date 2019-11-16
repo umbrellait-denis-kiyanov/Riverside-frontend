@@ -3,7 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession, PendingSessions } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { filter, take, distinctUntilChanged, switchMap, map, shareReplay, takeWhile } from 'rxjs/operators';
+import { filter, take, distinctUntilChanged, switchMap, map, shareReplay, takeWhile, tap, skip, debounceTime, withLatestFrom } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
@@ -45,6 +45,8 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   activateTypeWatch: Subscription;
   activeSessionWatch: Subscription;
 
+  isDestroyed = false;
+
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
 
@@ -61,13 +63,13 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     this.activateTypeWatch = this.activeType$.subscribe(_ => this.setFirstUncompletedGroup());
 
     this.orgGroups$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
-      switchMap(([type, orgId]) => {
-        return this.asmService.getOrgGroups(type, orgId);
-      }),
+      takeWhile(_ => !this.isDestroyed),
+      switchMap(([type, orgId]) => this.asmService.getOrgGroups(type, orgId)),
       shareReplay(1)
     );
 
-    this.sessionRequest$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
+    this.sessionRequest$ = combineLatest(this.activeType$, this.orgObserver$).pipe(
+      takeWhile(_ => !this.isDestroyed),
       switchMap(([type, orgId]) => {
         return this.asmService.getSession(type, orgId);
       }),
@@ -76,12 +78,17 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
     this.session$ = this.sessionRequest$.pipe(map(response => response.body));
 
-    this.activeSessionWatch = this.navService.activeAssessmentSessionId$.pipe(
+    // check if a session ID has changed while within the context of the same org and type
+    this.activeSessionWatch = combineLatest(this.activeType$, this.orgObserver$).pipe(
+      map(([type, org]) => type.id.toString() + '-' + org),
       distinctUntilChanged(),
-      filter(s => !!s)
-    ).subscribe(s => {
-      this.asmService.groupsUpdated$.next(true);
-    });
+      switchMap(g => this.navService.activeAssessmentSessionId$.pipe(
+          filter(s => !!s),
+          distinctUntilChanged(),
+          debounceTime(500),
+          skip(1)
+      ))
+    ).subscribe(id => this.asmService.groupsUpdated$.next(Date.now()));
 
     this.setFirstUncompletedGroup();
 
@@ -91,6 +98,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
     // move to next group if current is done
     this.nextGroupWatch = this.asmService.moveToNextGroup$.pipe(
+      takeWhile(_ => !this.isDestroyed),
       filter(r => r),
       switchMap(_ => combineLatest(this.activeGroup$, this.activeType$, this.orgGroups$).pipe(take(1)))
     )
@@ -108,6 +116,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.isDestroyed = true;
     this.activateTypeWatch.unsubscribe();
     this.nextGroupWatch.unsubscribe();
     this.activeSessionWatch.unsubscribe();
