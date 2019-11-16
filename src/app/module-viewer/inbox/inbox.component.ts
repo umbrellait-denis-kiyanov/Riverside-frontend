@@ -59,7 +59,7 @@ export class InboxComponent implements OnInit {
       const resource = this.inboxService.allMessages;
       const msg = resource.data.find(m => m.id === this.message.id);
       if (msg) {
-        msg.is_pending = false;
+        msg.read_on = new Date();
         resource.change.next(resource.change.getValue() + 1);
       }
     });
