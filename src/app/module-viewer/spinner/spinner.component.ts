@@ -6,7 +6,7 @@ import { Subscription } from 'rxjs';
   templateUrl: './spinner.component.html',
   styleUrls: ['./spinner.component.sass']
 })
-export class SpinnerComponent implements OnInit, Input {
+export class SpinnerComponent implements OnInit {
 
   @Input() sub: Subscription;
 

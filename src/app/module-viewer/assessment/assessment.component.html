@@ -14,7 +14,7 @@
       {{ val.activeGroup.description }}
   </div>
 
-  <table class="table table-borderless table-striped questions" [class.readonly]="!val.canAnswer" *ngIf="val.type as type">
+  <table class="table table-borderless table-striped questions" [class.answers-loading]="answersLoading" [class.readonly]="!val.canAnswer || answersLoading" *ngIf="val.type as type">
     <thead>
       <tr>
         <th></th>
