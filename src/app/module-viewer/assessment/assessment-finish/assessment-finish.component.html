@@ -19,7 +19,7 @@
     <button class="btn btn-success" (click)="(!isFinishing || !isFinishing.closed) && finish(session)">
       <span *ngIf="sessionRequest$ | async | canModify:'X-Can-Record'; else submit">Finish & Record</span>
       <ng-template #submit>Finish & Submit</ng-template>
-      <span *ngIf="(isFinishing && !isFinishing.closed)" class="fa fa-pulse fa-spinner"></span>
+      <spinner [sub]="isFinishing"></spinner>
     </button>
   </div>
 

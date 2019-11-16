@@ -6,6 +6,7 @@ import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup 
 import { Observable, combineLatest, Subscription } from 'rxjs';
 import { switchMap, map, shareReplay, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import toastr from 'src/app/common/lib/toastr';
 
 @Component({
   selector: 'app-assessment-finish',
@@ -76,8 +77,11 @@ export class AssessmentFinishComponent implements OnInit {
       if (response.is_approved) {
         this.router.navigate(['dashboard', this.navService.lastOrganization.current],
             { state: { section: 'assessments', type: session.type_id } });
+
+        toastr.success('Assessment has been recorded');
       } else {
         this.isSubmittedForReview = true;
+        toastr.success('Assessment has been submitted for review');
       }
     });
   }
