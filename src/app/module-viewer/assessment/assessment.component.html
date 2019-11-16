@@ -88,7 +88,10 @@
       *ngIf="!answers.isDone"
       mat-raised-button
       [color]="!isSectionReady(val.questions, answers) || 'accent'"
-      (click)="markAsDone(val.activeGroup, val.type, val.questions, answers)">Mark As Done</button>
+      (click)="markAsDone(val.activeGroup, val.type, val.questions, answers)">
+        Mark As Done
+        <span *ngIf="(markAsDoneSub && !markAsDoneSub.closed)" class="fa fa-pulse fa-spinner"></span>
+      </button>
 
     <button *ngIf="answers.isDone" mat-raised-button>Done</button>
 

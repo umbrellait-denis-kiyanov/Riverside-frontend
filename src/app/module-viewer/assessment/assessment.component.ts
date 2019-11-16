@@ -32,6 +32,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   resetSelectAll = false;
   resetSelectAllSub: Subscription;
 
+  markAsDoneSub: Subscription;
+
   isDestroyed = false;
 
   constructor(public asmService: AssessmentService,
@@ -63,7 +65,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
     this.answers$ = this.answersRequest$.pipe(
       map(response => response.body),
-      tap(answers => this.navService.activeAssessmentSessionId$.next(answers.session_id))
+      tap(answers => this.navService.activeAssessmentSessionId$.next(answers.session_id)),
+      tap(_ => this.markAsDoneSub = null)
     );
   }
 
@@ -100,6 +103,10 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   }
 
   markAsDone(activeGroup: AssessmentGroup, t: AssessmentType, questions: AssessmentQuestion[], answers) {
+    if (this.markAsDoneSub && !this.markAsDoneSub.closed) {
+      return;
+    }
+
     this.errors = questions
       .filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null)
       .reduce((errors, q) => {
@@ -111,7 +118,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.asmService.markAsDone(activeGroup, t, this.navService.lastOrganization.current).subscribe();
+    this.markAsDoneSub = this.asmService.markAsDone(activeGroup, t, this.navService.lastOrganization.current).subscribe();
   }
 
   isSectionReady(questions: AssessmentQuestion[], answers) {
