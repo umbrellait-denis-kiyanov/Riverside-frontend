@@ -32,7 +32,7 @@ export class InboxService {
   save(message: Partial<Message & { parent_id: number }>) {
     return this.message.save(
       this.http.post(
-        `/api/modules/${message.module_id}/feedback`,
+        `/api/modules/` + Number(message.module_id) + `/feedback`,
         message
       ).toPromise()
     );

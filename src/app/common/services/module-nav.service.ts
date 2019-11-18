@@ -83,6 +83,7 @@ export class ModuleNavService {
   assessmentType = new ResourceFromStorage<number>('last_type');
   activeAssessmentType$: Observable<AssessmentType>;
   assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
+  activeAssessmentSessionId$ = new BehaviorSubject<number>(null);
 
   lastOrganization = new ResourceFromStorage<number>('last_organization_id',
                         this.moduleService.getDefaultOrganization().pipe(map(org => org.id)),

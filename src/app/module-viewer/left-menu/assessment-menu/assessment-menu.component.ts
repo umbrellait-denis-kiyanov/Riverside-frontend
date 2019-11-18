@@ -1,11 +1,12 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
+import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession, PendingSessions } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { filter, take, distinctUntilChanged, switchMap } from 'rxjs/operators';
+import { filter, take, distinctUntilChanged, switchMap, map, shareReplay, takeWhile, tap, skip, debounceTime, withLatestFrom } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-assessment-menu',
@@ -27,9 +28,14 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   activeType$: Observable<AssessmentType>;
 
+  session$: Observable<AssessmentSession>;
+  sessionRequest$: Observable<HttpResponse<AssessmentSession>>;
+
   orgObserver$: Observable<number>;
 
   activeGroup$: BehaviorSubject<AssessmentGroup>;
+
+  pendingSessions$: Observable<PendingSessions>;
 
   groupCompleted$ = new BehaviorSubject<boolean>(false);
 
@@ -37,6 +43,9 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   nextGroupWatch: Subscription;
   activateTypeWatch: Subscription;
+  activeSessionWatch: Subscription;
+
+  isDestroyed = false;
 
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
@@ -54,17 +63,42 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     this.activateTypeWatch = this.activeType$.subscribe(_ => this.setFirstUncompletedGroup());
 
     this.orgGroups$ = combineLatest(this.activeType$, this.orgObserver$, this.asmService.groupsUpdated$).pipe(
-      switchMap(([type, orgId]) => {
-        return this.asmService.getOrgGroups(type, orgId);
-      })
+      takeWhile(_ => !this.isDestroyed),
+      switchMap(([type, orgId]) => this.asmService.getOrgGroups(type, orgId)),
+      shareReplay(1)
     );
+
+    this.sessionRequest$ = combineLatest(this.activeType$, this.orgObserver$).pipe(
+      takeWhile(_ => !this.isDestroyed),
+      switchMap(([type, orgId]) => {
+        return this.asmService.getSession(type, orgId);
+      }),
+      shareReplay(1)
+    );
+
+    this.session$ = this.sessionRequest$.pipe(map(response => response.body));
+
+    // check if a session ID has changed while within the context of the same org and type
+    this.activeSessionWatch = combineLatest(this.activeType$, this.orgObserver$).pipe(
+      map(([type, org]) => type.id.toString() + '-' + org),
+      distinctUntilChanged(),
+      switchMap(g => this.navService.activeAssessmentSessionId$.pipe(
+          filter(s => !!s),
+          distinctUntilChanged(),
+          debounceTime(500),
+          skip(1)
+      ))
+    ).subscribe(id => this.asmService.groupsUpdated$.next(Date.now()));
 
     this.setFirstUncompletedGroup();
 
     this.activeGroup$ = this.navService.assessmentGroup$;
 
+    this.pendingSessions$ = this.asmService.getSessionsPendingApproval();
+
     // move to next group if current is done
     this.nextGroupWatch = this.asmService.moveToNextGroup$.pipe(
+      takeWhile(_ => !this.isDestroyed),
       filter(r => r),
       switchMap(_ => combineLatest(this.activeGroup$, this.activeType$, this.orgGroups$).pipe(take(1)))
     )
@@ -74,7 +108,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
         if (next) {
           this.setGroup(next);
         } else if (Object.values(orgGroups).length) {
-          this.finish();
+          this.finish(true);
         }
 
         window.scrollTo({ top: 0, behavior: 'smooth' });
@@ -82,8 +116,10 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   }
 
   ngOnDestroy() {
+    this.isDestroyed = true;
     this.activateTypeWatch.unsubscribe();
     this.nextGroupWatch.unsubscribe();
+    this.activeSessionWatch.unsubscribe();
   }
 
   private setFirstUncompletedGroup() {
@@ -109,17 +145,20 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     this.router.navigate(['org', this.navService.lastOrganization.current, 'assessment']);
     if (!current || (group.id !== current.id)) {
       this.navService.assessmentGroup$.next(group);
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
-  finish() {
-    combineLatest(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
-      if (Object.values(orgGroups).filter(g => g.isDone).length === groups.length) {
+  finish(waitUntilReady = false) {
+    const takeFunc = waitUntilReady ? takeWhile(_ => waitUntilReady) : take(1);
+    combineLatest(this.groups$, this.orgGroups$).pipe(takeFunc).subscribe(([groups, orgGroups]) => {
+      if (Object.values(orgGroups).filter(g => (g as AssessmentOrgGroup).isDone).length === groups.length) {
         this.navService.assessmentGroup$.next(null);
 
         this.router.navigate(['finish'], { relativeTo: this.route });
-
-      } else {
+        this.finishError$.next(false);
+        waitUntilReady = false;
+      } else if (!waitUntilReady) {
         this.setFirstUncompletedGroup();
         this.finishError$.next(true);
         setTimeout(_ => this.finishError$.next(false), 5000);

@@ -47,11 +47,17 @@
     class="buttons-wrapper"
     *ngIf="message"
   >
-    <a [routerLink]="routerLink">
+    <a [routerLink]="routerLink" *ngIf="message.module_id">
       <button
         mat-flat-button="mat-stroked-button"
         color="primary"
       >Review module content</button>
+    </a>
+    <a [routerLink]="'/org/' + (message.from_org_id || message.to_org_id) + '/assessment'" *ngIf="message.assessment_session_id">
+      <button
+        mat-flat-button="mat-stroked-button"
+        color="primary"
+      >Review assessment</button>
     </a>
   </div>
 

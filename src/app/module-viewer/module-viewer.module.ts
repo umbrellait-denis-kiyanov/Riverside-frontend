@@ -91,6 +91,7 @@ import { ChangePasswordComponent } from './account/change-password/change-passwo
 import { ProfilePictureInputComponent } from './account/profile/profile-picture-input/profile-picture-input.component';
 import { ProfilePictureSelectorComponent } from './account/profile/profile-picture-selector/profile-picture-selector.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
+import { SpinnerComponent } from './spinner/spinner.component';
 import { InputTextComponent } from './input-text/input-text.component';
 import { VideoComponent } from './riverside-step-template/templates/video/video.component';
 import { IcpInputComponent } from './riverside-step-template/templates/segment-criteria-define/icp-input/icp-input.component';
@@ -188,7 +189,8 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
     VideoComponent,
     IcpInputComponent,
     ModuleFeedbackComponent,
-    ErrorMsgComponent
+    ErrorMsgComponent,
+    SpinnerComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

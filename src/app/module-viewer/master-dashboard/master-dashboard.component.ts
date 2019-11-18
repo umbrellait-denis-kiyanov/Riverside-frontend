@@ -3,6 +3,8 @@ import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable, fromEvent, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
 import { Sort } from '@angular/material/sort';
+import { Organization } from 'src/app/common/interfaces/module.interface';
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-master-dashboard',
@@ -25,14 +27,15 @@ export class MasterDashboardComponent implements OnInit {
 
   @ViewChild('orgItem') orgItem: ElementRef;
 
-  constructor(private moduleService: ModuleService) { }
-
+  constructor(private moduleService: ModuleService,
+              private router: Router
+             ) { }
   quarters = [];
 
   currentQuarter = '';
 
   ngOnInit() {
-    this.organizations$ = combineLatest([this.moduleService.getOrganizations(), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
+    this.organizations$ = combineLatest([this.moduleService.getOrganizations(true), this.sortOrder$, this.listSortOrder$, this.sortAsc$]).
       pipe(map(([items, sortOrder, listSortOrder, sortAsc]) => {
         this.currentQuarter = items[0].current_quarter;
         const quarters = ['q1', 'q2', 'q3', 'q4'];
@@ -48,7 +51,7 @@ export class MasterDashboardComponent implements OnInit {
             let defLowValue = isNaN(parseInt(a[field], 10)) && isNaN(parseInt(b[field], 10)) || ('due_date' === field) ? 'ZZZ' : 9999;
             let defHiValue = '' as any;
 
-            if ('assessment' === field) {
+            if ('assessment' === field.substring(0, 10)) {
               defLowValue = 9999 * direction;
               defHiValue = 9999 * direction;
             }
@@ -88,5 +91,9 @@ export class MasterDashboardComponent implements OnInit {
 
   toggleSortOrder() {
     this.sortAsc$.next(!this.sortAsc$.getValue());
+  }
+
+  viewAssessment(org: Organization, type: number) {
+    this.router.navigate(['dashboard', org.id], {queryParamsHandling: 'preserve', state: { section: 'assessments', type } });
   }
 }

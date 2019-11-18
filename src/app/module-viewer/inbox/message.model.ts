@@ -4,6 +4,7 @@ import BaseModel from 'src/app/common/interfaces/base.model';
 
 class Message extends BaseModel {
   id: number = null;
+  assessment_session_id: number = null;
   from_org_id: number = null;
   to_org_id: number = null;
   module_id: number = null;

@@ -16,6 +16,30 @@ h2
 table.questions
     margin-top: 2em
 
+    &.answers-loading
+        .answer
+            opacity: 0.5
+
+    &.readonly ::ng-deep
+        .mat-radio-button.mat-accent
+            pointer-events: none
+
+            &.mat-radio-checked .mat-radio-outer-circle
+                border-color: rgba(0, 0, 0, 0.54)
+
+            .mat-radio-inner-circle
+                background-color: rgba(0, 0, 0, 0.54)
+
+    tbody.highlight-yes .answer-yes,
+    tbody.highlight-no .answer-no
+        ::ng-deep mat-radio-button .mat-radio-inner-circle
+            transform: scale(.5)
+
+    tbody.highlight-yes .answer-no,
+    tbody.highlight-no .answer-yes
+        ::ng-deep mat-radio-button .mat-radio-inner-circle
+            transform: scale(.001)
+
     th
         text-transform: uppercase
         padding-bottom: 2px
@@ -69,6 +93,7 @@ table.questions
                 min-height: 100%
                 min-width: 15vw
                 outline: 0 !important
+                background-color: white
 
     tr.asm-error
         color: $red
@@ -76,6 +101,17 @@ table.questions
         td.answer
             border-color: $red
             border-width: 1px
+
+    tr.answer-all
+        background: transparent
+
+        td.answer-label
+            text-align: right
+            font-size: 12px
+
+        td.clear-all
+            text-align: right
+            padding-right: 0
 
     tr.importance
         td

@@ -137,8 +137,8 @@ export class ModuleService {
     ));
   }
 
-  getOrganizations(): Observable<Organization[]> {
-    if (!this.organizations$) {
+  getOrganizations(forceNew = false): Observable<Organization[]> {
+    if (!this.organizations$ || forceNew) {
       this.organizations$ = this.httpClient.get<Organization[]>(`${this.baseUrl}/organizations/list`).pipe(shareReplay(1));
     }
 
