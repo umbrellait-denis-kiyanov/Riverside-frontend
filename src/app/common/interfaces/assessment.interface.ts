@@ -40,6 +40,7 @@ export interface AssessmentAnswer {
 
 export interface AssessmentOrgGroup {
     group_id: number;
+    session_id: number;
     importance: number;
     isDone: boolean;
     score: number;
@@ -51,5 +52,12 @@ export interface ModuleScores
 {
     [key: number]: {
         [key: string]: number
+    }
+}
+
+export interface PendingSessions
+{
+    [org_id: number]: {
+        [type_id: number]: boolean
     }
 }

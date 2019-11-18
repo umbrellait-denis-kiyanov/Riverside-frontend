@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
-import { AssessmentGroup, AssessmentQuestion, AssessmentType, AssessmentOrgGroup, AssessmentSession, ModuleScores } from '../interfaces/assessment.interface';
-import { HttpClient } from '@angular/common/http';
+import { AssessmentGroup, AssessmentQuestion, AssessmentType,
+         AssessmentOrgGroup, AssessmentSession, ModuleScores, PendingSessions } from '../interfaces/assessment.interface';
+import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, shareReplay, map, take } from 'rxjs/operators';
 
@@ -9,11 +10,11 @@ export class AssessmentService {
 
   baseUrl = '/api/assessment';
 
-  groupsUpdated$ = new BehaviorSubject<boolean>(false);
+  groupsUpdated$ = new BehaviorSubject<number>(0);
 
   moveToNextGroup$ = new BehaviorSubject<boolean>(false);
 
-  updateGroups = tap(_ => this.groupsUpdated$.next(true));
+  updateGroups = tap(_ => this.groupsUpdated$.next(Date.now()));
 
   types$: Observable<AssessmentType[]>;
 
@@ -49,8 +50,8 @@ export class AssessmentService {
     return new BehaviorSubject<AssessmentQuestion[]>(group.questions);
   }
 
-  getSession(type: AssessmentType, orgID: number): Observable<AssessmentSession> {
-    return this.httpClient.get<AssessmentSession>(`${this.baseUrl}/session/${type.id}/org/${orgID}`);
+  getSession(type: AssessmentType, orgID: number): Observable<HttpResponse<AssessmentSession>> {
+    return this.httpClient.get<AssessmentSession>(`${this.baseUrl}/session/${type.id}/org/${orgID}`, {observe: 'response'});
   }
 
   finishSession(session: AssessmentSession): Observable<any> {
@@ -61,7 +62,7 @@ export class AssessmentService {
     return this.httpClient.get<AssessmentOrgGroup[]>(`${this.baseUrl}/org-groups/${type.id}/org/${orgID}`);
   }
 
-  saveAnswer(question: AssessmentQuestion, type: AssessmentType, orgID: number, answer: boolean): Observable<any> {
+  saveAnswer(question: AssessmentQuestion, type: AssessmentType, orgID: number, answer: boolean | null): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/answer/${question.id}/type/${type.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
   }
 
@@ -69,16 +70,26 @@ export class AssessmentService {
     return this.httpClient.post(`${this.baseUrl}/answer-all/${group.id}/type/${type.id}/org/${orgID}`, {answer}).pipe(this.updateGroups);
   }
 
+  clearAll(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/answer-all/${group.id}/type/${type.id}/org/${orgID}`, {answer: null}).pipe(this.updateGroups);
+  }
+
   saveNotes(question: AssessmentQuestion, type: AssessmentType, orgID: number, notes: string): Observable<any> {
     return this.httpClient.post<AssessmentQuestion[]>(`${this.baseUrl}/note/${question.id}/type/${type.id}/org/${orgID}`, {notes});
   }
 
-  getAnswers(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<AssessmentOrgGroup> {
-    return this.httpClient.get<AssessmentOrgGroup>(`${this.baseUrl}/answers/${group.id}/type/${type.id}/org/${orgID}`);
+  getAnswers(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<HttpResponse<AssessmentOrgGroup>> {
+    return this.httpClient.get<AssessmentOrgGroup>(`${this.baseUrl}/answers/${group.id}/type/${type.id}/org/${orgID}`,
+                                                    {observe: 'response'});
   }
 
   setImportance(group: AssessmentGroup, type: AssessmentType, orgID: number, importance: number): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/type/${type.id}/org/${orgID}`, {importance}).pipe(this.updateGroups);
+    return this.httpClient.post(`${this.baseUrl}/importance/${group.id}/type/${type.id}/org/${orgID}`, {importance})
+                          .pipe(this.updateGroups);
+  }
+
+  getSessionsPendingApproval(): Observable<PendingSessions> {
+    return this.httpClient.get<PendingSessions>(`${this.baseUrl}/pending-sessions`).pipe(shareReplay(1));
   }
 
   markAsDone(group: AssessmentGroup, type: AssessmentType, orgID: number): Observable<any> {
@@ -92,6 +103,4 @@ export class AssessmentService {
   getCompletedSessions(type: AssessmentType, orgID: number): Observable<AssessmentSession[]> {
     return this.httpClient.get<AssessmentSession[]>(`${this.baseUrl}/completed-sessions/${type.id}/org/${orgID}`);
   }
-
-
 }

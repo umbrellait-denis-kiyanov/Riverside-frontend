@@ -1,10 +1,12 @@
 import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup } from 'src/app/common/interfaces/assessment.interface';
-import { Observable, combineLatest } from 'rxjs';
-import { switchMap, filter } from 'rxjs/operators';
+import { Observable, combineLatest, Subscription } from 'rxjs';
+import { switchMap, map, shareReplay, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import toastr from 'src/app/common/lib/toastr';
 
 @Component({
   selector: 'app-assessment-finish',
@@ -14,6 +16,7 @@ import { Router } from '@angular/router';
 export class AssessmentFinishComponent implements OnInit {
 
   session$: Observable<AssessmentSession>;
+  sessionRequest$: Observable<HttpResponse<AssessmentSession>>;
 
   types$: Observable<AssessmentType[]>;
 
@@ -25,31 +28,36 @@ export class AssessmentFinishComponent implements OnInit {
 
   isLineChart = true;
 
+  isSubmittedForReview = false;
+
+  isFinishing: Subscription;
+
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService,
               public router: Router) { }
 
   ngOnInit() {
-    const type$ = this.navService.assessmentType.onChange.pipe(
-        filter(t => !!t),
-        switchMap(typeID => this.asmService.getType(typeID))
-      );
+    const type$ = this.navService.assessmentType$;
 
     const org$ = this.navService.organization$;
 
-    this.session$ = combineLatest(type$, org$).pipe(
-      switchMap(([type, orgId]) => this.asmService.getSession(type, orgId))
+    this.sessionRequest$ = combineLatest(type$, org$).pipe(
+      switchMap(([type, orgId]) => this.asmService.getSession(type, orgId)),
+      shareReplay(1)
     );
+
+    this.session$ = this.sessionRequest$.pipe(map(response => response.body));
 
     this.groups$ = type$.pipe(
       switchMap((type) => this.asmService.getGroups(type))
     );
 
     this.orgGroups$ = combineLatest(type$, org$).pipe(
-      switchMap(([type, orgId]) => this.asmService.getOrgGroups(type, orgId))
+      switchMap(([type, orgId]) => this.asmService.getOrgGroups(type, orgId)),
+      shareReplay(1)
     );
 
-    combineLatest(this.groups$, this.orgGroups$, this.session$).subscribe(([groups, orgGroups, session]) => {
+    combineLatest(this.groups$, this.orgGroups$, this.session$).pipe(take(1)).subscribe(([groups, orgGroups, session]) => {
       const series = groups.map((group, idx) => {
         return {value: Number((orgGroups[group.id] || {score: 0}).score), name: (idx + 1), label: group.shortName};
       });
@@ -65,10 +73,16 @@ export class AssessmentFinishComponent implements OnInit {
   }
 
   finish(session: AssessmentSession) {
-    this.asmService.finishSession(session).subscribe(_ => {
-      this.router.navigate(['dashboard', this.navService.lastOrganization.current],
-          { state: { section: 'assessments', type: session.type_id } });
+    this.isFinishing = this.asmService.finishSession(session).subscribe(response => {
+      if (response.is_approved) {
+        this.router.navigate(['dashboard', this.navService.lastOrganization.current],
+            { state: { section: 'assessments', type: session.type_id } });
+
+        toastr.success('Assessment has been recorded');
+      } else {
+        this.isSubmittedForReview = true;
+        toastr.success('Assessment has been submitted for review');
       }
-    );
+    });
   }
 }
