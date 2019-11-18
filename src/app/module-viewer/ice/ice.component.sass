@@ -1,3 +1,5 @@
+@import "src/app/common/sass/variables.sass"
+
 $padding: 0;
 $triangleSize: 10px;
 $triangleColor: orange;
@@ -37,6 +39,9 @@ $triangleColor: orange;
   background: white;
   outline: none;
   min-height: 2.2em
+
+  &.has-error
+    border-color: $red
 
   \::ng-deep
     > ul

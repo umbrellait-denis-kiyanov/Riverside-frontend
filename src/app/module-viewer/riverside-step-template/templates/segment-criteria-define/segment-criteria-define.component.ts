@@ -1,7 +1,10 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, OnInit, forwardRef, QueryList, ViewChildren } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define.interface';
 import { SegmentCriteria } from './segment-criteria.interface';
+import { Input } from 'src/app/common/interfaces/module.interface';
+import { IcpInputComponent } from './icp-input/icp-input.component';
+import { Validate } from 'src/app/common/validator.class';
 
 const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
 
@@ -12,6 +15,9 @@ const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'whe
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => SegmentCriteriaDefineComponent) }]
 })
 export class SegmentCriteriaDefineComponent extends TemplateComponent implements OnInit {
+
+  @ViewChildren(IcpInputComponent) icpInputs: QueryList<IcpInputComponent>;
+
   contentData: SegmentCriteriaDefineTemplateData['template_params_json'];
 
   allSegments = [1, 2, 3, 4, 5];
@@ -168,14 +174,100 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     this.condenseSegments();
   }
 
-  validate() {
-
-  }
-
   private getUserGradeLevels() {
     return this.gradeLevels.reduce((levels, entry) => {
       levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue();
       return levels;
     }, {});
   }
+
+  validate() {
+    if (this.step === 1) {
+      return this.validateBrainstorm();
+    } else if (this.step === 2) {
+      return this.validateBrainstorm(['brainstorm']);
+    } else if (this.step === 3) {
+      return this.validateCriteria(['where_mine']);
+    } else if (this.step === 4) {
+      return this.validateCriteria();
+    } else if (this.step === 5) {
+      return true;
+    } else if (this.step === 6) {
+      return this.validateGradeLevels();
+    } else if (this.step === 7) {
+      return this.validateGradeCustomers();
+    } else if (this.step === 8) {
+      return true;
+    }
+
+    return false;
+  }
+
+  private validateBrainstorm(fields = ['name', 'industries', 'pain_points']) {
+    return this.activeSegments.reduce((isValid, segment) =>
+      fields.reduce((isValidField, field) => {
+        const inp = this.getInput(field, segment);
+
+        if (!this.validateInput(inp)) {
+          isValidField = false;
+        }
+
+        return isValidField;
+      }, isValid), true);
+  }
+
+  private validateCriteria(extraInputs: string[] = []) {
+    return this.activeSegments.reduce((isValid, segment, idx) => {
+      extraInputs.forEach(field => {
+        if (!this.validateInput(this.getInput(field, segment))) {
+          isValid = false;
+        }
+      });
+
+      const icp = this.icpInputs.toArray()[idx];
+      if (!icp.validate()) {
+        isValid = false;
+      }
+
+      return isValid;
+    }, true);
+  }
+
+  private validateGradeLevels() {
+    return this.gradeLevels.reduce((isValid, level) => {
+      const inp = this.getInput('grade_pct', level.i);
+
+      const max = level.i === 1 ? 100 : Number(this.getInput('grade_pct', level.i - 1).getValue()) - 1;
+
+      if (!this.validateInput(inp, [
+        Validate.required('Please enter the grade level'),
+        Validate.number(),
+        Validate.max(max),
+        Validate.min(0)
+      ])) {
+        isValid = false;
+      }
+
+      return isValid;
+    }, true);
+  }
+
+  private validateGradeCustomers() {
+    return this.grades.reduce((isValid, segment, idx) => {
+      ['name', 'segment'].forEach(field => {
+        const validator = 'segment' === field ? [Validate.required('Please select the customer segment')] : undefined;
+        if (!this.validateInput(this.getInput(this.gradePrefix + '_' + field, segment), validator)) {
+          isValid = false;
+        }
+      });
+
+      const icp = this.icpInputs.toArray()[idx];
+      if (!icp.validate()) {
+        isValid = false;
+      }
+
+      return isValid;
+    }, true);
+  }
 }
+

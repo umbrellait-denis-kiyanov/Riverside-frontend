@@ -8,6 +8,7 @@ import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
 import { Input } from 'src/app/common/interfaces/module.interface';
 import { BehaviorSubject } from 'rxjs';
+import { Validation, Validate } from 'src/app/common/validator.class';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit {
@@ -48,7 +49,14 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
           input.element_key : null;
     }).filter(i => i);
 
+    Object.keys(this.inputs).map(key => this.decorateInput(this.inputs[key]));
+
     this.init();
+  }
+
+  // abstract validate(): boolean;
+  validate() {
+    return true;
   }
 
   protected init() {}
@@ -94,6 +102,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
       };
 
       inp.observer = new BehaviorSubject(inp.getValue());
+      inp.error = new BehaviorSubject(null);
     }
 
     return inp;
@@ -101,5 +110,22 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
   getInput(fieldName: string, num: number): Input {
     return this.decorateInput(this.inputs[this.prefix + fieldName + '_' + String(num)]);
+  }
+
+  validateInput(inp: Input, validators: Validation[] = []) {
+    if (!validators.length) {
+      validators.push(Validate.required('Please fill out this field'));
+    }
+
+    const err = Validate.getErrorMessage(validators, inp.getValue());
+    inp.error.next(err);
+
+    return !err;
+  }
+
+  resetError(input: Input) {
+    if (input.error) {
+      input.error.next(null);
+    }
   }
 }

@@ -10,7 +10,7 @@ import { SegmentCriteria } from '../segment-criteria.interface';
 })
 export class IcpInputComponent implements OnChanges {
 
-  @Input() mode: 'criteria' | 'weight' | 'score';
+  @Input() mode: 'criteria' | 'weight' | 'grade';
   @Input() inputPrefix;
   @Input() criterias;
   @Input() inputIndex: number;
@@ -19,7 +19,12 @@ export class IcpInputComponent implements OnChanges {
 
   selectedGrades: {[criteriaIndex: number]: number} = {};
 
-  constructor(private template: TemplateComponent,
+  calcWeightSum = 0;
+  calcAllWeightsSelected = false;
+  calcGradeSum = 0;
+  calcAllGradesSelected = false;
+
+  constructor(public template: TemplateComponent,
               private moduleService: ModuleService) { }
 
   ngOnChanges() {
@@ -39,14 +44,21 @@ export class IcpInputComponent implements OnChanges {
       grades[entry[0]] = Math.min(entry[1], this.criterias[entry[0]].weight);
       return grades;
     }, {});
+
+    this.syncGrade(true);
   }
 
-  syncGrade() {
-    const input = this.template.getInput(this.inputPrefix, this.inputIndex);
+  syncGrade(onlyCalculate = false) {
+    this.calcGradeSum = this.gradeSum();
+    this.calcAllGradesSelected = this.allGradesSelected();
 
-    input.content = JSON.stringify(this.selectedGrades);
+    if (this.calcAllGradesSelected) {
+      const input = this.template.getInput(this.inputPrefix, this.inputIndex);
 
-    this.moduleService.saveInput(input).subscribe();
+      input.content = JSON.stringify(this.selectedGrades);
+
+      this.moduleService.saveInput(input).subscribe();
+    }
   }
 
   gradeSum() {
@@ -89,22 +101,60 @@ export class IcpInputComponent implements OnChanges {
     return !criteria.find(cr => !cr.weight);
   }
 
-  syncCriteria(validateWeight = false) {
+  syncCriteria(validateWeight = false, onlyCalculate = false) {
     const input = this.template.getInput('criteria', this.inputIndex);
 
+    this.calcWeightSum = this.pointsSum(this.criterias);
+    this.calcAllWeightsSelected = this.allWeightsSelected(this.criterias);
+
     if (validateWeight) {
-      if (this.pointsSum(this.criterias) !== 100) {
+      if (!this.calcAllWeightsSelected && this.calcWeightSum !== 100) {
         return;
       }
     }
 
-    input.content = JSON.stringify(this.criterias.map(c =>
-      ({description: {comments_json: c.description.comments_json, content: c.description.content},
-        name:        {comments_json: c.name.comments_json, content: c.name.content},
-        weight:      c.weight || 0
-      }))
-    );
+    if (!onlyCalculate) {
+      input.content = JSON.stringify(this.criterias.map(c =>
+        ({description: {comments_json: c.description.comments_json, content: c.description.content},
+          name:        {comments_json: c.name.comments_json, content: c.name.content},
+          weight:      c.weight || 0
+        }))
+      );
 
-    this.moduleService.saveInput(input).subscribe();
+      this.moduleService.saveInput(input).subscribe();
+    }
+  }
+
+  validate() {
+    if ('criteria' === this.mode) {
+      return this.criterias.reduce((isValid, criteria) => {
+        ['name', 'description'].forEach(field => {
+          this.template.decorateInput(criteria[field]);
+          if (!this.template.validateInput(criteria[field])) {
+            isValid = false;
+          }
+        });
+        return isValid;
+      }, true);
+    } else if ('weight' === this.mode) {
+      return this.criterias.reduce((isValid, criteria) => {
+        this.template.decorateInput(criteria);
+
+        if (criteria.weight <= 0) {
+          isValid = false;
+          criteria.error.next('Select a weight for this criteria');
+        } else {
+          criteria.error.next(null);
+        }
+
+        return isValid;
+      }, true)
+      && this.allWeightsSelected(this.criterias)
+      && this.pointsSum(this.criterias) === 100;
+    } else if ('grade' === this.mode) {
+      return this.allGradesSelected();
+    }
+
+    return false;
   }
 }

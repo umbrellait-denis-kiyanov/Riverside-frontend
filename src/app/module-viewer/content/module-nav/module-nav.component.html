@@ -1,4 +1,4 @@
-<span class="middle-buttons">
+<div class="middle-buttons">
   <button
   *ngIf="is_done"
   [hidden]="hideActionButton"
@@ -46,4 +46,11 @@
   {{actionButtonText('is_subaction_done', subaction)}}
 
 </button>
-</span>
+
+</div>
+
+<br />
+
+<div class="alert alert-danger" *ngIf="hasValidationError">
+  This step cannot be marked as done because of missing or invalid inputs. Please check the error messages above.
+</div>

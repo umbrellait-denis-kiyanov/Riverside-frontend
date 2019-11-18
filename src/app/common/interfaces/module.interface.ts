@@ -28,6 +28,7 @@ export interface Input {
   content: string;
   comments_json: string;
   observer: BehaviorSubject<string>;
+  error: BehaviorSubject<string>;
   getValue: () => string;
 }
 

@@ -4,6 +4,12 @@
 .row.criterias
   margin-bottom: 30px
 
+  ::ng-deep .alert.error-msg
+    position: absolute
+    bottom: 0
+    margin: 0
+    font-size: 0.7rem
+
   .col-sm-1
     writing-mode: vertical-rl
     font-weight: 700
@@ -58,6 +64,10 @@
     font-size: 15px
     font-weight: 700
     position: relative
+
+    ::ng-deep .alert.error-msg
+      bottom: auto
+      top: 110%
 
     .circle-container
       position: absolute

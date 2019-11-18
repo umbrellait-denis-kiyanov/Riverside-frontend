@@ -95,6 +95,7 @@ import { InputTextComponent } from './input-text/input-text.component';
 import { VideoComponent } from './riverside-step-template/templates/video/video.component';
 import { IcpInputComponent } from './riverside-step-template/templates/segment-criteria-define/icp-input/icp-input.component';
 import { ModuleFeedbackComponent } from './riverside-step-template/module-feedback/module-feedback.component';
+import { ErrorMsgComponent } from './error-msg/error-msg.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -186,7 +187,8 @@ import { ModuleFeedbackComponent } from './riverside-step-template/module-feedba
     InputTextComponent,
     VideoComponent,
     IcpInputComponent,
-    ModuleFeedbackComponent
+    ModuleFeedbackComponent,
+    ErrorMsgComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

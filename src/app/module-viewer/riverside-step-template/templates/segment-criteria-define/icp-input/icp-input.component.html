@@ -23,8 +23,9 @@
 
           <ng-container *ngIf="mode == 'weight'">
             <div *ngIf="!review">
-              <input type="number" min="1" max="99" maxlength="2" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(true)" [disabled]="disabled" />
-              <input type="range" min="1" max="99" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(true)" *ngIf="!disabled" />
+              <input type="number" min="1" max="99" maxlength="2" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(true); template.resetError(criteria);" [disabled]="disabled" />
+              <input type="range" min="1" max="99" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(true); template.resetError(criteria);" *ngIf="!disabled" />
+              <error-msg [input]="criteria"></error-msg>
             </div>
 
             <div *ngIf="review">
@@ -69,64 +70,62 @@
     </ng-container>
 
     <ng-container *ngIf="mode == 'weight'">
-      <div class="col-sm-2 total-score" *ngLet="pointsSum(criterias) as sum">
-        <ng-container *ngLet="allWeightsSelected(criterias) as allSelected;">
+      <div class="col-sm-2 total-score">
+        <ng-container>
           <div class="input-circle">
             <div class="circle-container">
               TOTAL<br />SCORE
             </div>
           </div>
-          <div class="input-circle grey-circle summary-score" [class.complete]="sum === 100">
+          <div class="input-circle grey-circle summary-score" [class.complete]="calcWeightSum === 100 && calcAllWeightsSelected">
             <div class="circle-container">
-              <span *ngIf="sum !== 100">{{ sum }}/100<br />POINTS</span>
-              <span *ngIf="sum === 100">100<br />POINTS</span>
+              <span *ngIf="calcWeightSum !== 100">{{ calcWeightSum }}/100<br />POINTS</span>
+              <span *ngIf="calcWeightSum === 100">100<br />POINTS</span>
             </div>
           </div>
 
           <ng-container *ngIf="!review">
-            <div *ngIf="allSelected && (sum !== 100)">
-              <strong>{{ sum }}</strong> points selected.
+            <div *ngIf="calcAllWeightsSelected && (calcWeightSum !== 100)">
+              <strong>{{ calcWeightSum }}</strong> points selected.
             </div>
-            <div *ngIf="!allSelected" class="alert alert-danger">Select a weight score for <strong>all criteria.</strong></div>
-            <div *ngIf="allSelected && sum < 100" class="alert alert-danger"><strong>Increase</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
-            <div *ngIf="allSelected && sum > 100" class="alert alert-danger"><strong>Decrease</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+            <div *ngIf="!calcAllWeightsSelected" class="alert alert-danger">Select a weight score for <strong>all criteria.</strong></div>
+            <div *ngIf="calcAllWeightsSelected && calcWeightSum < 100" class="alert alert-danger"><strong>Increase</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+            <div *ngIf="calcAllWeightsSelected && calcWeightSum > 100" class="alert alert-danger"><strong>Decrease</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
           </ng-container>
         </ng-container>
       </div>
     </ng-container>
 
     <ng-container *ngIf="mode == 'grade'">
-      <div class="col-sm-2 total-score" *ngLet="gradeSum() as sum">
-        <ng-container *ngLet="allGradesSelected() as allSelected;">
-          <div class="input-circle">
-            <div class="circle-container">
-              GRADE
+      <div class="col-sm-2 total-score">
+        <div class="input-circle">
+          <div class="circle-container">
+            GRADE
+          </div>
+        </div>
+        <div class="input-circle grey-circle" [class.complete]="calcAllGradesSelected && calcGradeSum >= gradeLevels.B" [class.average]="calcAllGradesSelected && calcGradeSum >= gradeLevels.D && calcGradeSum < gradeLevels.B" [class.bad]="calcAllGradesSelected && calcGradeSum < gradeLevels.D">
+          <div class="circle-container letter-score">
+            <div *ngIf="!calcAllGradesSelected">
+              ?
+            </div>
+            <div *ngIf="calcAllGradesSelected">
+              <span *ngIf="calcGradeSum >= gradeLevels.A">A</span>
+              <span *ngIf="calcGradeSum >= gradeLevels.B && calcGradeSum < gradeLevels.A">B</span>
+              <span *ngIf="calcGradeSum >= gradeLevels.C && calcGradeSum < gradeLevels.B">C</span>
+              <span *ngIf="calcGradeSum >= gradeLevels.D && calcGradeSum < gradeLevels.C">D</span>
+              <span *ngIf="calcGradeSum < gradeLevels.D">F</span>
             </div>
           </div>
-          <div class="input-circle grey-circle" [class.complete]="allSelected && sum >= gradeLevels.B" [class.average]="allSelected && sum >= gradeLevels.D && sum < gradeLevels.B" [class.bad]="allSelected && sum < gradeLevels.F">
-            <div class="circle-container letter-score">
-              <div *ngIf="!allSelected">
-                ?
-              </div>
-              <div *ngIf="allSelected">
-                <span *ngIf="sum >= gradeLevels.A">A</span>
-                <span *ngIf="sum >= gradeLevels.B && sum < gradeLevels.A">B</span>
-                <span *ngIf="sum >= gradeLevels.C && sum < gradeLevels.B">C</span>
-                <span *ngIf="sum >= gradeLevels.D && sum < gradeLevels.C">D</span>
-                <span *ngIf="sum < gradeLevels.D">F</span>
-              </div>
-            </div>
-          </div>
+        </div>
 
-          <div *ngIf="allSelected">
-            <strong>{{ sum }}</strong> points
+        <div *ngIf="calcAllGradesSelected">
+          <strong>{{ calcGradeSum }}</strong> points
+        </div>
+        <div *ngIf="!calcAllGradesSelected">
+          <div class="alert alert-danger">
+            Select a weight score for <strong>all criteria.</strong>
           </div>
-          <div *ngIf="!allSelected">
-            <div class="alert alert-danger">
-              Select a weight score for <strong>all criteria.</strong>
-            </div>
-          </div>
-        </ng-container>
+        </div>
       </div>
     </ng-container>
   </div>

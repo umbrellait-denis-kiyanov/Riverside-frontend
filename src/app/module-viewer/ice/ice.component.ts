@@ -30,10 +30,13 @@ export class IceComponent implements OnInit {
   @Input() box: number;
   @Input() disabled: boolean;
   @Input() placeholder: string = '';
+
+  // todo: replace with Input type
   @Input() data: {
     id: number;
     textContent: string;
     content: string;
+    error: BehaviorSubject<string>;
     selections$: BehaviorSubject<string[]>;
     comments_json: any[];
     org_id: number;
@@ -42,6 +45,7 @@ export class IceComponent implements OnInit {
     id: 0,
     textContent: '',
     content: '',
+    error: new BehaviorSubject(null),
     selections$: new BehaviorSubject([]),
     comments_json: [],
     org_id: 0,
@@ -81,6 +85,7 @@ export class IceComponent implements OnInit {
 
   ngOnInit() {
     this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
+    this.data.error = this.data.error || new BehaviorSubject(null);
 
     const el: HTMLDivElement = document.createElement('div');
     el.innerHTML = this.data.content;
@@ -343,7 +348,7 @@ export class IceComponent implements OnInit {
       return false;
     }
 
-    // this.onBlur();
+    this.data.error.next(null);
   }
 
   onBlur() {

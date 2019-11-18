@@ -173,11 +173,12 @@
       <div class="row inputs-wrapper">
         <label class="col-sm-3">Select a segment:</label>
         <div class="col-sm-9">
-          <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel);">
+          <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel); resetError(segmentSel);">
             <option *ngFor="let segment of activeSegments" [value]="segment">
               <span inputText="name" [num]="segment"></span>
             </option>
           </select>
+          <error-msg [input]="segmentSel"></error-msg>
         </div>
       </div>
 
