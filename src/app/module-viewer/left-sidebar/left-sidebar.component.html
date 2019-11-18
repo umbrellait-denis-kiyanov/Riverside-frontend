@@ -53,9 +53,11 @@
 
       <ng-template #menuItem>
         <div class="menu-item-icon" >
-          <mat-icon [ngClass]="menu.className" *ngIf="menu['mat-icon']">{{menu['mat-icon']}}</mat-icon>
+          <span class="menu-item-container" *ngIf="menu['mat-icon']">
+            <mat-icon [ngClass]="menu.className">{{menu['mat-icon']}}</mat-icon>
+            <span class="menu-item-counter" *ngIf="menu.counter"><span class="counter-content">{{menu.counter}}</span></span>
+          </span>
           <span *ngIf="menu.renderObservable" [innerHtml]="menu.renderObservable | async | safehtml"></span>
-          <span class="menu-item-counter" [hidden]="!menu.counter">{{menu.counter}}</span>
         </div>
       </ng-template>
     </li>

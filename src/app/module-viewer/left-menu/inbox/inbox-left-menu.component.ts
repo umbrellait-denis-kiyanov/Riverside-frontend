@@ -49,7 +49,7 @@ export class InboxLeftMenuComponent implements OnInit {
     this.data = this.messagesResource.data.map((row) => {
       const message = Message.fromObject(row) as Partial<MessageRow>;
       message.link = ['/inbox', String(message.id)];
-      message.tdClassName = message.is_pending ? 'pending' : '';
+      message.tdClassName = !message.read_on ? 'pending' : '';
       return message;
     });
   }

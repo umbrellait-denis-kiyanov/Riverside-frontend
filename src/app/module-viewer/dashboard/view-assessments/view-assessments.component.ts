@@ -3,7 +3,7 @@ import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { switchMap, filter, take, distinctUntilChanged, withLatestFrom } from 'rxjs/operators';
+import { switchMap, filter, take, distinctUntilChanged, withLatestFrom, shareReplay } from 'rxjs/operators';
 
 @Component({
   selector: 'app-view-assessments',
@@ -51,7 +51,8 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
     this.orgObserver$ = this.navService.organization$.pipe(distinctUntilChanged());
 
     this.sessions$ = combineLatest(this.activeType$.pipe(distinctUntilChanged(), filter(t => !!t)), this.orgObserver$).pipe(
-      switchMap(([type, org]) => this.asmService.getCompletedSessions(type, org))
+      switchMap(([type, org]) => this.asmService.getCompletedSessions(type, org)),
+      shareReplay(1)
     );
 
     const colors = ['red', 'green', '#f3e562', '#ff9800', '#ff4514', '#afdf0a', '#00b862', 'orange', 'blue', '#ff5722', '#58ad3f'];

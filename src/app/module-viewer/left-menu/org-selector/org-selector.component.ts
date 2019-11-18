@@ -1,4 +1,4 @@
-import { Component, OnInit, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { Observable, combineLatest } from 'rxjs';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
@@ -16,6 +16,7 @@ export class OrgSelectorComponent implements OnInit {
   organizationID: number;
 
   @Output() changed = new EventEmitter<Organization>(true);
+  @Input() warning = {};
 
   constructor(
     private moduleService: ModuleService,
