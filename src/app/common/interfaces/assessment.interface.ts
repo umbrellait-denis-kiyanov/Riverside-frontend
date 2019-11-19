@@ -43,6 +43,7 @@ export interface AssessmentOrgGroup {
     session_id: number;
     importance: number;
     isDone: boolean;
+    isApproved: boolean;
     score: number;
     answers: AssessmentAnswer[];
     position?: number;
