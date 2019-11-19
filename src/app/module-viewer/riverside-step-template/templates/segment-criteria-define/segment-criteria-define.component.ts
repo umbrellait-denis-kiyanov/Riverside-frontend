@@ -237,7 +237,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     return this.gradeLevels.reduce((isValid, level) => {
       const inp = this.getInput('grade_pct', level.i);
 
-      const max = level.i === 1 ? 100 : Number(this.getInput('grade_pct', level.i - 1).getValue()) - 1;
+      const max = level.i === 1 ? 100 : Math.min(Number(this.getInput('grade_pct', level.i - 1).getValue()) - 1, 100);
 
       if (!this.validateInput(inp, [
         Validate.required('Please enter the grade level'),

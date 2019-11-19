@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
 import { GenericTemplateData } from './generic.interface';
@@ -6,7 +6,8 @@ import { GenericTemplateData } from './generic.interface';
 @Component({
   selector: 'app-generic',
   templateUrl: './generic.component.html',
-  styleUrls: ['./generic.component.sass']
+  styleUrls: ['./generic.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => GenericTemplateComponent) }]
 })
 export class GenericTemplateComponent extends TemplateComponent {
   contentData: GenericTemplateData['template_params_json'];

@@ -33,6 +33,7 @@ export class IcpInputComponent implements OnChanges {
     }
 
     this.initGrades();
+    this.syncCriteria(true, true);
   }
 
   initGrades() {
@@ -66,7 +67,7 @@ export class IcpInputComponent implements OnChanges {
   }
 
   allGradesSelected() {
-    return Object.values(this.selectedGrades).filter(a => a !== null).length === this.criterias.length;
+    return this.criterias && Object.values(this.selectedGrades).filter(a => a !== null).length === this.criterias.length;
   }
 
   resetGradeSelection() {
@@ -94,11 +95,11 @@ export class IcpInputComponent implements OnChanges {
   }
 
   pointsSum(criteria: SegmentCriteria[]) {
-    return criteria.reduce((sum, cr) => sum + (cr.weight || 0), 0);
+    return criteria ? criteria.reduce((sum, cr) => sum + (cr.weight || 0), 0) : 0;
   }
 
   allWeightsSelected(criteria: SegmentCriteria[]) {
-    return !criteria.find(cr => !cr.weight);
+    return criteria ? !criteria.find(cr => !cr.weight) : false;
   }
 
   syncCriteria(validateWeight = false, onlyCalculate = false) {

@@ -182,7 +182,7 @@ export class ModuleNavService {
       do {
         index = Math.min(Math.max(0, index + offset), module.steps.length - 1);
         step = module.steps[index];
-      } while (step.is_section_break || !index || index === module.steps.length - 1);
+      } while (step.is_section_break || !index);
 
       this.goToStep(step.id);
     });
