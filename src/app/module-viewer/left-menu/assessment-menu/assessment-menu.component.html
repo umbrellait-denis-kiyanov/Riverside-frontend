@@ -31,7 +31,7 @@
   <h2>{{ activeType.name }} Strategy Assessment</h2>
 
   <table *ngIf="(orgGroups$ | async) as orgGroups" [class.approved]="session.isApproved">
-    <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)" class="step-list-item" [class.active]="(activeGroup$ | async)?.id == group.id">
+    <tr *ngFor="let group of groups$ | async" (click)="setGroup(group)" class="step-list-item" [class.approved]="orgGroups[group.id]?.isApproved" [class.active]="(activeGroup$ | async)?.id == group.id">
       <td class="group-status">
         <mat-icon *ngIf="orgGroups[group.id]?.isDone">check</mat-icon>
       </td>
