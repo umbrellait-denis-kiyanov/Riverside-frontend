@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef } from '@angular/core';
+import { Component, OnInit, forwardRef } from '@angular/core';
 import { PersonaInputs } from '../persona-ids.class';
 import { TemplateComponent } from '../template-base.cass';
 import { AgeGenderTemplateData } from './age-gender.interface';
@@ -6,7 +6,8 @@ import { AgeGenderTemplateData } from './age-gender.interface';
 @Component({
   selector: 'app-age-gender',
   templateUrl: './age-gender.component.html',
-  styleUrls: ['./age-gender.component.sass']
+  styleUrls: ['./age-gender.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => AgeGenderComponent) }]
 })
 export class AgeGenderComponent extends TemplateComponent implements OnInit {
   allIds: string[] = [];

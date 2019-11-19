@@ -1,6 +1,4 @@
-import { Template1Component } from './template1/template1.component';
 import { Template2Component } from './template2/template2.component';
-import { Template3Component } from './template3/template3.component';
 import { BrainstormTemplateComponent } from './brainstorm/brainstorm.component';
 import { GenericTemplateComponent } from './generic/generic.component';
 import { NamePersonasTemplateComponent } from './name_personas/name_personas.component';
@@ -14,9 +12,7 @@ import { SegmentCriteriaDefineComponent } from './segment-criteria-define/segmen
 import { VideoComponent } from './video/video.component';
 
 export const Templates = {
-  template1: Template1Component,
   template2: Template2Component,
-  template3: Template3Component,
   brainstorm: BrainstormTemplateComponent,
   generic: GenericTemplateComponent,
   name_personas: NamePersonasTemplateComponent,

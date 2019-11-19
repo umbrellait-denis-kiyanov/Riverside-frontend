@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
-import { data } from './exampleData';
 import { NamePersonasTemplateData } from './name_personas.interface';
 
 @Component({
   selector: 'app-name_personas',
   templateUrl: './name_personas.component.html',
-  styleUrls: ['./name_personas.component.sass']
+  styleUrls: ['./name_personas.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => NamePersonasTemplateComponent) }]
 })
 export class NamePersonasTemplateComponent extends TemplateComponent {
   inputIds = {

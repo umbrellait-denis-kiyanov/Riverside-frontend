@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
 import { PersonaPictureTemplateData } from './persona-picture.interface';
@@ -9,7 +9,8 @@ import { PersonaPictureListComponent } from './persona-picture-list/persona-pict
   selector: 'app-persona-picture',
   templateUrl: './persona-picture.component.html',
   styleUrls: ['./persona-picture.component.sass'],
-  preserveWhitespaces: true
+  preserveWhitespaces: true,
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PersonaPictureTemplateComponent) }]
 })
 
 export class PersonaPictureTemplateComponent extends TemplateComponent {

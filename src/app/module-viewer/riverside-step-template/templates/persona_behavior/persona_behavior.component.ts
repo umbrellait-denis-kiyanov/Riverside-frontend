@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
 import { PersonaBehaviorTemplateData } from './persona_behavior.interface';
@@ -7,7 +7,8 @@ import { PersonaBehaviorTemplateData } from './persona_behavior.interface';
   selector: 'app-persona_behavior',
   templateUrl: './persona_behavior.component.html',
   styleUrls: ['./persona_behavior.component.sass'],
-  preserveWhitespaces: true
+  preserveWhitespaces: true,
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PersonaBehaviorTemplateComponent) }]
 })
 
 export class PersonaBehaviorTemplateComponent extends TemplateComponent {

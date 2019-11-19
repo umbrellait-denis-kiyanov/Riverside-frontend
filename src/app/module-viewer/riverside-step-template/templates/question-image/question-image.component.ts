@@ -1,4 +1,4 @@
-import { Component, ViewChild } from '@angular/core';
+import { Component, ViewChild, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { QuestionImageTemplateData } from './question-image.interface';
 import { DomSanitizer, SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
@@ -7,6 +7,7 @@ import { DomSanitizer, SafeStyle, SafeResourceUrl } from '@angular/platform-brow
   selector: 'app-question-image',
   templateUrl: './question-image.component.html',
   styleUrls: ['./question-image.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => QuestionImageComponent) }],
   preserveWhitespaces: true
 })
 export class QuestionImageComponent extends TemplateComponent {

@@ -16,7 +16,6 @@ import { UserService } from '../common/services/user.service';
 import { IceComponent } from './ice/ice.component';
 import { RiversideStepTemplateComponent } from './riverside-step-template/riverside-step-template.component';
 import { RTemplateDirective } from './riverside-step-template/riverside-step-template-host.directive';
-import { Template1Component } from './riverside-step-template/templates/template1/template1.component';
 import { ModuleContentService } from '../common/services/module-content.service';
 import { LetterImageComponent } from './ice/letter-image/letter-image.component';
 import { MatMenuModule} from '@angular/material/menu';
@@ -41,7 +40,6 @@ import { E3CommonModule } from '../common/e3-common.module';
 import { ModuleNavComponent } from './content/module-nav/module-nav.component';
 import { ModuleNavService } from '../common/services/module-nav.service';
 import { Template2Component } from './riverside-step-template/templates/template2/template2.component';
-import { Template3Component } from './riverside-step-template/templates/template3/template3.component';
 import { BrainstormTemplateComponent } from './riverside-step-template/templates/brainstorm/brainstorm.component';
 import { GenericTemplateComponent } from './riverside-step-template/templates/generic/generic.component';
 import { NamePersonasTemplateComponent } from './riverside-step-template/templates/name_personas/name_personas.component';
@@ -139,7 +137,6 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
     IceComponent,
     RiversideStepTemplateComponent,
     RTemplateDirective,
-    Template1Component,
     LetterImageComponent,
     UserComponent,
     LeftSidebarComponent,
@@ -148,7 +145,6 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
     RequestFeedbackComponent,
     ModuleNavComponent,
     Template2Component,
-    Template3Component,
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
@@ -195,9 +191,7 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
   entryComponents: [
     ModuleViewerRootComponent,
     RequestFeedbackComponent,
-    Template1Component,
     Template2Component,
-    Template3Component,
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
