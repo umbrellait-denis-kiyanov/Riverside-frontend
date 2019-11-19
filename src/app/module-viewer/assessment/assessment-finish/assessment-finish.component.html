@@ -11,7 +11,7 @@
     <assessment-chart *ngIf="chart" [series]="chart" [isLineChart]="isLineChart"></assessment-chart>
   </div>
 
-  <div *ngIf="!isSubmittedForReview && !(sessionRequest$ | async | canModify:'X-Can-Record')" class="alert alert-warning">
+  <div *ngIf="!session.isApproved && !isSubmittedForReview && !(sessionRequest$ | async | canModify:'X-Can-Record')" class="alert alert-warning">
     NOTE: Once your assessment has been submitted you will not be able to change your answers
   </div>
 

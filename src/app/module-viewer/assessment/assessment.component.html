@@ -14,7 +14,7 @@
       {{ val.activeGroup.description }}
   </div>
 
-  <table class="table table-borderless table-striped questions" [class.answers-loading]="answersLoading" [class.readonly]="!val.canAnswer || answersLoading" *ngIf="val.type as type">
+<table class="table table-borderless table-striped questions" [class.answers-loading]="answersLoading" [class.readonly]="!val.canAnswer || answersLoading" *ngIf="val.type as type">
     <thead>
       <tr>
         <th></th>
@@ -27,10 +27,10 @@
       <tr *ngFor="let question of val.questions; trackBy: questionTrack" [class.asm-error]="errors[question.id]">
         <td class="question">{{ question.position}}. {{ question.question}}</td>
         <td class="answer answer-yes">
-          <mat-radio-button *ngIf="{checked: (answers && answers.answers[question.id]?.answer == 1)} as c" [name]="question.id" (click)="val.canAnswer && setAnswer(question, type, c.checked ? null : 1)" [checked]="c.checked"></mat-radio-button>
+          <mat-radio-button *ngIf="{checked: (answers && answers.answers && answers.answers[question.id]?.answer == 1)} as c" [name]="question.id" (click)="val.canAnswer && setAnswer(question, type, c && c.checked ? null : 1)" [checked]="c && c.checked"></mat-radio-button>
         </td>
         <td class="answer answer-no">
-          <mat-radio-button *ngIf="{checked: (answers && answers.answers[question.id]?.answer == 0)} as c" [name]="question.id" (click)="val.canAnswer && setAnswer(question, type, c.checked ? null : 0)" [checked]="answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
+          <mat-radio-button *ngIf="{checked: (answers && answers.answers && answers.answers[question.id]?.answer == 0)} as c" [name]="question.id" (click)="val.canAnswer && setAnswer(question, type, c && c.checked ? null : 0)" [checked]="answers && answers.answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
         </td>
         <td class="notes">
           <textarea mat-autosize matAutosizeMaxRows="5"
