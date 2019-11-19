@@ -74,6 +74,7 @@
 
       span
         vertical-align: middle
+        display: inline-block
 
     .step-list-item.active
       background: white
@@ -115,6 +116,22 @@
       width: 2em
       padding-right: 3px
       text-align: right
+      margin-top: -2px
+
+      mat-icon.lock
+        display: none
+        font-size: 16px
+        height: 13px
+        width: 13px
+        margin-top: 2px
+
+    li.is-locked:hover
+      .step-number
+        .step-number-value
+          display: none
+
+        mat-icon.lock
+          display: inline-block
 
 a.fa
   text-decoration: none

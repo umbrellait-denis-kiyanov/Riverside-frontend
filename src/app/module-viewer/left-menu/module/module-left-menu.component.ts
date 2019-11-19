@@ -28,6 +28,8 @@ export class LeftMenuComponent implements OnInit {
 
   module$: Observable<Module>;
 
+  isLocked: {[key: number]: boolean} = {};
+
   constructor(
     private moduleService: ModuleService,
     private userService: UserService,
@@ -45,7 +47,18 @@ export class LeftMenuComponent implements OnInit {
                                 )
       .pipe(
         tap(([orgId]) => this.orgId = orgId),
-        switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId))
+        switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId)),
+        tap(moduleData => {
+          const sortedSteps = moduleData.steps.reduce((steps, step) => {
+            steps[step.id] = step;
+            return steps;
+          }, {});
+
+          this.isLocked = moduleData.steps.reduce((locked, step) => {
+            locked[step.id] = step.linked_ids.filter(id => !sortedSteps[id].is_checked).length > 0;
+            return locked;
+          }, {});
+        })
       );
   }
 
@@ -64,7 +77,11 @@ export class LeftMenuComponent implements OnInit {
 
   // todo: rewrite as pipe
   stepRouterLink(module: Module, step: Step) {
-    return ['/org', this.orgId, 'module', module.id , 'step', step.id ];
+    if (!this.isLocked[step.id]) {
+      return ['/org', this.orgId, 'module', module.id, 'step', step.id];
+    } else {
+      return ['/org', this.orgId, 'module', module.id, 'step', this.navService.step.current];
+    }
   }
 
   setOrganization(organization: Organization, module: Module) {
