@@ -34,7 +34,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   resetSelectAllSub: Subscription;
 
   markAsDoneSub: Subscription;
-  clearSub: Subscription;
+  clearAnswersSub: Subscription;
+  clearNotesSub: Subscription;
 
   answersLoading: boolean;
 
@@ -90,9 +91,10 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     this.asmService.answerAll(g, t, this.navService.lastOrganization.current, answer).subscribe(_ => this.answerUpdated$.next(true));
   }
 
-  clearAll(g: AssessmentGroup, t: AssessmentType) {
-    if (confirm('Really clear all answers in ' + g.name + '?')) {
-      this.clearSub = this.asmService.answerAll(g, t, this.navService.lastOrganization.current, null).subscribe(_ => {
+  clearAll(g: AssessmentGroup, t: AssessmentType, clear: 'answers' | 'notes') {
+    if (confirm('Really clear all ' + clear + ' in ' + g.name + '?')) {
+      const sub = clear === 'notes' ? 'clearNotesSub' : 'clearAnswersSub';
+      this[sub] = this.asmService.answerAll(g, t, this.navService.lastOrganization.current, null, clear).subscribe(_ => {
         this.answerUpdated$.next(true);
         toastr.success(g.name + ' answers have been cleared');
       });
