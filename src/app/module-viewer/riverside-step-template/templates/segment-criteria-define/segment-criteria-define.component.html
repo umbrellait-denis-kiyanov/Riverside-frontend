@@ -150,56 +150,60 @@
 </div>
 
 <div *ngIf="step == 7">
-  <div class="grade-container row" *ngFor="let customerIndex of grades">
-    <div class="col-sm-1 text-center">
-      <h2>{{ customerIndex }}</h2>
-    </div>
-    <div class="col-sm-11" *ngLet="inputs['segment_criteria_define_' + gradePrefix + '_segment_' + customerIndex] as segmentSel">
+  <ng-container *ngFor="let customerIndex of grades">
+    <h2 *ngIf="grades.length == 6 && customerIndex % 2">{{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers</h2>
+    <div class="grade-container row">
+      <div class="col-sm-1 text-center">
+        <h2>{{ customerIndex }}</h2>
+      </div>
+      <div class="col-sm-11" *ngLet="inputs['segment_criteria_define_' + gradePrefix + '_segment_' + customerIndex] as segmentSel">
 
-      <div class="row inputs-wrapper">
-        <label class="col-sm-3">Customer Name:</label>
-        <div class="col-sm-9">
-          <ice
-            [hideChanges]="hideChanges"
-            [user]="me"
-            [disabled]="disabled"
-            (changed)="contentChanged($event)"
-            [(data)]="inputs['segment_criteria_define_' + gradePrefix + '_name_' + customerIndex]"
-          ></ice>
+        <div class="row inputs-wrapper">
+          <label class="col-sm-3">Customer Name:</label>
+          <div class="col-sm-9">
+            <ice
+              [hideChanges]="hideChanges"
+              [user]="me"
+              [disabled]="disabled"
+              (changed)="contentChanged($event)"
+              [(data)]="inputs['segment_criteria_define_' + gradePrefix + '_name_' + customerIndex]"
+            ></ice>
+          </div>
+        </div>
+
+        <div class="row inputs-wrapper">
+          <label class="col-sm-3">Select a segment:</label>
+          <div class="col-sm-9">
+            <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel); resetError(segmentSel);">
+              <option *ngFor="let segment of activeSegments" [value]="segment">
+                <span inputText="name" [num]="segment"></span>
+              </option>
+            </select>
+            <error-msg [input]="segmentSel"></error-msg>
+          </div>
+        </div>
+
+        <div class="segment-container">
+
+          <app-icp-input
+            [criterias]="criterias[segmentSel.content]"
+            [inputPrefix]="gradePrefix"
+            [inputIndex]="customerIndex"
+            [gradeLevels]="userGradeLevels"
+            mode="grade"
+          ></app-icp-input>
+
         </div>
       </div>
-
-      <div class="row inputs-wrapper">
-        <label class="col-sm-3">Select a segment:</label>
-        <div class="col-sm-9">
-          <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel); resetError(segmentSel);">
-            <option *ngFor="let segment of activeSegments" [value]="segment">
-              <span inputText="name" [num]="segment"></span>
-            </option>
-          </select>
-          <error-msg [input]="segmentSel"></error-msg>
-        </div>
-      </div>
-
-      <div class="segment-container">
-
-        <app-icp-input
-          [criterias]="criterias[segmentSel.content]"
-          [inputPrefix]="gradePrefix"
-          [inputIndex]="customerIndex"
-          [gradeLevels]="userGradeLevels"
-          mode="grade"
-        ></app-icp-input>
-
-      </div>
     </div>
-  </div>
+  </ng-container>
 </div>
 
 <div *ngIf="step == 8">
   <div class="grade-feedback-section" *ngFor="let section of gradeSections">
-    <h2>{{ section.title }}</h2>
+    <h2 *ngIf="section.grades.length != 6">{{ section.title }}</h2>
     <ng-container *ngFor="let customerIndex of section.grades">
+      <h2 *ngIf="section.grades.length == 6 && customerIndex % 2">{{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers</h2>
       <div class="grade-container" *ngIf="inputs['segment_criteria_define_' + section.prefix + '_segment_' + customerIndex].content as segIdx">
         <h3 inputText="{{ section.prefix }}_name" [num]="customerIndex"></h3>
         <h5 inputText="name" [num]="segIdx"></h5>
