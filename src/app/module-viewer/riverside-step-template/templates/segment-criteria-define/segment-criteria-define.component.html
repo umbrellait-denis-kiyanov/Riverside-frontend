@@ -127,7 +127,7 @@
     <tbody>
       <tr *ngFor="let grade of gradeLevels">
         <td>
-          {{ grade.grade }} &gt;= {{ grade.level }}
+          <span class="">{{ grade.grade }} &gt;=</span> {{ grade.level }}
         </td>
         <td>
           <span>{{ grade.grade }} &gt;= </span>
@@ -142,8 +142,8 @@
         </td>
       </tr>
       <tr>
-        <td>F &lt; {{lastGradeLevel.level}} </td>
-        <td>F &lt; <span inputText="grade_pct" num="4" inline="true"></span> </td>
+        <td>F &lt; {{lastGradeLevel.level}}</td>
+        <td>F &lt; <span class="calculated-grade-pct" inputText="grade_pct" num="4" inline="true"></span></td>
       </tr>
     </tbody>
   </table>
