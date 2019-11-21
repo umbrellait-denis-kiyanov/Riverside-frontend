@@ -96,6 +96,13 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
         }
         const div = document.createElement('div');
         div.innerHTML = inp.content.split('<br>').join('\n');
+
+        // Remove contents deleted but still visible because of changes tracker
+        const deletedEls = div.getElementsByClassName('del');
+        for (const el of deletedEls  as any) {
+          el.parentNode.removeChild(el);
+        }
+
         const text = (div.textContent || div.innerText || '').trim();
         div.remove();
         return text;
