@@ -55,7 +55,7 @@ export class LeftMenuComponent implements OnInit {
           }, {});
 
           this.isLocked = moduleData.steps.reduce((locked, step) => {
-            locked[step.id] = step.linked_ids.filter(id => !sortedSteps[id].is_checked).length > 0;
+            locked[step.id] = step.linked_ids.filter(id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved).length > 0;
             return locked;
           }, {});
         })
