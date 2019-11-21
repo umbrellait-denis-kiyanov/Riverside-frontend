@@ -41,6 +41,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     {grade: 'C', i: 3, level: 65},
     {grade: 'D', i: 4, level: 55}
   ];
+  lastGradeLevel = this.gradeLevels[this.gradeLevels.length - 1];
 
   userGradeLevels = {};
 
