@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { Module } from 'src/app/common/interfaces/module.interface';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
-import { map, filter, switchMap } from 'rxjs/operators';
+import { map, filter, switchMap, take } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 
@@ -51,9 +51,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this.stepWatch = combineLatest(this.navService.organization$, this.navService.module$, this.route.url).pipe(
       map(_ => !this.route.children.find(route => route.outlet === 'primary')),
       filter(f => !!f),
-      switchMap(_ => firstStep)
+      take(1),
+      switchMap(_ => firstStep),
     ).subscribe(stepId => this.navService.goToStep(stepId));
-
+    
     this.leftMenuService.onExpand.subscribe((expanded) => this.expanded = expanded);
   }
 
