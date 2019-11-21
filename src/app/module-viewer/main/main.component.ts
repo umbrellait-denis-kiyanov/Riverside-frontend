@@ -51,10 +51,10 @@ export class MainComponent implements OnInit, OnDestroy {
     this.stepWatch = combineLatest(this.navService.organization$, this.navService.module$, this.route.url).pipe(
       map(_ => !this.route.children.find(route => route.outlet === 'primary')),
       filter(f => !!f),
-      take(1),
       switchMap(_ => firstStep),
+      take(1),
     ).subscribe(stepId => this.navService.goToStep(stepId));
-    
+
     this.leftMenuService.onExpand.subscribe((expanded) => this.expanded = expanded);
   }
 
