@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
 import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, take, map } from 'rxjs/operators';
@@ -103,9 +103,33 @@ export class ModuleNavService {
       distinctUntilChanged()
     );
 
-  moduleData$ = this.module$.pipe(
-      switchMap(id => this.moduleService.getModuleConfig(id))
-    );
+  moduleData$ = combineLatest(this.organization$,
+                              this.module$,
+                              this.moduleService.moduleChanged$
+                             )
+                .pipe(
+                  switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId)),
+                  map(moduleData => {
+                    const sortedSteps = moduleData.steps.reduce((steps, step) => {
+                      steps[step.id] = step;
+
+                      return steps;
+                    }, {});
+
+                    const isLocked = moduleData.steps.reduce((locked, step) => {
+                      locked[step.id] = step.linked_ids.filter(
+                          id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved
+                        ).length > 0;
+
+                      return locked;
+                    }, {});
+
+                    moduleData.steps.forEach(step => step.isLocked = isLocked[step.id]);
+
+                    return moduleData;
+                  }),
+                  shareReplay(1)
+                );
 
   step = new ResourceFromStorage<number>('last_step_id',
             this.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id)),
@@ -160,7 +184,7 @@ export class ModuleNavService {
   }
 
   nextStep() {
-    this.moveToStep(1);
+    setTimeout(_ => this.moveToStep(1), 100);
   }
 
   previousStep() {
@@ -182,9 +206,15 @@ export class ModuleNavService {
       do {
         index = Math.min(Math.max(0, index + offset), module.steps.length - 1);
         step = module.steps[index];
-      } while (step.is_section_break || !index);
 
-      this.goToStep(step.id);
+        if ((index === module.steps.length - 1) || !index) {
+          break;
+        }
+      } while (step.is_section_break || step.isLocked || !index);
+
+      if (!step.isLocked) {
+        this.goToStep(step.id);
+      }
     });
   }
 }

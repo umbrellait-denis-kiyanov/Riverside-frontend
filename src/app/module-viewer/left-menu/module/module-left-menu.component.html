@@ -26,8 +26,8 @@
         class="step-list-item"
         *ngFor="let step of module.steps"
         [class.section-break]="step.is_section_break"
-        [class.is-locked]="isLocked[step.id]"
-        [routerLinkActive]="!isLocked[step.id] ? 'active' : ''"
+        [class.is-locked]="step.isLocked"
+        [routerLinkActive]="!step.isLocked ? 'active' : ''"
       >
         <a *ngIf="step.is_section_break">{{step.description}}</a>
 

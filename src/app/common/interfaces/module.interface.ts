@@ -1,6 +1,7 @@
 import { BehaviorSubject } from 'rxjs';
 
 export interface ModuleStatus {
+  org_id: number;
   is_activated: boolean;
   due_date?: string;
   is_late?: boolean;
@@ -52,6 +53,7 @@ export interface Step {
   template_component?: string;
   template_params_json: object;
   position?: number;
+  isLocked?: boolean;
 }
 
 export interface Section {

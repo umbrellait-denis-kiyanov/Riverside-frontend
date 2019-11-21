@@ -22,13 +22,9 @@ export class LeftMenuComponent implements OnInit {
 
   @Input() width: number = 300;
 
-  orgId: number;
-
   me: User;
 
   module$: Observable<Module>;
-
-  isLocked: {[key: number]: boolean} = {};
 
   constructor(
     private moduleService: ModuleService,
@@ -41,25 +37,7 @@ export class LeftMenuComponent implements OnInit {
   ngOnInit() {
     this.me = this.userService.me;
 
-    this.module$ = combineLatest(this.navService.organization$,
-                                 this.navService.module$,
-                                 this.moduleService.moduleChanged$
-                                )
-      .pipe(
-        tap(([orgId]) => this.orgId = orgId),
-        switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId)),
-        tap(moduleData => {
-          const sortedSteps = moduleData.steps.reduce((steps, step) => {
-            steps[step.id] = step;
-            return steps;
-          }, {});
-
-          this.isLocked = moduleData.steps.reduce((locked, step) => {
-            locked[step.id] = step.linked_ids.filter(id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved).length > 0;
-            return locked;
-          }, {});
-        })
-      );
+    this.module$ = this.navService.moduleData$;
   }
 
   collapse() {
@@ -77,18 +55,27 @@ export class LeftMenuComponent implements OnInit {
 
   // todo: rewrite as pipe
   stepRouterLink(module: Module, step: Step) {
-    if (!this.isLocked[step.id]) {
-      return ['/org', this.orgId, 'module', module.id, 'step', step.id];
+    if (!module.status) {
+      return;
+    }
+
+    if (!step.isLocked) {
+      return ['/org', module.status.org_id, 'module', module.id, 'step', step.id];
     } else {
-      return ['/org', this.orgId, 'module', module.id, 'step', this.navService.step.current];
+      return ['/org', module.status.org_id, 'module', module.id, 'step', this.navService.step.current];
     }
   }
 
   setOrganization(organization: Organization, module: Module) {
+    if (this.navService.lastOrganization.current === organization.id) {
+      return;
+    }
+
     this.navService.lastOrganization.current = organization.id;
 
-    this.navService.step$.pipe(take(1)).subscribe(step =>
+    this.navService.step$.pipe(take(1)).subscribe(step => {
       this.router.navigate(['org', organization.id, 'module', module.id, 'step', step])
+    }
     );
   }
 }

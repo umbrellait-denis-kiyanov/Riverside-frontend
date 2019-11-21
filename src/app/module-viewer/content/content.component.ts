@@ -1,12 +1,12 @@
 import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import User from 'src/app/common/interfaces/user.model';
 import { TemplateContentData } from 'src/app/module-viewer/riverside-step-template/templates/template-data.class';
 import { RiversideStepTemplateComponent } from 'src/app/module-viewer/riverside-step-template/riverside-step-template.component';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
-import { switchMap, catchError, filter, tap, map } from 'rxjs/operators';
+import { switchMap, catchError, filter, tap, take, map } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { combineLatest, Subscription, Observable, race } from 'rxjs';
 import { Templates } from '../riverside-step-template/templates';
@@ -33,6 +33,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   constructor(
     private route: ActivatedRoute,
+    private router: Router,
     private moduleService: ModuleService,
     private userService: UserService,
     private moduleContentService: ModuleContentService,
@@ -51,10 +52,10 @@ export class ContentComponent implements OnInit, OnDestroy {
       params => this.navService.step.current = Number(params.stepId)
     );
 
-    this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, this.navService.step$)
+    this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, this.navService.step$, this.moduleService.moduleChanged$)
       .pipe(
         switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
-          catchError(_ => this.navService.moduleData$.pipe(
+          catchError(err => this.navService.moduleData$.pipe(
             switchMap(moduleData => {
               const firstStep = moduleData.steps.find(stepData => !stepData.is_section_break).id;
               this.navService.goToStep(firstStep);
@@ -62,6 +63,18 @@ export class ContentComponent implements OnInit, OnDestroy {
             })
           ))
         )),
+        tap(content => {
+          this.navService.moduleData$.pipe(take(1)).subscribe(moduleData => {
+            if (!moduleData.status || !moduleData.status.is_activated || moduleData.status.org_id !== this.navService.lastOrganization.current) {
+              this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
+              return;
+            }
+
+            if (moduleData.steps.find(step => step.id === content.step_id).isLocked) {
+              this.navService.previousStep();
+            }
+          });
+        }),
         tap(this.render.bind(this))
       );
   }

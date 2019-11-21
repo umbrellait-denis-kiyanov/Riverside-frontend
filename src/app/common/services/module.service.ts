@@ -86,7 +86,8 @@ export class ModuleService {
   }
 
   setStatus(module: Partial<Module>, isActivated: boolean, orgId: number): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/` + (isActivated ? 'activate' : 'deactivate'), {});
+    return this.httpClient.post(`${this.baseUrl}/${module.id}/org/${orgId}/` + (isActivated ? 'activate' : 'deactivate'), {})
+      .pipe(tap(_ => this.moduleChanged$.next(true)));
   }
 
   setDueDate(module: Partial<Module>, date: string, orgId: number): Observable<any> {
