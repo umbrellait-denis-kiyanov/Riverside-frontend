@@ -44,7 +44,7 @@
       </tr>
       <tr class="answer-all" (mouseleave)="highlight = ''">
         <td class="answer-label">
-          <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'answers')">
+          <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'answers')"  *ngIf="(answersRequest$ | async | canModify:'X-Can-Record')">
             Clear all answers
             <spinner [sub]="clearAnswersSub"></spinner>
           </a>
