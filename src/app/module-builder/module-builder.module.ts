@@ -13,7 +13,6 @@ import { MatcherComponent } from './matcher/matcher.component';
 import { ModuleSelectorComponent } from './module-selector/module-selector.component';
 import { ModuleService } from '../common/services/module.service';
 import { RiversideStepTemplateComponent } from '../module-viewer/riverside-step-template/riverside-step-template.component';
-import { Template1Component } from '../module-viewer/riverside-step-template/templates/template1/template1.component';
 import { E3CheckboxComponent } from '../common/components/e3-checkbox/e3-checkbox.component';
 import { E3CommonModule } from '../common/e3-common.module';
 import { DragDropModule } from '@angular/cdk/drag-drop';
@@ -22,6 +21,7 @@ import { StepLinkEditorComponent } from './module-editor/step-link-editor/step-l
 import { StepTemplateFieldComponent } from './module-editor/step-template-editor/step-template-field/step-template-field.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatIconModule} from '@angular/material/icon';
+import { BuilderSelectOptionPipe } from './module-editor/builder-select-option.pipe';
 
 @NgModule({
   imports: [
@@ -46,6 +46,7 @@ import { MatIconModule} from '@angular/material/icon';
     StepTemplateEditorComponent,
     StepLinkEditorComponent,
     StepTemplateFieldComponent,
+    BuilderSelectOptionPipe,
     // E3CheckboxComponent
 
   ],

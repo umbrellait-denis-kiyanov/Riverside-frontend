@@ -1,13 +1,13 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
-import { data } from './exampleData';
 import { Template2Data } from './template2.interface';
 
 @Component({
   selector: 'app-template2',
   templateUrl: './template2.component.html',
-  styleUrls: ['./template2.component.sass']
+  styleUrls: ['./template2.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => Template2Component) }]
 })
 export class Template2Component extends TemplateComponent {
   inputIds = {
@@ -22,7 +22,6 @@ export class Template2Component extends TemplateComponent {
     ]
   };
 
-
   contentData: Template2Data['template_params_json'];
 
   getDescription() {
@@ -36,7 +35,9 @@ export class Template2Component extends TemplateComponent {
   protected init() {
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach(id => {
-        this.inputs[id] = this.inputs[id] || '';
+        if (this.inputs[id]) {
+          this.inputs[id].content = (this.inputs[id] || {content: ''}).content || '';
+        }
       });
     });
     this.contentData = this.data.data.template_params_json as Template2Data['template_params_json'];

@@ -1,6 +1,9 @@
-$padding: 5px;
+@import "src/app/common/sass/variables.sass"
+
+$padding: 0;
 $triangleSize: 10px;
 $triangleColor: orange;
+
 \:host
   display: block
   padding: 0 $padding
@@ -11,6 +14,11 @@ $triangleColor: orange;
       display: inline-flex
     .has-comment
       display: none
+
+  &.side-comment
+    .add-comment
+      top: -5px
+      right: -1em
 
 .add-comment
   display: none
@@ -30,11 +38,16 @@ $triangleColor: orange;
   border: solid 2px #BFBFBF;
   background: white;
   outline: none;
+  min-height: 2.2em
+
+  &.has-error
+    border-color: $red
+
   \::ng-deep
     > ul
       padding-left: 20px
-  &[disabled="true"]
 
+  &[disabled="true"]
     &:before
       content: "";
       position: absolute;
@@ -45,28 +58,12 @@ $triangleColor: orange;
       top: 0;
       left: 0;
 
-
-
-  // &.hasComment:after
-  //   content: "";
-  //   width: 0;
-  //   height: 0;
-  //   border-top: $triangleSize solid transparent;
-  //   border-bottom: $triangleSize solid transparent;
-
-  //   border-left: $triangleSize solid $triangleColor;
-  //   position: absolute;
-  //   top: -1*$padding;
-  //   right: $padding;
-  //   transform: rotate(-45deg);
+  &[contenteditable][placeholder]:empty:before
+    content: attr(placeholder)
+    color: #aaa
 
   &.showComment
     border-color: $triangleColor
-
-
-// .comment-triangle.hasComment
-
-
 
 .comment-wrapper
 

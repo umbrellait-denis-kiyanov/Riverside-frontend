@@ -1,6 +1,6 @@
-import { Component, OnInit } from '@angular/core';
-import { Module, LearningElementTypes, Step, Section, LearningElement } from '../../common/interfaces/module.interface';
-import { ActivatedRoute, ParamMap } from '@angular/router';
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { Module, Step, Section } from '../../common/interfaces/module.interface';
+import { ActivatedRoute } from '@angular/router';
 import { ModuleService } from '../../common/services/module.service';
 import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
@@ -8,18 +8,19 @@ import { StepTemplateEditorComponent } from './step-template-editor/step-templat
 import { StepLinkEditorComponent } from './step-link-editor/step-link-editor.component';
 import { Subscription } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
+import toastr from 'src/app/common/lib/toastr';
 
 @Component({
   selector: 'app-module-editor',
   templateUrl: './module-editor.component.html',
   styleUrls: ['./module-editor.component.sass']
 })
-export class ModuleEditorComponent implements OnInit {
+export class ModuleEditorComponent implements OnInit, OnDestroy {
   moduleData: Module;
   sections: Section[];
-  elementTypes = LearningElementTypes;
   ready = false;
   saving: Subscription;
+  moduleSub: Subscription;
   lastSavedModule: string;
 
   hasChanges = () => {
@@ -38,7 +39,7 @@ export class ModuleEditorComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.route.params.pipe(
+    this.moduleSub = this.route.params.pipe(
       switchMap(params => this.moduleService.getModuleConfig(Number(params.id))),
       catchError(err => this.moduleService.getDefaultModule())
     ).subscribe(moduleData => {
@@ -47,6 +48,10 @@ export class ModuleEditorComponent implements OnInit {
       this.ready = true;
       this.setPristineState();
     });
+  }
+
+  ngOnDestroy() {
+    this.moduleSub.unsubscribe();
   }
 
   onClickAddStep(sectionIndex: number) {
@@ -83,7 +88,7 @@ export class ModuleEditorComponent implements OnInit {
     modalRef.componentInstance.module = this.moduleData;
   }
 
-  onClickAddSection(sectionIndex: number) {
+  onClickAddSection() {
     const newSection = { section: this.newStep(), steps: [] };
     newSection.section.is_section_break = true;
     this.sections.push(newSection);
@@ -95,22 +100,11 @@ export class ModuleEditorComponent implements OnInit {
     this.sections.splice(sectionIndex, 1);
   }
 
-  onClickAddElement(step: Step) {
-    if (!step.elements) {
-      step.elements = [];
-    }
-    step.elements.push(this.newElement());
-  }
-
-  onClickRemoveElement(step: Step, index: number) {
-    if (!confirm('Are you sure you want to remove this learning element?')) { return; }
-    step.elements.splice(index, 1);
-  }
-
   onClickSave() {
     this.moduleData.steps = this.generateStepsData();
     this.saving = this.moduleService.saveModule(this.moduleData).subscribe(_ => {
       this.setPristineState();
+      toastr.success('Saved!');
     });
   }
 
@@ -173,20 +167,12 @@ export class ModuleEditorComponent implements OnInit {
   private newStep(): Step {
     return {
       description: '',
-      elements: [],
       is_section_break: false,
       id: 0,
       module_id: this.moduleData.id,
       requires_feedback: false,
       template_params_json: {},
       template_component: ''
-    };
-  }
-
-  private newElement(): LearningElement {
-    return {
-      type: 'pdf',
-      data: ''
     };
   }
 }

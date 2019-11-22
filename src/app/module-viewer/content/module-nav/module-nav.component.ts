@@ -5,6 +5,7 @@ import { IceService } from '../../ice/ice.service';
 import { Subscription } from 'rxjs';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { TemplateContentData } from '../../riverside-step-template/templates/template-data.class';
+import { TemplateComponent } from '../../riverside-step-template/templates/template-base.cass';
 
 type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedback' | 'provide_final_feedback' | 'approve';
 @Component({
@@ -26,10 +27,13 @@ export class ModuleNavComponent implements OnInit {
 
   unApproveSub: Subscription;
 
+  hasValidationError = false;
+
   constructor(
     private navService: ModuleNavService,
     private moduleService: ModuleService,
     private iceService: IceService,
+    private template: TemplateComponent,
   ) { }
 
   ngOnInit() {
@@ -80,6 +84,12 @@ export class ModuleNavComponent implements OnInit {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     const newState = state !== null ? state : !this[key];
     const step = this.step.data;
+
+    if (newState && this.template && !this.template.validate()) {
+      this.hasValidationError = true;
+      setTimeout(_ => this.hasValidationError = false, 5000);
+      return;
+    }
 
     this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
       .subscribe(_ => {

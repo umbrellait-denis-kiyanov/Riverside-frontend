@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
 import { PersonaPictureTemplateData } from './persona-picture.interface';
@@ -9,7 +9,8 @@ import { PersonaPictureListComponent } from './persona-picture-list/persona-pict
   selector: 'app-persona-picture',
   templateUrl: './persona-picture.component.html',
   styleUrls: ['./persona-picture.component.sass'],
-  preserveWhitespaces: true
+  preserveWhitespaces: true,
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PersonaPictureTemplateComponent) }]
 })
 
 export class PersonaPictureTemplateComponent extends TemplateComponent {
@@ -42,10 +43,10 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
     Object.keys(this.inputIds).forEach(key => {
       this.inputIds[key].forEach((id, i) => {
         if (typeof id === 'string') {
-          this.inputs[id] = this.inputs[id] || {content: ''};
+          this.inputs[id].content = this.inputs[id].content || '';
         } else {
           Object.values(id).forEach((id2: string) => {
-            this.inputs[id2] = this.inputs[id2] || {content: ''};
+            this.inputs[id2].content = this.inputs[id2].content || '';
           });
         }
       });

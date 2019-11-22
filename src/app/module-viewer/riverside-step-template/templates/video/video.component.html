@@ -1,0 +1,9 @@
+<div class="embed-container">
+  <iframe [src]="embedUrl | safeurl" width="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+</div>
+
+<div *ngIf="contentData.content">
+  <div [innerHtml]="contentData.content | safehtml"></div>
+</div>
+
+<module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

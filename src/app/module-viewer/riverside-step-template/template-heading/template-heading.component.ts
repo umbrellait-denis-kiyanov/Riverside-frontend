@@ -76,7 +76,7 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
     const cd = this.content.data;
     this.uuid = cd.org_id + '-' + cd.module_id + '-' + cd.step_id;
 
-    this.time = this.savedTimer.current[this.uuid] || 0;
+    this.time = (this.savedTimer.current || {})[this.uuid] || 0;
   }
 
   toggleTimer() {

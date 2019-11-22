@@ -25,8 +25,9 @@
       <li
         class="step-list-item"
         *ngFor="let step of module.steps"
-        [ngClass]="{'section-break': step.is_section_break}"
-        routerLinkActive="active"
+        [class.section-break]="step.is_section_break"
+        [class.is-locked]="step.isLocked"
+        [routerLinkActive]="!step.isLocked ? 'active' : ''"
       >
         <a *ngIf="step.is_section_break">{{step.description}}</a>
 
@@ -35,7 +36,10 @@
             <mat-icon [ngClass]="{'approved': step.is_approved}" >done</mat-icon>
           </span>
 
-          <span class="step-number" [class.double]="step.step_index >= 10">{{step.step_index}}</span>
+          <span class="step-number" [class.double]="step.step_index >= 10">
+            <span class="step-number-value">{{step.step_index}}</span>
+            <mat-icon class="lock">lock</mat-icon>
+          </span>
 
           <span class="step-title">{{step.description}}</span>
         </a>

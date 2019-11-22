@@ -1,0 +1,23 @@
+<hr />
+
+<p class="feedback-instructions" *ngIf="action == 'feedback' && !template.disabled">
+  In addition to responding to the content you have created, what help would you like from your Managing Director? What is going well and what are you struggling with?
+</p>
+
+<feedback-source *ngIf="!template.disabled"
+  (submit)="feedbackClicked($event)"
+  (messageChanged)="message=$event"
+  (currentTabChanged)="currentTab=$event"
+  >
+</feedback-source>
+
+<module-nav
+  *ngIf="!template.disabled"
+  [step]="template.data"
+  [action]="action"
+  (feedback)="feedbackClicked(message)"
+  [submitting]="submitting"
+  [subaction]="subaction"
+  [hideActionButton]="currentTab != 'text'"
+  >
+</module-nav>

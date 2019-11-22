@@ -7,11 +7,13 @@
   id="textbody"
   [attr.disabled]="disabled"
   [ngClass]="{'CT-hide': hideChanges, hasComment: comment.list?.length, showComment: comment.show}"
+  [class.has-error]="data.error | async"
   [innerHTML]="data.textContent | safehtml"
   (mouseenter)="onMouseEnter($event)"
   (blur)="onBlur($event)"
   (paste)="onPaste()"
 ></div>
+<error-msg [input]="data"></error-msg>
 <div  class="add-comment" *ngIf="!disabled">
     <button mat-icon-button (click)="addComment($event)" id="addComment">
         <mat-icon>add_comment</mat-icon>

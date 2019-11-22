@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
 import { BrainstormTemplateData } from './brainstorm.interface';
@@ -6,7 +6,8 @@ import { BrainstormTemplateData } from './brainstorm.interface';
 @Component({
   selector: 'app-brainstorm',
   templateUrl: './brainstorm.component.html',
-  styleUrls: ['./brainstorm.component.sass']
+  styleUrls: ['./brainstorm.component.sass'],
+  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => BrainstormTemplateComponent) }]
 })
 export class BrainstormTemplateComponent extends TemplateComponent {
   inputIds = ['brainstorm'];
@@ -23,7 +24,7 @@ export class BrainstormTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.inputIds.forEach(id => {
-      this.inputs[id] = this.inputs[id] || '';
+      this.inputs[id].content = this.inputs[id].content || '';
     });
 
     this.contentData = this.data.data.template_params_json as BrainstormTemplateData['template_params_json'];

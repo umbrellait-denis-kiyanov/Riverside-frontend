@@ -29,10 +29,14 @@ export class IceComponent implements OnInit {
   @Input() user: User;
   @Input() box: number;
   @Input() disabled: boolean;
+  @Input() placeholder: string = '';
+
+  // todo: replace with Input type
   @Input() data: {
     id: number;
     textContent: string;
     content: string;
+    error: BehaviorSubject<string>;
     selections$: BehaviorSubject<string[]>;
     comments_json: any[];
     org_id: number;
@@ -41,6 +45,7 @@ export class IceComponent implements OnInit {
     id: 0,
     textContent: '',
     content: '',
+    error: new BehaviorSubject(null),
     selections$: new BehaviorSubject([]),
     comments_json: [],
     org_id: 0,
@@ -80,6 +85,7 @@ export class IceComponent implements OnInit {
 
   ngOnInit() {
     this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
+    this.data.error = this.data.error || new BehaviorSubject(null);
 
     const el: HTMLDivElement = document.createElement('div');
     el.innerHTML = this.data.content;
@@ -104,25 +110,43 @@ export class IceComponent implements OnInit {
 
     setTimeout(() => {
       const text = this.el.nativeElement.querySelector('#textbody');
-      const tracker = new window.ice.InlineChangeEditor({
-        element: text,
-        handleEvents: true,
-        currentUser: this.user,
-        plugins: [
-          'IceAddTitlePlugin',
-          'IceSmartQuotesPlugin',
-          'IceEmdashPlugin',
-          {
-            name: 'IceCopyPastePlugin',
-            settings: {
-              pasteType: 'formattedClean',
-              preserve: 'ol,ul,li'
-            }
-          }
-        ]
-      }).startTracking();
 
-      this.tracker = tracker;
+      try {
+        const tracker = new window.ice.InlineChangeEditor({
+          element: text,
+          handleEvents: true,
+          currentUser: this.user,
+          plugins: [
+            'IceAddTitlePlugin',
+            'IceSmartQuotesPlugin',
+            'IceEmdashPlugin',
+            {
+              name: 'IceCopyPastePlugin',
+              settings: {
+                pasteType: 'formattedClean',
+                preserve: 'ol,ul,li'
+              }
+            }
+          ]
+        }).startTracking();
+
+        if (tracker.element.innerHTML === '<p><br></p>') {
+          tracker.element.innerHTML = '';
+        }
+
+        tracker.element.setAttribute('placeholder', this.placeholder);
+
+        this.tracker = tracker;
+      } catch (e) {
+        console.log(e.message);
+        text.contentEditable = 'false';
+        return;
+      }
+
+      const w = String(this.el.nativeElement.clientWidth) + 'px';
+      this.el.nativeElement.style.width = w;
+      this.el.nativeElement.style.maxWidth = w;
+
       if (this.disabled) {
         this.tracker.element.contentEditable = 'false';
       }
@@ -324,7 +348,7 @@ export class IceComponent implements OnInit {
       return false;
     }
 
-    // this.onBlur();
+    this.data.error.next(null);
   }
 
   onBlur() {

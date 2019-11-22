@@ -1,6 +1,4 @@
-import { Template1Component } from './template1/template1.component';
 import { Template2Component } from './template2/template2.component';
-import { Template3Component } from './template3/template3.component';
 import { BrainstormTemplateComponent } from './brainstorm/brainstorm.component';
 import { GenericTemplateComponent } from './generic/generic.component';
 import { NamePersonasTemplateComponent } from './name_personas/name_personas.component';
@@ -10,18 +8,20 @@ import { PersonaPictureTemplateComponent } from './persona-picture/persona-pictu
 import { FinalFeedbackComponent } from './final-feedback/final-feedback.component';
 import { AgeGenderComponent } from './age-gender/age-gender.component';
 import { QuestionImageComponent } from './question-image/question-image.component';
+import { SegmentCriteriaDefineComponent } from './segment-criteria-define/segment-criteria-define.component';
+import { VideoComponent } from './video/video.component';
 
 export const Templates = {
-  template1: Template1Component,
   template2: Template2Component,
-  template3: Template3Component,
   brainstorm: BrainstormTemplateComponent,
   generic: GenericTemplateComponent,
   name_personas: NamePersonasTemplateComponent,
   persona_behavior: PersonaBehaviorTemplateComponent,
+  segment_criteria_define: SegmentCriteriaDefineComponent,
   feedback_section: FeedbackSectionTemplateComponent,
   persona_picture: PersonaPictureTemplateComponent,
   final_feedback: FinalFeedbackComponent,
   age_gender: AgeGenderComponent,
   question_image: QuestionImageComponent,
+  video: VideoComponent
 };

@@ -12,12 +12,10 @@ import { ModuleService } from '../common/services/module.service';
 import { LeftMenuComponent } from './left-menu/module/module-left-menu.component';
 import { ContentComponent } from './content/content.component';
 import { LoadingComponent } from '../common/components/loading/loading.component';
-import { LearningElementComponent } from './modals/learning-element/learning-element.component';
 import { UserService } from '../common/services/user.service';
 import { IceComponent } from './ice/ice.component';
 import { RiversideStepTemplateComponent } from './riverside-step-template/riverside-step-template.component';
 import { RTemplateDirective } from './riverside-step-template/riverside-step-template-host.directive';
-import { Template1Component } from './riverside-step-template/templates/template1/template1.component';
 import { ModuleContentService } from '../common/services/module-content.service';
 import { LetterImageComponent } from './ice/letter-image/letter-image.component';
 import { MatMenuModule} from '@angular/material/menu';
@@ -42,12 +40,12 @@ import { E3CommonModule } from '../common/e3-common.module';
 import { ModuleNavComponent } from './content/module-nav/module-nav.component';
 import { ModuleNavService } from '../common/services/module-nav.service';
 import { Template2Component } from './riverside-step-template/templates/template2/template2.component';
-import { Template3Component } from './riverside-step-template/templates/template3/template3.component';
 import { BrainstormTemplateComponent } from './riverside-step-template/templates/brainstorm/brainstorm.component';
 import { GenericTemplateComponent } from './riverside-step-template/templates/generic/generic.component';
 import { NamePersonasTemplateComponent } from './riverside-step-template/templates/name_personas/name_personas.component';
 import { PersonaBehaviorTemplateComponent } from './riverside-step-template/templates/persona_behavior/persona_behavior.component';
 import { FeedbackSectionTemplateComponent } from './riverside-step-template/templates/feedback_section/feedback_section.component';
+import { SegmentCriteriaDefineComponent } from './riverside-step-template/templates/segment-criteria-define/segment-criteria-define.component';
 import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { CanModifyPipe } from '../common/pipes/canModify.pipe';
@@ -92,6 +90,11 @@ import { ProfilePictureInputComponent } from './account/profile/profile-picture-
 import { ProfilePictureSelectorComponent } from './account/profile/profile-picture-selector/profile-picture-selector.component';
 import { ImageCropperModule } from 'ngx-image-cropper';
 import { SpinnerComponent } from './spinner/spinner.component';
+import { InputTextComponent } from './input-text/input-text.component';
+import { VideoComponent } from './riverside-step-template/templates/video/video.component';
+import { IcpInputComponent } from './riverside-step-template/templates/segment-criteria-define/icp-input/icp-input.component';
+import { ModuleFeedbackComponent } from './riverside-step-template/module-feedback/module-feedback.component';
+import { ErrorMsgComponent } from './error-msg/error-msg.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -131,12 +134,9 @@ import { SpinnerComponent } from './spinner/spinner.component';
     FormatDatePipe,
     ReadableDatePipe,
     CanModifyPipe,
-    LearningElementComponent,
-
     IceComponent,
     RiversideStepTemplateComponent,
     RTemplateDirective,
-    Template1Component,
     LetterImageComponent,
     UserComponent,
     LeftSidebarComponent,
@@ -145,12 +145,12 @@ import { SpinnerComponent } from './spinner/spinner.component';
     RequestFeedbackComponent,
     ModuleNavComponent,
     Template2Component,
-    Template3Component,
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
     PersonaBehaviorTemplateComponent,
     FeedbackSectionTemplateComponent,
+    SegmentCriteriaDefineComponent,
     PersonaPictureTemplateComponent,
     PersonaPictureListComponent,
     FinalFeedbackComponent,
@@ -181,15 +181,17 @@ import { SpinnerComponent } from './spinner/spinner.component';
     ChangePasswordComponent,
     ProfilePictureInputComponent,
     ProfilePictureSelectorComponent,
+    InputTextComponent,
+    VideoComponent,
+    IcpInputComponent,
+    ModuleFeedbackComponent,
+    ErrorMsgComponent,
     SpinnerComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
-    LearningElementComponent,
     RequestFeedbackComponent,
-    Template1Component,
     Template2Component,
-    Template3Component,
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
@@ -200,7 +202,9 @@ import { SpinnerComponent } from './spinner/spinner.component';
     FinalFeedbackComponent,
     QuestionImageComponent,
     AgeGenderComponent,
-    TemplateHeadingComponent
+    TemplateHeadingComponent,
+    SegmentCriteriaDefineComponent,
+    VideoComponent
   ],
   providers: [
     AssessmentService,

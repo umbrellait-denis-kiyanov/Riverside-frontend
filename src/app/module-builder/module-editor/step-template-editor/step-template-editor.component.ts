@@ -40,6 +40,7 @@ export class StepTemplateEditorComponent implements OnInit {
         const inst = new Templates[tpl.id]();
         tpl.name = inst.getName();
         tpl.description = inst.getDescription();
+        tpl.hasInputs = inst.hasInputs();
         return tpl;
       }))
     ).subscribe(tpls => {
@@ -70,11 +71,16 @@ export class StepTemplateEditorComponent implements OnInit {
       split(',').join('],[').
       split(':').join(',').
       split('?').join('').
-      split('\'').join('')
+      split('\'').join('').
+      split('|').join(',')
       : '';
 
-    this.templateFields = JSON.parse('[' + fields + ']');
-    this.templateFields.push(['number_of_inputs', 'number']);
+    this.templateFields = JSON.parse('[' + fields + ']').map(field => field.length === 2 ? field : [field[0], field.slice(1)]);
+
+    if (template.hasInputs) {
+      this.templateFields.push(['number_of_inputs', 'number']);
+    }
+
     this.description = template ? template.description : '';
   }
 }

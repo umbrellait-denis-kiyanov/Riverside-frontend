@@ -16,6 +16,7 @@ export class StepTemplateFieldComponent implements OnInit {
 
   name: string;
   type: any;
+  selectValues: string[];
 
   hasSubFields = false;
   rtEditor: any;
@@ -31,7 +32,8 @@ export class StepTemplateFieldComponent implements OnInit {
       if (typeof this.json === 'object' && this.json !== null) {
         this.json = JSON.stringify(this.json);
         this.type = 'json';
-      } else if (['title', 'sufix', 'input_sufix', 'key', 'question', 'option', 'behavior', 'image'].includes(this.name)) {
+      } else if (['title', 'sufix', 'input_sufix', 'key', 'question', 'option', 'behavior', 'image'].includes(this.name) ||
+                  this.name.toLowerCase().indexOf('url') > -1) {
         this.type = 'text-input';
       } else {
         this.rtEditor = InlineEditor;
@@ -40,10 +42,15 @@ export class StepTemplateFieldComponent implements OnInit {
     }
 
     if (this.type instanceof Array) {
-      this.hasSubFields = true;
+      if (this.name.substr(-7) === '_select') {
+        this.selectValues = this.type;
+        this.type = 'select';
+      } else {
+        this.hasSubFields = true;
 
-      if (!(this.json instanceof Array)) {
-        this.json = [{}];
+        if (!(this.json instanceof Array)) {
+          this.json = [{}];
+        }
       }
     }
   }

@@ -1,4 +1,7 @@
+import { BehaviorSubject } from 'rxjs';
+
 export interface ModuleStatus {
+  org_id: number;
   is_activated: boolean;
   due_date?: string;
   is_late?: boolean;
@@ -25,6 +28,9 @@ export interface Input {
   element_key: string;
   content: string;
   comments_json: string;
+  observer: BehaviorSubject<string>;
+  error: BehaviorSubject<string>;
+  getValue: () => string;
 }
 
 export interface Organization {
@@ -47,7 +53,7 @@ export interface Step {
   template_component?: string;
   template_params_json: object;
   position?: number;
-  elements: LearningElement[];
+  isLocked?: boolean;
 }
 
 export interface Section {
@@ -60,15 +66,5 @@ export interface Template {
   params_json: string;
   name?: string;
   description?: string;
-}
-
-function literalArray<T extends string>(array: T[]): T[] {
-  return array;
-}
-export const LearningElementTypes = literalArray(['pdf', 'activity', 'youtube', 'gdoc']);
-
-export interface LearningElement {
-  type: typeof LearningElementTypes[number];
-  data: string;
-  tooltip?: string;
+  hasInputs: boolean;
 }
