@@ -28,8 +28,18 @@
         [class.section-break]="step.is_section_break"
         [class.is-locked]="step.isLocked"
         [routerLinkActive]="!step.isLocked ? 'active' : ''"
+        (click)="showLockMessage(step)"
       >
         <a *ngIf="step.is_section_break">{{step.description}}</a>
+
+        <div class="lock-message alert alert-danger" *ngIf="(lockMessageStep$ | async) == step.id">
+          Please complete the following prerequisite steps first:
+          <ul>
+            <li *ngFor="let pendingStep of step.isLocked">
+              {{ pendingStep }}
+            </li>
+          </ul>
+        </div>
 
         <a *ngIf="!step.is_section_break" [routerLink]="stepRouterLink(module, step)">
           <span class="checkmark" [ngClass]="{'checked': isChecked(step)}">
