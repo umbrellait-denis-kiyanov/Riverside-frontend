@@ -53,7 +53,7 @@ export interface Step {
   template_component?: string;
   template_params_json: object;
   position?: number;
-  isLocked?: boolean;
+  isLocked?: false | string[];
 }
 
 export interface Section {

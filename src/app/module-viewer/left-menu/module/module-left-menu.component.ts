@@ -6,7 +6,7 @@ import User from 'src/app/common/interfaces/user.model';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { Router } from '@angular/router';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { combineLatest, Observable } from 'rxjs';
+import { combineLatest, Observable, BehaviorSubject } from 'rxjs';
 import { switchMap, tap, take } from 'rxjs/operators';
 
 declare global {
@@ -25,6 +25,9 @@ export class LeftMenuComponent implements OnInit {
   me: User;
 
   module$: Observable<Module>;
+
+  lockMessageStep$ = new BehaviorSubject<number>(null);
+  lockMessageClearTimeout: number;
 
   constructor(
     private moduleService: ModuleService,
@@ -77,5 +80,21 @@ export class LeftMenuComponent implements OnInit {
       this.router.navigate(['org', organization.id, 'module', module.id, 'step', step])
     }
     );
+  }
+
+  showLockMessage(step: Step) {
+    if (!step.isLocked) {
+      this.hideLockMessage();
+      return;
+    }
+
+    clearTimeout(this.lockMessageClearTimeout);
+    this.lockMessageStep$.next(step.id);
+    this.lockMessageClearTimeout = setTimeout(_ => this.lockMessageStep$.next(null), 5000);
+  }
+
+  hideLockMessage() {
+    clearTimeout(this.lockMessageClearTimeout);
+    this.lockMessageStep$.next(null);
   }
 }

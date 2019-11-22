@@ -117,9 +117,11 @@ export class ModuleNavService {
                     }, {});
 
                     const isLocked = moduleData.steps.reduce((locked, step) => {
-                      locked[step.id] = step.linked_ids.filter(
-                          id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved
-                        ).length > 0;
+                      const pendingSteps = step.linked_ids.filter(
+                        id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved
+                      ).map(id => sortedSteps[id].description);
+
+                      locked[step.id] = pendingSteps.length ? pendingSteps : false;
 
                       return locked;
                     }, {});
