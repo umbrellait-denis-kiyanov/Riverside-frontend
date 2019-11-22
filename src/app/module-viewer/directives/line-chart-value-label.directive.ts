@@ -75,8 +75,8 @@ export class LineChartValueLabelDirective implements OnDestroy {
         text.setAttribute('stroke-width', '1');
         text.setAttribute('text-anchor', 'start');
         text.setAttribute('x', '-10');
-        text.setAttribute('y', '5');
-        text.setAttribute('style', 'font-size: 12px; fill: ' + (isLast ? '#fff' : '#999') + ';');
+        text.setAttribute('y', isLast ? '5' : (dp.value > 0 ? '-10' : '10'));
+        text.setAttribute('style', 'font-size: 14px; fill: ' + (isLast ? '#fff' : '#444') + ';');
 
         el.parentNode.appendChild(g);
 
