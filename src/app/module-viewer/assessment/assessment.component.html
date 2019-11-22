@@ -44,6 +44,11 @@
       </tr>
       <tr class="answer-all" (mouseleave)="highlight = ''">
         <td class="answer-label">
+          <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'answers')">
+            Clear all answers
+            <spinner [sub]="clearAnswersSub"></spinner>
+          </a>
+
           Select all
         </td>
         <td class="answer" (mouseenter)="val.canAnswer && highlight = 'yes'">
@@ -53,9 +58,9 @@
           <mat-radio-button name="answer_all" (click)="val.canAnswer && answerAll(val.activeGroup, type, 0)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
         <td class="clear-all" *ngIf="(answersRequest$ | async | canModify:'X-Can-Record')">
-          <a href="" (click)="clearAll(val.activeGroup, type)">
-            Clear all answers
-            <spinner [sub]="clearSub"></spinner>
+          <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'notes')">
+            Clear all notes
+            <spinner [sub]="clearNotesSub"></spinner>
           </a>
         </td>
       </tr>
