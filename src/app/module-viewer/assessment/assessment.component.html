@@ -4,7 +4,8 @@
     answers: (answers$ | async),
     questions: (questions$ | async),
     type: (activeType$ | async),
-    canAnswer: (answersRequest$ | async | canModify)
+    canAnswer: (answersRequest$ | async | canModify),
+    canRecord: (answersRequest$ | async | canModify:'X-Can-Record')
   } as val">
 
   <ng-container *ngIf="val.activeGroup">
@@ -44,7 +45,7 @@
       </tr>
       <tr class="answer-all" (mouseleave)="highlight = ''">
         <td class="answer-label">
-          <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'answers')"  *ngIf="(answersRequest$ | async | canModify:'X-Can-Record')">
+          <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'answers')"  *ngIf="val.canRecord">
             Clear all answers
             <spinner [sub]="clearAnswersSub"></spinner>
           </a>
@@ -57,7 +58,7 @@
         <td class="answer" (mouseenter)="val.canAnswer && highlight = 'no'">
           <mat-radio-button name="answer_all" (click)="val.canAnswer && answerAll(val.activeGroup, type, 0)" *ngIf="!resetSelectAll"></mat-radio-button>
         </td>
-        <td class="clear-all" *ngIf="(answersRequest$ | async | canModify:'X-Can-Record')">
+        <td class="clear-all" *ngIf="val.canRecord">
           <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'notes')">
             Clear all notes
             <spinner [sub]="clearNotesSub"></spinner>
@@ -93,15 +94,21 @@
 
   <div class="done" *ngIf="val.answers as answers">
     <button
-      *ngIf="!answers.isDone"
+      *ngIf="!answers.isDone || (!answers.isApproved && val.canRecord); else doneButton"
       mat-raised-button
       [color]="!isSectionReady(val.questions, answers) || 'accent'"
       (click)="markAsDone(val.activeGroup, val.type, val.questions, answers)">
-        Mark As Done
+        <span *ngIf="!val.canRecord">Mark As Done</span>
+        <span *ngIf="val.canRecord">Approve</span>
         <spinner [sub]="markAsDoneSub"></spinner>
       </button>
 
-    <button *ngIf="answers.isDone" mat-raised-button>Done</button>
+    <ng-template #doneButton>
+      <button mat-raised-button>
+        <span *ngIf="!answers.isApproved">Done</span>
+        <span *ngIf="answers.isApproved">Approved</span>
+      </button>
+    </ng-template>
 
     <div class="alert alert-danger" *ngIf="(errors | keyvalue)?.length">Please answer all questions to mark this section as done</div>
   </div>
