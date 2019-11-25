@@ -59,7 +59,7 @@ export class LineChartValueLabelDirective implements OnDestroy {
         const text = document.createElementNS('http://www.w3.org/2000/svg', 'text');
 
         g.appendChild(text);
-        g.setAttribute('transform', 'translate(' + point.slice(0, -1) + ')');
+        g.setAttribute('transform', 'translate(' + point.slice(0, -1) + '0)');
         g.setAttribute('class', 'datapoint-value');
 
         const isLast = pIdx === points.length - 1;
@@ -73,8 +73,8 @@ export class LineChartValueLabelDirective implements OnDestroy {
         const dp = this.results[idx].series[pIdx];
         text.innerHTML = (dp.formattedValue || dp.value).toString();
         text.setAttribute('stroke-width', '1');
-        text.setAttribute('text-anchor', 'start');
-        text.setAttribute('x', '-10');
+        text.setAttribute('text-anchor', 'middle');
+        text.setAttribute('x', '0');
         text.setAttribute('y', isLast ? '5' : (dp.value > 0 ? '-10' : '15'));
         text.setAttribute('style', 'font-size: 14px; fill: ' + (isLast ? '#fff' : '#444') + ';');
 
