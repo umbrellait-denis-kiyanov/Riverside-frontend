@@ -27,6 +27,15 @@
     <option *ngFor="let opt of selectValues" [value]="opt">{{ opt | builderSelectOption }}</option>
   </select>
 
+  <select *ngIf="type == 'resource'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="json"
+    (change)="valueChange()"
+    class="site-tbox"
+  >
+    <option *ngFor="let opt of resourceValue$ | async" [value]="opt">{{ opt | builderSelectOption }}</option>
+  </select>
+
   <textarea *ngIf="type == 'json'"
     [ngModelOptions]="{standalone: true}"
     [(ngModel)]="json"

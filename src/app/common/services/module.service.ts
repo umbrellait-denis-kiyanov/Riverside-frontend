@@ -73,6 +73,10 @@ export class ModuleService {
     return this.httpClient.get<Template[]>(`${this.baseUrl}/${moduleId}/templates`);
   }
 
+  getTemplateResources(moduleId: number, template: string): Observable<string[]> {
+    return this.httpClient.get<string[]>(`${this.baseUrl}/${moduleId}/templates/resources?template=` + template);
+  }
+
   saveModule(module: Module): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/${module.id}`, module);
   }

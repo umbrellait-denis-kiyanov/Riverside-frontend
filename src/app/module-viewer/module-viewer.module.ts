@@ -95,6 +95,7 @@ import { VideoComponent } from './riverside-step-template/templates/video/video.
 import { IcpInputComponent } from './riverside-step-template/templates/segment-criteria-define/icp-input/icp-input.component';
 import { ModuleFeedbackComponent } from './riverside-step-template/module-feedback/module-feedback.component';
 import { ErrorMsgComponent } from './error-msg/error-msg.component';
+import { SpreadsheetComponent } from './riverside-step-template/templates/spreadsheet/spreadsheet.component';
 @NgModule({
   imports: [
     BrowserModule,
@@ -186,7 +187,8 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
     IcpInputComponent,
     ModuleFeedbackComponent,
     ErrorMsgComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    SpreadsheetComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
