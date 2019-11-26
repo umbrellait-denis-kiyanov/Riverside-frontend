@@ -68,3 +68,12 @@ export interface Template {
   description?: string;
   hasInputs: boolean;
 }
+
+export interface CsvResource {
+  data: string[][],
+  meta: {
+    classes: {[className: string]: {[property: string]: string}},
+    formatting: {[cells: string]: string},
+    editable: string[],
+  }
+}

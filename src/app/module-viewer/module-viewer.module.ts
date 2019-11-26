@@ -96,6 +96,8 @@ import { IcpInputComponent } from './riverside-step-template/templates/segment-c
 import { ModuleFeedbackComponent } from './riverside-step-template/module-feedback/module-feedback.component';
 import { ErrorMsgComponent } from './error-msg/error-msg.component';
 import { SpreadsheetComponent } from './riverside-step-template/templates/spreadsheet/spreadsheet.component';
+import { HotTableModule } from '@handsontable/angular';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -121,7 +123,8 @@ import { SpreadsheetComponent } from './riverside-step-template/templates/spread
     NgxChartsModule,
     MatInputModule,
     ReactiveFormsModule,
-    ImageCropperModule
+    ImageCropperModule,
+    HotTableModule.forRoot()
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -206,6 +209,7 @@ import { SpreadsheetComponent } from './riverside-step-template/templates/spread
     AgeGenderComponent,
     TemplateHeadingComponent,
     SegmentCriteriaDefineComponent,
+    SpreadsheetComponent,
     VideoComponent
   ],
   providers: [

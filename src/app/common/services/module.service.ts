@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Module, Step, Input, Template, Organization, ModuleStatus } from '../interfaces/module.interface';
+import { Module, Step, Input, Template, Organization, ModuleStatus, CsvResource } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 import { shareReplay, switchMap, map, filter, debounceTime, distinctUntilChanged, share, take, tap } from 'rxjs/operators';
@@ -75,6 +75,10 @@ export class ModuleService {
 
   getTemplateResources(moduleId: number, template: string): Observable<string[]> {
     return this.httpClient.get<string[]>(`${this.baseUrl}/${moduleId}/templates/resources?template=` + template);
+  }
+
+  getCsv(moduleId: number, csvFile: string): Observable<CsvResource> {
+    return this.httpClient.get<CsvResource>(`${this.baseUrl}/${moduleId}/templates/csv?csv=` + csvFile);
   }
 
   saveModule(module: Module): Observable<any> {

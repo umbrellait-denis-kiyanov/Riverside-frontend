@@ -1,3 +1,11 @@
-<p>
-  spreadsheet works!
-</p>
+<div *ngIf="csv$ | async as csv">
+  <hot-table
+    class="hot"
+    [rowHeaders]="true"
+    [colHeaders]="true"
+    [data]="csv.data"
+    [cells]="formatCell"
+    [formulas]="true"
+    >
+  </hot-table>
+</div>
