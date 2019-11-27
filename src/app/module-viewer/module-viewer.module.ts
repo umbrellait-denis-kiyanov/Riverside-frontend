@@ -215,6 +215,7 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
     IceService,
     LeftMenuService,
     InboxService,
+    CanModifyPipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
   bootstrap: [ModuleViewerRootComponent],

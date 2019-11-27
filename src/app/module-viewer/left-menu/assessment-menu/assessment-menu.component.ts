@@ -7,6 +7,7 @@ import { filter, take, distinctUntilChanged, switchMap, map, shareReplay, takeWh
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
+import { CanModifyPipe } from '../../../common/pipes/canModify.pipe';
 
 @Component({
   selector: 'app-assessment-menu',
@@ -18,7 +19,8 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   constructor(private router: Router,
               private route: ActivatedRoute,
               public asmService: AssessmentService,
-              public navService: ModuleNavService) { }
+              public navService: ModuleNavService,
+              private canModifyPipe: CanModifyPipe) { }
 
   types$: Observable<AssessmentType[]>;
 
@@ -47,6 +49,8 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   isDestroyed = false;
 
+  finishFlag = 'isDone';
+
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
 
@@ -73,6 +77,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
       switchMap(([type, orgId]) => {
         return this.asmService.getSession(type, orgId);
       }),
+      tap(response => this.finishFlag = this.canModifyPipe.transform(response) ? 'isApproved' : 'isDone'),
       shareReplay(1)
     );
 
@@ -103,7 +108,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
       switchMap(_ => combineLatest(this.activeGroup$, this.activeType$, this.orgGroups$).pipe(take(1)))
     )
       .subscribe(([active, type, orgGroups]) => {
-        const next = type.groups.find(g => (Number(g.position) > Number(active.position)) && (!orgGroups[g.id] || !orgGroups[g.id].isDone));
+        const next = type.groups.find(g => (Number(g.position) > Number(active.position)) && (!orgGroups[g.id] || !orgGroups[g.id][this.finishFlag]));
 
         if (next) {
           this.setGroup(next);
@@ -125,7 +130,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   private setFirstUncompletedGroup() {
     if (this.groups$ && this.orgGroups$) {
       combineLatest(this.groups$, this.orgGroups$).pipe(take(1)).subscribe(([groups, orgGroups]) => {
-        const unfinished = groups.find(g => (!orgGroups[g.id] || !orgGroups[g.id].isDone));
+        const unfinished = groups.find(g => (!orgGroups[g.id] || !orgGroups[g.id][this.finishFlag]));
         if (!unfinished && (groups.length === Object.values(orgGroups).length)) {
           this.finish();
         } else {
