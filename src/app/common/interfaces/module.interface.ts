@@ -69,7 +69,7 @@ export interface Template {
   hasInputs: boolean;
 }
 
-export interface CsvResource {
+export interface SpreadsheetResource {
   data: string[][],
   meta: {
     classes: {[className: string]: {[property: string]: string}},

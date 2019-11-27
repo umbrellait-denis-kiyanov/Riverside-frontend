@@ -3,7 +3,7 @@ import { TemplateComponent } from '../template-base.cass';
 import { SpreadsheetTemplateData } from './spreadsheet.interface';
 import * as Handsontable from 'handsontable';
 import { Observable, Subscription } from 'rxjs';
-import { CsvResource } from 'src/app/common/interfaces/module.interface';
+import { SpreadsheetResource } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -16,14 +16,19 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   contentData: SpreadsheetTemplateData['template_params_json'];
 
-  csvSub: Subscription;
+  sheetSub: Subscription;
 
-  csv: CsvResource;
+  sheet: SpreadsheetResource;
 
   types: string[][];
 
+  hiddenRows = {
+    rows: [],
+  };
+
   init() {
-    this.csvSub = this.moduleService.getCsv(0, this.data.data.template_params_json.apiResource)
+    const contentData = this.data.data.template_params_json;
+    this.sheetSub = this.moduleService.getSpreadsheet(0, contentData.apiResource)
                   .pipe(
                     tap(data => {
                       this.types = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => {
@@ -47,10 +52,20 @@ export class SpreadsheetComponent extends TemplateComponent {
                         return cellType;
                       }));
 
-                      this.csv = data;
+                      this.sheet = data;
 
-                      console.log(this.types);
+                      if (contentData.visibleRows) {
+                        this.hiddenRows.rows = Array.from(Array(data.data.length).keys());
 
+                        this.textContent(contentData.visibleRows).split(',').map(intv => {
+                          const highLow = intv.split('-');
+                          for (let idx = Number(highLow[0]) - 1; idx <= Number(highLow[highLow.length - 1]) - 1; idx++) {
+                            this.hiddenRows.rows.splice(this.hiddenRows.rows.indexOf(idx), 1);
+                          }
+                        });
+                      } else {
+                        this.hiddenRows.rows = [];
+                      }
                     }
                   ))
                   .subscribe();

@@ -1,11 +1,12 @@
-<div *ngIf="csv">
+<div *ngIf="sheet">
   <hot-table
     class="hot"
     [rowHeaders]="true"
     [colHeaders]="true"
-    [data]="csv.data"
+    [data]="sheet.data"
     [cells]="formatCell"
     [formulas]="true"
-    >
+    [hiddenRows]="hiddenRows"
+  >
   </hot-table>
 </div>
