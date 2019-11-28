@@ -100,6 +100,9 @@ export class SpreadsheetComponent extends TemplateComponent {
     const cell = {} as any;
 
     cell.readOnly = !this.cellSettings[row][column].editable;
+    if (!cell.readOnly) {
+      cell.className = 'editable';
+    }
 
     return cell;
   }
