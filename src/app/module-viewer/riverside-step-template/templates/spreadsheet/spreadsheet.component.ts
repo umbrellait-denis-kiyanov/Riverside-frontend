@@ -25,7 +25,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   cellSettings: { editable: boolean; className: string; }[][];
 
   hiddenRows = {
-    rows: [],
+    rows: []
   };
 
   init() {
@@ -86,7 +86,6 @@ export class SpreadsheetComponent extends TemplateComponent {
           }
         ))
         .subscribe();
-
   }
 
   getDescription() {

@@ -75,5 +75,6 @@ export interface SpreadsheetResource {
     classes: {[className: string]: {[property: string]: string}},
     formatting: {[cells: string]: string},
     editable: string[],
+    maxColumn: string
   }
 }
