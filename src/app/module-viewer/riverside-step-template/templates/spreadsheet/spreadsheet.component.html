@@ -1,8 +1,8 @@
 <div *ngIf="sheet">
   <hot-table
     class="hot"
-    [rowHeaders]="true"
-    [colHeaders]="true"
+    [rowHeaders]="false"
+    [colHeaders]="false"
     [data]="sheet.data"
     [cells]="formatCell.bind(this)"
     [formulas]="true"
