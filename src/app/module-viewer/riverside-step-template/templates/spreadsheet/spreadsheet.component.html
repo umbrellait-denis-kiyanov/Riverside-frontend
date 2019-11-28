@@ -4,7 +4,7 @@
     [rowHeaders]="true"
     [colHeaders]="true"
     [data]="sheet.data"
-    [cells]="formatCell"
+    [cells]="formatCell.bind(this)"
     [formulas]="true"
     [hiddenRows]="hiddenRows"
   >
