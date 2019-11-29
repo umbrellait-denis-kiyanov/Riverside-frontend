@@ -1,14 +1,7 @@
 <div *ngIf="sheet">
   <hot-table
     class="hot"
-    [rowHeaders]="false"
-    [colHeaders]="false"
-    [data]="sheet.data"
-    [cells]="formatCell.bind(this)"
-    [formulas]="true"
-    [hiddenRows]="hiddenRows"
-    [invalidCellClassName]='invalidCell'
-    [beforeChange]="beforeChange.bind(this)"
-  >
+    [settings]="settings"
+   >
   </hot-table>
 </div>

@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { SpreadsheetTemplateData } from './spreadsheet.interface';
 import * as Handsontable from 'handsontable';
+import { HotTableRegisterer } from '@handsontable/angular';
 import { Observable, Subscription } from 'rxjs';
 import { SpreadsheetResource } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
@@ -19,6 +20,8 @@ export class SpreadsheetComponent extends TemplateComponent {
   sheetSub: Subscription;
 
   sheet: SpreadsheetResource;
+
+  settings: Handsontable.default.GridSettings;
 
   types: string[][];
 
@@ -87,6 +90,19 @@ export class SpreadsheetComponent extends TemplateComponent {
             } else {
               this.hiddenRows.rows = [];
             }
+
+            this.settings = {
+              data: this.sheet.data,
+              rowHeaders: false,
+              colHeaders: false,
+              cells: this.formatCell.bind(this),
+              formulas: true,
+              hiddenRows: this.hiddenRows,
+              beforeChange: this.beforeChange.bind(this),
+              invalidCellClassName: 'invalidCell',
+              colWidths: this.sheet.meta.colWidths,
+              mergeCells: this.sheet.meta.mergeCells
+            };
           }
         ))
         .subscribe();
