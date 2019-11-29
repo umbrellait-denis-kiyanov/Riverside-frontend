@@ -31,8 +31,24 @@ export class SpreadsheetComponent extends TemplateComponent {
     rows: []
   };
 
+  isRendered = false;
+
+  renderedRows: undefined[];
+  renderedCols: undefined[];
+
+  private hotRegisterer = new HotTableRegisterer();
+
   init() {
     const contentData = this.data.data.template_params_json;
+
+    const visibleRows = this.textContent(contentData.visibleRows).split(',').reduce((rows, intv) => {
+      const highLow = intv.split('-');
+      for (let idx = Number(highLow[0]) - 1; idx <= Number(highLow[highLow.length - 1]) - 1; idx++) {
+        rows.push(idx);
+      }
+
+      return rows;
+    }, []);
 
     this.sheetSub =
       this.moduleService.getSpreadsheet(0, contentData.apiResource)
@@ -97,12 +113,7 @@ export class SpreadsheetComponent extends TemplateComponent {
             if (contentData.visibleRows) {
               this.hiddenRows.rows = Array.from(Array(data.data.length).keys());
 
-              this.textContent(contentData.visibleRows).split(',').map(intv => {
-                const highLow = intv.split('-');
-                for (let idx = Number(highLow[0]) - 1; idx <= Number(highLow[highLow.length - 1]) - 1; idx++) {
-                  this.hiddenRows.rows.splice(this.hiddenRows.rows.indexOf(idx), 1);
-                }
-              });
+              visibleRows.forEach(idx => this.hiddenRows.rows.splice(this.hiddenRows.rows.indexOf(idx), 1));
             } else {
               this.hiddenRows.rows = [];
             }
@@ -119,9 +130,20 @@ export class SpreadsheetComponent extends TemplateComponent {
               colWidths: this.sheet.meta.colWidths,
               mergeCells: this.sheet.meta.mergeCells
             };
+
+            const rendered = () => {
+              this.isRendered = true;
+
+              Handsontable.default.hooks.remove('afterRender', rendered);
+            };
+
+            Handsontable.default.hooks.add('afterRender', rendered);
           }
         ))
         .subscribe();
+
+    this.renderedRows = Array(visibleRows.length).fill(undefined);
+    this.renderedCols = Array(14).fill(undefined);
 
     this.contentData = contentData;
   }

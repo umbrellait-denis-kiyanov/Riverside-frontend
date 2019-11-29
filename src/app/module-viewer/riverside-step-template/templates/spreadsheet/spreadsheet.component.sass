@@ -1,5 +1,6 @@
 ::ng-deep .handsontable
     font-size: 14px
+    width: 100%
 
     td.editable
         background-color: lightyellow
@@ -19,3 +20,30 @@
         background-color: black
         color: white
         font-weight: bold
+
+.render-preview
+    position: relative
+
+    table
+        width: 100%
+        opacity: 0.15
+
+        td
+            border: 1px solid #aaa
+            height: 24px
+
+    .loading-overlay
+        position: absolute
+        height: 50%
+        max-height: 30vh
+        top: 0
+        left: 0
+        width: 100%
+        text-align: center
+        font-size: 2em
+
+        .overlay-content
+            position: absolute
+            bottom: 0
+            left: 0
+            width: 100%

@@ -1,9 +1,22 @@
-<div *ngIf="sheet">
+<div *ngIf="sheet" [hidden]="!isRendered">
   <hot-table
     class="hot"
     [settings]="settings"
    >
   </hot-table>
+</div>
+
+<div class="render-preview" *ngIf="!isRendered">
+  <table>
+    <tr *ngFor="let row of renderedRows">
+      <td *ngFor="let col of renderedCols"></td>
+    </tr>
+  </table>
+  <div class="loading-overlay">
+    <div class="overlay-content">
+      Loading spreadsheet <span class="fa fa-pulse fa-spinner"></span>
+    </div>
+  </div>
 </div>
 
 <module-feedback *ngIf="contentData.requireFeedback; else nav"></module-feedback>
