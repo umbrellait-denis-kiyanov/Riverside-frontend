@@ -47,16 +47,16 @@ export class SpreadsheetComponent extends TemplateComponent {
 
               let cellType = null;
 
-              if (cell.match(/^[0-9]+\%$/)) {
-                cell = parseInt(cell, 10).toString();
+              if (cell.match(/^[\.0-9]+\%$/)) {
+                cell = parseFloat(cell).toString();
                 cellType = 'percent';
               } else
-              if (cell.match(/^\$[ ]{0,}[,0-9]+$/)) {
-                cell = parseInt(cell.split(/[^0-9]/).join(''), 10).toString();
+              if (cell.match(/^\$[ ]{0,}[\.,0-9]+$/)) {
+                cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
                 cellType = 'currency';
               } else
-              if (cell.match(/^[,0-9]+$/)) {
-                cell = parseInt(cell.split(/[^0-9]/).join(''), 10).toString();
+              if (cell.match(/^[\.,0-9]+$/)) {
+                cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
                 cellType = 'numeric';
               }
 
@@ -74,6 +74,22 @@ export class SpreadsheetComponent extends TemplateComponent {
               }
 
               return editable;
+            }, this.cellSettings);
+
+            this.cellSettings = Object.entries(data.meta.formatting).reduce((settings, [range, classNames]) => {
+              if ('*' === range.substr(-1)) {
+                range = range.slice(0, -1) + 'A-' + data.meta.maxColumn;
+              }
+              const rowRange = range.match(/[\-0-9]+/)[0].split('-');
+              const colRange = range.split(/[0-9]/).join('').match(/[\-A-Z]+/)[0].split('-').filter(a => a);
+
+              for (let col = colRange[0].charCodeAt(0) - 65; col <= colRange[colRange.length - 1].charCodeAt(0) - 65; col++) {
+                for (let row = Number(rowRange[0]); row <= Number(rowRange[rowRange.length - 1]); row++) {
+                  settings[row - 1][col].className += ' ' + classNames;
+                }
+              }
+
+              return settings;
             }, this.cellSettings);
 
             this.sheet = data;
@@ -119,9 +135,11 @@ export class SpreadsheetComponent extends TemplateComponent {
   formatCell(row, column, prop) {
     const cell = {} as any;
 
-    cell.readOnly = !this.cellSettings[row][column].editable;
+    const settings = this.cellSettings[row][column];
+
+    cell.readOnly = !settings.editable;
     if (!cell.readOnly) {
-      cell.className = 'editable';
+      cell.className += ' editable';
     }
 
     const tp = this.types[row][column];
@@ -150,6 +168,10 @@ export class SpreadsheetComponent extends TemplateComponent {
           culture: 'en-US'
         };
       }
+    }
+
+    if (settings.className) {
+      cell.className += ' ' + settings.className;
     }
 
     return cell;
