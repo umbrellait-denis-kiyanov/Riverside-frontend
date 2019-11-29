@@ -5,3 +5,8 @@
    >
   </hot-table>
 </div>
+
+<module-feedback *ngIf="contentData.requireFeedback; else nav"></module-feedback>
+<ng-template #nav>
+  <module-nav *ngIf="!disabled" [step]="data"></module-nav>
+</ng-template>

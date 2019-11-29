@@ -6,5 +6,6 @@ export interface SpreadsheetTemplateData extends TemplateContentDataBase {
     apiResource: string;
     visibleRows: string;
     title: string;
+    requireFeedback: boolean;
   };
 }

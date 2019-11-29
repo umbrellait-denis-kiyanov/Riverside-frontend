@@ -122,6 +122,8 @@ export class SpreadsheetComponent extends TemplateComponent {
           }
         ))
         .subscribe();
+
+    this.contentData = contentData;
   }
 
   getDescription() {
