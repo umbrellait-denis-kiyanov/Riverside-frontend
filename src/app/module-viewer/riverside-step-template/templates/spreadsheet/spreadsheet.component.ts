@@ -48,9 +48,13 @@ export class SpreadsheetComponent extends TemplateComponent {
                 cell = parseInt(cell, 10).toString();
                 cellType = 'percent';
               } else
-              if (cell.match(/^\$[,0-9]+$/)) {
+              if (cell.match(/^\$[ ]{0,}[,0-9]+$/)) {
                 cell = parseInt(cell.split(/[^0-9]/).join(''), 10).toString();
                 cellType = 'currency';
+              } else
+              if (cell.match(/^[,0-9]+$/)) {
+                cell = parseInt(cell.split(/[^0-9]/).join(''), 10).toString();
+                cellType = 'numeric';
               }
 
               data.data[rowIndex][cellIndex] = cell;
@@ -104,6 +108,46 @@ export class SpreadsheetComponent extends TemplateComponent {
       cell.className = 'editable';
     }
 
+    const tp = this.types[row][column];
+    if (tp) {
+      cell.type = 'numeric';
+
+      if (!cell.readOnly) {
+        cell.validatorName = 'numeric';
+      }
+
+      if ('currency' === tp) {
+        cell.numericFormat = {
+          pattern: '$ 0,0',
+          culture: 'en-US'
+        };
+      } else if ('percent' === tp) {
+        cell.numericFormat = {
+          pattern: '0,0',
+          culture: 'en-US'
+        };
+
+        cell.className += ' percent';
+      } else if ('numeric' === tp) {
+        cell.numericFormat = {
+          pattern: '0,0',
+          culture: 'en-US'
+        };
+      }
+    }
+
     return cell;
+  }
+
+  beforeChange(changes, source) {
+    for (let i = changes.length - 1; i >= 0; i--) {
+      const change = changes[i];
+      const newVal = change[3];
+      const tp = this.types[change[0]][change[1]];
+
+      if (tp) {
+        changes[i][3] = parseFloat(newVal) || 0;
+      }
+    }
   }
 }

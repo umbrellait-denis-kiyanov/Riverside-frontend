@@ -7,6 +7,8 @@
     [cells]="formatCell.bind(this)"
     [formulas]="true"
     [hiddenRows]="hiddenRows"
+    [invalidCellClassName]='invalidCell'
+    [beforeChange]="beforeChange.bind(this)"
   >
   </hot-table>
 </div>
