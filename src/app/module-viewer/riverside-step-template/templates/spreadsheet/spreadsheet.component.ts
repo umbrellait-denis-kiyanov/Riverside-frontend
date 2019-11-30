@@ -4,7 +4,7 @@ import { SpreadsheetTemplateData } from './spreadsheet.interface';
 import * as Handsontable from 'handsontable';
 import { HotTableRegisterer } from '@handsontable/angular';
 import { Observable, Subscription } from 'rxjs';
-import { SpreadsheetResource } from 'src/app/common/interfaces/module.interface';
+import { SpreadsheetResource, Input } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 
 @Component({
@@ -36,10 +36,14 @@ export class SpreadsheetComponent extends TemplateComponent {
   renderedRows: undefined[];
   renderedCols: undefined[];
 
+  input: Input;
+
   private hotRegisterer = new HotTableRegisterer();
 
   init() {
     const contentData = this.data.data.template_params_json;
+
+    this.input = this.getInput('spreadsheet', 1);
 
     const visibleRows = this.textContent(contentData.visibleRows).split(',').reduce((rows, intv) => {
       const highLow = intv.split('-');
@@ -51,7 +55,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     }, []);
 
     this.sheetSub =
-      this.moduleService.getSpreadsheet(0, contentData.apiResource)
+      this.moduleService.getSpreadsheet(this.input, contentData.apiResource)
         .pipe(
           tap(data => {
             this.cellSettings = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => ({editable: false, className: ''})));
@@ -126,6 +130,7 @@ export class SpreadsheetComponent extends TemplateComponent {
               formulas: true,
               hiddenRows: this.hiddenRows,
               beforeChange: this.beforeChange.bind(this),
+              afterChange: this.afterChange.bind(this),
               invalidCellClassName: 'invalidCell',
               colWidths: this.sheet.meta.colWidths,
               mergeCells: this.sheet.meta.mergeCells
@@ -211,5 +216,25 @@ export class SpreadsheetComponent extends TemplateComponent {
         changes[i][3] = parseFloat(newVal) || 0;
       }
     }
+  }
+
+  afterChange(changes, source) {
+    if (source !== 'edit' && source !== 'Autofill.fill') {
+      return;
+    }
+
+    const content = this.input.content ? JSON.parse(this.input.content) : {};
+
+    changes.forEach(change => {
+      const row = change[0];
+      const col = change[1];
+
+      content[row] = content[row] || {};
+      content[row][col] = change[3];
+    });
+
+    this.input.content = JSON.stringify(content);
+
+    this.moduleService.saveInput(this.input).subscribe();
   }
 }

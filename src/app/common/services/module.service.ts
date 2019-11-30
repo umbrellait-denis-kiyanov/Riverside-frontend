@@ -77,8 +77,8 @@ export class ModuleService {
     return this.httpClient.get<string[]>(`${this.baseUrl}/${moduleId}/templates/resources?template=` + template);
   }
 
-  getSpreadsheet(moduleId: number, csvFile: string): Observable<SpreadsheetResource> {
-    return this.httpClient.get<SpreadsheetResource>(`${this.baseUrl}/${moduleId}/templates/xls?xls=` + csvFile);
+  getSpreadsheet(input: Input, csvFile: string): Observable<SpreadsheetResource> {
+    return this.httpClient.get<SpreadsheetResource>(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls?xls=` + csvFile);
   }
 
   saveModule(module: Module): Observable<any> {
