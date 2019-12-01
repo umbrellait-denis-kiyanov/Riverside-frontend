@@ -142,8 +142,6 @@ export class SpreadsheetComponent extends TemplateComponent {
           mergeCells: this.sheet.meta.mergeCells
         };
 
-        console.log(this.settings.data[7][1]);
-
         const rendered = () => {
           this.isRendered = true;
 
@@ -209,6 +207,10 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   beforeChange(changes, source) {
+    if (source !== 'edit' && source !== 'Autofill.fill') {
+      return;
+    }
+
     for (let i = changes.length - 1; i >= 0; i--) {
       const change = changes[i];
       const newVal = change[3];
@@ -216,6 +218,13 @@ export class SpreadsheetComponent extends TemplateComponent {
 
       if (tp) {
         changes[i][3] = parseFloat(newVal) || 0;
+      }
+
+      changes[i][4] = changes[i][3];
+
+      // % values need to be sent as decimals
+      if ('percent' === tp) {
+        changes[i][4] = changes[i][4] / 100;
       }
     }
   }
@@ -232,7 +241,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       const col = change[1];
 
       content[row] = content[row] || {};
-      content[row][col] = change[3];
+      content[row][col] = change[4];
     });
 
     this.input.content = JSON.stringify(content);
