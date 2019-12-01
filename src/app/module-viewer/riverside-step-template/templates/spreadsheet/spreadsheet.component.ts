@@ -128,6 +128,8 @@ export class SpreadsheetComponent extends TemplateComponent {
           this.hiddenRows.rows = [];
         }
 
+        console.time('render');
+
         this.settings = {
           autoRowSize: false,
           autoColumnSize: false,
@@ -149,10 +151,16 @@ export class SpreadsheetComponent extends TemplateComponent {
         const rendered = () => {
           this.isRendered = true;
 
+          console.timeEnd('render');
+
           Handsontable.default.hooks.remove('afterRender', rendered);
         };
 
         Handsontable.default.hooks.add('afterRender', rendered);
+
+        // Handsontable.default.hooks.add('modifyRow', row => {
+        //   return this.hiddenRows.rows.indexOf(row) !== -1 ? row : null;
+        // });
       }
     ));
   }
