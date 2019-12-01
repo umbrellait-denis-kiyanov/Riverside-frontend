@@ -129,6 +129,8 @@ export class SpreadsheetComponent extends TemplateComponent {
         }
 
         this.settings = {
+          autoRowSize: false,
+          autoColumnSize: false,
           data: this.sheet.data,
           rowHeaders: false,
           colHeaders: false,
@@ -139,7 +141,9 @@ export class SpreadsheetComponent extends TemplateComponent {
           afterChange: this.afterChange.bind(this),
           invalidCellClassName: 'invalidCell',
           colWidths: this.sheet.meta.colWidths,
-          mergeCells: this.sheet.meta.mergeCells
+          mergeCells: this.sheet.meta.mergeCells,
+          viewportRowRenderingOffset: 0,
+          viewportColumnRenderingOffset: 0
         };
 
         const rendered = () => {
@@ -234,6 +238,8 @@ export class SpreadsheetComponent extends TemplateComponent {
       return;
     }
 
+    const hot = this.hot.hotInstance;
+
     const content = this.input.content ? JSON.parse(this.input.content) : {};
 
     changes.forEach(change => {
@@ -242,13 +248,15 @@ export class SpreadsheetComponent extends TemplateComponent {
 
       content[row] = content[row] || {};
       content[row][col] = change[4];
+
+      hot.getCell(row, col).className += ' hot-saving';
     });
 
     this.input.content = JSON.stringify(content);
 
     this.moduleService.saveInput(this.input, '/xls?xls=' + this.contentData.apiResource).subscribe(_ =>
         this.getSpreadsheetObservable().subscribe(__ => {
-          this.hot.hotInstance.updateSettings(this.settings);
+          hot.updateSettings(this.settings);
         }));
   }
 }

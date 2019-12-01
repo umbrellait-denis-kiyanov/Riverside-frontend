@@ -21,6 +21,20 @@
         color: white
         font-weight: bold
 
+    td.hot-saving
+        position: relative
+
+        &:before
+            -webkit-animation: fa-spin 2s infinite linear
+            animation: fa-spin 2s infinite linear
+            content: "\f110"
+            font-family: FontAwesome
+            font-size: 15px
+            position: absolute
+            top: 2px
+            left: 2px
+            opacity: 0.3
+
 .render-preview
     position: relative
 
