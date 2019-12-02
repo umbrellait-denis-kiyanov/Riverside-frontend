@@ -24,9 +24,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   cellSettings: { editable: boolean; className: string; }[][];
 
-  hiddenRows = {
-    rows: []
-  };
+  hiddenRows = [];
 
   visibleRows: number[];
 
@@ -121,14 +119,12 @@ export class SpreadsheetComponent extends TemplateComponent {
         this.sheet = data;
 
         if (this.contentData.visibleRows) {
-          this.hiddenRows.rows = Array.from(Array(data.data.length).keys());
+          this.hiddenRows = Array.from(Array(data.data.length).keys());
 
-          this.visibleRows.forEach(idx => this.hiddenRows.rows.splice(this.hiddenRows.rows.indexOf(idx), 1));
+          this.visibleRows.forEach(idx => this.hiddenRows.splice(this.hiddenRows.indexOf(idx), 1));
         } else {
-          this.hiddenRows.rows = [];
+          this.hiddenRows = [];
         }
-
-        console.time('render');
 
         this.settings = {
           autoRowSize: false,
@@ -138,29 +134,29 @@ export class SpreadsheetComponent extends TemplateComponent {
           colHeaders: false,
           cells: this.formatCell.bind(this),
           formulas: true,
-          hiddenRows: this.hiddenRows,
+          trimRows: this.hiddenRows,
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           invalidCellClassName: 'invalidCell',
           colWidths: this.sheet.meta.colWidths,
-          mergeCells: this.sheet.meta.mergeCells,
+          mergeCells: this.sheet.meta.mergeCells
+                        .filter(cell => this.hiddenRows.indexOf(cell.row) === -1)
+                        .map(cell => {
+                          cell.row = this.visibleRows.indexOf(cell.row);
+                          return cell;
+                        }),
           viewportRowRenderingOffset: 0,
-          viewportColumnRenderingOffset: 0
+          viewportColumnRenderingOffset: 0,
+          licenseKey: 'non-commercial-and-evaluation'
         };
 
         const rendered = () => {
           this.isRendered = true;
 
-          console.timeEnd('render');
-
           Handsontable.default.hooks.remove('afterRender', rendered);
         };
 
         Handsontable.default.hooks.add('afterRender', rendered);
-
-        // Handsontable.default.hooks.add('modifyRow', row => {
-        //   return this.hiddenRows.rows.indexOf(row) !== -1 ? row : null;
-        // });
       }
     ));
   }
@@ -226,7 +222,10 @@ export class SpreadsheetComponent extends TemplateComponent {
     for (let i = changes.length - 1; i >= 0; i--) {
       const change = changes[i];
       const newVal = change[3];
-      const tp = this.types[change[0]][change[1]];
+
+      const dataRow = this.visibleRows[change[0]];
+
+      const tp = this.types[dataRow][change[1]];
 
       if (tp) {
         changes[i][3] = parseFloat(newVal) || 0;
@@ -254,8 +253,10 @@ export class SpreadsheetComponent extends TemplateComponent {
       const row = change[0];
       const col = change[1];
 
-      content[row] = content[row] || {};
-      content[row][col] = change[4];
+      const dataRow = this.visibleRows[row];
+
+      content[dataRow] = content[dataRow] || {};
+      content[dataRow][col] = change[4];
 
       hot.getCell(row, col).className += ' hot-saving';
     });
