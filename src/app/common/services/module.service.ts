@@ -77,8 +77,11 @@ export class ModuleService {
     return this.httpClient.get<string[]>(`${this.baseUrl}/${moduleId}/templates/resources?template=` + template);
   }
 
-  getSpreadsheet(input: Input, csvFile: string): Observable<SpreadsheetResource> {
-    return this.httpClient.get<SpreadsheetResource>(`${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls?xls=` + csvFile);
+  getSpreadsheet(input: Input, csvFile: string, visibleRows?: number[]): Observable<SpreadsheetResource> {
+    return this.httpClient.get<SpreadsheetResource>(
+        `${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls?xls=` + csvFile + 
+          (visibleRows.length ? '&rows=' + JSON.stringify(visibleRows) : '')
+        );
   }
 
   saveModule(module: Module): Observable<any> {

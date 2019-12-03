@@ -24,8 +24,6 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   cellSettings: { editable: boolean; className: string; }[][];
 
-  hiddenRows = [];
-
   visibleRows: number[];
 
   isRendered = false;
@@ -42,26 +40,36 @@ export class SpreadsheetComponent extends TemplateComponent {
 
     this.input = this.getInput('spreadsheet', 1);
 
-    this.visibleRows = this.textContent(contentData.visibleRows).split(',').reduce((rows, intv) => {
+    const visibleRowConfig = this.textContent(contentData.visibleRows);
+    this.visibleRows = visibleRowConfig ? visibleRowConfig.split(',').reduce((rows, intv) => {
       const highLow = intv.split('-');
       for (let idx = Number(highLow[0]) - 1; idx <= Number(highLow[highLow.length - 1]) - 1; idx++) {
         rows.push(idx);
       }
 
       return rows;
-    }, []);
+    }, []) : [];
 
     this.contentData = contentData;
 
     this.getSpreadsheetObservable().subscribe();
 
-    this.renderedRows = Array(this.visibleRows.length).fill(undefined);
+    this.renderedRows = Array(this.visibleRows.length || 50).fill(undefined);
     this.renderedCols = Array(14).fill(undefined);
   }
 
+  getRealRow(fullIndex) {
+    const idx = this.visibleRows.length ? this.visibleRows.indexOf(fullIndex) : fullIndex;
+    return idx > -1 ? idx : null;
+  }
+
   getSpreadsheetObservable() {
-    return this.moduleService.getSpreadsheet(this.input, this.contentData.apiResource).pipe(
+    return this.moduleService.getSpreadsheet(this.input, this.contentData.apiResource, this.visibleRows).pipe(
       tap(data => {
+        if (!(data.data instanceof Array)) {
+          data.data = [];
+        }
+
         this.cellSettings = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => ({editable: false, className: ''})));
 
         this.types = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => {
@@ -90,11 +98,16 @@ export class SpreadsheetComponent extends TemplateComponent {
         }));
 
         this.cellSettings = data.meta.editable.reduce((editable, range) => {
-          const row = parseInt(range, 10);
+          const row = this.getRealRow(parseInt(range, 10) - 1);
+
+          if (row === null) {
+            return editable;
+          }
+
           const cellRange = range.split(/[0-9]/).join('').split('-');
 
           for (let idx = cellRange[0].charCodeAt(0) - 65; idx <= cellRange[cellRange.length - 1].charCodeAt(0) - 65; idx++) {
-            editable[row - 1][idx].editable = true;
+            editable[row][idx].editable = true;
           }
 
           return editable;
@@ -109,7 +122,10 @@ export class SpreadsheetComponent extends TemplateComponent {
 
           for (let col = colRange[0].charCodeAt(0) - 65; col <= colRange[colRange.length - 1].charCodeAt(0) - 65; col++) {
             for (let row = Number(rowRange[0]); row <= Number(rowRange[rowRange.length - 1]); row++) {
-              settings[row - 1][col].className += ' ' + classNames;
+              const realRow = this.getRealRow(row - 1);
+              if (realRow !== null) {
+                settings[realRow][col].className += ' ' + classNames;
+              }
             }
           }
 
@@ -117,14 +133,6 @@ export class SpreadsheetComponent extends TemplateComponent {
         }, this.cellSettings);
 
         this.sheet = data;
-
-        if (this.contentData.visibleRows) {
-          this.hiddenRows = Array.from(Array(data.data.length).keys());
-
-          this.visibleRows.forEach(idx => this.hiddenRows.splice(this.hiddenRows.indexOf(idx), 1));
-        } else {
-          this.hiddenRows = [];
-        }
 
         this.settings = {
           autoRowSize: false,
@@ -134,15 +142,14 @@ export class SpreadsheetComponent extends TemplateComponent {
           colHeaders: false,
           cells: this.formatCell.bind(this),
           formulas: true,
-          trimRows: this.hiddenRows,
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           invalidCellClassName: 'invalidCell',
           colWidths: this.sheet.meta.colWidths,
           mergeCells: this.sheet.meta.mergeCells
-                        .filter(cell => this.hiddenRows.indexOf(cell.row) === -1)
+                        .filter(cell => this.getRealRow(cell.row) !== null)
                         .map(cell => {
-                          cell.row = this.visibleRows.indexOf(cell.row);
+                          cell.row = this.getRealRow(cell.row);
                           return cell;
                         }),
           viewportRowRenderingOffset: 0,
@@ -222,10 +229,9 @@ export class SpreadsheetComponent extends TemplateComponent {
     for (let i = changes.length - 1; i >= 0; i--) {
       const change = changes[i];
       const newVal = change[3];
+      const row = change[0];
 
-      const dataRow = this.visibleRows[change[0]];
-
-      const tp = this.types[dataRow][change[1]];
+      const tp = this.types[row][change[1]];
 
       if (tp) {
         changes[i][3] = parseFloat(newVal) || 0;
@@ -253,7 +259,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       const row = change[0];
       const col = change[1];
 
-      const dataRow = this.visibleRows[row];
+      const dataRow = this.visibleRows.length ? this.visibleRows[row] : row;
 
       content[dataRow] = content[dataRow] || {};
       content[dataRow][col] = change[4];
