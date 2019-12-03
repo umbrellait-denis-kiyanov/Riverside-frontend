@@ -1,4 +1,6 @@
-<div *ngIf="sheet" [hidden]="!isRendered">
+<div id="measureWidth" #widthContainer></div>
+
+<div *ngIf="sheet" class="hot-container" [hidden]="!isRendered">
   <hot-table
     #hot
     class="hot"

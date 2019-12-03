@@ -44,6 +44,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   input: Input;
 
   @ViewChild('hot') hot;
+  @ViewChild('widthContainer') widthContainer;
 
   init() {
     const contentData = this.data.data.template_params_json;
@@ -147,6 +148,8 @@ export class SpreadsheetComponent extends TemplateComponent {
 
         this.sheet = data;
 
+        const totalWidth = data.meta.colWidths.reduce((a, b) => a + b);
+
         this.settings = {
           autoRowSize: false,
           autoColumnSize: false,
@@ -158,15 +161,15 @@ export class SpreadsheetComponent extends TemplateComponent {
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           invalidCellClassName: 'invalidCell',
-          colWidths: this.sheet.meta.colWidths,
+          colWidths: ((col) => {
+            return data.meta.colWidths[col] * (this.widthContainer.nativeElement.clientWidth / totalWidth);
+          }).bind(this),
           mergeCells: this.sheet.meta.mergeCells
                         .filter(cell => this.getRealRow(cell.row) !== null)
                         .map(cell => {
                           cell.row = this.getRealRow(cell.row);
                           return cell;
                         }),
-          viewportRowRenderingOffset: 0,
-          viewportColumnRenderingOffset: 0,
           licenseKey: 'non-commercial-and-evaluation'
         };
 
