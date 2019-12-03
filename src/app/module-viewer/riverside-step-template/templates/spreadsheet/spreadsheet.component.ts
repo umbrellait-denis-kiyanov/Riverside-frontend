@@ -6,6 +6,16 @@ import { Observable, Subscription } from 'rxjs';
 import { SpreadsheetResource, Input } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 
+class PercentageEditor extends Handsontable.default.editors.TextEditor {
+  prepare(row, col, prop, td, originalValue, cellProperties) {
+    super.prepare(row, col, prop, td, originalValue * 100, cellProperties);
+  }
+
+  getValue() {
+    return (parseFloat(this.TEXTAREA.value) / 100) || 0;
+  }
+}
+
 @Component({
   selector: 'app-spreadsheet',
   templateUrl: './spreadsheet.component.html',
@@ -80,7 +90,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           let cellType = null;
 
           if (cell.match(/^[\.0-9]+\%$/)) {
-            cell = parseFloat(cell).toString();
+            cell = (parseFloat(cell) / 100).toString();
             cellType = 'percent';
           } else
           if (cell.match(/^\$[ ]{0,}[\.,0-9]+$/)) {
@@ -89,6 +99,9 @@ export class SpreadsheetComponent extends TemplateComponent {
           } else
           if (cell.match(/^[\.,0-9]+$/)) {
             cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
+            cellType = 'numeric';
+          } else
+          if (cell.substr(0, 1) === '=') {
             cellType = 'numeric';
           }
 
@@ -201,15 +214,24 @@ export class SpreadsheetComponent extends TemplateComponent {
         };
       } else if ('percent' === tp) {
         cell.numericFormat = {
-          pattern: '0,0',
-          culture: 'en-US'
+          pattern: {
+            trimMantissa: true,
+            output: "percent",
+            thousandSeparated: true,
+            mantissa: 2
+          }
         };
+
+        cell.editor = PercentageEditor;
 
         cell.className += ' percent';
       } else if ('numeric' === tp) {
         cell.numericFormat = {
-          pattern: '0,0',
-          culture: 'en-US'
+          pattern: {
+            thousandSeparated: true,
+            optionalMantissa: true,
+            mantissa: 2
+          }
         };
       }
     }
@@ -238,11 +260,6 @@ export class SpreadsheetComponent extends TemplateComponent {
       }
 
       changes[i][4] = changes[i][3];
-
-      // % values need to be sent as decimals
-      if ('percent' === tp) {
-        changes[i][4] = changes[i][4] / 100;
-      }
     }
   }
 
@@ -251,7 +268,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       return;
     }
 
-    const hot = this.hot.hotInstance;
+    const reloadData = !this.visibleRows.length;
 
     const content = this.input.content ? JSON.parse(this.input.content) : {};
 
@@ -264,14 +281,19 @@ export class SpreadsheetComponent extends TemplateComponent {
       content[dataRow] = content[dataRow] || {};
       content[dataRow][col] = change[4];
 
-      hot.getCell(row, col).className += ' hot-saving';
+      if (reloadData) {
+        this.hot.hotInstance.getCell(row, col).className += ' hot-saving';
+      }
     });
 
     this.input.content = JSON.stringify(content);
 
-    this.moduleService.saveInput(this.input, '/xls?xls=' + this.contentData.apiResource).subscribe(_ =>
+    this.moduleService.saveInput(this.input).subscribe(_ => {
+      if (reloadData) {
         this.getSpreadsheetObservable().subscribe(__ => {
-          hot.updateSettings(this.settings);
-        }));
+          this.hot.hotInstance.updateSettings(this.settings);
+          });
+      }
+    });
   }
 }
