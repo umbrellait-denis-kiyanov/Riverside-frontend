@@ -268,6 +268,10 @@ export class SpreadsheetComponent extends TemplateComponent {
       return;
     }
 
+    if (!changes.filter(change => change[2] != change[3]).length) {
+      return;
+    }
+
     const reloadData = !this.visibleRows.length;
 
     const content = this.input.content ? JSON.parse(this.input.content) : {};
