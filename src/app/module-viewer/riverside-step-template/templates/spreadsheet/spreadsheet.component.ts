@@ -33,7 +33,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   types: string[][];
   rounding: number[][];
 
-  cellSettings: { editable: boolean; className: string; }[][];
+  cellSettings: { editable: boolean; className: string; renderer: string; }[][];
 
   visibleRows: number[];
 
@@ -86,7 +86,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           data.data = [];
         }
 
-        this.cellSettings = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => ({editable: false, className: ''})));
+        this.cellSettings = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => ({editable: false, className: '', renderer: ''})));
 
         this.types = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => {
           if (null === cell) {
@@ -166,6 +166,7 @@ export class SpreadsheetComponent extends TemplateComponent {
         };
 
         metaConfig('formatting', (cell, classNames) => cell.className += ' ' + classNames);
+        metaConfig('renderer', (cell, renderer) => cell.renderer = renderer);
 
         this.sheet = data;
 
@@ -271,6 +272,10 @@ export class SpreadsheetComponent extends TemplateComponent {
       cell.className += ' ' + settings.className;
     }
 
+    if (settings.renderer) {
+      cell.renderer = this[settings.renderer].bind(this);
+    }
+
     return cell;
   }
 
@@ -330,5 +335,18 @@ export class SpreadsheetComponent extends TemplateComponent {
           });
       }
     });
+  }
+
+  aboveBelowQuota(instance, td, row, col, prop, value, cellProperties) {
+    Handsontable.default.renderers.NumericRenderer.apply(this, arguments);
+    td.style.fontWeight = 'bold';
+
+    if ('Above Quota' === this.sheet.data[7][5]) {
+      td.style.color = 'green';
+      td.style.background = '#CEC';
+    } else {
+      td.style.color = 'white';
+      td.style.background = '#C00';
+    }
   }
 }
