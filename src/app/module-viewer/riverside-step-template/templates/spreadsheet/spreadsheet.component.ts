@@ -43,6 +43,8 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   input: Input;
 
+  keepFormulas: boolean;
+
   @ViewChild('hot') hot;
   @ViewChild('widthContainer') widthContainer;
 
@@ -61,6 +63,8 @@ export class SpreadsheetComponent extends TemplateComponent {
       return rows;
     }, []) : [];
 
+    this.keepFormulas = this.visibleRows.length > 0 && !this.contentData.calculateFormulasOnServer;
+
     this.contentData = contentData;
 
     this.getSpreadsheetObservable().subscribe();
@@ -75,7 +79,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   getSpreadsheetObservable() {
-    return this.moduleService.getSpreadsheet(this.input, this.contentData.apiResource, this.visibleRows).pipe(
+    return this.moduleService.getSpreadsheet(this.input, this.contentData.apiResource, this.visibleRows, this.keepFormulas).pipe(
       tap(data => {
         if (!(data.data instanceof Array)) {
           data.data = [];
@@ -276,7 +280,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       return;
     }
 
-    const reloadData = !this.visibleRows.length;
+    const reloadData = !this.keepFormulas;
 
     const content = this.input.content ? JSON.parse(this.input.content) : {};
 

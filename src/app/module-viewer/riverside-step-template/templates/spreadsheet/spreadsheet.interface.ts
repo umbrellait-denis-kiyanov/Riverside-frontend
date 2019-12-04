@@ -7,5 +7,6 @@ export interface SpreadsheetTemplateData extends TemplateContentDataBase {
     visibleRows: string;
     title: string;
     requireFeedback: boolean;
+    calculateFormulasOnServer: boolean;
   };
 }
