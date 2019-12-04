@@ -161,6 +161,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           invalidCellClassName: 'invalidCell',
+          rowHeights: () => this.widthContainer.nativeElement.clientWidth / 50,
           colWidths: ((col) => {
             return data.meta.colWidths[col] * (this.widthContainer.nativeElement.clientWidth / totalWidth);
           }).bind(this),
