@@ -168,7 +168,7 @@ export class SpreadsheetComponent extends TemplateComponent {
         metaConfig('formatting', (cell, classNames) => cell.className += ' ' + classNames);
         metaConfig('renderer', (cell, renderer) => cell.renderer = renderer);
         metaConfig('requireValue', (cell, value) => cell.validator = (cellValue, cb) => {
-          cb(value === cellValue);
+          cb(value == cellValue || (Math.abs(Number(value) - Number(cellValue)) < 0.0001));
         });
 
         this.sheet = data;
@@ -186,7 +186,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           invalidCellClassName: 'invalidCell',
-          rowHeights: () => this.widthContainer.nativeElement.clientWidth / 48,
+          rowHeights: () => this.widthContainer.nativeElement.clientWidth / 46,
           colWidths: ((col) => {
             return data.meta.colWidths[col] * (this.widthContainer.nativeElement.clientWidth / totalWidth);
           }).bind(this),
@@ -218,6 +218,10 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   getName() {
     return 'Spreadsheet';
+  }
+
+  validate() {
+    return !this.hot.container.nativeElement.querySelector('td.invalidCell');
   }
 
   formatCell(row, column, prop) {
