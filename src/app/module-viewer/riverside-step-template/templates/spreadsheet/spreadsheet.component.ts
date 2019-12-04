@@ -33,7 +33,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   types: string[][];
   rounding: number[][];
 
-  cellSettings: { editable: boolean; className: string; renderer: string; }[][];
+  cellSettings: { editable: boolean; className: string; renderer: string; validator?: () => boolean }[][];
 
   visibleRows: number[];
 
@@ -167,6 +167,9 @@ export class SpreadsheetComponent extends TemplateComponent {
 
         metaConfig('formatting', (cell, classNames) => cell.className += ' ' + classNames);
         metaConfig('renderer', (cell, renderer) => cell.renderer = renderer);
+        metaConfig('requireValue', (cell, value) => cell.validator = (cellValue, cb) => {
+          cb(value === cellValue);
+        });
 
         this.sheet = data;
 
@@ -198,6 +201,8 @@ export class SpreadsheetComponent extends TemplateComponent {
 
         const rendered = () => {
           this.isRendered = true;
+
+          setTimeout(_ => this.hot.hotInstance.validateCells());
 
           Handsontable.default.hooks.remove('afterRender', rendered);
         };
@@ -276,6 +281,10 @@ export class SpreadsheetComponent extends TemplateComponent {
       cell.renderer = this[settings.renderer].bind(this);
     }
 
+    if (settings.validator) {
+      cell.validator = settings.validator;
+    }
+
     return cell;
   }
 
@@ -332,7 +341,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       if (reloadData) {
         this.getSpreadsheetObservable().subscribe(__ => {
           this.hot.hotInstance.updateSettings(this.settings);
-          });
+        });
       }
     });
   }
