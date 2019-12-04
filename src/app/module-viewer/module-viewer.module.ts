@@ -221,6 +221,7 @@ import { HotTableModule } from '@handsontable/angular';
     IceService,
     LeftMenuService,
     InboxService,
+    CanModifyPipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
   bootstrap: [ModuleViewerRootComponent],
