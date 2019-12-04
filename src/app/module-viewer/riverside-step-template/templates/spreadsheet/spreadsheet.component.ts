@@ -31,6 +31,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   settings: Handsontable.default.GridSettings;
 
   types: string[][];
+  rounding: number[][];
 
   cellSettings: { editable: boolean; className: string; }[][];
 
@@ -63,9 +64,9 @@ export class SpreadsheetComponent extends TemplateComponent {
       return rows;
     }, []) : [];
 
-    this.keepFormulas = this.visibleRows.length > 0 && !this.contentData.calculateFormulasOnServer;
-
     this.contentData = contentData;
+
+    this.keepFormulas = this.visibleRows.length > 0 && !this.contentData.calculateFormulasOnServer;
 
     this.getSpreadsheetObservable().subscribe();
 
@@ -115,6 +116,18 @@ export class SpreadsheetComponent extends TemplateComponent {
           return cellType;
         }));
 
+        this.rounding = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => 2));
+
+        const types = {p: 'percent', 'c': 'currency', 'n': 'numeric'};
+        data.types.forEach((row, rowIndex) =>
+          row.forEach((type, cellIndex) => {
+            if (type.length == 2) {
+              this.types[rowIndex][cellIndex] = types[type[0]];
+              this.rounding[rowIndex][cellIndex] = Number(type[1]);
+            }
+          })
+        );
+
         this.cellSettings = data.meta.editable.reduce((editable, range) => {
           const row = this.getRealRow(parseInt(range, 10) - 1);
 
@@ -131,24 +144,28 @@ export class SpreadsheetComponent extends TemplateComponent {
           return editable;
         }, this.cellSettings);
 
-        this.cellSettings = Object.entries(data.meta.formatting).reduce((settings, [range, classNames]) => {
-          if ('*' === range.substr(-1)) {
-            range = range.slice(0, -1) + 'A-' + data.meta.maxColumn;
-          }
-          const rowRange = range.match(/[\-0-9]+/)[0].split('-');
-          const colRange = range.split(/[0-9]/).join('').match(/[\-A-Z]+/)[0].split('-').filter(a => a);
+        const metaConfig = (field: string, callback) => {
+          this.cellSettings = Object.entries(data.meta[field]).reduce((settings, [range, value]) => {
+            if ('*' === range.substr(-1)) {
+              range = range.slice(0, -1) + 'A-' + data.meta.maxColumn;
+            }
+            const rowRange = range.match(/[\-0-9]+/)[0].split('-');
+            const colRange = range.split(/[0-9]/).join('').match(/[\-A-Z]+/)[0].split('-').filter(a => a);
 
-          for (let col = colRange[0].charCodeAt(0) - 65; col <= colRange[colRange.length - 1].charCodeAt(0) - 65; col++) {
-            for (let row = Number(rowRange[0]); row <= Number(rowRange[rowRange.length - 1]); row++) {
-              const realRow = this.getRealRow(row - 1);
-              if (realRow !== null) {
-                settings[realRow][col].className += ' ' + classNames;
+            for (let col = colRange[0].charCodeAt(0) - 65; col <= colRange[colRange.length - 1].charCodeAt(0) - 65; col++) {
+              for (let row = Number(rowRange[0]); row <= Number(rowRange[rowRange.length - 1]); row++) {
+                const realRow = this.getRealRow(row - 1);
+                if (realRow !== null) {
+                  callback(settings[realRow][col], value, realRow, col);
+                }
               }
             }
-          }
 
-          return settings;
-        }, this.cellSettings);
+            return settings;
+          }, this.cellSettings);
+        };
+
+        metaConfig('formatting', (cell, classNames) => cell.className += ' ' + classNames);
 
         this.sheet = data;
 
@@ -165,7 +182,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           invalidCellClassName: 'invalidCell',
-          rowHeights: () => this.widthContainer.nativeElement.clientWidth / 50,
+          rowHeights: () => this.widthContainer.nativeElement.clientWidth / 48,
           colWidths: ((col) => {
             return data.meta.colWidths[col] * (this.widthContainer.nativeElement.clientWidth / totalWidth);
           }).bind(this),
@@ -217,7 +234,11 @@ export class SpreadsheetComponent extends TemplateComponent {
 
       if ('currency' === tp) {
         cell.numericFormat = {
-          pattern: '$ 0,0',
+          pattern: {
+            thousandSeparated: true,
+            optionalMantissa: true,
+            output: "currency"
+          },
           culture: 'en-US'
         };
       } else if ('percent' === tp) {
@@ -226,7 +247,6 @@ export class SpreadsheetComponent extends TemplateComponent {
             trimMantissa: true,
             output: "percent",
             thousandSeparated: true,
-            mantissa: 2
           }
         };
 
@@ -238,9 +258,12 @@ export class SpreadsheetComponent extends TemplateComponent {
           pattern: {
             thousandSeparated: true,
             optionalMantissa: true,
-            mantissa: 2
           }
         };
+      }
+
+      if (cell.numericFormat) {
+        cell.numericFormat.pattern.mantissa = this.rounding[row][column];
       }
     }
 
