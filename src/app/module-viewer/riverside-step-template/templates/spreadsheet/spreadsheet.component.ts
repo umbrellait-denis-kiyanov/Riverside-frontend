@@ -5,6 +5,7 @@ import * as Handsontable from 'handsontable';
 import { Observable, Subscription } from 'rxjs';
 import { SpreadsheetResource, Input } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
+import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 
 class PercentageEditor extends Handsontable.default.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
@@ -45,9 +46,12 @@ export class SpreadsheetComponent extends TemplateComponent {
   input: Input;
 
   keepFormulas: boolean;
+  isMenuVisible: boolean;
 
   @ViewChild('hot') hot;
   @ViewChild('widthContainer') widthContainer;
+
+  watchMenuExpand: Subscription;
 
   init() {
     const contentData = this.data.data.template_params_json;
@@ -72,6 +76,11 @@ export class SpreadsheetComponent extends TemplateComponent {
 
     this.renderedRows = Array(this.visibleRows.length || 50).fill(undefined);
     this.renderedCols = Array(14).fill(undefined);
+
+    this.injectorObj.get(LeftMenuService).onExpand.pipe(this.whileExists()).subscribe((state: boolean) => {
+      this.isMenuVisible = state;
+      window.dispatchEvent(new Event('resize'));
+    });
   }
 
   getRealRow(fullIndex) {
