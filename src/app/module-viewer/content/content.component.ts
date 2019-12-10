@@ -12,6 +12,7 @@ import { combineLatest, Subscription, Observable, race } from 'rxjs';
 import { Templates } from '../riverside-step-template/templates';
 import { IceService } from '../ice/ice.service';
 import ModuleContent from 'src/app/common/interfaces/module-content.model';
+import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 
 @Component({
   selector: 'app-content',
@@ -23,6 +24,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   templateData: TemplateContentData;
   templateComponentName: keyof typeof Templates;
   canModify = false;
+  leftMenuExpanded = true;
 
   routeWatch: Subscription;
 
@@ -38,7 +40,8 @@ export class ContentComponent implements OnInit, OnDestroy {
     private userService: UserService,
     private moduleContentService: ModuleContentService,
     private navService: ModuleNavService,
-    private iceService: IceService
+    private iceService: IceService,
+    private leftMenuService: LeftMenuService
   ) {}
 
   ngOnDestroy() {
@@ -77,6 +80,8 @@ export class ContentComponent implements OnInit, OnDestroy {
         }),
         tap(this.render.bind(this))
       );
+
+    this.leftMenuService.onExpand.subscribe(leftMenuState => this.leftMenuExpanded = leftMenuState);
   }
 
   render(moduleContent: ModuleContent) {

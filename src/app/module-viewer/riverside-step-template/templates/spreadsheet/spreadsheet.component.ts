@@ -2,7 +2,7 @@ import { Component, forwardRef, ViewChild } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { SpreadsheetTemplateData } from './spreadsheet.interface';
 import * as Handsontable from 'handsontable';
-import { Observable, Subscription } from 'rxjs';
+import { Subscription } from 'rxjs';
 import { SpreadsheetResource, Input } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
@@ -46,7 +46,6 @@ export class SpreadsheetComponent extends TemplateComponent {
   input: Input;
 
   keepFormulas: boolean;
-  isMenuVisible: boolean;
 
   @ViewChild('hot') hot;
   @ViewChild('widthContainer') widthContainer;
@@ -78,7 +77,6 @@ export class SpreadsheetComponent extends TemplateComponent {
     this.renderedCols = Array(14).fill(undefined);
 
     this.injectorObj.get(LeftMenuService).onExpand.pipe(this.whileExists()).subscribe((state: boolean) => {
-      this.isMenuVisible = state;
       window.dispatchEvent(new Event('resize'));
     });
   }
@@ -95,7 +93,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           data.data = [];
         }
 
-        this.cellSettings = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => ({editable: false, className: '', renderer: ''})));
+        this.cellSettings = data.data.map((row) => row.map(() => ({editable: false, className: '', renderer: ''})));
 
         this.types = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => {
           if (null === cell) {
@@ -174,6 +172,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           }, this.cellSettings);
         };
 
+        metaConfig('types', (cell, type, row, col) => this.types[row][col] = type);
         metaConfig('formatting', (cell, classNames) => cell.className += ' ' + classNames);
         metaConfig('renderer', (cell, renderer) => cell.renderer = renderer);
         metaConfig('requireValue', (cell, value) => cell.validator = (cellValue, cb) => {
@@ -192,6 +191,10 @@ export class SpreadsheetComponent extends TemplateComponent {
           colHeaders: false,
           cells: this.formatCell.bind(this),
           formulas: true,
+          afterRender: (() => {
+            this.isRendered = true;
+            setTimeout(_ => this.hot.hotInstance.validateCells());
+          }).bind(this),
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           beforeKeyDown: ((event) => {
@@ -215,16 +218,6 @@ export class SpreadsheetComponent extends TemplateComponent {
                         }),
           licenseKey: 'non-commercial-and-evaluation'
         };
-
-        const rendered = () => {
-          this.isRendered = true;
-
-          setTimeout(_ => this.hot.hotInstance.validateCells());
-
-          Handsontable.default.hooks.remove('afterRender', rendered);
-        };
-
-        Handsontable.default.hooks.add('afterRender', rendered);
       }
     ));
   }

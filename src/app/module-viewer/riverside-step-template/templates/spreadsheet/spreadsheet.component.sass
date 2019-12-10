@@ -1,20 +1,29 @@
 #measureWidth
     max-width: 95vw
 
-    &.isMenuVisible
-        max-width: calc(95vw - 380px)
+\:host-context(.content-wrapper.leftMenuExpanded) #measureWidth
+    max-width: calc(95vw - 380px)
+
+\:host-context(.content-wrapper.leftMenuExpanded) ::ng-deep .handsontable
+    font-size: 0.8vw
+
+    td, textarea
+        line-height: 1.5vw
+
+    td.larger, td.section
+        font-size: 0.9vw
 
 ::ng-deep .handsontable
-    font-size: 0.8vw
+    font-size: 0.9vw
     width: 100%
     max-width: 100%
 
     textarea
-        line-height: 1.5vw
+        line-height: 2vw
         text-align: right
 
     td
-        line-height: 1.5vw
+        line-height: 2vw
 
     td.editable
         background-color: lightyellow
@@ -31,10 +40,10 @@
         background-color: black
         color: white
         font-weight: bold
-        font-size: 0.9vw
+        font-size: 1vw
 
     td.larger
-        font-size: 0.9vw
+        font-size: 1vw
 
     td.greyout
         background-color: #ddd
