@@ -194,6 +194,14 @@ export class SpreadsheetComponent extends TemplateComponent {
           formulas: true,
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
+          beforeKeyDown: ((event) => {
+            if (46 === event.keyCode || 8 === event.keyCode) {
+              event.stopImmediatePropagation();
+              (event as any).realTarget.value = '0';
+              const hot = this.hot.hotInstance;
+              hot.getSelected().forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
+            }
+          }).bind(this),
           invalidCellClassName: 'invalidCell',
           rowHeights: () => this.widthContainer.nativeElement.clientWidth / 46,
           colWidths: ((col) => {
@@ -230,7 +238,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   validate() {
-    return !this.hot.container.nativeElement.querySelector('td.invalidCell');
+    return !this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)');
   }
 
   formatCell(row, column, prop) {
@@ -370,5 +378,14 @@ export class SpreadsheetComponent extends TemplateComponent {
       td.style.color = 'white';
       td.style.background = '#C00';
     }
+  }
+
+  formulaError(instance, td, row, col, prop, value, cellProperties) {
+    if (value && value.substr && value.substr(0, 1) == '#') {
+      arguments[5] = 0;
+      td.className += 'dontValidate';
+    }
+
+    Handsontable.default.renderers.NumericRenderer.apply(this, arguments);
   }
 }
