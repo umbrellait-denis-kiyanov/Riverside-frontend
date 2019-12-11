@@ -127,10 +127,10 @@ export class ModuleNavService {
                     }, {});
 
                     moduleData.steps.forEach(step => step.isLocked = isLocked[step.id]);
-console.log(moduleData);
+
                     return moduleData;
                   }),
-                  share()
+                  shareReplay(1)
                 );
 
   step = new ResourceFromStorage<number>('last_step_id',
