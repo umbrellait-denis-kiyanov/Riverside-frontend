@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { Component, OnInit, ViewChild, OnDestroy, OnChanges } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
@@ -18,7 +18,7 @@ import ModuleContent from 'src/app/common/interfaces/module-content.model';
   templateUrl: './content.component.html',
   styleUrls: ['./content.component.sass']
 })
-export class ContentComponent implements OnInit, OnDestroy {
+export class ContentComponent implements OnInit, OnDestroy, OnChanges {
   me: User;
   templateData: TemplateContentData;
   templateComponentName: keyof typeof Templates;
@@ -45,32 +45,38 @@ export class ContentComponent implements OnInit, OnDestroy {
     this.routeWatch.unsubscribe();
   }
 
+  ngOnChanges() {
+    console.log('changing');
+  }
+
   ngOnInit() {
     this.me = this.userService.me;
 
     this.routeWatch = this.route.params.pipe(filter(params => params.stepId)).subscribe(
       params => this.navService.step.current = Number(params.stepId)
     );
-
+console.log('Initializing');
     this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, this.navService.step$, this.moduleService.moduleChanged$)
       .pipe(
         switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
           catchError(err => this.navService.moduleData$.pipe(
             switchMap(moduleData => {
-              const firstStep = moduleData.steps.find(stepData => !stepData.is_section_break).id;
+              console.log('getting step');
+              const firstStep = (moduleData.steps.find(step => this.navService.step.current === step.id) || moduleData.steps.find(stepData => !stepData.is_section_break)).id;
               this.navService.goToStep(firstStep);
               return this.moduleContentService.load(moduleData.id, firstStep, org);
             })
           ))
         )),
         tap(content => {
+          console.log('tapping step');
           this.navService.moduleData$.pipe(take(1)).subscribe(moduleData => {
             if (!moduleData.status || !moduleData.status.is_activated || moduleData.status.org_id !== this.navService.lastOrganization.current) {
               this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
               return;
             }
 
-            if (moduleData.steps.find(step => step.id === content.step_id).isLocked) {
+            if ((moduleData.steps.find(step => step.id === content.step_id) || {isLocked: true}).isLocked) {
               this.navService.previousStep();
             }
           });

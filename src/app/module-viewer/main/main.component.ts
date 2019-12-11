@@ -3,7 +3,7 @@ import { Router, ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { Module } from 'src/app/common/interfaces/module.interface';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
-import { map, filter, switchMap, take } from 'rxjs/operators';
+import { map, filter, switchMap, take, tap, share } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 
@@ -32,6 +32,7 @@ export class MainComponent implements OnInit, OnDestroy {
   }
 
   ngOnInit() {
+
     this.routeWatch = this.route.params.subscribe(
         params => {
           if (params.orgId) {
@@ -45,15 +46,21 @@ export class MainComponent implements OnInit, OnDestroy {
       );
 
     const firstStep = this.navService.moduleData$.pipe(
-      map(mod => mod.steps.find(s => !s.is_section_break).id)
+      map(mod => { console.log(mod); return mod.steps.find(s => !s.is_section_break).id ; }),
+      share()
     );
 
     this.stepWatch = combineLatest(this.navService.organization$, this.navService.module$, this.route.url).pipe(
       map(_ => !this.route.children.find(route => route.outlet === 'primary')),
-      filter(f => !!f),
+      // filter(f => !!f),
+      tap(zz => console.log('tapping 1', this.navService.moduleData$)),
       switchMap(_ => firstStep),
+      tap(zz => console.log('tapping 2', zz)),
       take(1),
-    ).subscribe(stepId => this.navService.goToStep(stepId));
+    ).subscribe(stepId => {
+      this.navService.goToStep(stepId);
+      console.log('!!!!!!!!!!!!1', stepId);
+    });
 
     this.leftMenuService.onExpand.subscribe((expanded) => this.expanded = expanded);
   }

@@ -3,8 +3,8 @@ import { RequestFeedbackComponent } from '../request-feedback/request-feedback.c
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { feedback_svg } from './feedback.icon';
 import { review_svg } from './review.icon';
-import { map } from 'rxjs/operators';
-import { combineLatest, of, BehaviorSubject } from 'rxjs';
+import { map, switchMap, withLatestFrom, startWith } from 'rxjs/operators';
+import { combineLatest, of, BehaviorSubject, zip } from 'rxjs';
 
 interface RestrictOptions {
   nav: ModuleNavService;
@@ -93,8 +93,17 @@ export const menus: MenusInterface = [
       );
     },
     linkFn(nav: ModuleNavService) {
-      return combineLatest(nav.organization$, nav.module$).pipe(
-        map(([org, mod]) => `/org/${org}/module/${mod}`)
+      return combineLatest(
+          nav.module$.pipe(startWith(nav.module.current)),
+          nav.organization$.pipe(startWith(nav.lastOrganization.current)),
+          nav.step.onChange.pipe(startWith(0))
+        ).pipe(
+          switchMap(([mod, org]) => nav.getModuleService().getOrgModule(mod, org)),
+          map(orgModule => {
+            // const lastStep = nav.step.current || orgModule.steps.find(step => !step.is_section_break).id;
+            // return `/org/${orgModule.status.org_id}/module/${orgModule.id}/step/${lastStep}`;
+            return `/org/${orgModule.status.org_id}/module/${orgModule.id}`;
+          })
       );
     }
   },

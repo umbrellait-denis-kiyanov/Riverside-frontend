@@ -127,7 +127,7 @@ export class ModuleNavService {
                     }, {});
 
                     moduleData.steps.forEach(step => step.isLocked = isLocked[step.id]);
-
+console.log(moduleData);
                     return moduleData;
                   }),
                   share()
@@ -199,6 +199,10 @@ export class ModuleNavService {
 
   goToStep(id: number) {
     this.router.navigate(['org', this.lastOrganization.current, 'module', this.module.current, 'step', id]);
+  }
+
+  getModuleService() {
+    return this.moduleService;
   }
 
   private moveToStep(offset: number) {
