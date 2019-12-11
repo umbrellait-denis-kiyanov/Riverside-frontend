@@ -107,5 +107,6 @@ export class E3TooltipDirective implements OnInit {
 
     this.renderer.setStyle(this.tooltip, 'top', `${top + scrollPos}px`);
     this.renderer.setStyle(this.tooltip, 'left', `${left}px`);
+    this.renderer.setStyle(this.tooltip, 'max-width', `200px`);
   }
 }
