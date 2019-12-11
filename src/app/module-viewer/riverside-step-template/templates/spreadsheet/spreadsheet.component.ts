@@ -46,6 +46,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   input: Input;
 
   keepFormulas: boolean;
+  downloadProgress: boolean;
 
   @ViewChild('hot') hot;
   @ViewChild('widthContainer') widthContainer;
@@ -208,7 +209,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           invalidCellClassName: 'invalidCell',
           rowHeights: () => this.widthContainer.nativeElement.clientWidth / 46,
           colWidths: ((col) => {
-            return data.meta.colWidths[col] * (this.widthContainer.nativeElement.clientWidth / totalWidth);
+            return data.meta.colWidths[col] * ((this.widthContainer.nativeElement.clientWidth + 20) / totalWidth);
           }).bind(this),
           mergeCells: this.sheet.meta.mergeCells
                         .filter(cell => this.getRealRow(cell.row) !== null)
@@ -380,5 +381,12 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
 
     Handsontable.default.renderers.NumericRenderer.apply(this, arguments);
+  }
+
+  exportXls() {
+    this.downloadProgress = true;
+    window.location.href = this.moduleService.exportXlsUrl(this.input, this.contentData.apiResource);
+
+    setTimeout(_ => this.downloadProgress = false, 3000);
   }
 }

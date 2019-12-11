@@ -77,12 +77,16 @@ export class ModuleService {
     return this.httpClient.get<string[]>(`${this.baseUrl}/${moduleId}/templates/resources?template=` + template);
   }
 
-  getSpreadsheet(input: Input, csvFile: string, visibleRows?: number[], keepFormulas?: boolean): Observable<SpreadsheetResource> {
+  getSpreadsheet(input: Input, xlsFile: string, visibleRows?: number[], keepFormulas?: boolean): Observable<SpreadsheetResource> {
     return this.httpClient.get<SpreadsheetResource>(
-        `${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls?xls=` + csvFile
+        `${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls?xls=` + xlsFile
         + (visibleRows.length ? '&rows=' + JSON.stringify(visibleRows) : '')
         + (keepFormulas ? '&keepFormulas=true' : '')
         );
+  }
+
+  exportXlsUrl(input: Input, xlsFile: string) {
+    return `${this.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls-export?xls=` + xlsFile;
   }
 
   saveModule(module: Module): Observable<any> {
