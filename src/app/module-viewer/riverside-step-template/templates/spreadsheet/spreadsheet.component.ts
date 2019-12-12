@@ -54,9 +54,11 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   watchMenuExpand: Subscription;
 
-  spreadsheetService = this.injectorObj.get(SpreadsheetService);
+  spreadsheetService: SpreadsheetService;
 
   init() {
+    this.spreadsheetService = this.injectorObj.get(SpreadsheetService);
+
     const contentData = this.data.data.template_params_json;
 
     this.input = this.getInput('spreadsheet', 1);
