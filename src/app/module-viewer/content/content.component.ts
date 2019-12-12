@@ -57,7 +57,7 @@ export class ContentComponent implements OnInit, OnDestroy {
         switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
           catchError(err => this.navService.moduleData$.pipe(
             switchMap(moduleData => {
-              const firstStep = (moduleData.steps.find(step => this.navService.step.current === step.id) || moduleData.steps.find(stepData => !stepData.is_section_break)).id;
+              const firstStep = (moduleData.steps.find(step => !step.is_section_break && this.navService.step.current === step.id) || moduleData.steps.find(step => !step.is_section_break)).id;
               this.navService.goToStep(firstStep);
               return this.moduleContentService.load(moduleData.id, firstStep, org);
             })

@@ -219,6 +219,10 @@ export class ModuleNavService {
         }
       } while (step.is_section_break || step.isLocked || !index);
 
+      if (step.is_section_break) {
+        step = module.steps.find(step => !step.is_section_break && !step.isLocked);
+      }
+
       if (!step.isLocked) {
         this.goToStep(step.id);
       }

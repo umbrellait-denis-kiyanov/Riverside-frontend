@@ -30,9 +30,10 @@
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
       <a
-        [routerLink]="menu.linkObservable | async"
+        [routerLink]="link"
         routerLinkActive="active"
-        *ngIf="menu.linkObservable"
+        [routerLinkActiveOptions]="routerLinkActiveUpdateWorkaround"
+        *ngIf="menu.linkObservable | async as link"
       >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
@@ -57,7 +58,7 @@
             <mat-icon [ngClass]="menu.className">{{menu['mat-icon']}}</mat-icon>
             <span class="menu-item-counter" *ngIf="menu.counter"><span class="counter-content">{{menu.counter}}</span></span>
           </span>
-          <span *ngIf="menu.renderObservable" [innerHtml]="menu.renderObservable | async | safehtml"></span>
+          <span *ngIf="menu.renderObservable | async as html" [innerHtml]="html | safehtml"></span>
         </div>
       </ng-template>
     </li>
