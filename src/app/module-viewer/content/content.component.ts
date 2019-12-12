@@ -27,9 +27,9 @@ export class ContentComponent implements OnInit, OnDestroy {
   leftMenuExpanded = true;
 
   routeWatch: Subscription;
-  leftMenuStateWatch: Subscription;
 
   moduleContent$: Observable<any>;
+  leftMenuExpanded$: Observable<boolean>;
 
   @ViewChild(RiversideStepTemplateComponent)
   templateComponent: RiversideStepTemplateComponent;
@@ -47,7 +47,6 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routeWatch.unsubscribe();
-    this.leftMenuStateWatch.unsubscribe();
   }
 
   ngOnInit() {
@@ -83,7 +82,7 @@ export class ContentComponent implements OnInit, OnDestroy {
         tap(this.render.bind(this))
       );
 
-    this.leftMenuStateWatch = this.leftMenuService.onExpand.subscribe(leftMenuState => this.leftMenuExpanded = leftMenuState);
+    this.leftMenuExpanded$ = this.leftMenuService.onExpand;
   }
 
   render(moduleContent: ModuleContent) {
