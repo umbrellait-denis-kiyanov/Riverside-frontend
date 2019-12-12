@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
-import { filter, startWith, distinctUntilChanged, switchMap, share, take, map } from 'rxjs/operators';
+import { filter, startWith, distinctUntilChanged, switchMap, share, shareReplay, take, map } from 'rxjs/operators';
 import { AssessmentService } from './assessment.service';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
@@ -131,6 +131,8 @@ export class ModuleNavService {
                   }),
                   share()
                 );
+
+  moduleDataReplay$ = this.moduleData$.pipe(shareReplay(1));
 
   step = new ResourceFromStorage<number>('last_step_id',
             this.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id)),

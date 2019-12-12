@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import { ActivatedRoute } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { Module } from 'src/app/common/interfaces/module.interface';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
-import { map, filter, switchMap, take, tap, share, startWith } from 'rxjs/operators';
+import { map, filter, switchMap, take } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 
@@ -22,7 +22,6 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(
     private leftMenuService: LeftMenuService,
     private navService: ModuleNavService,
-    private router: Router,
     private route: ActivatedRoute
   ) { }
 
@@ -44,10 +43,11 @@ export class MainComponent implements OnInit, OnDestroy {
         }
       );
 
+    // determine the default step (first step of the module or the last visited one)
     this.stepWatch = combineLatest(this.navService.organization$, this.navService.module$, this.route.url).pipe(
       filter(f => !this.route.children.find(route => route.outlet === 'primary')),
       switchMap(([org, mod]) => this.navService.getModuleService().getOrgModule(mod, org)),
-      map(mod => (mod.steps.find(step => step.id === this.navService.step.current) || mod.steps.find(step => !step.is_section_break)).id),
+      map(mod => (mod.steps.find(step => !step.is_section_break && step.id === this.navService.step.current) || mod.steps.find(step => !step.is_section_break)).id),
       take(1),
     ).subscribe(stepId => {
       this.navService.goToStep(stepId);
