@@ -47,7 +47,7 @@ export class MainComponent implements OnInit, OnDestroy {
     this.stepWatch = combineLatest(this.navService.organization$, this.navService.module$, this.route.url).pipe(
       filter(f => !this.route.children.find(route => route.outlet === 'primary')),
       switchMap(([org, mod]) => this.navService.getModuleService().getOrgModule(mod, org)),
-      map(mod => mod.steps.find(s => !s.is_section_break).id ),
+      map(mod => (mod.steps.find(step => step.id === this.navService.step.current) || mod.steps.find(step => !step.is_section_break)).id),
       take(1),
     ).subscribe(stepId => {
       this.navService.goToStep(stepId);
