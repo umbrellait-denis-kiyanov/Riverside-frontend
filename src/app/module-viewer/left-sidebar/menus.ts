@@ -133,27 +133,6 @@ export const menus: MenusInterface = [
     restrict: ({ user }) => user.permissions.riversideRequestFeedback || user.permissions.riversideProvideFeedback
   },
   {
-    render: () => new BehaviorSubject(review_svg),
-    restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
-    className: 'material-icons-outlined',
-    labelFn(nav: ModuleNavService) {
-      return combineLatest(nav.moduleData$).pipe(
-        map(([mod]) => {
-            return mod.steps[mod.steps.length - 1].description.toUpperCase() + ' - ' + mod.name.toUpperCase();
-          }
-        )
-      );
-    },
-    linkFn(nav: ModuleNavService) {
-      return combineLatest(nav.organization$, nav.moduleData$).pipe(
-        map(([org, mod]) => {
-          const stepId = mod.steps[mod.steps.length - 1].id;
-          return `/org/${org}/module/${mod.id}/step/${stepId}`;
-        })
-      );
-    }
-  },
-  {
     'mat-icon': 'assessment',
     label: 'ASSESSMENT',
     linkFn(nav: ModuleNavService) {
