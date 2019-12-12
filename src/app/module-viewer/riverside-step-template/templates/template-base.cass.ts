@@ -1,5 +1,5 @@
 import { TemplateContentData } from './template-data.class';
-import { OnInit, ElementRef, Component, forwardRef } from '@angular/core';
+import { OnInit, ElementRef, Component, OnDestroy } from '@angular/core';
 import { TemplateComponentInterface, TemplateContentDataType } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
@@ -8,10 +8,11 @@ import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
 import { Input } from 'src/app/common/interfaces/module.interface';
 import { BehaviorSubject } from 'rxjs';
+import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
 
 @Component({})
-export abstract class TemplateComponent implements TemplateComponentInterface, OnInit {
+export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
   contentData: any;
   data: TemplateContentData;
   hideChanges: boolean;
@@ -20,6 +21,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   me: User;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
   activePersonas: any[];
+
+  instanceExists = true;
 
   public prefix = '';
 
@@ -52,6 +55,14 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     Object.keys(this.inputs).map(key => this.decorateInput(this.inputs[key]));
 
     this.init();
+  }
+
+  ngOnDestroy() {
+    this.instanceExists = false;
+  }
+
+  whileExists() {
+    return takeWhile(() => this.instanceExists);
   }
 
   // abstract validate(): boolean;

@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Module, Step, Input, Template, Organization, ModuleStatus } from '../interfaces/module.interface';
+import { Module, Step, Input, Template, Organization, ModuleStatus, SpreadsheetResource } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 import { shareReplay, switchMap, map, filter, debounceTime, distinctUntilChanged, share, take, tap } from 'rxjs/operators';
@@ -71,6 +71,10 @@ export class ModuleService {
 
   getTemplates(moduleId: number): Observable<Template[]> {
     return this.httpClient.get<Template[]>(`${this.baseUrl}/${moduleId}/templates`);
+  }
+
+  getTemplateResources(moduleId: number, template: string): Observable<string[]> {
+    return this.httpClient.get<string[]>(`${this.baseUrl}/${moduleId}/templates/resources?template=` + template);
   }
 
   saveModule(module: Module): Observable<any> {

@@ -1,12 +1,18 @@
+@import "src/app/common/sass/variables.sass"
+
 \:host
     padding-top: 2vw
     z-index: 1
 
+\:host-context(.content-wrapper.leftMenuExpanded) .template-title-bar
+    left: 360px
+    width: calc(100% - 360px)
+
 .template-title-bar
     position: fixed
     top: 0
-    left: 360px
-    width: calc(100% - 360px)
+    left: $left-sidebar-width
+    width: calc(100% - #{$left-sidebar-width})
     text-align: center
     background-color: #eee
     color: black

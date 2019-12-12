@@ -95,6 +95,10 @@ import { VideoComponent } from './riverside-step-template/templates/video/video.
 import { IcpInputComponent } from './riverside-step-template/templates/segment-criteria-define/icp-input/icp-input.component';
 import { ModuleFeedbackComponent } from './riverside-step-template/module-feedback/module-feedback.component';
 import { ErrorMsgComponent } from './error-msg/error-msg.component';
+import { SpreadsheetComponent } from './riverside-step-template/templates/spreadsheet/spreadsheet.component';
+import { HotTableModule } from '@handsontable/angular';
+import { SpreadsheetService } from '../common/services/spreadsheet.service';
+
 @NgModule({
   imports: [
     BrowserModule,
@@ -120,7 +124,8 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
     NgxChartsModule,
     MatInputModule,
     ReactiveFormsModule,
-    ImageCropperModule
+    ImageCropperModule,
+    HotTableModule.forRoot()
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -186,7 +191,8 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
     IcpInputComponent,
     ModuleFeedbackComponent,
     ErrorMsgComponent,
-    SpinnerComponent
+    SpinnerComponent,
+    SpreadsheetComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -204,12 +210,14 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
     AgeGenderComponent,
     TemplateHeadingComponent,
     SegmentCriteriaDefineComponent,
+    SpreadsheetComponent,
     VideoComponent
   ],
   providers: [
     AssessmentService,
     ModuleService,
     ModuleNavService,
+    SpreadsheetService,
     ModuleContentService,
     UserService,
     IceService,

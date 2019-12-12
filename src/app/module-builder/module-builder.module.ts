@@ -22,6 +22,7 @@ import { StepTemplateFieldComponent } from './module-editor/step-template-editor
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { MatIconModule} from '@angular/material/icon';
 import { BuilderSelectOptionPipe } from './module-editor/builder-select-option.pipe';
+import { HotTableModule } from '@handsontable/angular';
 
 @NgModule({
   imports: [
@@ -35,7 +36,8 @@ import { BuilderSelectOptionPipe } from './module-editor/builder-select-option.p
     E3CommonModule,
     DragDropModule,
     CKEditorModule,
-    MatIconModule
+    MatIconModule,
+    HotTableModule.forRoot()
   ],
   declarations: [
     ModuleBuilderRootComponent,

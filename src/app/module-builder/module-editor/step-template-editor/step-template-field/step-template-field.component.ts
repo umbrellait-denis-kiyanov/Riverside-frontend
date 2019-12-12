@@ -1,6 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Observable } from 'rxjs';
+import { ModuleService } from '../../../../common/services/module.service';
 
 @Component({
   selector: 'app-step-template-field',
@@ -15,13 +17,15 @@ export class StepTemplateFieldComponent implements OnInit {
   @Output() jsonChange: EventEmitter<string> = new EventEmitter<string>();
 
   name: string;
-  type: any;
+  type: 'json' | 'text-input' | 'string' | 'resource' | 'select' | Array<string>;
   selectValues: string[];
 
   hasSubFields = false;
   rtEditor: any;
 
-  constructor() { }
+  resourceValue$: Observable<string[]>;
+
+  constructor(private moduleService: ModuleService) { }
 
   ngOnInit() {
     this.name = this.field[0];
@@ -52,6 +56,11 @@ export class StepTemplateFieldComponent implements OnInit {
           this.json = [{}];
         }
       }
+    }
+
+    if (this.name.substr(0, 11) === 'apiResource') {
+      this.type = 'resource';
+      this.resourceValue$ = this.moduleService.getTemplateResources(0, 'spreadsheet');
     }
   }
 
