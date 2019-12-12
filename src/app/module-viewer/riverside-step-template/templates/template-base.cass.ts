@@ -53,7 +53,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     }).filter(i => i);
 
     Object.keys(this.inputs).map(key => this.decorateInput(this.inputs[key]));
-
+    this.init();
     this.initAction();
   }
 
