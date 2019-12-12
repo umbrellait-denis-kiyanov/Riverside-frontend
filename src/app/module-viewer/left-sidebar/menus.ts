@@ -2,9 +2,8 @@ import User from '../../common/interfaces/user.model';
 import { RequestFeedbackComponent } from '../request-feedback/request-feedback.component';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { feedback_svg } from './feedback.icon';
-import { review_svg } from './review.icon';
-import { map, shareReplay, switchMap, withLatestFrom, startWith } from 'rxjs/operators';
-import { combineLatest, of, BehaviorSubject, zip } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
 
 interface RestrictOptions {
   nav: ModuleNavService;

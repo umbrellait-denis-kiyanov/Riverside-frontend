@@ -40,10 +40,7 @@ export class LeftMenuComponent implements OnInit {
   ngOnInit() {
     this.me = this.userService.me;
 
-    // force module data reload
-    this.moduleService.moduleChanged$.next(true);
-
-    this.module$ = this.navService.moduleData$;
+    this.module$ = this.navService.moduleDataReplay$;
   }
 
   collapse() {
