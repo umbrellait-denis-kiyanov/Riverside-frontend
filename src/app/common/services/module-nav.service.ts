@@ -3,13 +3,12 @@ import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
-import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, share, take, map } from 'rxjs/operators';
+import { filter, startWith, distinctUntilChanged, switchMap, share, take, map } from 'rxjs/operators';
 import { AssessmentService } from './assessment.service';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
   private storageKey: string;
-  private default: T;
   private defaultObservable: Observable<T>;
   private type: 'json' | 'string' | 'number';
   public onChange =  new BehaviorSubject<T>(null);
@@ -130,7 +129,7 @@ export class ModuleNavService {
 
                     return moduleData;
                   }),
-                  shareReplay(1)
+                  share()
                 );
 
   step = new ResourceFromStorage<number>('last_step_id',

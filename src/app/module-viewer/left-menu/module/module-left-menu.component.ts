@@ -6,8 +6,8 @@ import User from 'src/app/common/interfaces/user.model';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { Router } from '@angular/router';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { combineLatest, Observable, BehaviorSubject } from 'rxjs';
-import { switchMap, tap, take } from 'rxjs/operators';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { take } from 'rxjs/operators';
 
 declare global {
   interface Window { $: any; }
@@ -39,6 +39,9 @@ export class LeftMenuComponent implements OnInit {
 
   ngOnInit() {
     this.me = this.userService.me;
+
+    // force module data reload
+    this.moduleService.moduleChanged$.next(true);
 
     this.module$ = this.navService.moduleData$;
   }
