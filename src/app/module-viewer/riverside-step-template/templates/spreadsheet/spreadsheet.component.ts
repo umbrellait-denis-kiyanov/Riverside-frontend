@@ -6,6 +6,7 @@ import { Subscription } from 'rxjs';
 import { SpreadsheetResource, Input } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
+import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
 
 class PercentageEditor extends Handsontable.default.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
@@ -53,6 +54,8 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   watchMenuExpand: Subscription;
 
+  spreadsheetService = this.injectorObj.get(SpreadsheetService);
+
   init() {
     const contentData = this.data.data.template_params_json;
 
@@ -88,7 +91,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   getSpreadsheetObservable() {
-    return this.moduleService.getSpreadsheet(this.input, this.contentData.apiResource, this.visibleRows, this.keepFormulas).pipe(
+    return this.spreadsheetService.getSpreadsheet(this.input, this.contentData.apiResource, this.visibleRows, this.keepFormulas).pipe(
       tap(data => {
         if (!(data.data instanceof Array)) {
           data.data = [];
@@ -385,7 +388,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   exportXls() {
     this.downloadProgress = true;
-    window.location.href = this.moduleService.exportXlsUrl(this.input, this.contentData.apiResource);
+    window.location.href = this.spreadsheetService.exportXlsUrl(this.input, this.contentData.apiResource);
 
     setTimeout(_ => this.downloadProgress = false, 3000);
   }

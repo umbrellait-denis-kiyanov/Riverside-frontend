@@ -97,6 +97,7 @@ import { ModuleFeedbackComponent } from './riverside-step-template/module-feedba
 import { ErrorMsgComponent } from './error-msg/error-msg.component';
 import { SpreadsheetComponent } from './riverside-step-template/templates/spreadsheet/spreadsheet.component';
 import { HotTableModule } from '@handsontable/angular';
+import { SpreadsheetService } from '../common/services/spreadsheet.service';
 
 @NgModule({
   imports: [
@@ -216,6 +217,7 @@ import { HotTableModule } from '@handsontable/angular';
     AssessmentService,
     ModuleService,
     ModuleNavService,
+    SpreadsheetService,
     ModuleContentService,
     UserService,
     IceService,
