@@ -27,5 +27,5 @@
 
 <module-feedback *ngIf="contentData.requireFeedback; else nav"></module-feedback>
 <ng-template #nav>
-  <module-nav *ngIf="!disabled" [step]="data"></module-nav>
+  <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
 </ng-template>
