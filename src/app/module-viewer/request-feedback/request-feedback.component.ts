@@ -26,7 +26,7 @@ export class RequestFeedbackComponent implements OnInit {
   ) { }
 
   ngOnInit() {
-    this.module$ = this.navService.moduleData$;
+    this.module$ = this.navService.moduleDataReplay$;
     this.inboxService.message.saving.subscribe(s => this.submitting = s);
   }
 
