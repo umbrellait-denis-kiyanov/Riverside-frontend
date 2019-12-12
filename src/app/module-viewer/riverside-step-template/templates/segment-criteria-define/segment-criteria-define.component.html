@@ -226,5 +226,5 @@
 
 <module-feedback *ngIf="step == 5 || step == 8; else nav"></module-feedback>
 <ng-template #nav>
-  <module-nav *ngIf="!disabled" [step]="data"></module-nav>
+  <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
 </ng-template>
