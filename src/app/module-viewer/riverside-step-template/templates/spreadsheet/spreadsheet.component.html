@@ -14,8 +14,8 @@
 
 <div class="render-preview" *ngIf="!isRendered">
   <table>
-    <tr *ngFor="let row of renderedRows">
-      <td *ngFor="let col of renderedCols"></td>
+    <tr *ngFor="let row of previewRows">
+      <td *ngFor="let col of previewCols"></td>
     </tr>
   </table>
   <div class="loading-overlay">

@@ -40,8 +40,8 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   isRendered = false;
 
-  renderedRows: undefined[];
-  renderedCols: undefined[];
+  previewRows: undefined[];
+  previewCols: undefined[];
 
   input: Input;
 
@@ -74,8 +74,8 @@ export class SpreadsheetComponent extends TemplateComponent {
 
     this.getSpreadsheetObservable().subscribe();
 
-    this.renderedRows = Array(this.visibleRows.length || 50).fill(undefined);
-    this.renderedCols = Array(14).fill(undefined);
+    this.previewRows = Array(this.visibleRows.length || 50).fill(undefined);
+    this.previewCols = Array(14).fill(undefined);
 
     this.injectorObj.get(LeftMenuService).onExpand.pipe(this.whileExists()).subscribe((state: boolean) => {
       window.dispatchEvent(new Event('resize'));

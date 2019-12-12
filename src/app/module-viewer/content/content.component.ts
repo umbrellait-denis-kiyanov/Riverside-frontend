@@ -27,6 +27,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   leftMenuExpanded = true;
 
   routeWatch: Subscription;
+  leftMenuStateWatch: Subscription;
 
   moduleContent$: Observable<any>;
 
@@ -46,6 +47,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.routeWatch.unsubscribe();
+    this.leftMenuStateWatch.unsubscribe();
   }
 
   ngOnInit() {
@@ -81,7 +83,7 @@ export class ContentComponent implements OnInit, OnDestroy {
         tap(this.render.bind(this))
       );
 
-    this.leftMenuService.onExpand.subscribe(leftMenuState => this.leftMenuExpanded = leftMenuState);
+    this.leftMenuStateWatch = this.leftMenuService.onExpand.subscribe(leftMenuState => this.leftMenuExpanded = leftMenuState);
   }
 
   render(moduleContent: ModuleContent) {

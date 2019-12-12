@@ -118,7 +118,7 @@ export class ModuleService {
     return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/assign`, {assigned_to});
   }
 
-  saveInput(input: Input, special = ''): Observable<any> {
+  saveInput(input: Input): Observable<any> {
     if (!input) {
       console.error('No input data provided');
       return;
@@ -131,7 +131,7 @@ export class ModuleService {
         distinctUntilChanged((i, p) => i.id === p.id),
         switchMap(inp => {
           const dataToSend = (({ comments_json, content, id }) => ({ comments_json, content, id }))(inp);
-          return this.httpClient.post<Input>(`${this.baseUrl}/${inp.module_id}/org/${inp.org_id}/input/${inp.id}` + special, dataToSend).pipe(
+          return this.httpClient.post<Input>(`${this.baseUrl}/${inp.module_id}/org/${inp.org_id}/input/${inp.id}`, dataToSend).pipe(
             tap(_ => {
               this.inputDebounce[input.id].complete();
               this.inputDebounce[input.id] = null;
