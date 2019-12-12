@@ -21,7 +21,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   me: User;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
   activePersonas: any[];
-
+  action: string;
   instanceExists = true;
 
   public prefix = '';
@@ -54,7 +54,13 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
     Object.keys(this.inputs).map(key => this.decorateInput(this.inputs[key]));
 
-    this.init();
+    this.initAction();
+  }
+
+  protected initAction() {
+    if (this.userService.me.permissions.riversideProvideFeedback) {
+      this.action = 'approve';
+    } else { this.action = ''; }
   }
 
   ngOnDestroy() {

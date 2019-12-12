@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import Message from '../../inbox/message.model';
 import { IceService } from '../../ice/ice.service';
@@ -13,7 +13,7 @@ type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedbac
   templateUrl: './module-nav.component.html',
   styleUrls: ['./module-nav.component.sass']
 })
-export class ModuleNavComponent implements OnInit {
+export class ModuleNavComponent implements OnInit, OnChanges {
   showPrevious = true;
   showNext = true;
   @Input() step: TemplateContentData;
@@ -29,6 +29,9 @@ export class ModuleNavComponent implements OnInit {
 
   hasValidationError = false;
 
+  actionButtonText: string;
+  subactionButtonText: string;
+
   constructor(
     private navService: ModuleNavService,
     private moduleService: ModuleService,
@@ -38,6 +41,7 @@ export class ModuleNavComponent implements OnInit {
 
   ngOnInit() {
     this.prepareActionFlag('is_done', this.action);
+    this.prepareButtonTexts();
     this.subaction && this.prepareActionFlag('is_subaction_done', this.subaction);
 
     // todo - what does it do?
@@ -48,6 +52,14 @@ export class ModuleNavComponent implements OnInit {
     });
   }
 
+  ngOnChanges() {
+    this.prepareButtonTexts();
+  }
+
+  prepareButtonTexts(){
+    this.actionButtonText = this.getActionButtonText();
+    this.subactionButtonText = this.getActionButtonText('is_subaction_done', this.subaction);
+  }
   prepareActionFlag(doneKey: string, action: actions) {
     const {data: {is_checked, is_approved, waiting_for_feedback, feedback_received}} = this.step;
     switch (action) {
@@ -142,7 +154,7 @@ export class ModuleNavComponent implements OnInit {
     }
   }
 
-  actionButtonText(doneKey: string = 'is_done', action?: actions) {
+  getActionButtonText(doneKey: string = 'is_done', action?: actions) {
     action = action || this.action;
 
     switch (action) {
