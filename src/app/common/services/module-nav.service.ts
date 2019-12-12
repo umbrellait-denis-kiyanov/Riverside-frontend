@@ -9,7 +9,6 @@ import { AssessmentService } from './assessment.service';
 export class ResourceFromStorage<T extends {toString: () => string}> {
   private _current: T;
   private storageKey: string;
-  private default: T;
   private defaultObservable: Observable<T>;
   private type: 'json' | 'string' | 'number';
   public onChange =  new BehaviorSubject<T>(null);
@@ -133,6 +132,8 @@ export class ModuleNavService {
                   share()
                 );
 
+  moduleDataReplay$ = this.moduleData$.pipe(shareReplay(1));
+
   step = new ResourceFromStorage<number>('last_step_id',
             this.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id)),
             'number');
@@ -201,6 +202,10 @@ export class ModuleNavService {
     this.router.navigate(['org', this.lastOrganization.current, 'module', this.module.current, 'step', id]);
   }
 
+  getModuleService() {
+    return this.moduleService;
+  }
+
   private moveToStep(offset: number) {
     this.moduleData$.pipe(take(1)).subscribe(module => {
       let index = module.steps.findIndex(s => s.id === this.step.current);
@@ -213,6 +218,10 @@ export class ModuleNavService {
           break;
         }
       } while (step.is_section_break || step.isLocked || !index);
+
+      if (step.is_section_break) {
+        step = module.steps.find(step => !step.is_section_break && !step.isLocked);
+      }
 
       if (!step.isLocked) {
         this.goToStep(step.id);

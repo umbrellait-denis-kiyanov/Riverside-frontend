@@ -2,9 +2,8 @@ import User from '../../common/interfaces/user.model';
 import { RequestFeedbackComponent } from '../request-feedback/request-feedback.component';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { feedback_svg } from './feedback.icon';
-import { review_svg } from './review.icon';
 import { map } from 'rxjs/operators';
-import { combineLatest, of, BehaviorSubject } from 'rxjs';
+import { BehaviorSubject } from 'rxjs';
 
 interface RestrictOptions {
   nav: ModuleNavService;
@@ -88,13 +87,13 @@ export const menus: MenusInterface = [
   {
     'mat-icon': 'view_module',
     labelFn: (nav: ModuleNavService) => {
-      return nav.moduleData$.pipe(
+      return nav.moduleDataReplay$.pipe(
         map(mod => mod.name.toUpperCase())
       );
     },
     linkFn(nav: ModuleNavService) {
-      return combineLatest(nav.organization$, nav.module$).pipe(
-        map(([org, mod]) => `/org/${org}/module/${mod}`)
+      return nav.moduleDataReplay$.pipe(
+        map(orgModule => `/org/${orgModule.status.org_id}/module/${orgModule.id}`)
       );
     }
   },
@@ -122,27 +121,6 @@ export const menus: MenusInterface = [
     link: '/inbox',
     counter: 0,
     restrict: ({ user }) => user.permissions.riversideRequestFeedback || user.permissions.riversideProvideFeedback
-  },
-  {
-    render: () => new BehaviorSubject(review_svg),
-    restrict: ({nav}) => !!nav.module.current && !['/dashboard', '/master-dashboard'].includes(nav.getRouter().url),
-    className: 'material-icons-outlined',
-    labelFn(nav: ModuleNavService) {
-      return combineLatest(nav.moduleData$).pipe(
-        map(([mod]) => {
-            return mod.steps[mod.steps.length - 1].description.toUpperCase() + ' - ' + mod.name.toUpperCase();
-          }
-        )
-      );
-    },
-    linkFn(nav: ModuleNavService) {
-      return combineLatest(nav.organization$, nav.moduleData$).pipe(
-        map(([org, mod]) => {
-          const stepId = mod.steps[mod.steps.length - 1].id;
-          return `/org/${org}/module/${mod.id}/step/${stepId}`;
-        })
-      );
-    }
   },
   {
     'mat-icon': 'assessment',
