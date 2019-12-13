@@ -34,6 +34,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   resetSelectAllSub: Subscription;
 
   markAsDoneSub: Subscription;
+  markAsNASub: Subscription;
   clearAnswersSub: Subscription;
   clearNotesSub: Subscription;
 
@@ -72,6 +73,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     this.answers$ = this.answersRequest$.pipe(
       map(response => response.body),
       tap(answers => this.navService.activeAssessmentSessionId$.next(answers.session_id)),
+      tap(_ => this.markAsNASub = null),
       tap(_ => this.markAsDoneSub = null),
       tap(_ => this.answersLoading = false)
     );
@@ -131,6 +133,21 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
     this.markAsDoneSub = this.asmService.markAsDone(activeGroup, t, this.navService.lastOrganization.current)
       .subscribe(_ => toastr.success(activeGroup.name + ' has been marked as done'));
+  }
+
+  markAsNA(activeGroup: AssessmentGroup, t: AssessmentType, moveToNextStep: boolean) {
+    if (this.markAsNASub && !this.markAsNASub.closed) {
+      return;
+    }
+
+    this.markAsNASub = this.asmService.markAsNotApplicable(activeGroup, t, this.navService.lastOrganization.current, moveToNextStep)
+      .subscribe(_ => {
+        toastr.success(activeGroup.name + ' has been ' + (moveToNextStep ? '' : 'un') + 'marked as Not Applicable');
+
+        if (!moveToNextStep) {
+          this.answerUpdated$.next(true);
+        }
+      });
   }
 
   isSectionReady(questions: AssessmentQuestion[], answers) {

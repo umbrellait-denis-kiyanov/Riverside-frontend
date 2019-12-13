@@ -100,6 +100,18 @@ export class AssessmentService {
       );
   }
 
+  markAsNotApplicable(group: AssessmentGroup, type: AssessmentType, orgID: number, moveToNextGroup: boolean): Observable<any> {
+    return this.httpClient.post(`${this.baseUrl}/na/${group.id}/type/${type.id}/org/${orgID}`, {})
+      .pipe(
+        this.updateGroups,
+        tap(_ => {
+          if (moveToNextGroup) {
+            this.moveToNextGroup$.next(true);
+          }
+        })
+      );
+  }
+
   getCompletedSessions(type: AssessmentType, orgID: number): Observable<AssessmentSession[]> {
     return this.httpClient.get<AssessmentSession[]>(`${this.baseUrl}/completed-sessions/${type.id}/org/${orgID}`);
   }

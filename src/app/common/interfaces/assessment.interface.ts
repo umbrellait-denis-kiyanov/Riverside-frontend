@@ -23,6 +23,7 @@ export interface AssessmentGroup {
     shortName: string;
     description: string;
     position: number;
+    isNA: boolean;
     questions: AssessmentQuestion[];
 }
 

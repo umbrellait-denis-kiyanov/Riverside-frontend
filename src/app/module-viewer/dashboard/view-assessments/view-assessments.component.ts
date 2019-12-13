@@ -66,7 +66,7 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
         const series = Object.values(session.groups).sort((a, b) => Number(a.position) > Number(b.position) ? 1 : -1).map((group, idx) => {
           return {
             value: Number(group.score),
-            formattedValue: Number(group.score),
+            formattedValue: group.score === null ? 'N/A' : Number(group.score),
             name: (idx + 1),
             label: (type.groups.find(g => Number(g.id) === Number(group.group_id)) || {shortName: ''}).shortName
           };
