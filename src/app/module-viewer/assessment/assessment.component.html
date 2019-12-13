@@ -105,7 +105,7 @@
     <button
       *ngIf="!answers.isDone || (!answers.isApproved && val.canRecord); else doneButton"
       mat-raised-button
-      [color]="!isSectionReady(val.questions, answers) || 'accent'"
+      [color]="!(isSectionReady$ | async) || 'accent'"
       (click)="markAsDone(val.activeGroup, val.type, val.questions, answers)">
         <span *ngIf="!val.canRecord">Mark As Done</span>
         <span *ngIf="val.canRecord">Approve</span>

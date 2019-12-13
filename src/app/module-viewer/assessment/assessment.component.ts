@@ -26,6 +26,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
   answerUpdated$ = new BehaviorSubject<boolean>(false);
 
+  isSectionReady$: Observable<boolean>;
+
   importance = [1, 2, 3, 4, 5];
 
   errors = {};
@@ -76,6 +78,10 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       tap(_ => this.markAsNASub = null),
       tap(_ => this.markAsDoneSub = null),
       tap(_ => this.answersLoading = false)
+    );
+
+    this.isSectionReady$ = combineLatest(this.questions$, this.answers$).pipe(
+      map(([questions, answers]) => !(questions.filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null).length))
     );
   }
 
@@ -148,9 +154,5 @@ export class AssessmentComponent implements OnInit, OnDestroy {
           this.answerUpdated$.next(true);
         }
       });
-  }
-
-  isSectionReady(questions: AssessmentQuestion[], answers) {
-    return !(questions.filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null).length);
   }
 }
