@@ -126,12 +126,14 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.errors = questions
-      .filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null)
-      .reduce((errors, q) => {
-        errors[q.id] = true;
-        return errors;
-      }, {});
+    if (!answers.isNA) {
+      this.errors = questions
+        .filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null)
+        .reduce((errors, q) => {
+          errors[q.id] = true;
+          return errors;
+        }, {});
+    }
 
     if (Object.values(this.errors).length) {
       return;
