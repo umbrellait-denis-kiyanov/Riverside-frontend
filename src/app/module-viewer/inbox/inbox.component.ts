@@ -55,14 +55,7 @@ export class InboxComponent implements OnInit {
 
   private markAsReadIfNeeded() {
     if (this.message.is_pending) {
-    this.inboxService.markAsRead(this.message.id).then(() => {
-      const resource = this.inboxService.allMessages;
-      const msg = resource.data.find(m => m.id === this.message.id);
-      if (msg) {
-        msg.read_on = new Date();
-        resource.change.next(resource.change.getValue() + 1);
-      }
-    });
+      this.inboxService.markAsRead(this.message.id).subscribe();
     }
   }
 

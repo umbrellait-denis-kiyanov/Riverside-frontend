@@ -14,12 +14,12 @@
     </th>
   </tr>
 
-  <tr *ngFor="let row of data; let r=index" class="{{ row.className }}" [class.pointer]="row.onClick || row.link" [routerLink]="row.link" routerLinkActive="active">
+  <tr *ngFor="let row of tableData$ | async; let r=index" class="{{ row.className }}" [class.pointer]="row.onClick || row.link" [routerLink]="row.link" routerLinkActive="active">
     <td
       *ngFor="let col of header; let c=index"
-      (click)="cellClicked(row[col.id],col,row,r,c)"
+      (click)="cellClicked(row.cells[c],col,row,r,c)"
     >
-      {{ row[col.id] }}
+      {{ row.cells[c].formattedValue }}
     </td>
   </tr>
 </table>

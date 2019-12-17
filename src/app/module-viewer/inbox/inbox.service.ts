@@ -1,6 +1,5 @@
 import { Injectable } from '@angular/core';
 import { BehaviorSubject } from 'rxjs';
-import { messages } from '../left-menu/inbox/mockData';
 import { ResourceFromServer } from 'src/app/common/services/resource.class';
 import Message from './message.model';
 import { HttpClient } from '@angular/common/http';
@@ -14,9 +13,7 @@ export class InboxService {
   constructor(private http: HttpClient) { }
 
   loadAll() {
-    return this.allMessages.load(
-      this.http.get(`/api/modules/0/feedback`).toPromise()
-    );
+    return this.http.get<Message[]>(`/api/modules/0/feedback`);
   }
 
   loadCounter() {
@@ -39,6 +36,6 @@ export class InboxService {
   }
 
   markAsRead(id: number) {
-    return this.http.post(`/api/modules/0/feedback/${id}/read`, {}).toPromise();
+    return this.http.post(`/api/modules/0/feedback/${id}/read`, {});
   }
 }

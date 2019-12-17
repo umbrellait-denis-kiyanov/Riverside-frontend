@@ -1,23 +1,45 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { E3TableHeader, E3TableData, E3TableHeaderCol, E3TableDataRow, E3TableCell } from './e3-table.interface';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'e3-table',
   templateUrl: './e3-table.component.html',
   styleUrls: ['./e3-table.component.sass']
 })
-export class E3TableComponent {
+export class E3TableComponent implements OnInit {
   @Input() header: E3TableHeader;
-  @Input() data: E3TableData;
+  @Input() data: Observable<E3TableData>;
   @Input() sortable: boolean = false;
 
   sortBy = new SortBy();
 
-  headerClicked(col: E3TableHeaderCol) {
-    if (!this.sortable) { return; }
+  tableData$: Observable<E3TableData>;
 
-    this.sortBy.id = col.id;
-    this.data = this.sortBy.sort(this.data);
+  ngOnInit() {
+    this.tableData$ = combineLatest(this.data, this.sortBy.getObservable()).pipe(
+      map(([data]) =>
+        (this.sortable ? this.sortBy.sort(data) : data)
+          .map(row => {
+            row.cells = row.cells.map((cell, index) => {
+              const headerCol = this.header[index];
+              cell.formattedValue = headerCol.transform ? headerCol.transform(cell.value) : cell.value;
+
+              return cell;
+            })
+
+            return row;
+          }
+        )
+      )
+    );
+  }
+
+  headerClicked(col: E3TableHeaderCol) {
+    if (this.sortable) {
+      this.sortBy.id = col.id;
+    }
   }
 
   cellClicked(cell: E3TableCell, col: E3TableHeaderCol, row: E3TableDataRow, rowIndex: number, colIndex: number) {
@@ -27,6 +49,7 @@ export class E3TableComponent {
 
 class SortBy {
   private _id: string;
+  private observable$ = new BehaviorSubject<string>(null);
   set id(val: string) {
     if (this._id === val) {
       this.orderMult = this.orderMult * -1;
@@ -34,11 +57,18 @@ class SortBy {
       this.orderMult = 1;
       this._id = val;
     }
+
+    this.observable$.next(this._id);
   }
 
   get id() {
     return this._id;
   }
+
+  getObservable() {
+    return this.observable$;
+  }
+
   orderMult = 1;
 
   sort(data: E3TableData) {
