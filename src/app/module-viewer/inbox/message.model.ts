@@ -20,7 +20,7 @@ class Message extends BaseModel {
 
 export type MessageRow = Message  & {
   link: string[];
-  tdClassName?: string;
+  className?: string;
 };
 
 export default Message;

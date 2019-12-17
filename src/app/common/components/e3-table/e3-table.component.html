@@ -14,15 +14,12 @@
     </th>
   </tr>
 
-  <tr *ngFor="let row of data; let r=index" [ngClass]="{'pointer': row.onClick || row.href}">
+  <tr *ngFor="let row of data; let r=index" class="{{ row.className }}" [class.pointer]="row.onClick || row.link" [routerLink]="row.link" routerLinkActive="active">
     <td
       *ngFor="let col of header; let c=index"
       (click)="cellClicked(row[col.id],col,row,r,c)"
-      [ngClass]="tdClassName(row,col)"
-      routerLinkActive="active"
     >
-      <a [routerLink]="row.link"  *ngIf="row.link">{{col.transform?col.transform(row[col.id],col,row,r,c):row[col.id]}}</a>
-      <span *ngIf="!row.link">{{col.transform?col.transform(row[col.id],col,row,r,c):row[col.id]}}</span>
+      {{ row[col.id] }}
     </td>
   </tr>
 </table>
