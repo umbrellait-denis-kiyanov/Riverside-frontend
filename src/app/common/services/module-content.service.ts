@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import ModuleContent from '../interfaces/module-content.model';
 import { Observable } from 'rxjs';
-import { ResourceFromServer } from './resource.class';
 import { map } from 'rxjs/operators';
 
 
@@ -10,7 +9,6 @@ import { map } from 'rxjs/operators';
 export class ModuleContentService {
 
   baseUrl = '/api/modules';
-  moduleContent = new ResourceFromServer<ModuleContent>();
 
   constructor(private httpClient: HttpClient) { }
 

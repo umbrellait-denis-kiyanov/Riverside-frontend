@@ -1,4 +1,4 @@
-<letter-image [letter]="firstLetter(user)" [className]="className"></letter-image>
+<letter-image [letter]="user.name[0]" [className]="className"></letter-image>
 <div class="user-right-side">
   <div class="user-name">{{user.name}}</div>
   <div *ngIf="time" class="time">{{time}}</div>

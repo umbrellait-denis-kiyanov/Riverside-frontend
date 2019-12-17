@@ -15,9 +15,4 @@ export class UserComponent implements OnInit {
 
   ngOnInit() {
   }
-
-  firstLetter() {
-    return this.user.name[0].toUpperCase();
-  }
-
 }

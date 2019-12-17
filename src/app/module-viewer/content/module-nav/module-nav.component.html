@@ -6,7 +6,7 @@
   color="accent"
   (click)="buttonClicked()"
   e3-async-button
-  [running]="submitting"
+  [running]="submitting && !submitting.closed"
   >
   {{actionButtonText}}
 
@@ -18,7 +18,7 @@
   color="accent"
   (click)="buttonClicked()"
   e3-async-button
-  [running]="submitting"
+  [running]="submitting && !submitting.closed"
   >
   {{actionButtonText}}
 
@@ -30,7 +30,7 @@
   color="accent"
   (click)="buttonClicked(subaction,true)"
   e3-async-button
-  [running]="submitting"
+  [running]="submittingSubaction && !submittingSubaction.closed"
   >
   {{subactionButtonText}}
 
@@ -41,7 +41,7 @@
   color="accent"
   (click)="buttonClicked(subaction,true)"
   e3-async-button
-  [running]="submitting"
+  [running]="submittingSubaction && !submittingSubaction.closed"
   >
   {{subactionButtonText}}
 
