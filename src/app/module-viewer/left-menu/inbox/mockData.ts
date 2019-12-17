@@ -1,3 +1,7 @@
+import { ReadableTimePipe } from 'src/app/common/pipes/readabletime.pipe';
+
+const timePipe = new ReadableTimePipe();
+
 export const header = [
   {
     id: 'moduleName',
@@ -10,6 +14,6 @@ export const header = [
   {
     id: 'sent_on',
     label: 'Time',
-    transform: (date: string) => window.moment(date).format('MMM DD YYYY hh:mm:ss A')
+    transform: (date: string) => timePipe.transform(date)
   }
 ];

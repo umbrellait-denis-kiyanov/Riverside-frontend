@@ -48,6 +48,7 @@ import { FeedbackSectionTemplateComponent } from './riverside-step-template/temp
 import { SegmentCriteriaDefineComponent } from './riverside-step-template/templates/segment-criteria-define/segment-criteria-define.component';
 import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
+import { ReadableTimePipe } from '../common/pipes/readabletime.pipe';
 import { CanModifyPipe } from '../common/pipes/canModify.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
 // tslint:disable-next-line:max-line-length
@@ -138,6 +139,7 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     LoadingComponent,
     FormatDatePipe,
     ReadableDatePipe,
+    ReadableTimePipe,
     CanModifyPipe,
     IceComponent,
     RiversideStepTemplateComponent,

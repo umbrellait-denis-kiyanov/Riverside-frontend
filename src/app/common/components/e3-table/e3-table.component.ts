@@ -27,7 +27,7 @@ export class E3TableComponent implements OnInit {
               cell.formattedValue = headerCol.transform ? headerCol.transform(cell.value) : cell.value;
 
               return cell;
-            })
+            });
 
             return row;
           }
