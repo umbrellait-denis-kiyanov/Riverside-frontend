@@ -15,7 +15,7 @@
     style="margin-top: 20px"
     *ngIf="message$ | async as message"
     >
-    <h3>{{message.moduleName}}
+    <h3 *ngIf="message.moduleName">{{message.moduleName}}
       <span *ngIf="message.step_id"> - {{message.stepName}}</span>
     </h3>
 

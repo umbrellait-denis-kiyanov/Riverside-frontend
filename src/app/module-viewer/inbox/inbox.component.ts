@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { InboxService } from './inbox.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/common/services/user.service';
-import { map } from 'rxjs/operators';
+import { map, switchMap, filter } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import Message from './message.model';
 import toastr from 'src/app/common/lib/toastr';
@@ -14,8 +14,6 @@ import toastr from 'src/app/common/lib/toastr';
 })
 export class InboxComponent implements OnInit {
 
-  senderLetter: string;
-  ready: boolean = false;
   feedbackMessage: string = '';
   routerLink: string[];
   submitting: Subscription;
@@ -32,18 +30,14 @@ export class InboxComponent implements OnInit {
 
   ngOnInit() {
     this.canProvideFeedback = this.userService.me.permissions.riversideProvideFeedback;
-    this.route.params.subscribe((params) => {
-      if (params.id) {
-        this.ready = false;
-        this.loadMessage(params.id);
-      } else {
-        this.ready = true;
-      }
-    });
+    this.message$ = this.route.params.pipe(
+      filter(params => params.id),
+      switchMap(params => this.loadMessage(params.id))
+    );
   }
 
   loadMessage(id: string) {
-    this.message$ = this.inboxService.load(id).pipe(
+    return this.inboxService.load(id).pipe(
       map(message => {
         this.markAsReadIfNeeded(message);
         return this.prepareData(message);
