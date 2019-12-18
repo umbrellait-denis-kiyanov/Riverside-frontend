@@ -74,7 +74,10 @@ export class ContentComponent implements OnInit, OnDestroy {
           })
         )),
         tap(content => {
-          this.navService.moduleData$.pipe(take(1)).subscribe(moduleData => {
+          this.navService.moduleDataReplay$.pipe(
+            filter(module => module.status.org_id === this.navService.lastOrganization.current),
+            take(1)
+          ).subscribe(moduleData => {
             if (!moduleData.status || !moduleData.status.is_activated || moduleData.status.org_id !== this.navService.lastOrganization.current) {
               this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
               return;
