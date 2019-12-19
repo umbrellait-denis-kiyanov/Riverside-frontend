@@ -3,7 +3,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'module-org-selector',
