@@ -9,23 +9,12 @@
   <div *ngFor="let inputId of activePersonas; let idx = index" class="row">
     <div class="col-sm-6">
       <ice
-        id="{{ inputId }}"
-        [hideChanges]="hideChanges"
-        [user]="me"
         [disabled]="true"
-        (changed)="contentChanged($event)"
         [(data)]="inputs[inputId]"
       ></ice>
     </div>
     <div class="col-sm-6">
-      <ice
-        id="{{ inputIds.personas[idx] }}"
-        [hideChanges]="hideChanges"
-        [user]="me"
-        [disabled]="disabled"
-        (changed)="contentChanged($event)"
-        [(data)]="inputs[inputIds.personas[idx]]"
-      ></ice>
+      <ice [(data)]="inputs[inputIds.personas[idx]]"></ice>
     </div>
   </div>
 </div>

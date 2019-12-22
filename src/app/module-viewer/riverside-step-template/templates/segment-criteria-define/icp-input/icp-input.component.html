@@ -9,9 +9,6 @@
           <span *ngIf="mode != 'criteria'" [inputText]="criteria.name"></span>
           <ice
             *ngIf="mode == 'criteria'"
-            [hideChanges]="template.hideChanges"
-            [user]="template.me"
-            [disabled]="template.disabled"
             (changed)="syncCriteria()"
             [(data)]="criteria.name"
             class="side-comment"
@@ -49,9 +46,6 @@
 
       <div *ngIf="mode == 'criteria'">
         <ice *ngIf="mode == 'criteria'"
-          [hideChanges]="template.hideChanges"
-          [user]="template.me"
-          [disabled]="template.disabled"
           (changed)="syncCriteria()"
           [(data)]="criteria.description"
           class="criteria-description"

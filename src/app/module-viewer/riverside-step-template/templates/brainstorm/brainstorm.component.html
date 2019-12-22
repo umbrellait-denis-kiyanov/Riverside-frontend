@@ -1,12 +1,5 @@
 <div class="inputs-wrapper">
-    <ice
-    id="brainstorm"
-    [hideChanges]="hideChanges"
-    [user]="me"
-    [disabled]="disabled"
-    (changed)="contentChanged($event)"
-    [(data)]="inputs.brainstorm"
-  ></ice>
+  <ice [(data)]="inputs.brainstorm"></ice>
 </div>
 
 <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

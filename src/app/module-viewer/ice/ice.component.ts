@@ -1,6 +1,7 @@
 import {
   Component,
   OnInit,
+  OnDestroy,
   ElementRef,
   Input,
   ViewChild,
@@ -18,17 +19,16 @@ import { filter, take, skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { DOCUMENT } from '@angular/common';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
+import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
 
 @Component({
   selector: 'ice',
   templateUrl: './ice.component.html',
   styleUrls: ['./ice.component.sass']
 })
-export class IceComponent implements OnInit {
-  @Input() hideChanges: boolean;
-  @Input() user: User;
+export class IceComponent implements OnInit, OnDestroy {
   @Input() box: number;
-  @Input() disabled: boolean;
+  @Input('disabled') disabledCustomCondition: boolean;
   @Input() placeholder: string = '';
 
   // todo: replace with Input type
@@ -75,17 +75,28 @@ export class IceComponent implements OnInit {
 
   isInitialized = false;
 
+  user: User;
+  disabled: boolean;
+
   constructor(
     private el: ElementRef,
     public overlay: Overlay,
     public viewContainerRef: ViewContainerRef,
     private iceService: IceService,
-    private dialogService: E3ConfirmationDialogService
+    private dialogService: E3ConfirmationDialogService,
+    private template: TemplateComponent
   ) {}
 
   ngOnInit() {
     this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
     this.data.error = this.data.error || new BehaviorSubject(null);
+
+    this.user = this.template.me;
+    this.disabled = this.template.disabled || this.disabledCustomCondition;
+
+    if (!this.changed.observers.length) {
+      this.changed.subscribe((event) => this.template.contentChanged(event));
+    }
 
     const el: HTMLDivElement = document.createElement('div');
     el.innerHTML = this.data.content;
@@ -109,7 +120,7 @@ export class IceComponent implements OnInit {
     }
 
     setTimeout(() => {
-      const text = this.el.nativeElement.querySelector('#textbody');
+      const text = this.el.nativeElement.querySelector('.textbody');
 
       try {
         const tracker = new window.ice.InlineChangeEditor({
@@ -138,7 +149,7 @@ export class IceComponent implements OnInit {
 
         this.tracker = tracker;
       } catch (e) {
-        console.log(e.message);
+        console.error(e.message);
         text.contentEditable = 'false';
         return;
       }
@@ -161,6 +172,10 @@ export class IceComponent implements OnInit {
       this.onBlur();
       this.changed.emit();
     });
+  }
+
+  ngOnDestroy() {
+    this.changed.unsubscribe();
   }
 
   removeSelection(selection: string) {
@@ -214,7 +229,7 @@ export class IceComponent implements OnInit {
 
   private commentPosition() {
     const rect = this.el.nativeElement
-      .querySelector('#textbody')
+      .querySelector('.textbody')
       .getBoundingClientRect();
     return {
       x: rect.left,

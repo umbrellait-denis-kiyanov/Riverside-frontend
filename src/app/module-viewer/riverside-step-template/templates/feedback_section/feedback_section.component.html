@@ -25,79 +25,30 @@
                 <div class="previous-behavior ">
                   <div class="behavior-subtitle">Gender</div>
                   <div class="behavior-content no-color inline">Male (<ice
-
                     id="{{'persona_perc_male_' + (i+1) }}"
-                    [hideChanges]="hideChanges"
-                    [user]="me"
-                    [disabled]="disabled"
-                    (changed)="contentChanged($event)"
                     [(data)]="inputs[persona.perc_male]"
-                  ></ice>%) / Female (<ice
-
-                  id="{{'persona_perc_female_' + (i+1) }}"
-                  [hideChanges]="hideChanges"
-                  [user]="me"
-                  [disabled]="disabled"
-                  (changed)="contentChanged($event)"
-                  [(data)]="inputs[persona.perc_female]"
-                ></ice>%)</div>
+                  ></ice>%) / Female (<ice [(data)]="inputs[persona.perc_female]"></ice>%)</div>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">Average Age</div>
-                  <ice
-                    id="{{'persona_age_' + (i+1) }}"
-                    [hideChanges]="hideChanges"
-                    [user]="me"
-                    [disabled]="disabled"
-                    (changed)="contentChanged($event)"
-                    [(data)]="inputs[persona.age]"
-                  ></ice>
+                  <ice [(data)]="inputs[persona.age]"></ice>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">How They Buy</div>
-                  <ice
-                    id="{{'persona_behavior_' + (i+1) + '_how_they_buy'}}"
-                    [hideChanges]="hideChanges"
-                    [user]="me"
-                    [disabled]="disabled"
-                    (changed)="contentChanged($event)"
-                    [(data)]="inputs[persona.how_they_buy]"
-                  ></ice>
+                  <ice [(data)]="inputs[persona.how_they_buy]"></ice>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">How They Pay</div>
-                  <ice
-                    id="{{'persona_behavior_' + (i+1) + '_how_they_pay'}}"
-                    [hideChanges]="hideChanges"
-                    [user]="me"
-                    [disabled]="disabled"
-                    (changed)="contentChanged($event)"
-                    [(data)]="inputs[persona.how_they_pay]"
-                  ></ice>
+                  <ice [(data)]="inputs[persona.how_they_pay]"></ice>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">Typical Titles</div>
-                  <ice
-                    id="{{'persona_behavior_' + (i+1) + '_titles'}}"
-                    [hideChanges]="hideChanges"
-                    [user]="me"
-                    [disabled]="disabled"
-                    (changed)="contentChanged($event)"
-                    [(data)]="inputs[persona.titles]"
-                  ></ice>
+                  <ice [(data)]="inputs[persona.titles]"></ice>
                 </div>
                 <div class="behavior-title" style="padding-left: 0px;margin-top: 15px" >Watering Holes</div>
                 <div class="previous-behavior">
-                    <ice
-                    id="{{'persona_behavior_' + (i+1) + '_watering_holes'}}"
-                    [hideChanges]="hideChanges"
-                    [user]="me"
-                    [disabled]="disabled"
-                    (changed)="contentChanged($event)"
-                    [(data)]="inputs[persona.watering_holes]"
-                  ></ice>
+                  <ice [(data)]="inputs[persona.watering_holes]"></ice>
                 </div>
-
               </div>
           </div>
         </div>

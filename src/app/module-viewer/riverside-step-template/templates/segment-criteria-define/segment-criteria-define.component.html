@@ -21,10 +21,7 @@
       <td class="segment-label">
         <ice
           placeholder="Segment {{ segment }}"
-          [hideChanges]="hideChanges"
-          [user]="me"
-          [disabled]="disabled || step > 1"
-          (changed)="contentChanged($event)"
+          [disabled]="step > 1"
           [(data)]="inputs['segment_criteria_define_name_' + segment]"
         ></ice>
 
@@ -35,30 +32,21 @@
       <td *ngIf="step < 3">
         <ice
           class="ice-textarea"
-          [hideChanges]="hideChanges"
-          [user]="me"
-          [disabled]="disabled || step > 1"
-          (changed)="contentChanged($event)"
+          [disabled]="step > 1"
           [(data)]="inputs['segment_criteria_define_industries_' + segment]"
         ></ice>
       </td>
       <td *ngIf="step < 3">
         <ice
           class="ice-textarea"
-          [hideChanges]="hideChanges"
-          [user]="me"
-          [disabled]="disabled || step > 1"
-          (changed)="contentChanged($event)"
+          [disabled]="step > 1"
           [(data)]="inputs['segment_criteria_define_pain_points_' + segment]"
         ></ice>
       </td>
       <td *ngIf="step > 1">
         <ice
           class="ice-textarea"
-          [hideChanges]="hideChanges"
-          [user]="me"
-          [disabled]="disabled || step > 2"
-          (changed)="contentChanged($event)"
+          [disabled]="step > 2"
           [(data)]="inputs['segment_criteria_define_brainstorm_' + segment]"
         ></ice>
       </td>
@@ -92,10 +80,7 @@
     <div>Where and how will you mine the necessary data to support your decision?</div>
     <ice
       class="ice-textarea"
-      [hideChanges]="hideChanges"
-      [user]="me"
-      [disabled]="disabled || step > 3"
-      (changed)="contentChanged($event)"
+      [disabled]="step > 3"
       [(data)]="inputs['segment_criteria_define_where_mine_' + segment]"
     ></ice>
 
@@ -133,10 +118,6 @@
           <span>{{ grade.grade }} &gt;= </span>
           <ice
             class="number"
-            [hideChanges]="hideChanges"
-            [user]="me"
-            [disabled]="disabled"
-            (changed)="contentChanged($event)"
             [(data)]="inputs['segment_criteria_define_grade_pct_' + grade.i]"
           ></ice>
         </td>
@@ -162,10 +143,6 @@
           <label class="col-sm-3">Customer Name:</label>
           <div class="col-sm-9">
             <ice
-              [hideChanges]="hideChanges"
-              [user]="me"
-              [disabled]="disabled"
-              (changed)="contentChanged($event)"
               [(data)]="inputs['segment_criteria_define_' + gradePrefix + '_name_' + customerIndex]"
             ></ice>
           </div>

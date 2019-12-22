@@ -1,24 +1,18 @@
 <div
   class="template-example"
-  *ngIf="contentData.example"
+  *ngIf="contentData.example as example"
 >
   <div class="row resource-row">
-    <div class="col-md col-sm-12" style="font-size: large;" *ngIf="contentData.example.text">
-        <div class="template-example-text"
-             [innerHtml]="contentData.example.text | safehtml"
-
-        ></div>
+    <div class="col-md col-sm-12" style="font-size: large;" *ngIf="example.text">
+      <div class="template-example-text"
+        [innerHtml]="example.text | safehtml"
+      ></div>
     </div>
-    <div class="col-md col-sm-12" *ngIf="contentData.example.resource">
-        <div class="template-example-resource"
-             [innerHtml]="contentData.example.resource | safehtml"
-
-        ></div>
-
-      <!-- <iframe style="margin: auto;" allow="autoplay; fullscreen" allowfullscreen="" frameborder="0" height="202" src="https://player.vimeo.com/video/350492014" width="360"></iframe></div> -->
+    <div class="col-md col-sm-12" *ngIf="example.resource">
+      <div class="template-example-resource"
+        [innerHtml]="example.resource | safehtml"
+      ></div>
     </div>
-
-
   </div>
 </div>
 
@@ -43,23 +37,16 @@
 
 <div class="persona-behavior-wrapper">
   <div class="persona-row">
-      <div class="persona-name-column"></div>
-      <div class="persona-behavior-column behavior-title ">
-        {{contentData.behavior}}
-      </div>
+    <div class="persona-name-column"></div>
+    <div class="persona-behavior-column behavior-title ">
+      {{contentData.behavior}}
+    </div>
   </div>
   <div class="persona-row" *ngFor="let persona of activePersonas; let i=index">
-      <riverside-persona [persona]="persona" [inputs]="inputs"></riverside-persona>
-      <div class="persona-behavior-column">
-        <ice
-            id="{{inputIds.personas[i]}}"
-            [hideChanges]="hideChanges"
-            [user]="me"
-            [disabled]="disabled"
-            (changed)="contentChanged($event)"
-            [(data)]="inputs[inputIds.personas[i]]"
-          ></ice>
-      </div>
+    <riverside-persona [persona]="persona" [inputs]="inputs"></riverside-persona>
+    <div class="persona-behavior-column">
+      <ice [(data)]="inputs[inputIds.personas[i]]"></ice>
+    </div>
   </div>
 </div>
 

@@ -4,7 +4,7 @@
 </div>
 
 <div
-  id="textbody"
+  class="textbody"
   [attr.disabled]="disabled"
   [ngClass]="{'CT-hide': hideChanges, hasComment: comment.list?.length, showComment: comment.show}"
   [class.has-error]="data.error | async"

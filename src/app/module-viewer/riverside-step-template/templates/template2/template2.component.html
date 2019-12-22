@@ -1,31 +1,22 @@
 <ice
-    class="brainstorm"
-    id="brainstorm"
-    [hideChanges]="hideChanges"
-    [user]="me"
-    [disabled]="true"
-    (changed)="contentChanged($event)"
-    [(data)]="inputs.brainstorm"
-    style="margin: 20px 0"
-  ></ice>
+  class="brainstorm"
+  [disabled]="true"
+  [(data)]="inputs.brainstorm"
+  style="margin: 20px 0"
+></ice>
 
-  <div
+<div
   class="template-footer"
   [innerHtml]="contentData.instructions | safehtml"
 ></div>
+
 <div class="inputs-wrapper">
   <div class="inputs-wrapper-column">
     <ice
-    *ngFor="let inputId of inputIds.personas"
-    id="{{inputId}}"
-    [hideChanges]="hideChanges"
-    [user]="me"
-    [disabled]="disabled"
-    (changed)="contentChanged($event)"
-    [(data)]="inputs[inputId]"
-  ></ice>
+      *ngFor="let inputId of inputIds.personas"
+      [(data)]="inputs[inputId]"
+    ></ice>
+  </div>
 </div>
-</div>
-
 
 <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
