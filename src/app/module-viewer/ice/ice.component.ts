@@ -17,9 +17,14 @@ import { TemplatePortal } from '@angular/cdk/portal';
 import { Subscription, fromEvent, BehaviorSubject } from 'rxjs';
 import { filter, take, skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
-import { DOCUMENT } from '@angular/common';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
+
+export type IceEditorTracker = {
+  element: HTMLElement,
+  acceptAll: () => {},
+  getUserStyle: (id: string) => string
+};
 
 @Component({
   selector: 'ice',
@@ -59,7 +64,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
   @ViewChild('commentOverlay') commentOverlay: TemplateRef<any>;
 
-  tracker: any;
+  tracker: IceEditorTracker;
   overlayRef: OverlayRef | null;
   subs: Array<Subscription | null> = [];
   comment: { [key: string]: any; index: false | number } = {
@@ -139,7 +144,7 @@ export class IceComponent implements OnInit, OnDestroy {
               }
             }
           ]
-        }).startTracking();
+        }).startTracking() as IceEditorTracker;
 
         if (tracker.element.innerHTML === '<p><br></p>') {
           tracker.element.innerHTML = '';
@@ -218,7 +223,8 @@ export class IceComponent implements OnInit, OnDestroy {
     this.comment.index = false;
     this.comment.content = '';
     this.closeComment();
-    this.changed.emit(null);
+    this.dataChanged.emit(this.data);
+    this.changed.emit(this.data);
   }
 
   onMouseEnter() {

@@ -14,10 +14,10 @@
   (paste)="onPaste()"
 ></div>
 <error-msg [input]="data"></error-msg>
-<div  class="add-comment" *ngIf="!disabled">
+<div class="add-comment" *ngIf="!disabled">
     <button mat-icon-button (click)="addComment($event)" id="addComment">
         <mat-icon>add_comment</mat-icon>
-     </button>
+    </button>
 </div>
 <div  class="has-comment" [hidden]="!comment.list?.length" >
   <button mat-icon-button id="hasComment">
@@ -28,9 +28,9 @@
 
 <ng-template #commentOverlay>
   <div class="comment-wrapper"  *ngIf="comment.adding">
-      <ice-user [user]="user" [className]="'b' + tracker.getUserStyle(user.id)"></ice-user>
-  <textarea autofocus [(ngModel)]="comment.content" class="form-control" id="newComment"></textarea>
-  <div class="btn-wrapper">
+    <ice-user [user]="user" [tracker]="tracker"></ice-user>
+    <textarea autofocus [(ngModel)]="comment.content" class="form-control" id="newComment"></textarea>
+    <div class="btn-wrapper">
       <button class="btn btn-sm btn-primary" (click)="saveComment()">Comment</button>
       <button class="btn btn-sm btn-default" (click)="cancelComment()">Cancel</button>
     </div>
@@ -38,25 +38,22 @@
 
   <div *ngIf="!comment.adding && comment.list?.length" class="comment-wrapper">
     <div *ngFor="let c of comment.list; let i=index" >
-      <div *ngIf="tracker">
-          <ice-user [user]="c.user" [time]="c.formattedTime" [className]="'b' + tracker.getUserStyle(c.user.id)"></ice-user>
-      </div>
+      <ice-user [user]="c.user" [time]="c.formattedTime" [tracker]="tracker"></ice-user>
       <div class="comment-content">
-          <div>{{c.content}}</div>
-          <button
-            *ngIf="user.id == c.user.id"
-            mat-icon-button
-            #menuTrigger="matMenuTrigger"
-            (click)="menuComment=c;menuIndex=i"
-            [matMenuTriggerFor]="menu">
-              <mat-icon>more_vert</mat-icon>
-           </button>
+        <div>{{ c.content }}</div>
+        <button
+          *ngIf="user.id == c.user.id"
+          mat-icon-button
+          #menuTrigger="matMenuTrigger"
+          (click)="menuComment=c;menuIndex=i"
+          [matMenuTriggerFor]="menu">
+            <mat-icon>more_vert</mat-icon>
+          </button>
       </div>
     </div>
     <mat-menu #menu="matMenu">
 			<button mat-menu-item (click)="editClicked($event)">Edit</button>
-			<button mat-menu-item  (click)="deleteClicked($event)">Remove</button>
+			<button mat-menu-item (click)="deleteClicked($event)">Remove</button>
 		</mat-menu>
   </div>
 </ng-template>
-
