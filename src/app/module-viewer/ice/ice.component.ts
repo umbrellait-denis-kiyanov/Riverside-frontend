@@ -19,6 +19,7 @@ import { filter, take, skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
+import { Input as InputType } from 'src/app/common/interfaces/module.interface';
 
 export type IceEditorTracker = {
   element: HTMLElement,
@@ -36,26 +37,9 @@ export class IceComponent implements OnInit, OnDestroy {
   @Input('disabled') disabledCustomCondition: boolean;
   @Input() placeholder: string = '';
 
-  // todo: replace with Input type
-  @Input() data: {
-    id: number;
-    textContent: string;
-    content: string;
-    error: BehaviorSubject<string>;
-    selections$: BehaviorSubject<string[]>;
-    comments_json: any[];
-    org_id: number;
-    module_id: number;
-  } = {
-    id: 0,
-    textContent: '',
-    content: '',
-    error: new BehaviorSubject(null),
-    selections$: new BehaviorSubject([]),
-    comments_json: [],
-    org_id: 0,
-    module_id: 0,
-  };
+  // pass input as string identifier or as instance
+  @Input() input: string;
+  @Input() data: InputType;
 
   @Input() allowRemoveSelections = false;
 
@@ -93,7 +77,10 @@ export class IceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
+    if (this.input) {
+      this.data = this.template.getInput(this.input);
+    }
+
     this.data.error = this.data.error || new BehaviorSubject(null);
 
     this.user = this.template.me;
@@ -108,15 +95,20 @@ export class IceComponent implements OnInit, OnDestroy {
     const selections = el.querySelector('.matrix-options');
 
     if (selections) {
+      this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
       this.data.selections$.next(
         Array.prototype.slice
           .call(selections.querySelectorAll('span'))
           .map(node => node.innerHTML)
       );
+
+      this.data.selections$.pipe(skip(1)).subscribe(_ => {
+        this.onBlur();
+        this.changed.emit();
+      });
+
       selections.remove();
     }
-
-    this.data.textContent = el.innerHTML;
 
     this.iceService.allComponents.push(this);
 
@@ -171,11 +163,6 @@ export class IceComponent implements OnInit, OnDestroy {
         this.tracker.acceptAll();
         this.onBlur();
       });
-    });
-
-    this.data.selections$.pipe(skip(1)).subscribe(_ => {
-      this.onBlur();
-      this.changed.emit();
     });
   }
 
@@ -381,7 +368,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
     const { element } = this.tracker;
 
-    const selections = this.data.selections$.value;
+    const selections = this.data.selections$ && this.data.selections$.value;
 
     this.data.content =
       (selections && selections.length

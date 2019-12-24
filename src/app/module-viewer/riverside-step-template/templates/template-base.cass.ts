@@ -130,8 +130,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return inp;
   }
 
-  getInput(fieldName: string, num: number): Input {
-    return this.decorateInput(this.inputs[this.prefix + fieldName + '_' + String(num)]);
+  getInput(fieldName: string, num?: number): Input {
+    return this.decorateInput(this.inputs[this.prefix + fieldName + (num ? '_' + String(num) : '')]);
   }
 
   validateInput(inp: Input, validators: Validation[] = []) {

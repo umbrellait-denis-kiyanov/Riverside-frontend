@@ -30,6 +30,7 @@ export interface Input {
   comments_json: string;
   observer: BehaviorSubject<string>;
   error: BehaviorSubject<string>;
+  selections$?: BehaviorSubject<string[]>;
   getValue: () => string;
 }
 
