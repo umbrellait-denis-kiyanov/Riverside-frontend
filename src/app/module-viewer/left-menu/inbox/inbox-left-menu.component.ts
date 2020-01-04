@@ -1,7 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { header } from './mockData';
-import { E3TableHeader, E3TableDataRow } from 'src/app/common/components/e3-table/e3-table.interface';
+import { E3TableHeader, E3TableDataRow } from 'src/app/common/components/e3-table';
 import { InboxService } from '../../inbox/inbox.service';
 import Message from '../../inbox/message.model';
 import { map } from 'rxjs/operators';

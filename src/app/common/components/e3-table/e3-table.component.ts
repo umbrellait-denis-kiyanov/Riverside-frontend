@@ -1,5 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { E3TableHeader, E3TableData, E3TableHeaderCol, E3TableDataRow, E3TableCell } from './e3-table.interface';
+import { E3TableHeader, E3TableData, E3TableHeaderCol, E3TableDataRow, E3TableCell } from '.';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
