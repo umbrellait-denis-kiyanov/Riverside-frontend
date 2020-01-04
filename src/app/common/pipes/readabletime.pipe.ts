@@ -25,7 +25,8 @@ export class ReadableTimePipe implements PipeTransform {
         moment.locale(window.navigator.language);
 
         const tz = Intl.DateTimeFormat().resolvedOptions().timeZone;
-        const d = tz ? moment(datetime).tz(tz) : moment(datetime);
+        const utcTime = moment.utc(datetime);
+        const d = tz ? utcTime.tz(tz) : utcTime;
 
         if (forceFormat) {
             return d.format(forceFormat);
