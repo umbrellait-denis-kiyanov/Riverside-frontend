@@ -94,9 +94,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   textContent(el: string) {
-    const _el: any = window.$(el).clone();
-    _el.find('.del').remove();
-    return _el.length ? _el[0].textContent.replace(/\s/g, ' ') : '';
+    return (new DOMParser().parseFromString(el || '', 'text/html')).body.textContent.trim();
   }
 
   isEnabled() {
