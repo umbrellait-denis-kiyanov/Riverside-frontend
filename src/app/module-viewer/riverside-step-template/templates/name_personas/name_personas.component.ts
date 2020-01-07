@@ -29,11 +29,7 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
       personas: this.activePersonas.map(persona => persona.split('_').join('_name_'))
     };
 
-    Object.keys(this.inputIds).forEach(key => {
-      this.inputIds[key].forEach(id => {
-        this.inputs[id].content = this.inputs[id].content || '';
-      });
-    });
+    this.setDefaultContentValues(this.inputIds);
     this.contentData = this.data.data.template_params_json as NamePersonasTemplateData['template_params_json'];
   }
 }

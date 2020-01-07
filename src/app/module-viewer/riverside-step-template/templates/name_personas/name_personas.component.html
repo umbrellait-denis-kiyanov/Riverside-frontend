@@ -10,14 +10,13 @@
     <div class="col-sm-6">
       <ice
         [disabled]="true"
-        [(data)]="inputs[inputId]"
+        [input]="inputId"
       ></ice>
     </div>
     <div class="col-sm-6">
-      <ice [(data)]="inputs[inputIds.personas[idx]]"></ice>
+      <ice [input]="inputIds.personas[idx]"></ice>
     </div>
   </div>
 </div>
-
 
 <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

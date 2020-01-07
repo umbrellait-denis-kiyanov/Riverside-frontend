@@ -8,7 +8,7 @@
           *ngFor="let persona of inputIds.fromPreviousSteps"
           title="{{ textContent(inputs[persona.title].content) }}"
         >
-          <riverside-persona [persona]="persona.title" [inputs]="inputs"></riverside-persona>
+          <riverside-persona [persona]="persona.title"></riverside-persona>
         </div>
     </div>
     <div
@@ -19,7 +19,7 @@
         <div class="persona-wrapper" id="{{persona.title+'_wrapper'}}" *ngFor="let persona of inputIds.fromPreviousSteps; let i=index">
           <div class="persona-content">
             <div class="column">
-                <riverside-persona [persona]="persona.title" [inputs]="inputs"></riverside-persona>
+                <riverside-persona [persona]="persona.title"></riverside-persona>
               <div style="min-height: 300px;margin-top: 10px" >
                 <div class="behavior-title" style="padding-left: 0px;" >Demographics</div>
                 <div class="previous-behavior ">

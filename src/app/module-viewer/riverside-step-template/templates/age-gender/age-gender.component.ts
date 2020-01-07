@@ -10,7 +10,6 @@ import { AgeGenderTemplateData } from './age-gender.interface';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => AgeGenderComponent) }]
 })
 export class AgeGenderComponent extends TemplateComponent implements OnInit {
-  allIds: string[] = [];
   inputIds: PersonaInputs;
   contentData: AgeGenderTemplateData['template_params_json'];
   traits = [
@@ -47,14 +46,14 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
   protected init() {
     this.contentData = this.data.data.template_params_json as AgeGenderTemplateData['template_params_json'];
     this.initIds();
-    ['fromPreviousSteps'].forEach(key => {
-      this.inputIds[key].forEach((persona) => {
-        Object.values(persona).forEach((id2: string) => {
-          this.inputs[id2].content = this.inputs[id2].content || '';
-          this.allIds.push(id2);
-        });
-      });
-    });
+    this.setDefaultContentValues({fromPreviousSteps: this.inputIds.fromPreviousSteps});
+    // ['fromPreviousSteps'].forEach(key => {
+    //   this.inputIds[key].forEach((persona) => {
+    //     Object.values(persona).forEach((id2: string) => {
+    //       this.inputs[id2].content = this.inputs[id2].content || '';
+    //     });
+    //   });
+    // });
   }
 
   initIds() {

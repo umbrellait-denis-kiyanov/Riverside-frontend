@@ -40,26 +40,16 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
     };
 
     this.contentData = this.data.data.template_params_json as PersonaPictureTemplateData['template_params_json'];
-    Object.keys(this.inputIds).forEach(key => {
-      this.inputIds[key].forEach((id, i) => {
-        if (typeof id === 'string') {
-          this.inputs[id].content = this.inputs[id].content || '';
-        } else {
-          Object.values(id).forEach((id2: string) => {
-            this.inputs[id2].content = this.inputs[id2].content || '';
-          });
-        }
-      });
-    });
-
+    this.setDefaultContentValues(this.inputIds);
   }
 
   openModal(id: string) {
     const modalRef = this.modalService.open(PersonaPictureListComponent, {windowClass: 'picture-modal'});
+    const input = this.getInput(id);
 
     modalRef.result.then((src: string) => {
-      this.inputs[id].content = src;
-      this.contentChanged(this.inputs[id]);
+      input.content = src;
+      this.contentChanged(input);
     });
   }
 }

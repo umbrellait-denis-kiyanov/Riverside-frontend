@@ -67,6 +67,8 @@ export class IceComponent implements OnInit, OnDestroy {
   user: User;
   disabled: boolean;
 
+  initialContent: string;s
+
   constructor(
     private el: ElementRef,
     public overlay: Overlay,
@@ -95,20 +97,21 @@ export class IceComponent implements OnInit, OnDestroy {
     const selections = el.querySelector('.matrix-options');
 
     if (selections) {
-      this.data.selections$ = this.data.selections$ || new BehaviorSubject([]);
       this.data.selections$.next(
         Array.prototype.slice
           .call(selections.querySelectorAll('span'))
           .map(node => node.innerHTML)
       );
 
-      this.data.selections$.pipe(skip(1)).subscribe(_ => {
-        this.onBlur();
-        this.changed.emit();
-      });
-
       selections.remove();
     }
+
+    this.data.selections$.pipe(skip(1)).subscribe(_ => {
+      this.onBlur();
+      this.changed.emit();
+    });
+
+    this.initialContent = el.innerHTML;
 
     this.iceService.allComponents.push(this);
 

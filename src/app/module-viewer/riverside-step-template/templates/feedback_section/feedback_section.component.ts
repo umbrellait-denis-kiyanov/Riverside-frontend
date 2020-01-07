@@ -11,7 +11,6 @@ import { PersonaInputs } from '../persona-ids.class';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FeedbackSectionTemplateComponent) }]
 })
 export class FeedbackSectionTemplateComponent extends TemplateComponent {
-  allIds: string[] = [];
   inputIds: PersonaInputs;
 
   Editor = InlineEditor;
@@ -28,12 +27,11 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.initIds();
-    ['fromPreviousSteps'].forEach(key => {
-      this.inputIds[key].forEach((persona) => {
-        Object.values(persona).forEach((id2: string) => {
-          this.inputs[id2].content = this.inputs[id2].content || '';
-          this.allIds.push(id2);
-        });
+    this.setDefaultContentValues({fromPreviousSteps: this.inputIds.fromPreviousSteps});
+
+    this.inputIds.fromPreviousSteps.forEach((persona) => {
+      Object.values(persona).forEach((id2: string) => {
+        this.inputs[id2].content = this.inputs[id2].content || '';
       });
     });
   }

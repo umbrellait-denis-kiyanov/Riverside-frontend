@@ -25,7 +25,7 @@
       </div>
   </div>
   <div class="persona-row" *ngFor="let persona of inputIds.fromPreviousSteps; let i=index">
-      <riverside-persona [persona]="persona.title" [inputs]="inputs"></riverside-persona>
+      <riverside-persona [persona]="persona.title"></riverside-persona>
       <div class="persona-behavior-column" *ngFor="let trait of traits">
         <ice [(data)]="inputs['persona_' + trait.id + '_' + (i+1)]"></ice>
     </div>

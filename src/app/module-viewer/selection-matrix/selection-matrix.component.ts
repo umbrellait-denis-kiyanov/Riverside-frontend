@@ -1,5 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
+import { Input as InputType } from 'src/app/common/interfaces/module.interface';
+import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-selection-matrix',
@@ -12,7 +14,7 @@ export class SelectionMatrixComponent  {
   question: string;
 
   @Input()
-  personas: any;
+  personas: string[];
 
   @Input()
   options: any[] = [];
@@ -21,13 +23,14 @@ export class SelectionMatrixComponent  {
   horizontal = false;
 
   @Input()
-  inputs: any;
-
-  @Input()
-  inputIds: any;
+  inputIds: { personas: string[] };
 
   @Input()
   disabled: boolean;
+
+  constructor(
+    private template: TemplateComponent
+  ) {}
 
   ngOnInit() {
     this.options = this.options.map(opt => opt.option || opt);
@@ -38,7 +41,8 @@ export class SelectionMatrixComponent  {
       return;
     }
 
-    const input = this.inputs[this.inputIds.personas[personaIdx]];
+    const input = this.template.getInput(this.inputIds.personas[personaIdx]);
+
     const checked = input.selections$.value.includes(option);
 
     this.updateSelection(input, option, !checked);
@@ -46,7 +50,7 @@ export class SelectionMatrixComponent  {
 
   updateTextInput(personaIdx, option, $event) {
     const checked = $event.srcElement.checked;
-    const input = this.inputs[this.inputIds.personas[personaIdx]];
+    const input = this.template.getInput(this.inputIds.personas[personaIdx]);
 
     this.updateSelection(input, option, checked);
   }

@@ -1,4 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
+import { TemplateComponent } from '../templates/template-base.cass';
 
 @Component({
   selector: 'riverside-persona',
@@ -7,7 +8,6 @@ import { Component, OnInit, Input } from '@angular/core';
 })
 export class PersonaComponent implements OnInit {
   @Input() persona: string;
-  @Input() inputs: [];
   @Input() size: number = 80;
 
   style: {};
@@ -16,14 +16,17 @@ export class PersonaComponent implements OnInit {
   title = '';
   picture = '';
 
-  constructor() { }
+  constructor(
+    private template: TemplateComponent
+  ) {}
 
   ngOnInit() {
     const idx = this.persona.split('_').pop();
 
-    this.name = this.textContent(this.inputs['persona_name_' + idx].content);
-    this.picture = this.inputs['persona_picture_' + idx].content;
-    this.title = this.textContent(this.inputs[this.persona].content);
+    const input = this.template.getInput.bind(this.template);
+    this.name = this.textContent(input('persona_name_' + idx).content);
+    this.picture = input('persona_picture_' + idx).content;
+    this.title = this.textContent(input(this.persona).content);
 
     if (this.size) {
       this.style = {

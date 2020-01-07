@@ -25,7 +25,6 @@
     [options]="matrix.options"
     [horizontal]="true"
     [inputIds]="inputIds"
-    [inputs]="inputs"
   ></app-selection-matrix>
 </div>
 
@@ -43,9 +42,9 @@
     </div>
   </div>
   <div class="persona-row" *ngFor="let persona of activePersonas; let i=index">
-    <riverside-persona [persona]="persona" [inputs]="inputs"></riverside-persona>
+    <riverside-persona [persona]="persona"></riverside-persona>
     <div class="persona-behavior-column">
-      <ice [(data)]="inputs[inputIds.personas[i]]"></ice>
+      <ice [input]="inputIds.personas[i]"></ice>
     </div>
   </div>
 </div>
