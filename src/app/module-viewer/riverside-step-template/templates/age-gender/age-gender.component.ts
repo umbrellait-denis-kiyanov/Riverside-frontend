@@ -39,21 +39,9 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
     return 'Age & Gender';
   }
 
-  ngOnInit() {
-    super.ngOnInit();
-  }
-
   protected init() {
     this.contentData = this.data.data.template_params_json as AgeGenderTemplateData['template_params_json'];
     this.initIds();
-    this.setDefaultContentValues({fromPreviousSteps: this.inputIds.fromPreviousSteps});
-    // ['fromPreviousSteps'].forEach(key => {
-    //   this.inputIds[key].forEach((persona) => {
-    //     Object.values(persona).forEach((id2: string) => {
-    //       this.inputs[id2].content = this.inputs[id2].content || '';
-    //     });
-    //   });
-    // });
   }
 
   initIds() {
@@ -77,5 +65,4 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
     });
     return traitInputs;
   }
-
 }

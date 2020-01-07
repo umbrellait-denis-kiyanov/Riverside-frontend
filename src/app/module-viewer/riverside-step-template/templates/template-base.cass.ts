@@ -10,7 +10,6 @@ import { Input } from 'src/app/common/interfaces/module.interface';
 import { BehaviorSubject } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
-import { deepStrictEqual } from 'assert';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
@@ -151,19 +150,5 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     if (input.error) {
       input.error.next(null);
     }
-  }
-
-  setDefaultContentValues(inputIds: {[key: string]: string[] | {[key: string]: string}}) {
-    const ids = Object.keys(inputIds).reduce((ids, id) => {
-      if (typeof id === 'string') {
-        ids.push(id);
-      } else {
-        ids = ids.concat(Object.values(id));
-      }
-
-      return ids;
-    }, []);
-
-    ids.forEach(id => this.inputs[id].content = this.inputs[id].content || '');
   }
 }

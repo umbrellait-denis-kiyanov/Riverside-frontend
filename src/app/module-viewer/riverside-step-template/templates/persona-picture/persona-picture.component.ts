@@ -40,7 +40,6 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
     };
 
     this.contentData = this.data.data.template_params_json as PersonaPictureTemplateData['template_params_json'];
-    this.setDefaultContentValues(this.inputIds);
   }
 
   openModal(id: string) {

@@ -50,5 +50,4 @@ export class ModuleFeedbackComponent implements OnInit {
       this.moduleService.reloadModule();
     });
   }
-
 }

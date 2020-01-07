@@ -23,10 +23,6 @@ export class BrainstormTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
-    this.inputIds.forEach(id => {
-      this.inputs[id].content = this.inputs[id].content || '';
-    });
-
     this.contentData = this.data.data.template_params_json as BrainstormTemplateData['template_params_json'];
   }
 }

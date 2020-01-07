@@ -68,13 +68,6 @@ export class SelectionMatrixComponent  {
   }
 
   notEmpty(el: string) {
-    return !!this.textContent(el);
+    return !!this.template.textContent(el);
   }
-
-  textContent(el: string) {
-    const _el: any = window.$(el).clone();
-    _el.find('.del').remove();
-    return _el.length ? _el[0].textContent.replace(/\s/g, ' ') : '';
-  }
-
 }

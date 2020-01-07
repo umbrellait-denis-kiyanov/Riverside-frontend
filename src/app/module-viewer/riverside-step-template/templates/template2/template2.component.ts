@@ -3,6 +3,8 @@ import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { Template2Data } from './template2.interface';
 
+// todo: refactor into a generic "narrow down" template
+
 @Component({
   selector: 'app-template2',
   templateUrl: './template2.component.html',
@@ -33,13 +35,6 @@ export class Template2Component extends TemplateComponent {
   }
 
   protected init() {
-    Object.keys(this.inputIds).forEach(key => {
-      this.inputIds[key].forEach(id => {
-        if (this.inputs[id]) {
-          this.inputs[id].content = (this.inputs[id] || {content: ''}).content || '';
-        }
-      });
-    });
     this.contentData = this.data.data.template_params_json as Template2Data['template_params_json'];
   }
 }

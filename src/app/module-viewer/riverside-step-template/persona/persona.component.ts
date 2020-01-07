@@ -24,9 +24,9 @@ export class PersonaComponent implements OnInit {
     const idx = this.persona.split('_').pop();
 
     const input = this.template.getInput.bind(this.template);
-    this.name = this.textContent(input('persona_name_' + idx).content);
+    this.name = this.template.textContent(input('persona_name_' + idx).content);
     this.picture = input('persona_picture_' + idx).content;
-    this.title = this.textContent(input(this.persona).content);
+    this.title = this.template.textContent(input(this.persona).content);
 
     if (this.size) {
       this.style = {
@@ -35,11 +35,4 @@ export class PersonaComponent implements OnInit {
       };
     }
   }
-
-  textContent(el: string) {
-    const _el: any = window.$(el).clone();
-    _el.find('.del').remove();
-    return _el.length ? _el[0].textContent.replace(/\s/g, ' ') : '';
-  }
-
 }

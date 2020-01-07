@@ -1,7 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
 import { data } from './exampleData';
-import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { PersonaInputs } from '../persona-ids.class';
 
 @Component({
@@ -13,7 +12,6 @@ import { PersonaInputs } from '../persona-ids.class';
 export class FeedbackSectionTemplateComponent extends TemplateComponent {
   inputIds: PersonaInputs;
 
-  Editor = InlineEditor;
   contentData = data;
   currentSection: string;
 
@@ -26,17 +24,6 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
-    this.initIds();
-    this.setDefaultContentValues({fromPreviousSteps: this.inputIds.fromPreviousSteps});
-
-    this.inputIds.fromPreviousSteps.forEach((persona) => {
-      Object.values(persona).forEach((id2: string) => {
-        this.inputs[id2].content = this.inputs[id2].content || '';
-      });
-    });
-  }
-
-  initIds() {
     this.inputIds = new PersonaInputs({
       activePersonas: this.activePersonas,
       previousSteps: {
@@ -61,14 +48,14 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
   }
 
   behaviorInputs() {
-    const behaviorInputs = {};
-    this.contentData.steps.forEach(step => {
-      behaviorInputs[step.sufix] = {
+    return this.contentData.steps.reduce((inputs, step) => {
+      inputs[step.sufix] = {
         prefix: 'persona_behavior',
         sufix: step.sufix
       };
-    });
-    return behaviorInputs;
+
+      return inputs;
+    }, {});
   }
 
   onSectionChange(sectionId: string) {
@@ -81,5 +68,4 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
       left: 0, behavior: 'smooth'
     });
   }
-
 }

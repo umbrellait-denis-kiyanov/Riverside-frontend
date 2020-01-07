@@ -10,8 +10,8 @@ import { NamePersonasTemplateData } from './name_personas.interface';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => NamePersonasTemplateComponent) }]
 })
 export class NamePersonasTemplateComponent extends TemplateComponent {
-  inputIds = {
-    personas: [  ]
+  inputIds: {
+    personas: string[]
   };
 
   contentData: NamePersonasTemplateData['template_params_json'];
@@ -29,7 +29,6 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
       personas: this.activePersonas.map(persona => persona.split('_').join('_name_'))
     };
 
-    this.setDefaultContentValues(this.inputIds);
     this.contentData = this.data.data.template_params_json as NamePersonasTemplateData['template_params_json'];
   }
 }
