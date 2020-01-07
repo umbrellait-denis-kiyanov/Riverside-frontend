@@ -12,10 +12,8 @@ import {
   Output
 } from '@angular/core';
 import User from 'src/app/common/interfaces/user.model';
-import { Overlay, OverlayRef } from '@angular/cdk/overlay';
-import { TemplatePortal } from '@angular/cdk/portal';
-import { Subscription, fromEvent, BehaviorSubject } from 'rxjs';
-import { filter, take, skip } from 'rxjs/operators';
+import { BehaviorSubject } from 'rxjs';
+import { skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
@@ -49,8 +47,6 @@ export class IceComponent implements OnInit, OnDestroy {
   @ViewChild('commentOverlay') commentOverlay: TemplateRef<any>;
 
   tracker: IceEditorTracker;
-  overlayRef: OverlayRef | null;
-  subs: Array<Subscription | null> = [];
   comment: { [key: string]: any; index: false | number } = {
     adding: false,
     content: '',
@@ -67,11 +63,10 @@ export class IceComponent implements OnInit, OnDestroy {
   user: User;
   disabled: boolean;
 
-  initialContent: string;s
+  initialContent: string;
 
   constructor(
     private el: ElementRef,
-    public overlay: Overlay,
     public viewContainerRef: ViewContainerRef,
     private iceService: IceService,
     private dialogService: E3ConfirmationDialogService,
@@ -112,8 +107,6 @@ export class IceComponent implements OnInit, OnDestroy {
     });
 
     this.initialContent = el.innerHTML;
-
-    this.iceService.allComponents.push(this);
 
     if (this.data.comments_json && this.data.comments_json.length) {
       this.comment.list = this.data.comments_json;
@@ -185,7 +178,7 @@ export class IceComponent implements OnInit, OnDestroy {
     $event.preventDefault();
     this.comment.adding = true;
     this.closeComment();
-    this.openComment(this.commentPosition());
+    this.openComment();
   }
 
   cancelComment() {
@@ -215,113 +208,26 @@ export class IceComponent implements OnInit, OnDestroy {
     this.closeComment();
     this.dataChanged.emit(this.data);
     this.changed.emit(this.data);
+    setTimeout(_ => this.openComment(), 100);
   }
 
   onMouseEnter() {
     if (this.comment.list && this.comment.list.length) {
-      this.openComment(this.commentPosition());
+      this.openComment();
     }
   }
 
-  private commentPosition() {
-    const rect = this.el.nativeElement
-      .querySelector('.textbody')
-      .getBoundingClientRect();
-    return {
-      x: rect.left,
-      y: rect.bottom
-    };
-  }
-
-  private openComment({ x, y }) {
-    this.iceService.closeAll();
-    const positionStrategy = this.overlay
-      .position()
-      .flexibleConnectedTo({ x, y })
-      .withPositions([
-        {
-          originX: 'end',
-          originY: 'bottom',
-          overlayX: 'end',
-          overlayY: 'top'
-        }
-      ]);
-
-    this.overlayRef = this.overlay.create({
-      positionStrategy,
-      scrollStrategy: this.overlay.scrollStrategies.close()
-    });
-
-    this.overlayRef.attach(
-      new TemplatePortal(this.commentOverlay, this.viewContainerRef, {
-        $implicit: this.comment
-      })
-    );
-
-    this.subs.push(
-      fromEvent<MouseEvent>(document, 'click')
-        .pipe(
-          filter(event => {
-            const clickTarget = event.target as HTMLElement;
-            return (
-              !!this.overlayRef &&
-              !(
-                this.overlayRef.overlayElement.contains(clickTarget) ||
-                clickTarget.classList.contains(
-                  'cdk-overlay-transparent-backdrop'
-                ) ||
-                clickTarget.id === 'addComment' ||
-                (this.el.nativeElement as HTMLElement).contains(clickTarget)
-              )
-            );
-          }),
-          take(1)
-        )
-        .subscribe(() => this.closeComment())
-    );
-
-    this.subs.push(
-      fromEvent<MouseEvent>(this.overlayRef.overlayElement, 'mouseleave')
-        .pipe(
-          filter((e: MouseEvent & { toElement: any }) => {
-            const target = e.toElement || (e.relatedTarget as HTMLElement);
-            return (
-              !this.comment.adding &&
-              !!this.overlayRef &&
-              !this.overlayRef.overlayElement.contains(target)
-            );
-          }),
-          take(1)
-        )
-        .subscribe(() => this.closeComment())
-    );
+  private openComment() {
     this.comment.show = true;
   }
 
   closeComment() {
-    this.subs && this.subs.forEach(sub => sub.unsubscribe());
     this.comment.show = false;
-    if (this.overlayRef) {
-      this.overlayRef.dispose();
-      this.overlayRef = null;
-    }
-  }
-
-  @HostListener('mouseleave', ['$event'])
-  onMouseLeave(e) {
-    if (
-      !this.comment.adding &&
-      this.overlayRef &&
-      !this.overlayRef.overlayElement.contains(e.toElement || e.relatedTarget)
-    ) {
-      this.closeComment();
-    }
   }
 
   @HostListener('click', ['$event'])
   onClick() {
     if (this.iceService.shouldShowWarning && !this.disabled) {
-
       this.dialogService.open({
         content: this.iceService.warningText,
         onCancel: () => {
@@ -363,7 +269,6 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   onBlur() {
-
     if (!this.isInitialized) {
       this.isInitialized = true;
       return;
