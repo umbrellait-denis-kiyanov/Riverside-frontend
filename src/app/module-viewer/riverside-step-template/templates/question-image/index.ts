@@ -8,3 +8,9 @@ export interface QuestionImageTemplateData extends TemplateContentDataBase {
     questions: Array<{question: string}>
   };
 }
+
+export interface SegmentCriteria {
+  name: {content: string, comments_json: string};
+  description: {content: string, comments_json: string};
+  weight?: number;
+}

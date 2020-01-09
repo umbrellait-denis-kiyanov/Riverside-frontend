@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 
 @Component({
@@ -6,7 +6,7 @@ import { TemplateComponent } from '../riverside-step-template/templates/template
   templateUrl: './selection-matrix.component.html',
   styleUrls: ['./selection-matrix.component.sass']
 })
-export class SelectionMatrixComponent implements OnInit {
+export class SelectionMatrixComponent {
 
   @Input()
   question: string;
@@ -15,7 +15,7 @@ export class SelectionMatrixComponent implements OnInit {
   personas: string[];
 
   @Input()
-  options: any[] = [];
+  options: Array<{option: string}>;
 
   @Input()
   horizontal = false;
@@ -29,10 +29,6 @@ export class SelectionMatrixComponent implements OnInit {
   constructor(
     private template: TemplateComponent
   ) {}
-
-  ngOnInit() {
-    this.options = this.options.map(opt => opt.option || opt);
-  }
 
   toggleSelection(personaIdx, option, $event) {
     if ($event.target.tagName === 'INPUT') {

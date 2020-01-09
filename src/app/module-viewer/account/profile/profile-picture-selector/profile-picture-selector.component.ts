@@ -5,6 +5,7 @@ import toastr from 'src/app/common/lib/toastr';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { PresignedProfilePictureUrl } from 'src/app/common/interfaces/account.interface';
 
 @Component({
   selector: 'profile-picture-selector',
@@ -46,7 +47,7 @@ export class ProfilePictureSelectorComponent implements OnInit {
     const type = this.croppedImage.split(';')[0].split('/')[1];
 
     this.userService.presignedProfilePictureUpload(type).subscribe(
-      (res: any) => {
+      (res: PresignedProfilePictureUrl) => {
         const {url, key} = res;
         const buffer = this.dataURItoBlob(this.croppedImage);
         this.saving = this.http.put(url, buffer, {headers: {

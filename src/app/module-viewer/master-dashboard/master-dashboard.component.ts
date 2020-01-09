@@ -15,7 +15,7 @@ export class MasterDashboardComponent implements OnInit {
 
   view = 'list';
 
-  organizations$: Observable<any>;
+  organizations$: Observable<Organization[]>;
 
   sortOrder$ = new BehaviorSubject<string>('Alphabetical');
 
@@ -49,7 +49,7 @@ export class MasterDashboardComponent implements OnInit {
 
             // keep rows with empty column values at the bottom of the table
             let defLowValue = isNaN(parseInt(a[field], 10)) && isNaN(parseInt(b[field], 10)) || ('due_date' === field) ? 'ZZZ' : 9999;
-            let defHiValue = '' as any;
+            let defHiValue = '' as string | number;
 
             if ('assessment' === field.substring(0, 10)) {
               defLowValue = 9999 * direction;

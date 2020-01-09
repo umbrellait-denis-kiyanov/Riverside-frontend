@@ -14,12 +14,21 @@ import { skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
-import { TemplateInput } from 'src/app/common/interfaces/module.interface';
+import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.interface';
 
 export type IceEditorTracker = {
   element: HTMLElement,
   acceptAll: () => {},
   getUserStyle: (id: string) => string
+};
+
+export type Comments = {
+  adding: boolean,
+  content: string,
+  list: InputComment[],
+  editingIndex: number,
+  show: boolean,
+  index: number
 };
 
 @Component({
@@ -42,15 +51,15 @@ export class IceComponent implements OnInit, OnDestroy {
   @Output() dataChanged = new EventEmitter(false);
 
   tracker: IceEditorTracker;
-  comment: { [key: string]: any; index: false | number } = {
+  comment: Comments = {
     adding: false,
     content: '',
     list: [],
     editingIndex: 0,
     show: false,
-    index: false
+    index: 0
   };
-  menuComment: any;
+  menuComment: InputComment;
   menuIndex: number;
 
   isInitialized = false;
@@ -183,12 +192,12 @@ export class IceComponent implements OnInit, OnDestroy {
   cancelComment() {
     this.comment.adding = false;
     this.comment.content = '';
-    this.comment.index = false;
+    this.comment.index = null;
     this.closeComment();
   }
 
   saveComment(index: false | number = false) {
-    if (this.comment.index !== false) {
+    if (this.comment.index !== null) {
       this.comment.list[this.comment.index].content = this.comment.content;
     } else {
       const time = new Date().getTime();
@@ -286,13 +295,11 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   setEndOfContenteditable(contentEditableElement) {
-    let range: any;
-    let selection: any;
     if (document.createRange) {
-      range = document.createRange(); // Create a range (a range is a like the selection but invisible)
+      const range = document.createRange(); // Create a range (a range is a like the selection but invisible)
       range.selectNodeContents(contentEditableElement); // Select the entire contents of the element with the range
       range.collapse(false); // collapse the range to the end point. false means collapse to end rather than the start
-      selection = window.getSelection(); // get the selection object (allows you to change selection)
+      const selection = window.getSelection(); // get the selection object (allows you to change selection)
       selection.removeAllRanges(); // remove any selections already made
       selection.addRange(range); // make the range you have just created the visible selection
     }

@@ -1,13 +1,14 @@
 import { Directive, ElementRef, Input, HostListener, OnDestroy } from '@angular/core';
 import { BehaviorSubject, Subscription } from 'rxjs';
 import { debounceTime } from 'rxjs/operators';
+import { AssessmentChartSeries } from '../assessment-chart';
 
 @Directive({
   selector: '[appLineChartValueLabels]'
 })
 export class LineChartValueLabelDirective implements OnDestroy {
 
-  @Input() results: any;
+  @Input() results: AssessmentChartSeries;
 
   private changeSize = new BehaviorSubject(null);
 

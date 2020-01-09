@@ -7,6 +7,7 @@ import { Observable, combineLatest, Subscription } from 'rxjs';
 import { switchMap, map, shareReplay, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import toastr from 'src/app/common/lib/toastr';
+import { AssessmentChartSeries } from '../../assessment-chart';
 
 @Component({
   selector: 'app-assessment-finish',
@@ -24,7 +25,7 @@ export class AssessmentFinishComponent implements OnInit {
 
   orgGroups$: Observable<AssessmentOrgGroup[]>;
 
-  chart: any;
+  chart: AssessmentChartSeries;
 
   isLineChart = true;
 

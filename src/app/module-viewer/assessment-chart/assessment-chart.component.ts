@@ -1,4 +1,5 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { AssessmentChartSeries, AssessmentChartActiveEntries } from '.';
 
 @Component({
   selector: 'assessment-chart',
@@ -7,31 +8,31 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 })
 export class AssessmentChartComponent implements OnInit {
 
-  @Input() series: any;
+  @Input() series: AssessmentChartSeries;
 
   @Input() colors: string[];
 
   @Input() isLineChart: boolean;
 
-  @Input() activeEntries: any;
+  @Input() activeEntries: AssessmentChartActiveEntries;
 
-  @Output() activatedSeriesChange = new EventEmitter();
+  @Output() activatedSeriesChange: EventEmitter<number> = new EventEmitter();
 
   xAxisTickFormatting: (idx: number) => string;
 
-  xTicks = [];
-  yTicks = [];
+  xTicks: number[];
+  yTicks: number[];
 
-  labels = {};
-  fullLabels = {};
+  labels: {[key: number]: string} = {};
+  fullLabels: {[key: number]: string} = {};
 
   colorScheme = {
     domain: ['#999', '#58ad3f']
   };
 
-  barCustomColors = [];
+  barCustomColors: {name: string, value: string}[] = [];
 
-  seriesIndex = [];
+  seriesIndex: string[];
 
   constructor() { }
 

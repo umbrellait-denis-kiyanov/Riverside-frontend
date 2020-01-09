@@ -8,6 +8,9 @@ import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
 
+// remove after upgrading to TypeScript 3.5.1+
+type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
+
 class PercentageEditor extends Handsontable.default.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
     super.prepare(row, col, prop, td, originalValue * 100, cellProperties);
@@ -203,10 +206,10 @@ export class SpreadsheetComponent extends TemplateComponent {
           }).bind(this),
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
-          beforeKeyDown: ((event) => {
+          beforeKeyDown: ((event: KeyboardEvent) => {
             if (46 === event.keyCode || 8 === event.keyCode) {
               event.stopImmediatePropagation();
-              (event as any).realTarget.value = '0';
+              (event.target as HTMLInputElement).value = '0';
               const hot = this.hot.hotInstance;
               hot.getSelected().forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
             }
@@ -240,8 +243,20 @@ export class SpreadsheetComponent extends TemplateComponent {
     return !this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)');
   }
 
-  formatCell(row, column, prop) {
-    const cell = {} as any;
+  formatCell(row: number, column: number) {
+    const cell = {} as (Omit<Handsontable.default.GridSettings, 'numericFormat'> &
+                       { validatorName: string } &
+                       { numericFormat: {
+                          pattern: {
+                            trimMantissa?: boolean,
+                            thousandSeparated: boolean,
+                            optionalMantissa?: boolean,
+                            output?: string,
+                            mantissa?: number
+                          },
+                          culture?: string
+                        }
+                       });
 
     const settings = this.cellSettings[row][column];
 
@@ -308,7 +323,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     return cell;
   }
 
-  beforeChange(changes, source) {
+  beforeChange(changes: Handsontable.default.CellChange, source: Handsontable.default.ChangeSource) {
     if (source !== 'edit' && source !== 'Autofill.fill') {
       return;
     }
@@ -328,7 +343,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
   }
 
-  afterChange(changes, source) {
+  afterChange(changes: Handsontable.default.CellChange, source: Handsontable.default.ChangeSource) {
     if (source !== 'edit' && source !== 'Autofill.fill') {
       return;
     }

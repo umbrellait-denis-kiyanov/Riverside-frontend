@@ -3,16 +3,30 @@ import { RequestFeedbackComponent } from '../request-feedback/request-feedback.c
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { feedback_svg } from './feedback.icon';
 import { map } from 'rxjs/operators';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 
 interface RestrictOptions {
   nav: ModuleNavService;
   user: User;
 }
+
 interface MenuItemType {
-  [key: string]: any;
+  className?: string;
+  label?: string;
+  link?: string;
+  'mat-icon'?: string;
+  linkFn?(nav: ModuleNavService): Observable<string>;
+  labelFn?(nav: ModuleNavService): Observable<string>;
+  render?(user: BehaviorSubject<User>): Observable<string>;
   restrict?(params: Partial<RestrictOptions>): boolean;
+  modalComponent?: typeof RequestFeedbackComponent;
+  counter?: number;
+  labelObservable?: Observable<string>;
+  linkObservable?: Observable<string>;
+  renderObservable?: Observable<string>;
+  restrictObservable?: Observable<boolean>;
 }
+
 type MenusInterface = MenuItemType[];
 
 // For SUPER temporary use

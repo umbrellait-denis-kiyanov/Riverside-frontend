@@ -19,8 +19,8 @@ export class InputTextComponent implements OnChanges {
 
   constructor(private template: TemplateComponent) { }
 
-  isInput(obj: any): obj is TemplateInput {
-    return obj.content !== undefined;
+  isInput(obj: TemplateInput | string): obj is TemplateInput {
+    return obj instanceof Object && obj.content !== undefined;
   }
 
   ngOnChanges() {

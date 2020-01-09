@@ -1,6 +1,6 @@
 import { TemplateContentData } from './template-data.class';
 import { OnInit, ElementRef, Component, OnDestroy } from '@angular/core';
-import { TemplateComponentInterface, TemplateContentDataType } from './template.interface';
+import { TemplateComponentInterface } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { ModuleService } from 'src/app/common/services/module.service';
@@ -13,7 +13,9 @@ import { Validation, Validate } from 'src/app/common/validator.class';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
-  contentData: any;
+
+  abstract contentData;
+
   data: TemplateContentData;
   hideChanges: boolean;
   inputs: {[key: string]: TemplateInput};
@@ -44,8 +46,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
 
-    this.activePersonas = Object.values(this.inputs).filter(i => i).map(i => {
-      const input = (i as any);
+    this.activePersonas = Object.values(this.inputs).filter(i => i).map(input => {
       return input.element_key &&
              input.element_key.match(/^persona_[0-9]+$/) &&
              input.content && input.content !== '<p><br></p>' ?
@@ -116,7 +117,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
         // Remove contents deleted but still visible because of changes tracker
         const deletedEls = div.getElementsByClassName('del');
-        for (const el of deletedEls  as any) {
+        for (const el of Array.prototype.slice.call(deletedEls) as Element[]) {
           el.parentNode.removeChild(el);
         }
 

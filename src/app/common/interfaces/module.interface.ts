@@ -1,4 +1,5 @@
 import { BehaviorSubject } from 'rxjs';
+import User from './user.model';
 
 export interface ModuleStatus {
   org_id: number;
@@ -21,18 +22,31 @@ export interface Module {
   underConstruction?: boolean;
 }
 
+export interface ModuleCategory {
+  id: number;
+  name: string;
+  modules: Module[];
+}
+
 export interface TemplateInput {
   id: number;
   org_id: number;
   module_id: number;
   element_key: string;
   content: string;
-  comments_json: string;
+  comments_json: InputComment[];
   observer: BehaviorSubject<string>;
   error: BehaviorSubject<string>;
   selections$?: BehaviorSubject<string[]>;
   getValue: () => string;
 }
+
+export type InputComment = {
+  content: string,
+  user: User,
+  time: number,
+  formattedTime: string
+};
 
 export interface Organization {
   id: number;

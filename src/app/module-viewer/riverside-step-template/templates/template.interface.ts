@@ -1,4 +1,5 @@
 import { TemplateContentData } from './template-data.class';
+import { AgeGenderTemplateData } from './age-gender';
 import { NarrowDownData } from './narrow-down';
 import { GenericTemplateData } from './generic';
 import { BrainstormTemplateData } from './brainstorm';
@@ -9,6 +10,7 @@ import { QuestionImageTemplateData } from './question-image';
 import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 
 export type TemplateContentDataType =
+  AgeGenderTemplateData |
   NarrowDownData |
   GenericTemplateData |
   BrainstormTemplateData |

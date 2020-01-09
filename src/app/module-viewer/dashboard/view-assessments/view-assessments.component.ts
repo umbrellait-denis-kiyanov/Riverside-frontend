@@ -4,6 +4,7 @@ import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { switchMap, filter, take, distinctUntilChanged, withLatestFrom, shareReplay } from 'rxjs/operators';
+import { AssessmentChartSeries, AssessmentChartActiveEntries } from '../../assessment-chart';
 
 @Component({
   selector: 'app-view-assessments',
@@ -26,9 +27,9 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
 
   activeGroup$: BehaviorSubject<AssessmentGroup>;
 
-  chart: any;
+  chart: AssessmentChartSeries;
 
-  activeEntries: any;
+  activeEntries: AssessmentChartActiveEntries;
 
   colors: string[];
 

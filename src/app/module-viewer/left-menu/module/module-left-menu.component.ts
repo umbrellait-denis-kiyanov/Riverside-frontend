@@ -9,10 +9,6 @@ import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { take } from 'rxjs/operators';
 
-declare global {
-  interface Window { $: any; }
-}
-
 @Component({
   selector: 'module-left-menu',
   templateUrl: './module-left-menu.component.html',

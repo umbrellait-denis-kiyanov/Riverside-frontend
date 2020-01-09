@@ -28,7 +28,7 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   routeWatch: Subscription;
 
-  moduleContent$: Observable<any>;
+  moduleContent$: Observable<ModuleContent>;
   leftMenuExpanded$: Observable<boolean>;
 
   @ViewChild(RiversideStepTemplateComponent)

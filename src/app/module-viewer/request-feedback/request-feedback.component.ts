@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Module } from '../../common/interfaces/module.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
@@ -11,8 +11,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./request-feedback.component.sass']
 })
 export class RequestFeedbackComponent implements OnInit {
-
-  @Input() params: any;
 
   module$: Observable<Module>;
   submitting = false;
