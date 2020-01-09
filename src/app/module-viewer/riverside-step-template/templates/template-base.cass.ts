@@ -94,7 +94,11 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   textContent(el: string) {
-    return (new DOMParser().parseFromString(el || '', 'text/html')).body.textContent.trim();
+    const parser = (new DOMParser().parseFromString(el || '', 'text/html'));
+
+    parser.querySelectorAll('.del').forEach(deleted => deleted.remove());
+
+    return parser.body.textContent.trim();
   }
 
   isEnabled() {
