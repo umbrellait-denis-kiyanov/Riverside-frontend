@@ -1,6 +1,6 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { PersonaInputs } from '../persona-ids.class';
-import { TemplateComponent } from '../template-base.cass';
+import { TemplateComponent } from '../template-base.class';
 import { AgeGenderTemplateData } from '.';
 
 @Component({

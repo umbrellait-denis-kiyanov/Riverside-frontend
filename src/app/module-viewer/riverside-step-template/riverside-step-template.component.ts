@@ -2,7 +2,7 @@ import { Component, OnInit, OnChanges, ViewChild, Input, ComponentFactoryResolve
 import { RTemplateDirective } from './riverside-step-template-host.directive';
 import { Templates } from './templates';
 import { TemplateContentData } from './templates/template-data.class';
-import { TemplateComponent } from './templates/template-base.cass';
+import { TemplateComponent } from './templates/template-base.class';
 
 @Component({
   selector: 'riverside-step-template',

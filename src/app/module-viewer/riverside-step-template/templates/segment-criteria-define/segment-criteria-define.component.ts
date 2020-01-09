@@ -1,5 +1,5 @@
 import { Component, OnInit, forwardRef, QueryList, ViewChildren } from '@angular/core';
-import { TemplateComponent } from '../template-base.cass';
+import { TemplateComponent } from '../template-base.class';
 import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from '.';
 import { IcpInputComponent } from './icp-input/icp-input.component';
 import { Validate } from 'src/app/common/validator.class';

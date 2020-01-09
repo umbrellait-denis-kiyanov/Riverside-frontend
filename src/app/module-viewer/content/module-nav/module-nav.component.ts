@@ -5,7 +5,7 @@ import { IceService } from '../../ice/ice.service';
 import { Subscription } from 'rxjs';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { TemplateContentData } from '../../riverside-step-template/templates/template-data.class';
-import { TemplateComponent } from '../../riverside-step-template/templates/template-base.cass';
+import { TemplateComponent } from '../../riverside-step-template/templates/template-base.class';
 
 type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedback' | 'provide_final_feedback' | 'approve';
 @Component({

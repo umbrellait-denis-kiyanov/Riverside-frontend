@@ -1,5 +1,5 @@
 import { Component, Input, OnChanges } from '@angular/core';
-import { TemplateComponent } from '../../template-base.cass';
+import { TemplateComponent } from '../../template-base.class';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { SegmentCriteria } from '..';
 

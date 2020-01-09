@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
+import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 
 @Component({
   selector: 'app-selection-matrix',
