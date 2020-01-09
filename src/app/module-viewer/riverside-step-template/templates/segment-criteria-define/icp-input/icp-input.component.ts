@@ -1,7 +1,7 @@
 import { Component, Input, OnChanges } from '@angular/core';
 import { TemplateComponent } from '../../template-base.cass';
 import { ModuleService } from 'src/app/common/services/module.service';
-import { SegmentCriteria } from '../segment-criteria.interface';
+import { SegmentCriteria } from '..';
 
 @Component({
   selector: 'app-icp-input',

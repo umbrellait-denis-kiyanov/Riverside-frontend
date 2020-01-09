@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
-import { PersonaBehaviorTemplateData } from './persona_behavior.interface';
+import { PersonaBehaviorTemplateData } from '.';
 
 @Component({
   selector: 'app-persona_behavior',

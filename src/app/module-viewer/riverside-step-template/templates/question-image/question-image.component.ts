@@ -1,6 +1,6 @@
 import { Component, ViewChild, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
-import { QuestionImageTemplateData } from './question-image.interface';
+import { QuestionImageTemplateData } from '.';
 import { DomSanitizer, SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({

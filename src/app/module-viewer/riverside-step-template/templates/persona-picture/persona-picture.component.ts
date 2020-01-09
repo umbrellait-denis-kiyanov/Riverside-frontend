@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
-import { PersonaPictureTemplateData } from './persona-picture.interface';
+import { PersonaPictureTemplateData } from '.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
 

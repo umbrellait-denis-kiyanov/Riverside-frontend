@@ -1,6 +1,6 @@
 import { Component, forwardRef, ViewChild } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
-import { SpreadsheetTemplateData } from './spreadsheet.interface';
+import { SpreadsheetTemplateData } from '.';
 import * as Handsontable from 'handsontable';
 import { Subscription } from 'rxjs';
 import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/module.interface';

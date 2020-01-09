@@ -1,6 +1,6 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.cass';
-import { VideoTemplateData } from './video.interface';
+import { VideoTemplateData } from '.';
 
 @Component({
   selector: 'app-video',

@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.cass';
-import { GenericTemplateData } from './generic.interface';
+import { GenericTemplateData } from '.';
 
 @Component({
   selector: 'app-generic',
