@@ -6,7 +6,7 @@ import { NamePersonasTemplateData } from './name_personas/name_personas.interfac
 import { PersonaBehaviorTemplateData } from './persona_behavior/persona_behavior.interface';
 import { FeedbackSectionTemplateData } from './feedback_section/feedback_section.interface';
 import { QuestionImageTemplateData } from './question-image/question-image.interface';
-import { Input } from 'src/app/common/interfaces/module.interface';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 
 export type TemplateContentDataType =
   Template2Data |
@@ -23,6 +23,6 @@ export interface TemplateComponentInterface {
 }
 
 export interface TemplateContentDataBase {
-  inputs?: {[key: string]: Input};
+  inputs?: {[key: string]: TemplateInput};
   disabled?: boolean;
 }

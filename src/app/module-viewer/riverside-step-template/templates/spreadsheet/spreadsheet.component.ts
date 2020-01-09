@@ -3,7 +3,7 @@ import { TemplateComponent } from '../template-base.cass';
 import { SpreadsheetTemplateData } from './spreadsheet.interface';
 import * as Handsontable from 'handsontable';
 import { Subscription } from 'rxjs';
-import { SpreadsheetResource, Input } from 'src/app/common/interfaces/module.interface';
+import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
@@ -44,7 +44,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   previewRows: undefined[];
   previewCols: undefined[];
 
-  input: Input;
+  input: TemplateInput;
 
   keepFormulas: boolean;
   downloadProgress: boolean;

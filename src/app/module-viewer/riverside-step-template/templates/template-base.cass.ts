@@ -6,7 +6,7 @@ import { ModuleContentService } from 'src/app/common/services/module-content.ser
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
-import { Input } from 'src/app/common/interfaces/module.interface';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { BehaviorSubject } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
@@ -16,7 +16,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   contentData: any;
   data: TemplateContentData;
   hideChanges: boolean;
-  inputs: {[key: string]: Input};
+  inputs: {[key: string]: TemplateInput};
   disabled: boolean;
   me: User;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
@@ -80,7 +80,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return true;
   }
 
-  contentChanged(data: Input) {
+  contentChanged(data: TemplateInput) {
     if (data) {
       this.moduleService.saveInput(data).subscribe();
       if (data.observer) {
@@ -105,7 +105,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return true;
   }
 
-  decorateInput(inp: Input) {
+  decorateInput(inp: TemplateInput) {
     if (inp && !inp.getValue) {
       inp.getValue = () => {
         if (!inp.content) {
@@ -133,11 +133,11 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return inp;
   }
 
-  getInput(fieldName: string, num?: number): Input {
+  getInput(fieldName: string, num?: number): TemplateInput {
     return this.decorateInput(this.inputs[this.prefix + fieldName + (num ? '_' + String(num) : '')]);
   }
 
-  validateInput(inp: Input, validators: Validation[] = []) {
+  validateInput(inp: TemplateInput, validators: Validation[] = []) {
     if (!validators.length) {
       validators.push(Validate.required('Please fill out this field'));
     }
@@ -148,7 +148,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return !err;
   }
 
-  resetError(input: Input) {
+  resetError(input: TemplateInput) {
     if (input.error) {
       input.error.next(null);
     }

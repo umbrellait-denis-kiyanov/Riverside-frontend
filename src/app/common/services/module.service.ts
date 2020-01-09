@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Module, Step, Input, Template, Organization, ModuleStatus, SpreadsheetResource } from '../interfaces/module.interface';
+import { Module, Step, TemplateInput, Template, Organization, ModuleStatus, SpreadsheetResource } from '../interfaces/module.interface';
 import { HttpClient } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 import { shareReplay, switchMap, map, filter, debounceTime, distinctUntilChanged, share, take, tap } from 'rxjs/operators';
@@ -19,8 +19,8 @@ export class ModuleService {
 
   private modules: Observable<Module[]>;
 
-  inputDebounce: {[key: number]: Subject<Input>} = {};
-  inputObservable: {[key: number]: Observable<Input>} = {};
+  inputDebounce: {[key: number]: Subject<TemplateInput>} = {};
+  inputObservable: {[key: number]: Observable<TemplateInput>} = {};
 
   getModuleConfig(id: number): Observable<Module> {
     if (!Number(id)) {
@@ -106,7 +106,7 @@ export class ModuleService {
     return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/assign`, {assigned_to});
   }
 
-  saveInput(input: Input): Observable<any> {
+  saveInput(input: TemplateInput): Observable<any> {
     if (!input) {
       console.error('No input data provided');
       return;
@@ -119,7 +119,7 @@ export class ModuleService {
         distinctUntilChanged((i, p) => i.id === p.id),
         switchMap(inp => {
           const dataToSend = (({ comments_json, content, id }) => ({ comments_json, content, id }))(inp);
-          return this.httpClient.post<Input>(`${this.baseUrl}/${inp.module_id}/org/${inp.org_id}/input/${inp.id}`, dataToSend).pipe(
+          return this.httpClient.post<TemplateInput>(`${this.baseUrl}/${inp.module_id}/org/${inp.org_id}/input/${inp.id}`, dataToSend).pipe(
             tap(_ => {
               this.inputDebounce[input.id].complete();
               this.inputDebounce[input.id] = null;
@@ -136,7 +136,7 @@ export class ModuleService {
     return this.inputObservable[input.id];
   }
 
-  saveMultipleInputs(inputs: Input[]): Observable<any> {
+  saveMultipleInputs(inputs: TemplateInput[]): Observable<any> {
     return this.httpClient.post(`${this.baseUrl}/${inputs[0].module_id}/org/${inputs[0].org_id}/inputs`, inputs.map(
       input => (({ comments_json, content, id }) => ({ comments_json, content, id }))(input)
     ));

@@ -2,7 +2,7 @@
 
 
 import BaseModel from './base.model';
-import { Input } from './module.interface';
+import { TemplateInput } from './module.interface';
 
 class ModuleContent extends BaseModel {
   org_id: number = 0;
@@ -10,7 +10,7 @@ class ModuleContent extends BaseModel {
   step_id: number = 0;
   module_id: number = 0;
   content_json: any = {inputs: {}};
-  inputs: {[key: string]: Input} = {};
+  inputs: {[key: string]: TemplateInput} = {};
   feedback_requested: boolean = false;
   feedback_started: boolean = false;
   template_params_json: any = {};

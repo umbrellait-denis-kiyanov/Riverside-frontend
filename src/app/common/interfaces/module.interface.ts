@@ -21,7 +21,7 @@ export interface Module {
   underConstruction?: boolean;
 }
 
-export interface Input {
+export interface TemplateInput {
   id: number;
   org_id: number;
   module_id: number;

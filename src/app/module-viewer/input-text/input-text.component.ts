@@ -1,5 +1,5 @@
 import { Component, OnChanges, Input } from '@angular/core';
-import { Input as TemplateInput } from 'src/app/common/interfaces/module.interface';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';

@@ -2,7 +2,6 @@ import { Component, OnInit, forwardRef, QueryList, ViewChildren } from '@angular
 import { TemplateComponent } from '../template-base.cass';
 import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define.interface';
 import { SegmentCriteria } from './segment-criteria.interface';
-import { Input } from 'src/app/common/interfaces/module.interface';
 import { IcpInputComponent } from './icp-input/icp-input.component';
 import { Validate } from 'src/app/common/validator.class';
 

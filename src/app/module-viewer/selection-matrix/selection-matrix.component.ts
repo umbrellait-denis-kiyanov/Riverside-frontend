@@ -1,14 +1,12 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
-import { Input as InputType } from 'src/app/common/interfaces/module.interface';
-import { BehaviorSubject } from 'rxjs';
 
 @Component({
   selector: 'app-selection-matrix',
   templateUrl: './selection-matrix.component.html',
   styleUrls: ['./selection-matrix.component.sass']
 })
-export class SelectionMatrixComponent  {
+export class SelectionMatrixComponent implements OnInit {
 
   @Input()
   question: string;

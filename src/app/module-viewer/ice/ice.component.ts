@@ -14,7 +14,7 @@ import { skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
-import { Input as InputType } from 'src/app/common/interfaces/module.interface';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 
 export type IceEditorTracker = {
   element: HTMLElement,
@@ -34,7 +34,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
   // pass input as string identifier or as instance
   @Input() input: string;
-  @Input() data: InputType;
+  @Input() data: TemplateInput;
 
   @Input() allowRemoveSelections = false;
 
