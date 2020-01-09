@@ -61,6 +61,7 @@ export class IceComponent implements OnInit, OnDestroy {
   initialContent: string;
 
   selectionsSub: Subscription;
+  onApproveSub: Subscription;
 
   constructor(
     private el: ElementRef,
@@ -151,7 +152,7 @@ export class IceComponent implements OnInit, OnDestroy {
         this.tracker.element.contentEditable = 'false';
       }
       this.tracker.element.blur();
-      this.iceService.onApprove.subscribe(() => {
+      this.onApproveSub = this.iceService.onApprove.subscribe(() => {
         this.tracker.acceptAll();
         this.onBlur();
       });
@@ -161,6 +162,7 @@ export class IceComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.changed.unsubscribe();
     this.selectionsSub.unsubscribe();
+    this.onApproveSub.unsubscribe();
   }
 
   removeSelection(selection: string) {

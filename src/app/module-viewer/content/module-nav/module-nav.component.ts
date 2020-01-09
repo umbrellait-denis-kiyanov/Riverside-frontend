@@ -1,4 +1,4 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges } from '@angular/core';
+import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import Message from '../../inbox/message.model';
 import { IceService } from '../../ice/ice.service';
@@ -13,7 +13,7 @@ type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedbac
   templateUrl: './module-nav.component.html',
   styleUrls: ['./module-nav.component.sass']
 })
-export class ModuleNavComponent implements OnInit, OnChanges {
+export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
   showPrevious = true;
   showNext = true;
   @Input() step: TemplateContentData;
@@ -50,6 +50,10 @@ export class ModuleNavComponent implements OnInit, OnChanges {
       this.markAsApproved(!!this.subaction, false);
       this.markAsDone(!!this.subaction, false);
     });
+  }
+
+  ngOnDestroy() {
+    this.unApproveSub.unsubscribe();
   }
 
   ngOnChanges() {
