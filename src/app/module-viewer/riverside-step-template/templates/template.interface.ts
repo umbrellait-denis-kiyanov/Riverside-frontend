@@ -1,5 +1,5 @@
 import { TemplateContentData } from './template-data.class';
-import { Template2Data } from './template2/template2.interface';
+import { NarrowDownData } from './narrow-down';
 import { GenericTemplateData } from './generic/generic.interface';
 import { BrainstormTemplateData } from './brainstorm/brainstorm.interface';
 import { NamePersonasTemplateData } from './name_personas/name_personas.interface';
@@ -9,7 +9,7 @@ import { QuestionImageTemplateData } from './question-image/question-image.inter
 import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 
 export type TemplateContentDataType =
-  Template2Data |
+  NarrowDownData |
   GenericTemplateData |
   BrainstormTemplateData |
   NamePersonasTemplateData |

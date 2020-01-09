@@ -39,7 +39,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { E3CommonModule } from '../common/e3-common.module';
 import { ModuleNavComponent } from './content/module-nav/module-nav.component';
 import { ModuleNavService } from '../common/services/module-nav.service';
-import { Template2Component } from './riverside-step-template/templates/template2/template2.component';
+import { NarrowDownComponent } from './riverside-step-template/templates/narrow-down/narrow-down.component';
 import { BrainstormTemplateComponent } from './riverside-step-template/templates/brainstorm/brainstorm.component';
 import { GenericTemplateComponent } from './riverside-step-template/templates/generic/generic.component';
 import { NamePersonasTemplateComponent } from './riverside-step-template/templates/name_personas/name_personas.component';
@@ -149,7 +149,7 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     E3TableComponent,
     RequestFeedbackComponent,
     ModuleNavComponent,
-    Template2Component,
+    NarrowDownComponent,
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
@@ -197,7 +197,7 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
   entryComponents: [
     ModuleViewerRootComponent,
     RequestFeedbackComponent,
-    Template2Component,
+    NarrowDownComponent,
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
