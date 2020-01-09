@@ -4,15 +4,12 @@ import {
   OnDestroy,
   ElementRef,
   Input,
-  ViewChild,
-  TemplateRef,
   HostListener,
-  ViewContainerRef,
   EventEmitter,
   Output
 } from '@angular/core';
 import User from 'src/app/common/interfaces/user.model';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
@@ -44,8 +41,6 @@ export class IceComponent implements OnInit, OnDestroy {
   @Output() changed = new EventEmitter(false);
   @Output() dataChanged = new EventEmitter(false);
 
-  @ViewChild('commentOverlay') commentOverlay: TemplateRef<any>;
-
   tracker: IceEditorTracker;
   comment: { [key: string]: any; index: false | number } = {
     adding: false,
@@ -65,9 +60,10 @@ export class IceComponent implements OnInit, OnDestroy {
 
   initialContent: string;
 
+  selectionsSub: Subscription;
+
   constructor(
     private el: ElementRef,
-    public viewContainerRef: ViewContainerRef,
     private iceService: IceService,
     private dialogService: E3ConfirmationDialogService,
     private template: TemplateComponent
@@ -101,7 +97,7 @@ export class IceComponent implements OnInit, OnDestroy {
       selections.remove();
     }
 
-    this.data.selections$.pipe(skip(1)).subscribe(_ => {
+    this.selectionsSub = this.data.selections$.pipe(skip(1)).subscribe(_ => {
       this.onBlur();
       this.changed.emit();
     });
@@ -164,6 +160,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.changed.unsubscribe();
+    this.selectionsSub.unsubscribe();
   }
 
   removeSelection(selection: string) {
@@ -189,7 +186,6 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   saveComment(index: false | number = false) {
-    this.comment.adding = false;
     if (this.comment.index !== false) {
       this.comment.list[this.comment.index].content = this.comment.content;
     } else {
@@ -203,9 +199,7 @@ export class IceComponent implements OnInit, OnDestroy {
     }
 
     this.data.comments_json = this.comment.list;
-    this.comment.index = false;
-    this.comment.content = '';
-    this.closeComment();
+    this.cancelComment();
     this.dataChanged.emit(this.data);
     this.changed.emit(this.data);
     setTimeout(_ => this.openComment(), 100);
@@ -309,4 +303,3 @@ export class IceComponent implements OnInit, OnDestroy {
     }, 100);
   }
 }
-
