@@ -17,12 +17,16 @@
     padding-right: 3px
     text-align: right
 
-.step-list-item.active .step-number
-    position: relative
-    left: -3px
+.step-list-item
+    &.not-applicable
+        opacity: 0.4
 
-    &.double
-        left: 0
+    &.active .step-number
+        position: relative
+        left: -3px
+
+        &.double
+            left: 0
 
 .btn-group
     display: block
@@ -104,6 +108,10 @@ table
                 font-size: 0.9em
 
         &.finish
+            &.active
+                mat-icon
+                    color: white !important
+
             td
                 padding-top: 10px
 

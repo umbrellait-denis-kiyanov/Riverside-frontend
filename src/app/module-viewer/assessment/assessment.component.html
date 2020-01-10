@@ -15,7 +15,7 @@
       {{ val.activeGroup.description }}
   </div>
 
-<table class="table table-borderless table-striped questions" [class.answers-loading]="answersLoading" [class.readonly]="!val.canAnswer || answersLoading" *ngIf="val.type as type">
+<table class="table table-borderless table-striped questions" [class.answers-loading]="answersLoading" [class.not-applicable]="val.answers?.isNA" [class.readonly]="!val.canAnswer || answersLoading" *ngIf="val.type as type">
     <thead>
       <tr>
         <th></th>
@@ -83,20 +83,29 @@
     <tbody>
       <tr>
         <td>Sum Total</td>
-        <td class="score">{{ answers.rawScore || 0 }}</td>
+        <td class="score">{{ answers.isNA ? 'N/A' : (answers.rawScore || 0) }}</td>
       </tr>
       <tr>
         <td>Weighted Total</td>
-        <td class="score">{{ answers.score || 0 }}</td>
+        <td class="score">{{ answers.isNA ? 'N/A' : (answers.score || 0) }}</td>
       </tr>
     </tbody>
   </table>
 
   <div class="done" *ngIf="val.answers as answers">
+    <button mat-raised-button
+      class="not-applicable"
+      [color]="!answers.isNA || 'accent'"
+      (click)="(val.canAnswer || !answers.isApproved || val.canRecord) && markAsNA(val.activeGroup, val.type, !answers.isNA)"
+    >
+      Not Applicable
+      <spinner [sub]="markAsNASub"></spinner>
+    </button>
+
     <button
       *ngIf="!answers.isDone || (!answers.isApproved && val.canRecord); else doneButton"
       mat-raised-button
-      [color]="!isSectionReady(val.questions, answers) || 'accent'"
+      [color]="!(isSectionReady$ | async) || 'accent'"
       (click)="markAsDone(val.activeGroup, val.type, val.questions, answers)">
         <span *ngIf="!val.canRecord">Mark As Done</span>
         <span *ngIf="val.canRecord">Approve</span>
@@ -104,7 +113,7 @@
       </button>
 
     <ng-template #doneButton>
-      <button mat-raised-button>
+      <button mat-raised-button [color]="!answers.isApproved || 'accent'">
         <span *ngIf="!answers.isApproved">Done</span>
         <span *ngIf="answers.isApproved">Approved</span>
       </button>

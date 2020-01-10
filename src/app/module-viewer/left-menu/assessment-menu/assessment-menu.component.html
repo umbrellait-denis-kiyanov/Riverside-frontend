@@ -31,15 +31,17 @@
   <h2>{{ activeType.name }} Strategy Assessment</h2>
 
   <table *ngIf="(orgGroups$ | async) as orgGroups" [class.approved]="session.isApproved">
-    <tr *ngFor="let group of groups$ | async; let i = index;" (click)="setGroup(group)" class="step-list-item" [class.approved]="orgGroups[group.id]?.isApproved" [class.active]="(activeGroup$ | async)?.id == group.id">
+    <tr *ngFor="let group of groups$ | async; let i = index;" (click)="setGroup(group)" class="step-list-item"
+      [class.not-applicable]="orgGroups[group.id]?.isNA" [class.approved]="orgGroups[group.id]?.isApproved" [class.active]="(activeGroup$ | async)?.id == group.id">
       <td class="group-status">
-        <mat-icon *ngIf="orgGroups[group.id]?.isDone">check</mat-icon>
+        <mat-icon *ngIf="orgGroups[group.id]?.isDone && !orgGroups[group.id]?.isNA">check</mat-icon>
+        <mat-icon *ngIf="orgGroups[group.id]?.isNA">block</mat-icon>
       </td>
       <td class="step-num-td">
         <span class="step-number" [class.double]="i > 8">{{ i + 1 }}<span class="dot">.</span></span>
       </td>
       <td class="group-name">{{ group.shortName }}</td>
-      <td class="score">{{ orgGroups[group.id]?.score || 0 }}</td>
+      <td class="score">{{ orgGroups[group.id]?.isNA ? 'N/A' : (orgGroups[group.id]?.score || 0) }}</td>
     </tr>
     <tr class="step-list-item finish"  [class.active]="!(activeGroup$ | async)">
       <td class="group-status"></td>
