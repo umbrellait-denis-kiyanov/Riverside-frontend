@@ -2,7 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { InboxService } from './inbox.service';
 import { ActivatedRoute } from '@angular/router';
 import { UserService } from 'src/app/common/services/user.service';
-
+import { map, switchMap, filter } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import Message from './message.model';
+import toastr from 'src/app/common/lib/toastr';
 
 @Component({
   selector: 'app-inbox',
@@ -11,15 +14,13 @@ import { UserService } from 'src/app/common/services/user.service';
 })
 export class InboxComponent implements OnInit {
 
-  messageResource: InboxService['message'];
-  message: InboxService['message']['data'];
-  senderLetter: string;
-  ready: boolean = false;
   feedbackMessage: string = '';
   routerLink: string[];
-  submitting = false;
+  submitting: Subscription;
   canProvideFeedback = false;
   currentTab = 'text';
+
+  message$: Observable<Message>;
 
   constructor(
     private inboxService: InboxService,
@@ -29,68 +30,47 @@ export class InboxComponent implements OnInit {
 
   ngOnInit() {
     this.canProvideFeedback = this.userService.me.permissions.riversideProvideFeedback;
-    this.route.params.subscribe((params) => {
-      if (params.id) {
-        this.ready = false;
-        this.loadMessage(params.id);
-      } else {
-        this.ready = true;
-      }
-    });
-
+    this.message$ = this.route.params.pipe(
+      filter(params => params.id),
+      switchMap(params => this.loadMessage(params.id))
+    );
   }
 
   loadMessage(id: string) {
-    this.messageResource = this.inboxService.message;
-    this.messageResource.saving.subscribe(s => this.submitting = s);
-    this.inboxService.load({ id }).then(res => {
-      this.senderLetter = this.messageResource.data.orgName[0].toLocaleUpperCase();
-      this.message = this.messageResource.data;
-      this.markAsReadIfNeeded();
-      this.prepareData();
-      this.ready = true;
-    });
-
+    return this.inboxService.load(id).pipe(
+      map(message => {
+        this.markAsReadIfNeeded(message);
+        return this.prepareData(message);
+      })
+    );
   }
 
-  private markAsReadIfNeeded() {
-    if (this.message.is_pending) {
-    this.inboxService.markAsRead(this.message.id).then(() => {
-      const resource = this.inboxService.allMessages;
-      const msg = resource.data.find(m => m.id === this.message.id);
-      if (msg) {
-        msg.read_on = new Date();
-        resource.change.next(resource.change.getValue() + 1);
-      }
-    });
+  private markAsReadIfNeeded(message) {
+    if (message.is_pending) {
+      this.inboxService.markAsRead(message.id).subscribe();
     }
   }
 
-  private prepareData() {
-    if (!this.message.message) {
-      this.message.message = `<p>No message was provided.</p>`;
+  private prepareData(message: Message): Message {
+    if (!message.message) {
+      message.message = `<p>No message was provided.</p>`;
     }
-    this.routerLink = ['/org', String(this.message.to_org_id || this.message.from_org_id), 'module', String(this.message.module_id)];
-    if (this.message.step_id) {
-      this.routerLink = this.routerLink.concat(['step', String(this.message.step_id)]);
+
+    this.routerLink = ['/org', String(message.to_org_id || message.from_org_id), 'module', String(message.module_id)];
+    if (message.step_id) {
+      this.routerLink = this.routerLink.concat(['step', String(message.step_id)]);
     }
+
+    return message;
   }
 
-  provideFeedback(message: string) {
-    this.inboxService.save({
-      assessment_session_id: this.message.assessment_session_id,
-      to_org_id: this.message.from_org_id,
-      module_id: this.message.module_id,
-      parent_id: this.message.id,
-      message
-    }).then(() => {
-      const {allMessages: {change, data}} = this.inboxService;
-      const msg = data.find(m => m.id === this.message.id);
-      if (msg) {
-        msg.is_pending = false;
-        change.next(change.getValue() + 1);
-      }
-    });
+  provideFeedback(message: Message, text: string) {
+    this.submitting = this.inboxService.save({
+      assessment_session_id: message.assessment_session_id,
+      to_org_id: message.from_org_id,
+      module_id: message.module_id,
+      parent_id: message.id,
+      message: text
+    }).subscribe(_ => toastr.success('Message sent!'));
   }
-
 }

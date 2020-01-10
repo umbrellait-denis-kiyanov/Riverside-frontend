@@ -19,11 +19,13 @@ export class ModuleNavComponent implements OnInit, OnChanges {
   @Input() step: TemplateContentData;
   @Input() action: actions;
   @Input() subaction: actions;
-  @Input() submitting: boolean;
+  @Input() submitting: boolean | Subscription;
   @Input() is_done: boolean;
   @Input() is_subaction_done: boolean;
   @Input() hideActionButton: boolean;
   @Output() feedback: EventEmitter<Partial<Message>> = new EventEmitter();
+
+  submittingSubaction: Subscription;
 
   unApproveSub: Subscription;
 
@@ -103,7 +105,7 @@ export class ModuleNavComponent implements OnInit, OnChanges {
       return;
     }
 
-    this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
+    this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
       .subscribe(_ => {
         this.moduleService.moduleChanged$.next(true);
 
@@ -120,7 +122,7 @@ export class ModuleNavComponent implements OnInit, OnChanges {
     const newState = state !== null ? state : !this[key];
     const step = this.step.data;
 
-    this.moduleService.markAsApproved(step.module_id, step.org_id, step.step_id, newState)
+    this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.moduleService.markAsApproved(step.module_id, step.org_id, step.step_id, newState)
       .subscribe((response: number[]) => {
         this.moduleService.moduleChanged$.next(true);
 

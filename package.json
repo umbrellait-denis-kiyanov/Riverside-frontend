@@ -43,6 +43,7 @@
     "ice": "git+https://github.com/nytimes/ice.git",
     "jquery": "^3.4.1",
     "moment": "^2.24.0",
+    "moment-timezone": "^0.5.27",
     "ng-bootstrap-to-bootstrap-3": "^0.7.0",
     "ngx-image-cropper": "^2.0.2",
     "react-circular-progressbar": "^1.0.0",

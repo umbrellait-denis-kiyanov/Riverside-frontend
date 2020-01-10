@@ -1,11 +1,11 @@
-<div [ngStyle]="{'width.px': width}" *ngIf="ready">
+<div [ngStyle]="{'width.px': width}" *ngIf="messages$ | async">
   <div class="left-menu-header">
     <div class="header-title">Inbox</div>
   </div>
 
   <e3-table
     [header]="header"
-    [data]="data"
+    [data]="messages$"
     [sortable]="true"
     class="centered"
   ></e3-table>
