@@ -1,6 +1,8 @@
+import * as moment from 'moment';
+
 export const messages = [
   {
-    time: window.moment(1561939200000).format('MM/DD/YYYY HH:mm:ss'),
+    time: moment(1561939200000).format('MM/DD/YYYY HH:mm:ss'),
     timeSinceEpoch: 1561939200000,
     moduleName: 'Buyer Personas',
     moduleId: 1,
@@ -11,7 +13,7 @@ export const messages = [
     id: 1
   },
   {
-    time: window.moment(1561939200000).format('MM/DD/YYYY HH:mm:ss'),
+    time: moment(1561939200000).format('MM/DD/YYYY HH:mm:ss'),
     timeSinceEpoch: 1561939200000,
     moduleName: 'Buyer Personas',
     moduleId: 1,
@@ -19,7 +21,7 @@ export const messages = [
   }
   ,
   {
-    time: window.moment(1561939200000).format('MM/DD/YYYY HH:mm:ss'),
+    time: moment(1561939200000).format('MM/DD/YYYY HH:mm:ss'),
     timeSinceEpoch: 1561939200000,
     moduleName: 'Buyer Personas',
     moduleId: 1,
@@ -39,6 +41,6 @@ export const header = [
   {
     id: 'sent_on',
     label: 'Time',
-    transform: (date) => window.moment(date).format('MMM DD YYYY hh:mm:ss A')
+    transform: (date) => moment(date).format('MMM DD YYYY hh:mm:ss A')
   }
 ];

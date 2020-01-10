@@ -106,12 +106,12 @@ export class IceComponent implements OnInit, OnDestroy {
       );
 
       selections.remove();
-    }
 
-    this.selectionsSub = this.data.selections$.pipe(skip(1)).subscribe(_ => {
-      this.onBlur();
-      this.changed.emit();
-    });
+      this.selectionsSub = this.data.selections$.pipe(skip(1)).subscribe(_ => {
+        this.onBlur();
+        this.changed.emit();
+      });
+    }
 
     this.initialContent = el.innerHTML;
 
@@ -171,8 +171,14 @@ export class IceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.changed.unsubscribe();
-    this.selectionsSub.unsubscribe();
-    this.onApproveSub.unsubscribe();
+
+    if (this.selectionsSub) {
+      this.selectionsSub.unsubscribe();
+    }
+
+    if (this.onApproveSub) {
+      this.onApproveSub.unsubscribe();
+    }
   }
 
   removeSelection(selection: string) {

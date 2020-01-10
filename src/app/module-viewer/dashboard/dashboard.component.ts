@@ -41,7 +41,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   organizationSubscription: Subscription;
 
-  canModify: boolean;
+  canActivate = false;
 
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
@@ -71,7 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.assessmentScores$ = this.asmService.getModuleScores(organization.id).pipe(shareReplay(1));
 
     this.modules$ = this.modulesRequest$.pipe(
-      tap(response => this.canModify = this.canModifyPipe.transform(response)),
+      tap(response => this.canActivate = this.canModifyPipe.transform(response)),
       map(response => response.body),
       tap(categories => {
         this.categoryColumns = categories.map(category => {
