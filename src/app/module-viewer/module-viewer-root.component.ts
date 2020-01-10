@@ -18,7 +18,7 @@ export class ModuleViewerRootComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    (window as any).jQuery('.loading-site-content').hide();
+    document.querySelector('.loading-site-content')[0].style.display = 'none';
   }
 
 }

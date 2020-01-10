@@ -10,7 +10,7 @@ export class ModuleBuilderRootComponent implements OnInit {
   constructor() { }
 
   ngOnInit() {
-    (window as any).jQuery('.loading-site-content').hide();
+    document.querySelector('.loading-site-content')[0].style.display = 'none';
   }
 
 }
