@@ -29,6 +29,7 @@
       >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
+
       <a
         [routerLink]="link"
         routerLinkActive="active"
@@ -45,12 +46,17 @@
       >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
+
       <a
         (click)="openModal(menu.modalComponent)"
         *ngIf="menu.modalComponent"
       >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
+
+      <span class="menu-item-inactive" *ngIf="!menu.link && !menu.href && !menu.modalComponent && !(menu.linkObservable | async)">
+        <ng-container *ngTemplateOutlet="menuItem"></ng-container>
+      </span>
 
       <ng-template #menuItem>
         <div class="menu-item-icon" >
