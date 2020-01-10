@@ -1,17 +1,16 @@
 import { Injectable } from '@angular/core';
-import { BehaviorSubject } from 'rxjs';
-import { messages } from '../left-menu/inbox/mockData';
 import { ResourceFromServer } from 'src/app/common/services/resource.class';
 import Message from './message.model';
 import { HttpClient } from '@angular/common/http';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class InboxService {
 
-  allMessages = new ResourceFromServer<Message[]>();
-  message = new ResourceFromServer<Message>({ saveMessage: 'Message sent!' });
+  allMessages = new ResourceFromServer<Message[]>(this.toastr);
+  message = new ResourceFromServer<Message>(this.toastr, { saveMessage: 'Message sent!' });
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr: ToastrService) { }
 
   loadAll() {
     return this.allMessages.load(

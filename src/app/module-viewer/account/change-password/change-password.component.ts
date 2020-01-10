@@ -1,10 +1,9 @@
 import { Component, OnInit } from '@angular/core';
 import { FormGroup, FormBuilder, Validators } from '@angular/forms';
 import { UserService } from 'src/app/common/services/user.service';
-
-import toastr from 'src/app/common/lib/toastr';
 import { first } from 'rxjs/operators';
 import { Subscription } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 const ERROR_MESSAGES = {
   INVALID_PASSWORD: 'New password is invalid',
@@ -24,7 +23,8 @@ export class ChangePasswordComponent implements OnInit {
 
   constructor(
     private formBuilder: FormBuilder,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {
@@ -40,7 +40,7 @@ export class ChangePasswordComponent implements OnInit {
       this.error = '';
       this.saving = this.userService.updatePassword(this.form.value).pipe(first()).subscribe(
         () => {
-          toastr.success('Saved!');
+          this.toastr.success('Saved!');
         },
         (e) => {
           this.error = ERROR_MESSAGES[e.error.failure];

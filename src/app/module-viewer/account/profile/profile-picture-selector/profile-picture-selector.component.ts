@@ -1,11 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { UserService } from 'src/app/common/services/user.service';
-import toastr from 'src/app/common/lib/toastr';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
 import { PresignedProfilePictureUrl } from 'src/app/common/interfaces/account.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'profile-picture-selector',
@@ -21,7 +21,8 @@ export class ProfilePictureSelectorComponent implements OnInit {
 
   constructor(
     private userService: UserService,
-    private http: HttpClient
+    private http: HttpClient,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {}
@@ -60,9 +61,10 @@ export class ProfilePictureSelectorComponent implements OnInit {
       ,
       (e) => {
         if (e.error && e.error.failure && e.error.failure === 'INVALID_EXTENSION') {
-          return toastr.error('Invalid file extension');
+          this.toastr.error('Invalid file extension');
+        } else {
+          this.toastr.error('Could not upload picture');
         }
-        toastr.error('Could not upload picture');
       }
     );
   }

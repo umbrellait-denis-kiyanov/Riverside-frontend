@@ -6,8 +6,8 @@ import { AssessmentSession, AssessmentType, AssessmentGroup, AssessmentOrgGroup 
 import { Observable, combineLatest, Subscription } from 'rxjs';
 import { switchMap, map, shareReplay, take } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import toastr from 'src/app/common/lib/toastr';
 import { AssessmentChartSeries } from '../../assessment-chart';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-assessment-finish',
@@ -35,7 +35,9 @@ export class AssessmentFinishComponent implements OnInit {
 
   constructor(public asmService: AssessmentService,
               public navService: ModuleNavService,
-              public router: Router) { }
+              public router: Router,
+              private toastr: ToastrService
+              ) { }
 
   ngOnInit() {
     const type$ = this.navService.assessmentType$;
@@ -79,10 +81,10 @@ export class AssessmentFinishComponent implements OnInit {
         this.router.navigate(['dashboard', this.navService.lastOrganization.current],
             { state: { section: 'assessments', type: session.type_id } });
 
-        toastr.success('Assessment has been recorded');
+        this.toastr.success('Assessment has been recorded');
       } else {
         this.isSubmittedForReview = true;
-        toastr.success('Assessment has been submitted for review');
+        this.toastr.success('Assessment has been submitted for review');
       }
     });
   }

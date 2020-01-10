@@ -4,14 +4,17 @@ import ModuleContent from '../interfaces/module-content.model';
 import { Observable } from 'rxjs';
 import { ResourceFromServer } from './resource.class';
 import { map } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class ModuleContentService {
 
   baseUrl = '/api/modules';
-  moduleContent = new ResourceFromServer<ModuleContent>();
+  moduleContent = new ResourceFromServer<ModuleContent>(this.toastr);
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient,
+              private toastr: ToastrService
+    ) { }
 
   load(moduleId: number, stepId: number, org_id: number): Observable<ModuleContent> {
     return this.httpClient.get(`${this.baseUrl}/${moduleId}/org/${org_id}/step/${stepId}`, {observe: 'response'})

@@ -5,7 +5,7 @@ import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import { AssessmentGroup, AssessmentQuestion, AssessmentOrgGroup, AssessmentAnswer, AssessmentType } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { switchMap, filter, map, shareReplay, tap, takeWhile } from 'rxjs/operators';
-import toastr from 'src/app/common/lib/toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-assessment',
@@ -42,7 +42,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   isDestroyed = false;
 
   constructor(public asmService: AssessmentService,
-              public navService: ModuleNavService) { }
+              public navService: ModuleNavService,
+              private toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -96,7 +97,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       const sub = clear === 'notes' ? 'clearNotesSub' : 'clearAnswersSub';
       this[sub] = this.asmService.answerAll(g, t, this.navService.lastOrganization.current, null, clear).subscribe(_ => {
         this.answerUpdated$.next(true);
-        toastr.success(g.name + ' answers have been cleared');
+        this.toastr.success(g.name + ' answers have been cleared');
       });
     }
   }
@@ -130,7 +131,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     }
 
     this.markAsDoneSub = this.asmService.markAsDone(activeGroup, t, this.navService.lastOrganization.current)
-      .subscribe(_ => toastr.success(activeGroup.name + ' has been marked as done'));
+      .subscribe(_ => this.toastr.success(activeGroup.name + ' has been marked as done'));
   }
 
   isSectionReady(questions: AssessmentQuestion[], answers) {

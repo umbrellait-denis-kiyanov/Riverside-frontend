@@ -96,6 +96,7 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
 import { SpreadsheetComponent } from './riverside-step-template/templates/spreadsheet/spreadsheet.component';
 import { HotTableModule } from '@handsontable/angular';
 import { SpreadsheetService } from '../common/services/spreadsheet.service';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -123,7 +124,8 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     MatInputModule,
     ReactiveFormsModule,
     ImageCropperModule,
-    HotTableModule.forRoot()
+    HotTableModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   declarations: [
     ModuleViewerRootComponent,

@@ -1,9 +1,10 @@
 import { BehaviorSubject } from 'rxjs';
+import { ToastrService } from 'ngx-toastr';
 
 const resourceOptions = {
-  saveMessage: null,
-  toastrOptions: {timeOut: 1000, positionClass: 'toast-top-right'}
+  saveMessage: null
 };
+
 export class ResourceFromServer<T> {
   data: T;
   loading: BehaviorSubject<boolean> = new BehaviorSubject<boolean>(false);
@@ -13,8 +14,9 @@ export class ResourceFromServer<T> {
   change: BehaviorSubject<number> = new BehaviorSubject<number> (0);
   options: Partial<typeof resourceOptions>;
 
-  constructor(options: Partial<typeof resourceOptions> = {}) {
+  constructor(public toastr: ToastrService, options: Partial<typeof resourceOptions> = {}) {
     this.options = {...resourceOptions, ...options};
+    // this.toastr = new ToastrService();
   }
 
   load(loadPromise: Promise<any>) {
@@ -27,9 +29,9 @@ export class ResourceFromServer<T> {
 
   save(loadPromise: Promise<any>) {
     return this._request(loadPromise, 'saving').then(async (res) => {
-      const {saveMessage: msg, toastrOptions} = this.options;
+      const {saveMessage: msg} = this.options;
       if (msg) {
-        window.toastr.success(msg, '', toastrOptions);
+        this.toastr.success(msg);
       }
     });
   }
