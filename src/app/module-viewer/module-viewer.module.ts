@@ -50,7 +50,6 @@ import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { CanModifyPipe } from '../common/pipes/canModify.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
-// tslint:disable-next-line:max-line-length
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
 import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
@@ -133,7 +132,6 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     InboxLeftMenuComponent,
     AccountLeftMenuComponent,
     ContentComponent,
-    // E3CheckboxComponent,
     LoadingComponent,
     FormatDatePipe,
     ReadableDatePipe,

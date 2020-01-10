@@ -2,6 +2,7 @@ import { TemplateContentDataBase } from '../template.interface';
 
 export interface QuestionImageTemplateData extends TemplateContentDataBase {
   template_params_json: {
+    description: string;
     instructions: string;
     image: string;
     title: string;

@@ -13,8 +13,8 @@ import { PresignedProfilePictureUrl } from 'src/app/common/interfaces/account.in
   styleUrls: ['./profile-picture-selector.component.sass']
 })
 export class ProfilePictureSelectorComponent implements OnInit {
-  imageChangedEvent: any = '';
-  croppedImage: any = '';
+  imageChangedEvent: string = '';
+  croppedImage: string = '';
   @Output() imageUploaded = new EventEmitter();
 
   saving: Subscription = null;
@@ -26,7 +26,7 @@ export class ProfilePictureSelectorComponent implements OnInit {
 
   ngOnInit() {}
 
-  fileChangeEvent(event: any): void {
+  fileChangeEvent(event: string): void {
     this.imageChangedEvent = event;
   }
 

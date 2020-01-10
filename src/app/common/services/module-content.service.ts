@@ -5,7 +5,6 @@ import { Observable } from 'rxjs';
 import { ResourceFromServer } from './resource.class';
 import { map } from 'rxjs/operators';
 
-
 @Injectable()
 export class ModuleContentService {
 

@@ -18,10 +18,10 @@ class User extends BaseModel {
 
   protected transform() {
     return {
-      name: (val: any, data: any) => {
+      name: (val: any, data: User) => {
         return `${data.fname} ${data.lname}`;
       },
-      abbreviation: (val: any, data: any) => {
+      abbreviation: (val: any, data: User) => {
         return `${data.fname[0].toUpperCase()}${data.lname[0].toUpperCase()}`;
       },
     };

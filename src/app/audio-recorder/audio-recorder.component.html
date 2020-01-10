@@ -19,7 +19,7 @@
   <div *ngIf="status == STATUS.TEST_ERROR" class="message with-error">
     {{errorMsg}}
   </div>
-  <!-- [ngClass]="{'recording': status == STATUS.RECORDING}" -->
+
   <div>
     <audio
       #audioOption
@@ -36,7 +36,6 @@
       (click)="toggleRecording()"
       *ngIf="status == STATUS.READY"
     >
-      <!-- <mat-icon class=icon-btn>mic</mat-icon> -->
       <span class="fa fa-circle text-red"></span> Start
     </button>
 
@@ -45,7 +44,6 @@
       (click)="toggleRecording()"
       *ngIf="status == STATUS.RECORDING"
     >
-      <!-- <mat-icon class=icon-btn>mic</mat-icon> -->
       <span class="fa fa-stop text-red"></span> Stop
     </button>
 
@@ -55,7 +53,6 @@
       *ngIf="status == STATUS.RECORDED"
     >
       <span class="fa fa-play text-green"></span> Play
-      <!-- <mat-icon class=icon-btn>play_arrow</mat-icon> -->
     </button>
 
     <button

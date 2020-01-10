@@ -8,6 +8,8 @@ import { PersonaBehaviorTemplateData } from './persona_behavior';
 import { FeedbackSectionTemplateData } from './feedback_section';
 import { QuestionImageTemplateData } from './question-image';
 import { TemplateInput } from 'src/app/common/interfaces/module.interface';
+import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define';
+import { SpreadsheetTemplateData } from './spreadsheet';
 
 export type TemplateContentDataType =
   AgeGenderTemplateData |
@@ -17,7 +19,9 @@ export type TemplateContentDataType =
   NamePersonasTemplateData |
   PersonaBehaviorTemplateData |
   FeedbackSectionTemplateData |
-  QuestionImageTemplateData
+  QuestionImageTemplateData |
+  SpreadsheetTemplateData |
+  SegmentCriteriaDefineTemplateData
   ;
 
 export interface TemplateComponentInterface {
@@ -27,4 +31,9 @@ export interface TemplateComponentInterface {
 export interface TemplateContentDataBase {
   inputs?: {[key: string]: TemplateInput};
   disabled?: boolean;
+  template_params_json?: {
+    description: string;
+    title: string;
+    inputs?: string;
+  }
 }

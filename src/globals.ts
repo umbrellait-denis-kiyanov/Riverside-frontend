@@ -6,7 +6,5 @@ declare global {
     CONSTANTS: any;
     moment: any;
     ice: any;
-    AudioContext: any;
-    webkitAudioContext: any;
   }
 }

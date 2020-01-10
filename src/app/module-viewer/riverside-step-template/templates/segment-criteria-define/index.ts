@@ -1,4 +1,5 @@
 import { TemplateContentDataBase } from '../template.interface';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 
 export interface SegmentCriteriaDefineTemplateData extends TemplateContentDataBase {
   template_params_json: {
@@ -11,6 +12,7 @@ export interface SegmentCriteriaDefineTemplateData extends TemplateContentDataBa
     inputs: string;
     title: string;
   };
+  inputs?: {[key: string]: TemplateInput};
 }
 
 export interface SegmentCriteria {

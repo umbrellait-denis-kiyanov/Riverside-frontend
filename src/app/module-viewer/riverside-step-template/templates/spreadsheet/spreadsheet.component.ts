@@ -1,4 +1,4 @@
-import { Component, forwardRef, ViewChild } from '@angular/core';
+import { Component, forwardRef, ViewChild, ElementRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { SpreadsheetTemplateData } from '.';
 import * as Handsontable from 'handsontable';
@@ -53,7 +53,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   downloadProgress: boolean;
 
   @ViewChild('hot') hot;
-  @ViewChild('widthContainer') widthContainer;
+  @ViewChild('widthContainer') widthContainer: ElementRef;
 
   watchMenuExpand: Subscription;
 
@@ -62,7 +62,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   init() {
     this.spreadsheetService = this.injectorObj.get(SpreadsheetService);
 
-    const contentData = this.data.data.template_params_json;
+    const contentData = this.data.data.template_params_json as SpreadsheetTemplateData['template_params_json'];
 
     this.input = this.getInput('spreadsheet', 1);
 
@@ -211,6 +211,7 @@ export class SpreadsheetComponent extends TemplateComponent {
               event.stopImmediatePropagation();
               (event.target as HTMLInputElement).value = '0';
               const hot = this.hot.hotInstance;
+              console.log(hot);
               hot.getSelected().forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
             }
           }).bind(this),

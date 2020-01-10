@@ -29,7 +29,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   gradePrefix = '';
 
-  grades = [];
+  grades: number[] = [];
 
   gradeSections: {prefix: string, title: string, grades: number[]}[];
 
@@ -41,7 +41,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   ];
   lastGradeLevel = this.gradeLevels[this.gradeLevels.length - 1];
 
-  userGradeLevels = {};
+  userGradeLevels: {[key: string]: string} = {};
 
   getDescription() {
     return 'Ideal Customer Profiles';
@@ -52,6 +52,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   protected init() {
+
+    // @ts-ignore - template_params_json.inputs property causes error with TypeScript 3.1
     this.contentData = this.data.data.template_params_json as SegmentCriteriaDefineTemplateData['template_params_json'];
 
     this.initSegments();
