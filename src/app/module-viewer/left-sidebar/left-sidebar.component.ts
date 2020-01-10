@@ -85,11 +85,11 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
 
   initialLoad() {
     this.inboxLoad();
-    this.inboxService.allMessages.change.subscribe(this.inboxLoad.bind(this));
+    this.inboxService.messageChange$.subscribe(this.inboxLoad.bind(this));
   }
 
   inboxLoad() {
-    this.inboxService.loadCounter().then((res: any) => {
+    this.inboxService.loadCounter().subscribe((res: {counter: string}) => {
       const menu = this.menus.find(m => m.label === 'INBOX');
       if (menu) {
         menu.counter = Number(res.counter);

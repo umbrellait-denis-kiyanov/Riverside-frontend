@@ -1,12 +1,9 @@
 <div
   class="page-container"
-  *ngIf="ready"
 >
-
-
   <div
     class="buttons-wrapper"
-    *ngIf="!message"
+    *ngIf="!message$"
   >
     <div>
       Select a message from the menu on the left.
@@ -15,29 +12,28 @@
 
   <div
     class="page-content"
-    *ngIf="message"
     style="margin-top: 20px"
-  >
-    <h3>{{message.moduleName}}
+    *ngIf="message$ | async as message"
+    >
+    <h3 *ngIf="message.moduleName">{{message.moduleName}}
       <span *ngIf="message.step_id"> - {{message.stepName}}</span>
     </h3>
 
     <div class="sender">
       <div>
         <letter-image
-          [letter]="senderLetter"
+          [letter]="message.orgName"
           className="bcts-1"
         ></letter-image>
 
         {{message.orgName}}
       </div>
 
-      <div >{{message.sent_on | date:'MMM dd y hh:mm:ss a'}}</div>
+      <div >{{message.sent_on | readabletime:'LLL'}}</div>
     </div>
 
     <div class="content">
       <div
-        *ngIf="messageResource.ready"
         [innerHtml]="message.message | safehtml"
       ></div>
     </div>
@@ -85,7 +81,7 @@
         color="accent"
         (click)="provideFeedback(feedbackMessage)"
         e3-async-button
-        [running]="submitting"
+        [running]="submitting && !submitting.closed"
       >Submit Feedback</button>
     </div>
   </div>

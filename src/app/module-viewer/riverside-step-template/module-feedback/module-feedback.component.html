@@ -16,7 +16,7 @@
   [step]="template.data"
   [action]="action"
   (feedback)="feedbackClicked(message)"
-  [submitting]="submitting"
+  [submitting]="submitting && !submitting.closed"
   [subaction]="subaction"
   [hideActionButton]="currentTab != 'text'"
   >
