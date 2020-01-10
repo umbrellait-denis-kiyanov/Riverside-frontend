@@ -15,6 +15,7 @@ import { IceService } from './ice.service';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.interface';
+import * as moment from 'moment';
 
 export type IceEditorTracker = {
   element: HTMLElement,
@@ -205,7 +206,7 @@ export class IceComponent implements OnInit, OnDestroy {
         content: this.comment.content,
         user: this.user,
         time,
-        formattedTime: window.moment(time).format('MMM DD YYYY hh:mma')
+        formattedTime: moment(time).format('MMM DD YYYY hh:mma')
       });
     }
 
