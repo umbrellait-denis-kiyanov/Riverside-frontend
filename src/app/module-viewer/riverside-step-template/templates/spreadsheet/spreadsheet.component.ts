@@ -8,7 +8,7 @@ import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
 
-class PercentageEditor extends Handsontable.default.editors.TextEditor {
+class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
     super.prepare(row, col, prop, td, originalValue * 100, cellProperties);
   }
@@ -30,7 +30,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   sheet: SpreadsheetResource;
 
-  settings: Handsontable.default.GridSettings;
+  settings: Handsontable.GridSettings;
 
   types: string[][];
   rounding: number[][];
@@ -196,7 +196,6 @@ export class SpreadsheetComponent extends TemplateComponent {
           rowHeaders: false,
           colHeaders: false,
           cells: this.formatCell.bind(this),
-          formulas: true,
           afterRender: (() => {
             this.isRendered = true;
             setTimeout(_ => this.hot.hotInstance.validateCells());
@@ -222,7 +221,6 @@ export class SpreadsheetComponent extends TemplateComponent {
                           cell.row = this.getRealRow(cell.row);
                           return cell;
                         }),
-          licenseKey: 'non-commercial-and-evaluation'
         };
       }
     ));
@@ -367,7 +365,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   aboveBelowQuota(instance, td, row, col, prop, value, cellProperties) {
-    Handsontable.default.renderers.NumericRenderer.apply(this, arguments);
+    Handsontable.renderers.NumericRenderer.apply(this, arguments);
     td.style.fontWeight = 'bold';
 
     if ('Above Quota' === this.sheet.data[7][5]) {
@@ -385,7 +383,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       td.className += 'dontValidate';
     }
 
-    Handsontable.default.renderers.NumericRenderer.apply(this, arguments);
+    Handsontable.renderers.NumericRenderer.apply(this, arguments);
   }
 
   exportXls() {
