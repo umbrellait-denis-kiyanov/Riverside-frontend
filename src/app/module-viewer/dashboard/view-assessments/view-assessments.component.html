@@ -20,7 +20,9 @@
           <tbody>
             <tr *ngFor="let group of type.groups; index as gIdx">
               <td class="group-title">{{ gIdx + 1 }}. {{ group.name }}</td>
-              <td class="session" (mouseenter)="activate(i)" (mouseleave)="deactivate(i)" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i"><span>{{ session.groups[group.id]?.score }}</span></td>
+              <td class="session" (mouseenter)="activate(i)" (mouseleave)="deactivate(i)" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i">
+                <span>{{ session.groups[group.id]?.score === null ? 'N/A' : session.groups[group.id]?.score }}</span>
+              </td>
             </tr>
           </tbody>
           <tfoot>
