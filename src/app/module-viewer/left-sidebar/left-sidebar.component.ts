@@ -8,7 +8,6 @@ import { InboxService } from '../inbox/inbox.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
-import { RequestFeedbackComponent } from '../request-feedback/request-feedback.component';
 
 @Component({
   selector: 'left-sidebar',
@@ -87,7 +86,7 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
   }
 
   inboxLoad() {
-    this.inboxService.loadCounter().then((res: {counter: number}) => {
+    this.inboxService.loadCounter().subscribe((res: {counter: number}) => {
       const menu = this.menus.find(m => m.label === 'INBOX');
       if (menu) {
         menu.counter = Number(res.counter);

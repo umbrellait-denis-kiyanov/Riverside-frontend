@@ -150,6 +150,10 @@ export class ModuleService {
     return this.organizations$.pipe(filter(orgs => !!orgs));
   }
 
+  getOrganizationsByModule(id: number): Observable<Organization[]> {
+    return this.httpClient.get<Organization[]>(`${this.baseUrl}/${id}/organizations/list`).pipe(shareReplay(1));
+  }
+
   getDefaultOrganization(): Observable<Organization> {
     return this.getOrganizations().pipe(map(orgs => orgs[0]));
   }

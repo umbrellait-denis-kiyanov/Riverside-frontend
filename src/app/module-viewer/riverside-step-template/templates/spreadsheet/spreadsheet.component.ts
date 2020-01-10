@@ -12,7 +12,7 @@ import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
 // remove after upgrading to TypeScript 3.5.1+
 type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
 
-class PercentageEditor extends Handsontable.default.editors.TextEditor {
+class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
     super.prepare(row, col, prop, td, originalValue * 100, cellProperties);
   }
@@ -34,7 +34,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   sheet: SpreadsheetResource;
 
-  settings: Handsontable.default.GridSettings;
+  settings: Handsontable.GridSettings;
   hotRegister = new HotTableRegisterer();
 
   types: string[][];
@@ -205,7 +205,6 @@ export class SpreadsheetComponent extends TemplateComponent {
           rowHeaders: false,
           colHeaders: false,
           cells: this.formatCell.bind(this),
-          formulas: true,
           afterRender: (() => {
             this.isRendered = true;
             setTimeout(_ => this.hotInstance().validateCells());
@@ -230,8 +229,7 @@ export class SpreadsheetComponent extends TemplateComponent {
                         .map(cell => {
                           cell.row = this.getRealRow(cell.row);
                           return cell;
-                        }),
-          licenseKey: 'non-commercial-and-evaluation'
+                        })
         };
       }
     ));
@@ -388,7 +386,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   aboveBelowQuota(instance, td, row, col, prop, value, cellProperties) {
-    Handsontable.default.renderers.NumericRenderer.apply(this, arguments);
+    Handsontable.renderers.NumericRenderer.apply(this, arguments);
     td.style.fontWeight = 'bold';
 
     if ('Above Quota' === this.sheet.data[7][5]) {
@@ -406,7 +404,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       td.className += 'dontValidate';
     }
 
-    Handsontable.default.renderers.NumericRenderer.apply(this, arguments);
+    Handsontable.renderers.NumericRenderer.apply(this, arguments);
   }
 
   exportXls() {

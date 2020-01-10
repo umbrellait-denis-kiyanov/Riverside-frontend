@@ -1,7 +1,5 @@
 import BaseModel from 'src/app/common/interfaces/base.model';
 
-
-
 class Message extends BaseModel {
   id: number = null;
   assessment_session_id: number = null;
@@ -17,10 +15,5 @@ class Message extends BaseModel {
   read_on: Date = null;
   is_pending: boolean = false;
 }
-
-export type MessageRow = Message  & {
-  link: string[];
-  tdClassName?: string;
-};
 
 export default Message;

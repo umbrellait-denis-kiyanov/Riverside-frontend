@@ -35,7 +35,7 @@
   <button
     mat-raised-button
     e3-async-button
-    [running]="submitting"
+    [running]="submitting && !submitting.closed"
     color="accent"
     [disabled]="!message"
     (click)="submit(message)"

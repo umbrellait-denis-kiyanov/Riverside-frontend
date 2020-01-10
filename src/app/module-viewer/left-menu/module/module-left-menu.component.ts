@@ -7,7 +7,7 @@ import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { Router } from '@angular/router';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { Observable, BehaviorSubject } from 'rxjs';
-import { take } from 'rxjs/operators';
+import { take, switchMap } from 'rxjs/operators';
 
 @Component({
   selector: 'module-left-menu',
@@ -21,6 +21,7 @@ export class LeftMenuComponent implements OnInit {
   me: User;
 
   module$: Observable<Module>;
+  organizationsList$: Observable<Organization[]>;
 
   lockMessageStep$ = new BehaviorSubject<number>(null);
   lockMessageClearTimeout: number;
@@ -37,6 +38,9 @@ export class LeftMenuComponent implements OnInit {
     this.me = this.userService.me;
 
     this.module$ = this.navService.moduleDataReplay$;
+    this.organizationsList$ = this.navService.module$.pipe(
+      switchMap(id => this.moduleService.getOrganizationsByModule(id))
+    );
   }
 
   collapse() {

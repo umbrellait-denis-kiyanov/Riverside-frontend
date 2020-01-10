@@ -5,6 +5,7 @@ import { InboxService } from '../../inbox/inbox.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'module-feedback',
@@ -17,6 +18,8 @@ export class ModuleFeedbackComponent implements OnInit {
   subaction = '';
   message = '';
   currentTab = 'text';
+  submitting: Subscription;
+  submittingSubaction: Subscription;
 
   constructor(private template: TemplateComponent,
               private navService: ModuleNavService,
@@ -46,7 +49,7 @@ export class ModuleFeedbackComponent implements OnInit {
       message.from_org_id = orgId;
     }
 
-    this.inboxService.save(message).then(() => {
+    this.submitting = this.inboxService.save(message).subscribe(() => {
       this.moduleService.reloadModule();
     });
   }

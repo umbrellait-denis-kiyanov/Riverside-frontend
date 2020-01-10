@@ -1,9 +1,9 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { ActivatedRoute } from '@angular/router';
+import { ActivatedRoute, Router } from '@angular/router';
 import { Subscription, combineLatest } from 'rxjs';
 import { Module } from 'src/app/common/interfaces/module.interface';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
-import { map, filter, switchMap, take } from 'rxjs/operators';
+import { map, filter, switchMap, take, catchError } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 
@@ -22,7 +22,8 @@ export class MainComponent implements OnInit, OnDestroy {
   constructor(
     private leftMenuService: LeftMenuService,
     private navService: ModuleNavService,
-    private route: ActivatedRoute
+    private route: ActivatedRoute,
+    private router: Router
   ) { }
 
   ngOnDestroy() {
@@ -47,8 +48,15 @@ export class MainComponent implements OnInit, OnDestroy {
     this.stepWatch = combineLatest(this.navService.organization$, this.navService.module$, this.route.url).pipe(
       filter(f => !this.route.children.find(route => route.outlet === 'primary')),
       switchMap(([org, mod]) => this.navService.getModuleService().getOrgModule(mod, org)),
+      catchError(err => {
+        if (err.error.code === 'MODULE_DISABLED') {
+          this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
+        }
+
+        throw err;
+      }),
       map(mod => (mod.steps.find(step => !step.is_section_break && step.id === this.navService.step.current) || mod.steps.find(step => !step.is_section_break)).id),
-      take(1),
+      take(1)
     ).subscribe(stepId => {
       this.navService.goToStep(stepId);
     });

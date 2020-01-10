@@ -1,43 +1,38 @@
 import { Injectable } from '@angular/core';
-import { ResourceFromServer } from 'src/app/common/services/resource.class';
+import { BehaviorSubject } from 'rxjs';
 import Message from './message.model';
 import { HttpClient } from '@angular/common/http';
+import { tap } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class InboxService {
 
-  allMessages = new ResourceFromServer<Message[]>(this.toastr);
-  message = new ResourceFromServer<Message>(this.toastr, { saveMessage: 'Message sent!' });
+  messageChange$ = new BehaviorSubject(false);
 
-  constructor(private http: HttpClient, private toastr: ToastrService) { }
+  constructor(private http: HttpClient) { }
 
   loadAll() {
-    return this.allMessages.load(
-      this.http.get(`/api/modules/0/feedback`).toPromise()
-    );
+    return this.http.get<Message[]>(`/api/modules/0/feedback`);
   }
 
   loadCounter() {
-    return this.http.get(`/api/modules/0/feedback/counter`).toPromise();
+    return this.http.get<{counter: string}>(`/api/modules/0/feedback/counter`);
   }
 
-  load({ id }) {
-    return this.message.load(
-      this.http.get(`/api/modules/0/feedback/${id}`).toPromise()
-    );
+  load(id) {
+    return this.http.get<Message>(`/api/modules/0/feedback/${id}`);
   }
 
   save(message: Partial<Message & { parent_id: number }>) {
-    return this.message.save(
-      this.http.post(
-        `/api/modules/` + Number(message.module_id) + `/feedback`,
-        message
-      ).toPromise()
+    return this.http.post(`/api/modules/` + Number(message.module_id) + `/feedback`, message).pipe(
+      tap(_ => this.toastr.success('Message sent!'))
     );
   }
 
   markAsRead(id: number) {
-    return this.http.post(`/api/modules/0/feedback/${id}/read`, {}).toPromise();
+    return this.http.post(`/api/modules/0/feedback/${id}/read`, {}).pipe(
+      tap(_ => this.messageChange$.next(true))
+    );
   }
 }

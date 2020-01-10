@@ -1,12 +1,11 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
-
+import { Component, OnInit, Input } from '@angular/core';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { header } from './mockData';
-import { E3TableHeader } from 'src/app/common/components/e3-table/e3-table.interface';
+import { E3TableHeader, E3TableDataRow } from 'src/app/common/components/e3-table';
 import { InboxService } from '../../inbox/inbox.service';
-import { ResourceFromServer } from 'src/app/common/services/resource.class';
-import Message, { MessageRow } from '../../inbox/message.model';
-import { filter } from 'rxjs/operators';
+import Message from '../../inbox/message.model';
+import { map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'inbox-left-menu',
@@ -16,38 +15,30 @@ import { filter } from 'rxjs/operators';
 export class InboxLeftMenuComponent implements OnInit {
 
   @Input() width: number = 500;
-  messagesResource: ResourceFromServer<Message[]>;
   header: E3TableHeader = header;
-  ready = false;
-  data: Partial<MessageRow>[];
+  messages$: Observable<E3TableDataRow[]>;
 
   constructor(
     private leftMenuService: LeftMenuService,
     private inboxService: InboxService
-
   ) { }
 
   ngOnInit() {
-    this.inboxService.loadAll();
-    this.messagesResource = this.inboxService.allMessages;
-    this.messagesResource.ready.pipe(filter(r => r)).subscribe(r => {
-      this.ready = r;
-      this.prepareData();
-      this.messagesResource.change.subscribe(this.prepareData.bind(this));
-    });
+    this.messages$ = this.inboxService.loadAll().pipe(map(this.prepareData.bind(this)));
   }
 
   collapse() {
     this.leftMenuService.expand = false;
   }
 
-  prepareData() {
-    this.data = this.messagesResource.data.map((row) => {
-      const message = Message.fromObject(row) as Partial<MessageRow>;
-      message.link = ['/inbox', String(message.id)];
-      message.tdClassName = !message.read_on ? 'pending' : '';
+  prepareData(messages: Message[]) {
+    return messages.map((row) => {
+      const message = {} as E3TableDataRow;
+      message.link = ['/inbox', String(row.id)];
+      message.className = !row.read_on ? 'pending' : '';
+      message.onClick = () => message.className = message.className.split('pending').join('');
+      message.cells = this.header.map(col => ({value: row[col.id]}));
       return message;
     });
   }
-
 }

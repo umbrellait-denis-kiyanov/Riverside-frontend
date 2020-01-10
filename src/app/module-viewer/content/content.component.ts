@@ -6,13 +6,14 @@ import User from 'src/app/common/interfaces/user.model';
 import { TemplateContentData } from 'src/app/module-viewer/riverside-step-template/templates/template-data.class';
 import { RiversideStepTemplateComponent } from 'src/app/module-viewer/riverside-step-template/riverside-step-template.component';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
-import { switchMap, catchError, filter, tap, take, map } from 'rxjs/operators';
+import { switchMap, catchError, filter, tap, take } from 'rxjs/operators';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { combineLatest, Subscription, Observable, race } from 'rxjs';
+import { combineLatest, Subscription, Observable, throwError } from 'rxjs';
 import { Templates } from '../riverside-step-template/templates';
 import { IceService } from '../ice/ice.service';
 import ModuleContent from 'src/app/common/interfaces/module-content.model';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
   selector: 'app-content',
@@ -59,16 +60,24 @@ export class ContentComponent implements OnInit, OnDestroy {
     this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, this.navService.step$, this.moduleService.moduleChanged$)
       .pipe(
         switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
-          catchError(err => this.navService.moduleData$.pipe(
-            switchMap(moduleData => {
-              const firstStep = (moduleData.steps.find(step => !step.is_section_break && this.navService.step.current === step.id) || moduleData.steps.find(step => !step.is_section_break)).id;
-              this.navService.goToStep(firstStep);
-              return this.moduleContentService.load(moduleData.id, firstStep, org);
-            })
-          ))
+          catchError((err: HttpErrorResponse) => {
+            if (err.error.code === 'MODULE_DISABLED') {
+              this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
+              return throwError(err);
+            } else {
+              return this.navService.moduleData$.pipe(take(1), switchMap(moduleData => {
+                const firstStep = (moduleData.steps.find(step => !step.is_section_break && this.navService.step.current === step.id) || moduleData.steps.find(step => !step.is_section_break)).id;
+                this.navService.goToStep(firstStep);
+                return this.moduleContentService.load(moduleData.id, firstStep, org);
+              }));
+            }
+          })
         )),
         tap(content => {
-          this.navService.moduleData$.pipe(take(1)).subscribe(moduleData => {
+          this.navService.moduleDataReplay$.pipe(
+            filter(module => module.status.org_id === this.navService.lastOrganization.current),
+            take(1)
+          ).subscribe(moduleData => {
             if (!moduleData.status || !moduleData.status.is_activated || moduleData.status.org_id !== this.navService.lastOrganization.current) {
               this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
               return;
