@@ -16,6 +16,9 @@ h2
 table.questions
     margin-top: 2em
 
+    &.not-applicable
+        opacity: 0.5
+
     &.answers-loading
         .answer
             opacity: 0.5
@@ -162,6 +165,9 @@ table.summary
 .done
     text-align: center
     margin-top: 2em
+
+    .not-applicable
+        margin-right: 1em
 
     .btn
         text-transform: uppercase

@@ -58,7 +58,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   protected initAction() {
-    this.action = this.userService.me.permissions.riversideProvideFeedback ? 'approve': '';
+    this.action = this.userService.me.permissions.riversideProvideFeedback ? 'approve': 'mark_as_done';
   }
 
   ngOnDestroy() {
