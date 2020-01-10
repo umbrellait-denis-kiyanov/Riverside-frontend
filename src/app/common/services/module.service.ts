@@ -106,7 +106,7 @@ export class ModuleService {
     return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/assign`, {assigned_to});
   }
 
-  saveInput(input: TemplateInput): Observable<any> {
+  saveInput(input: TemplateInput): Observable<TemplateInput> {
     if (!input) {
       console.error('No input data provided');
       return;
@@ -136,8 +136,8 @@ export class ModuleService {
     return this.inputObservable[input.id];
   }
 
-  saveMultipleInputs(inputs: TemplateInput[]): Observable<any> {
-    return this.httpClient.post(`${this.baseUrl}/${inputs[0].module_id}/org/${inputs[0].org_id}/inputs`, inputs.map(
+  saveMultipleInputs(inputs: TemplateInput[]): Observable<null> {
+    return this.httpClient.post<null>(`${this.baseUrl}/${inputs[0].module_id}/org/${inputs[0].org_id}/inputs`, inputs.map(
       input => (({ comments_json, content, id }) => ({ comments_json, content, id }))(input)
     ));
   }
@@ -158,12 +158,12 @@ export class ModuleService {
     return `${this.baseUrl}/export`;
   }
 
-  sync(): Observable<any> {
-    return this.httpClient.get(`${this.baseUrl}/sync`);
+  sync(): Observable<null> {
+    return this.httpClient.get<null>(`${this.baseUrl}/sync`);
   }
 
-  markAsDone(moduleId: number, orgId: number, stepId: number, is_checked: boolean = true): Observable<any> {
-    return this.httpClient.post('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
+  markAsDone(moduleId: number, orgId: number, stepId: number, is_checked: boolean = true): Observable<null> {
+    return this.httpClient.post<null>('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
   }
 
   markAsApproved(moduleId: number, orgId: number, stepId: number, is_approved: boolean = true): Observable<number[]> {

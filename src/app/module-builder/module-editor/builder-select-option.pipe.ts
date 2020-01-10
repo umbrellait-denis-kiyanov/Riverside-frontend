@@ -5,8 +5,8 @@ import { Pipe, PipeTransform } from '@angular/core';
 })
 export class BuilderSelectOptionPipe implements PipeTransform {
 
-  transform(value: any, args?: any): any {
-    return value? value.replace(/_/g, " ") : value;
+  transform(value: string): string {
+    return value ? value.replace(/_/g, " ") : value;
   }
 
 }

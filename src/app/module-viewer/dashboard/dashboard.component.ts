@@ -9,6 +9,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { HttpResponse } from '@angular/common/http';
+import { CanModifyPipe } from 'src/app/common/pipes/canModify.pipe';
 
 @Component({
   selector: 'app-dashboard',
@@ -20,7 +21,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(private moduleService: ModuleService,
               private asmService: AssessmentService,
               private route: ActivatedRoute,
-              private router: Router
+              private router: Router,
+              private canModifyPipe: CanModifyPipe
             ) { }
 
   modulesRequest$: Observable<HttpResponse<ModuleCategory[]>>;
@@ -38,6 +40,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   listSortOrder$ = new BehaviorSubject<Sort>({active: 'due_date', direction: 'asc'});
 
   organizationSubscription: Subscription;
+
+  canModify: boolean;
 
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
@@ -67,6 +71,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.assessmentScores$ = this.asmService.getModuleScores(organization.id).pipe(shareReplay(1));
 
     this.modules$ = this.modulesRequest$.pipe(
+      tap(response => this.canModify = this.canModifyPipe.transform(response)),
       map(response => response.body),
       tap(categories => {
         this.categoryColumns = categories.map(category => {

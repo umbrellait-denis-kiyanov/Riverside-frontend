@@ -1,5 +1,4 @@
 <div class="page-content" *ngIf="modulesRequest$ | async">
-<ng-container *ngLet="(modulesRequest$ | async | canModify) as canActivate">
 
 <div class="container-fluid">
   <div class="row">
@@ -81,7 +80,7 @@
         </tr>
       </thead>
 
-      <tbody *ngLet="(assessmentScores$ | async) as assessment">
+      <tbody *ngFor="let assessment of [assessmentScores$ | async]">
         <tr *ngFor="let module of listModules" class="module-item container-fluid" [class.active]="module.status?.is_activated == 1" [class.no-progress]="!module.status?.is_activated" [class.late]="module.status?.is_late" [class.completed]="module.status?.progress == 100" [class.has-due-date]="module.status?.due_date">
           <td class="toggle-module" *ngIf="canActivate">
             <app-toggle-module [module]="module" [organization]="organization"></app-toggle-module>
@@ -124,5 +123,4 @@
   </div>
 </div>
 
-</ng-container>
 </div>

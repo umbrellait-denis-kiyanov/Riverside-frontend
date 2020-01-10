@@ -66,7 +66,6 @@ import { NgbStringAdapter } from './ngb-string-adapter';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
 import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.component';
-import { NgLetDirective } from '../common/directives/nglet.directive';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ModuleLinkComponent } from './dashboard/module-link/module-link.component';
 import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.component';
@@ -166,7 +165,6 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     MasterDashboardComponent,
     DashboardProgressBarComponent,
     ListStyleToggleComponent,
-    NgLetDirective,
     ModuleLinkComponent,
     SelectionMatrixComponent,
     QuestionImageComponent,
@@ -226,7 +224,6 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     CanModifyPipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
-  bootstrap: [ModuleViewerRootComponent],
-  exports: [NgLetDirective]
+  bootstrap: [ModuleViewerRootComponent]
 })
 export class ModuleViewerModule { }

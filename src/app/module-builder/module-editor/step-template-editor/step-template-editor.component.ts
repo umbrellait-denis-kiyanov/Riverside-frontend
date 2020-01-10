@@ -5,6 +5,7 @@ import { ModuleService } from '../../../common/services/module.service';
 import { Templates } from '../../../module-viewer/riverside-step-template/templates';
 import { BehaviorSubject } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { TemplateField } from './step-template-field';
 
 @Component({
   selector: 'app-step-template-editor',
@@ -20,9 +21,7 @@ export class StepTemplateEditorComponent implements OnInit {
 
   templates$ = new BehaviorSubject<Template[]>(null);
 
-  templateFields: any;
-
-  templateConfig: any;
+  templateFields: TemplateField[];
 
   description = '';
 
