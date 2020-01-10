@@ -26,6 +26,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
   answerUpdated$ = new BehaviorSubject<boolean>(false);
 
+  isSectionReady$: Observable<boolean>;
+
   importance = [1, 2, 3, 4, 5];
 
   errors = {};
@@ -34,6 +36,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   resetSelectAllSub: Subscription;
 
   markAsDoneSub: Subscription;
+  markAsNASub: Subscription;
   clearAnswersSub: Subscription;
   clearNotesSub: Subscription;
 
@@ -72,8 +75,13 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     this.answers$ = this.answersRequest$.pipe(
       map(response => response.body),
       tap(answers => this.navService.activeAssessmentSessionId$.next(answers.session_id)),
+      tap(_ => this.markAsNASub = null),
       tap(_ => this.markAsDoneSub = null),
       tap(_ => this.answersLoading = false)
+    );
+
+    this.isSectionReady$ = combineLatest(this.questions$, this.answers$).pipe(
+      map(([questions, answers]) => !(questions.filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null).length))
     );
   }
 
@@ -118,12 +126,14 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       return;
     }
 
-    this.errors = questions
-      .filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null)
-      .reduce((errors, q) => {
-        errors[q.id] = true;
-        return errors;
-      }, {});
+    if (!answers.isNA) {
+      this.errors = questions
+        .filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null)
+        .reduce((errors, q) => {
+          errors[q.id] = true;
+          return errors;
+        }, {});
+    }
 
     if (Object.values(this.errors).length) {
       return;
@@ -133,7 +143,18 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       .subscribe(_ => toastr.success(activeGroup.name + ' has been marked as done'));
   }
 
-  isSectionReady(questions: AssessmentQuestion[], answers) {
-    return !(questions.filter(q => !answers.answers[q.id] || answers.answers[q.id].answer === null).length);
+  markAsNA(activeGroup: AssessmentGroup, t: AssessmentType, moveToNextStep: boolean) {
+    if (this.markAsNASub && !this.markAsNASub.closed) {
+      return;
+    }
+
+    this.markAsNASub = this.asmService.markAsNotApplicable(activeGroup, t, this.navService.lastOrganization.current, moveToNextStep)
+      .subscribe(_ => {
+        toastr.success(activeGroup.name + ' has been ' + (moveToNextStep ? '' : 'un') + 'marked as Not Applicable');
+
+        if (!moveToNextStep) {
+          this.answerUpdated$.next(true);
+        }
+      });
   }
 }
