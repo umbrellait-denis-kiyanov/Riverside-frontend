@@ -7,6 +7,7 @@ import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/mo
 import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
+import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
 
 // remove after upgrading to TypeScript 3.5.1+
 type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
@@ -34,6 +35,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   sheet: SpreadsheetResource;
 
   settings: Handsontable.default.GridSettings;
+  hotRegister = new HotTableRegisterer();
 
   types: string[][];
   rounding: number[][];
@@ -52,7 +54,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   keepFormulas: boolean;
   downloadProgress: boolean;
 
-  @ViewChild('hot') hot;
+  @ViewChild('hot') hot: HotTableComponent;
   @ViewChild('widthContainer') widthContainer: ElementRef;
 
   watchMenuExpand: Subscription;
@@ -88,6 +90,10 @@ export class SpreadsheetComponent extends TemplateComponent {
     this.injectorObj.get(LeftMenuService).onExpand.pipe(this.whileExists()).subscribe((state: boolean) => {
       window.dispatchEvent(new Event('resize'));
     });
+  }
+
+  hotInstance() {
+    return this.hotRegister.getInstance('hot');
   }
 
   getRealRow(fullIndex) {
@@ -202,7 +208,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           formulas: true,
           afterRender: (() => {
             this.isRendered = true;
-            setTimeout(_ => this.hot.hotInstance.validateCells());
+            setTimeout(_ => this.hotInstance().validateCells());
           }).bind(this),
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
@@ -210,8 +216,7 @@ export class SpreadsheetComponent extends TemplateComponent {
             if (46 === event.keyCode || 8 === event.keyCode) {
               event.stopImmediatePropagation();
               (event.target as HTMLInputElement).value = '0';
-              const hot = this.hot.hotInstance;
-              console.log(hot);
+              const hot = this.hotInstance();
               hot.getSelected().forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
             }
           }).bind(this),
@@ -367,7 +372,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       content[dataRow][col] = change[4];
 
       if (reloadData) {
-        this.hot.hotInstance.getCell(row, col).className += ' hot-saving';
+        this.hotInstance().getCell(row, col).className += ' hot-saving';
       }
     });
 
@@ -376,7 +381,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     this.moduleService.saveInput(this.input).subscribe(_ => {
       if (reloadData) {
         this.getSpreadsheetObservable().subscribe(__ => {
-          this.hot.hotInstance.updateSettings(this.settings);
+          this.hotInstance().updateSettings(this.settings);
         });
       }
     });
