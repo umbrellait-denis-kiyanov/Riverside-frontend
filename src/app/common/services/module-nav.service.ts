@@ -207,7 +207,7 @@ export class ModuleNavService {
   }
 
   private moveToStep(offset: number) {
-    this.moduleData$.pipe(take(1)).subscribe(module => {
+    this.moduleDataReplay$.pipe(take(1)).subscribe(module => {
       let index = module.steps.findIndex(s => s.id === this.step.current);
       let step = null;
       do {

@@ -14,7 +14,6 @@ import { MasterDashboardComponent } from './master-dashboard/master-dashboard.co
 import { AssessmentComponent } from './assessment/assessment.component';
 import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
 import { AssessmentFinishComponent } from './assessment/assessment-finish/assessment-finish.component';
-import { ViewAssessmentsComponent } from './dashboard/view-assessments/view-assessments.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { ChangePasswordComponent } from './account/change-password/change-password.component';
 
@@ -34,7 +33,7 @@ const routes: Routes = [
   {
     path: '',
     pathMatch: 'full',
-    redirectTo: 'module/1'
+    redirectTo: 'dashboard'
   },
   {
     path: 'org/:orgId/module/:moduleId',
@@ -85,6 +84,16 @@ const routes: Routes = [
         path: '',
         component: AccountLeftMenuComponent,
         outlet: 'left-menu'
+      }
+    ]
+  },
+  {
+    path: 'dashboard',
+    component: MainComponent,
+    children: [
+      {
+        path: '',
+        component: DashboardComponent
       }
     ]
   },

@@ -3,7 +3,7 @@ import { Observable, combineLatest } from 'rxjs';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { take, switchMap } from 'rxjs/operators';
+import { take, map } from 'rxjs/operators';
 
 @Component({
   selector: 'module-org-selector',
@@ -14,9 +14,11 @@ export class OrgSelectorComponent implements OnInit {
   organizations$: Observable<Organization[]>;
   currentOrg: Organization;
   organizationID: number;
+  active$: Observable<{[key: number]: boolean}>;
 
   @Output() changed = new EventEmitter<Organization>(true);
   @Input() warning = {};
+  @Input() activeOrganizations?: Observable<Organization[]>;
 
   constructor(
     private moduleService: ModuleService,
@@ -26,6 +28,12 @@ export class OrgSelectorComponent implements OnInit {
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
     this.moduleNavService.organization$.pipe(take(1)).subscribe(orgId => this.organizationID);
+
+    if (this.activeOrganizations) {
+      this.active$ = this.activeOrganizations.pipe(
+        map(orgs => orgs.reduce((all, org) => Object.assign(all, {[org.id]: true}), {}))
+      );
+    }
 
     combineLatest(this.moduleNavService.organization$, this.organizations$).pipe(take(1)).subscribe(([orgId, organizations]) => {
       this.currentOrg = organizations.find(
