@@ -19,7 +19,7 @@ import * as moment from 'moment';
 
 export type IceEditorTracker = {
   element: HTMLElement,
-  acceptAll: () => {},
+  acceptAll: () => void,
   getUserStyle: (id: string) => string
 };
 

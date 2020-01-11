@@ -17,7 +17,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   abstract contentData;
 
   data: TemplateContentData;
-  hideChanges: boolean;
+  hideChanges$: Observable<boolean>;
   inputs: {[key: string]: TemplateInput};
   disabled: boolean;
   me: User;
@@ -41,7 +41,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   abstract getName(): string;
 
   ngOnInit() {
-    this.data.onHideChanges.subscribe((val: boolean) => this.hideChanges = val);
+    this.hideChanges$ = this.data.onHideChanges;
+
     this.inputs = this.data.data.inputs;
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
@@ -99,7 +100,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
     parser.querySelectorAll('.del').forEach(deleted => deleted.remove());
 
-    return parser.body.textContent.trim();
+    return parser.body.textContent.trim().replace(/\s/g, ' ');
   }
 
   isEnabled() {
