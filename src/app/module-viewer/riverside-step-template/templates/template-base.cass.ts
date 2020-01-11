@@ -7,7 +7,7 @@ import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
 import { Input } from 'src/app/common/interfaces/module.interface';
-import { BehaviorSubject } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
 
@@ -15,7 +15,7 @@ import { Validation, Validate } from 'src/app/common/validator.class';
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
   contentData: any;
   data: TemplateContentData;
-  hideChanges: boolean;
+  hideChanges$: Observable<boolean>;
   inputs: {[key: string]: Input};
   disabled: boolean;
   me: User;
@@ -39,7 +39,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   abstract getName(): string;
 
   ngOnInit() {
-    this.data.onHideChanges.subscribe((val: boolean) => this.hideChanges = val);
+    this.hideChanges$ = this.data.onHideChanges;
+
     this.inputs = this.data.data.inputs;
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
@@ -98,7 +99,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
     parser.querySelectorAll('.del').forEach(deleted => deleted.remove());
 
-    return parser.body.textContent.trim();
+    return parser.body.textContent.trim().replace(/\s/g, ' ');
   }
 
   isEnabled() {

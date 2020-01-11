@@ -18,7 +18,7 @@ import { Input as InputType } from 'src/app/common/interfaces/module.interface';
 
 export type IceEditorTracker = {
   element: HTMLElement,
-  acceptAll: () => {},
+  acceptAll: () => void,
   getUserStyle: (id: string) => string
 };
 
