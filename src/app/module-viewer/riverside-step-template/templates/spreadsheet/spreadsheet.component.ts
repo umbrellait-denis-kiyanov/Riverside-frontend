@@ -8,6 +8,7 @@ import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
 import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
+import { FormulaPlugin } from './formulaPlugin';
 
 // remove after upgrading to TypeScript 3.5.1+
 type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
@@ -23,6 +24,11 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
   getValue() {
     return (parseFloat(this.TEXTAREA.value) / 100) || 0;
   }
+}
+
+// @ts-ignore
+class FormulasPlugin extends Handsontable.plugins.BasePlugin {
+
 }
 
 @Component({
@@ -98,10 +104,15 @@ export class SpreadsheetComponent extends TemplateComponent {
     this.injectorObj.get(LeftMenuService).onExpand.pipe(this.whileExists()).subscribe((state: boolean) => {
       window.dispatchEvent(new Event('resize'));
     });
+
+    // @ts-ignore
+    Handsontable.plugins.registerPlugin('formulaPlugin', FormulaPlugin);
   }
 
   hotInstance() {
-    return this.hotRegister.getInstance('hot');
+    const hot = this.hotRegister.getInstance('hot');
+
+    return hot;
   }
 
   getRealRow(fullIndex) {
@@ -213,6 +224,10 @@ export class SpreadsheetComponent extends TemplateComponent {
           rowHeaders: false,
           colHeaders: false,
           cells: this.formatCell.bind(this),
+          afterInit: ((instance) => {
+            // @ts-ignore
+            instance.getPlugin('formulaPlugin').enablePlugin();
+          }).bind(this),
           afterRender: (() => {
             this.isRendered = true;
             setTimeout(_ => this.hotInstance().validateCells(_ => {}));
