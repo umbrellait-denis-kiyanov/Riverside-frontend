@@ -4,7 +4,7 @@ export type AssessmentChartSeries = {
         name: number;
         value: number;
         label?: string;
-        formattedValue?: number
+        formattedValue?: string
     }[]
 }[];
 

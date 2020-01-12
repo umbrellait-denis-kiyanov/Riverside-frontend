@@ -151,7 +151,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
 
     this.markAsNASub = this.asmService.markAsNotApplicable(activeGroup, t, this.navService.lastOrganization.current, moveToNextStep)
       .subscribe(_ => {
-        toastr.success(activeGroup.name + ' has been ' + (moveToNextStep ? '' : 'un') + 'marked as Not Applicable');
+        this.toastr.success(activeGroup.name + ' has been ' + (moveToNextStep ? '' : 'un') + 'marked as Not Applicable');
 
         if (!moveToNextStep) {
           this.answerUpdated$.next(true);

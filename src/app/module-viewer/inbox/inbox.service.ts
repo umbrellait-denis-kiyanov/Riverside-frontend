@@ -10,14 +10,14 @@ export class InboxService {
 
   messageChange$ = new BehaviorSubject(false);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr: ToastrService) { }
 
   loadAll() {
     return this.http.get<Message[]>(`/api/modules/0/feedback`);
   }
 
   loadCounter() {
-    return this.http.get<{counter: string}>(`/api/modules/0/feedback/counter`);
+    return this.http.get<{counter: number}>(`/api/modules/0/feedback/counter`);
   }
 
   load(id) {

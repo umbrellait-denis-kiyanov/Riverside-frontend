@@ -8,6 +8,7 @@ import { InboxService } from '../inbox/inbox.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { combineLatest, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { RequestFeedbackComponent } from '../request-feedback/request-feedback.component';
 
 @Component({
   selector: 'left-sidebar',
@@ -82,7 +83,7 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
 
   initialLoad() {
     this.inboxLoad();
-    this.inboxService.allMessages.change.subscribe(this.inboxLoad.bind(this));
+    this.inboxService.messageChange$.subscribe(this.inboxLoad.bind(this));
   }
 
   inboxLoad() {

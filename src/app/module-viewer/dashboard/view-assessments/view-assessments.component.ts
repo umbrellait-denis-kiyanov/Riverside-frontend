@@ -67,14 +67,14 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
         const series = Object.values(session.groups).sort((a, b) => Number(a.position) > Number(b.position) ? 1 : -1).map((group, idx) => {
           return {
             value: Number(group.score),
-            formattedValue: group.score === null ? 'N/A' : Number(group.score),
+            formattedValue: group.score === null ? 'N/A' : String(group.score),
             name: (idx + 1),
             label: (type.groups.find(g => Number(g.id) === Number(group.group_id)) || {shortName: ''}).shortName
           };
         });
 
         const score = Math.round(session.score * 10) / 10;
-        series.push({value: score, formattedValue: score, name: (series.length + 1), label: 'Average'});
+        series.push({value: score, formattedValue: String(score), name: (series.length + 1), label: 'Average'});
 
         return {
           name: session.formattedDate,
