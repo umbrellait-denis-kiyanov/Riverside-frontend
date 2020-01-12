@@ -12,6 +12,9 @@ import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
 // remove after upgrading to TypeScript 3.5.1+
 type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
 
+// remove in case Handsontable is updated to 7+ (commercial version)
+type HandsontableCellChange = [number, string | number, any, any, any][];
+
 class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
     super.prepare(row, col, prop, td, originalValue * 100, cellProperties);
@@ -40,7 +43,12 @@ export class SpreadsheetComponent extends TemplateComponent {
   types: string[][];
   rounding: number[][];
 
-  cellSettings: { editable: boolean; className: string; renderer: string; validator?: () => boolean }[][];
+  cellSettings: {
+    editable: boolean;
+    className: string;
+    renderer: string;
+    validator?: (value: any, callback: (valid: boolean) => void) => void | RegExp
+  }[][];
 
   visibleRows: number[];
 
@@ -207,7 +215,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           cells: this.formatCell.bind(this),
           afterRender: (() => {
             this.isRendered = true;
-            setTimeout(_ => this.hotInstance().validateCells());
+            setTimeout(_ => this.hotInstance().validateCells(_ => {}));
           }).bind(this),
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
@@ -248,7 +256,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   formatCell(row: number, column: number) {
-    const cell = {} as (Omit<Handsontable.default.GridSettings, 'numericFormat'> &
+    const cell = {} as (Omit<Handsontable.GridSettings, 'numericFormat'> &
                        { validatorName: string } &
                        { numericFormat: {
                           pattern: {
@@ -295,6 +303,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           }
         };
 
+        // @ts-ignore - looks like a wrong type definition within angular/handsontable v3.0.0 (5.0.0 works fine)
         cell.editor = PercentageEditor;
 
         cell.className += ' percent';
@@ -327,7 +336,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     return cell;
   }
 
-  beforeChange(changes: Handsontable.default.CellChange, source: Handsontable.default.ChangeSource) {
+  beforeChange(context, changes: HandsontableCellChange, source: string) {
     if (source !== 'edit' && source !== 'Autofill.fill') {
       return;
     }
@@ -347,7 +356,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
   }
 
-  afterChange(changes: Handsontable.default.CellChange, source: Handsontable.default.ChangeSource) {
+  afterChange(context, changes: HandsontableCellChange, source: string) {
     if (source !== 'edit' && source !== 'Autofill.fill') {
       return;
     }
@@ -362,7 +371,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
     changes.forEach(change => {
       const row = change[0];
-      const col = change[1];
+      const col = Number(change[1]);
 
       const dataRow = this.visibleRows.length ? this.visibleRows[row] : row;
 
@@ -379,7 +388,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     this.moduleService.saveInput(this.input).subscribe(_ => {
       if (reloadData) {
         this.getSpreadsheetObservable().subscribe(__ => {
-          this.hotInstance().updateSettings(this.settings);
+          this.hotInstance().updateSettings(this.settings, true);
         });
       }
     });
