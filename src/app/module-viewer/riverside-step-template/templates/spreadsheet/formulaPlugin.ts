@@ -1,32 +1,86 @@
 import * as Handsontable from 'handsontable';
+import * as HotFormula from 'hot-formula-parser';
+import * as Numbro from 'numbro';
+import { HotNumericFormat } from './spreadsheet.component';
 
-/**
- * @plugin External plugin skeleton.
- * Note: keep in mind, that Handsontable instance creates one instance of the plugin class.
- *
- * @param hotInstance
- * @constructor
- */
+const parser = new HotFormula.Parser();
+
+type TableData = (string | number)[][];
+
+function replaceSUMRangesWithAdditions(valuesWithFormulas: TableData) {
+  return valuesWithFormulas.map(row => row.map((cell: string) => {
+    if (typeof cell === 'string') {
+      const matches = cell.match(/SUM\([A-Z][0-9]+\:[A-Z][0-9]+\)/g) || [];
+      matches.forEach(sum => {
+        const [from, to] = sum.slice(4, -1).split(':');
+
+        const idxFrom = Number(from.substr(1));
+        const idxTo = Number(to.substr(1));
+        const rowRange = Array(idxTo - idxFrom + 1).fill(0).map((_, i) => String(idxFrom + i));
+
+        const colFrom = from.charCodeAt(0);
+        const colRange = Array(to.charCodeAt(0) - colFrom + 1).fill(0).map((_, i) => String.fromCharCode(colFrom + i));
+
+        const range = colRange.reduce((refs, col) => refs.concat(rowRange.map(row => col + row)), []);
+
+        cell = cell.split(sum).join(range.join('+'));
+      })
+    }
+
+    return cell;
+  }));
+}
+
+function applyBasicCalculations(valuesWithFormulas: TableData) {
+  function getValue(cellAddress) {
+    return valuesWithFormulas[Number(cellAddress.substr(1)) - 1][cellAddress.charCodeAt(0) - 'A'.charCodeAt(0)];
+  }
+
+  return valuesWithFormulas.map(row => row.map(cell => {
+    if (typeof cell === 'string') {
+      if (cell[0] === '=') {
+        (cell.match(/[A-Z][0-9]+/g) || []).forEach(ref => {
+          const refVal = getValue(ref);
+          if (typeof refVal === 'number' || '' === refVal || null === refVal) {
+            cell = (cell as string).split(new RegExp(ref + '(?![0-9])', 'g')).join(String(Number(refVal)));
+          }
+        });
+
+        // calculate the result when all cell references have been replaced by numbers
+        if (!cell.match(/[A-Z][0-9]/)) {
+          cell = parser.parse(cell.substr(1)).result;
+        }
+      }
+
+      if (typeof cell === 'string' && !isNaN(parseFloat(cell))) {
+        cell = parseFloat(cell);
+      }
+    }
+
+    return cell;
+  }));
+}
+
+function calculateValues(valuesWithFormulas) {
+  // replace SUM ranges with simple additions, for example, SUM(A1:A3) becomes A1+A2+A3
+  let values = replaceSUMRangesWithAdditions(valuesWithFormulas) as TableData;
+
+  // repeatedly apply cell calculations until all cell references have been replaced by calculated values
+  let previousResult = '';
+  while (JSON.stringify(values) !== previousResult) {
+    previousResult = JSON.stringify(values);
+    values = applyBasicCalculations(values);
+  }
+
+  return values;
+}
+
 export function FormulaPlugin(hotInstance) {
-
   // Call the BasePlugin constructor.
   // @ts-ignore
   Handsontable.plugins.BasePlugin.call(this, hotInstance);
 
   this._superClass = Handsontable.plugins.BasePlugin;
-
-  // Initialize all your public properties in the class' constructor.
-  /**
-   * yourProperty description.
-   *
-   * @type {String}
-   */
-  this.yourProperty = '';
-  /**
-   * anotherProperty description.
-   * @type {Array}
-   */
-  this.anotherProperty = [];
 }
 
 // Inherit the BasePlugin prototype.
@@ -39,82 +93,43 @@ FormulaPlugin.prototype = Object.create(Handsontable.plugins.BasePlugin.prototyp
   },
 });
 
-/**
- * Checks if the plugin is enabled in the settings.
- */
-FormulaPlugin.prototype.isEnabled = function() {
-  return !!this.hot.getSettings().FormulaPlugin;
-};
+// Enable plugin for all instances
+FormulaPlugin.prototype.isEnabled = () => true;
 
-/**
- * The enablePlugin method is triggered on the beforeInit hook. It should contain your initial plugin setup, along with
- * the hook connections.
- * Note, that this method is run only if the statement in the isEnabled method is true.
- */
 FormulaPlugin.prototype.enablePlugin = function() {
-  this.yourProperty = 'Your Value';
-
-  // Add all your plugin hooks here. It's a good idea to make use of the arrow functions to keep the context consistent.
-  this.addHook('afterChange', this.onAfterChange.bind(this));
-
-  // https://codepen.io/vfx/pen/ZpvpAg
-  // https://www.npmjs.com/package/hot-formula-parser
+  let values: TableData;
 
   this.addHook('beforeRender', (isForced: boolean, skipRender: object) => {
-    console.log(this.hot.getData());
+    values = calculateValues(this.hot.getData());
   });
 
-  // this.addHook('beforeValueRender', (value: any, cellProperties: object) => {
-  //   console.log(this.hot.getData());
-  //   console.log(value, cellProperties);
-  // });
+  this.addHook('beforeValidate',
+    (value: any, row: number, prop: string | number, source?: string) => values[row][prop]
+  );
+
+  this.addHook('beforeValueRender',
+    (value: any, cellProperties: {row: number, col: number, numericFormat: HotNumericFormat}) => {
+      if (value[0] !== '=') {
+        return value;
+      }
+
+      const calculated = values[cellProperties.row][cellProperties.col];
+
+      if (typeof calculated === 'string') {
+        return calculated;
+      }
+
+      if (cellProperties.numericFormat) {
+        return Numbro.default(Number(calculated)).format(cellProperties.numericFormat.pattern);
+      } else {
+        return calculated;
+      }
+    }
+  );
 
   // The super class' method assigns the this.enabled property to true, which can be later used to check if plugin is already enabled.
   this._superClass.prototype.enablePlugin.call(this);
 };
 
-/**
- * The disablePlugin method is used to disable the plugin. Reset all of your classes properties to their default values here.
- */
-FormulaPlugin.prototype.disablePlugin = function() {
-  this.yourProperty = '';
-  this.anotherProperty = [];
-
-  // The super class' method takes care of clearing the hook connections and assigning the 'false' value to the 'this.enabled' property.
-  this._superClass.prototype.disablePlugin.call(this);
-};
-
-/**
- * The updatePlugin method is called on the afterUpdateSettings hook (unless the updateSettings method turned the plugin off).
- * It should contain all the stuff your plugin needs to do to work properly after the Handsontable instance settings were modified.
- */
-FormulaPlugin.prototype.updatePlugin = function() {
-
-  // The updatePlugin method needs to contain all the code needed to properly re-enable the plugin. In most cases simply disabling and enabling the plugin should do the trick.
-  this.disablePlugin();
-  this.enablePlugin();
-
-  this._superClass.prototype.updatePlugin.call(this);
-};
-
-/**
- * The afterChange hook callback.
- *
- * @param {Array} changes Array of changes.
- * @param {String} source Describes the source of the change.
- */
-FormulaPlugin.prototype.onAfterChange = function(changes, source) {
-  // afterChange callback goes here.
-};
-
-/**
- * The destroy method should de-assign all of your properties.
- */
-FormulaPlugin.prototype.destroy = function() {
-  // The super method takes care of de-assigning the event callbacks, plugin hooks and clearing all the plugin properties.
-  this._superClass.prototype.destroy.call(this);
-};
-
-// You need to register your plugin in order to use it within Handsontable.
 // @ts-ignore
 Handsontable.plugins.registerPlugin('formulaPlugin', FormulaPlugin);

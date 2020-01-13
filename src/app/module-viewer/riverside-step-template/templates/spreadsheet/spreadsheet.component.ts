@@ -16,6 +16,17 @@ type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: n
 // remove in case Handsontable is updated to 7+ (commercial version)
 type HandsontableCellChange = [number, string | number, any, any, any][];
 
+export type HotNumericFormat = {
+  pattern: {
+    trimMantissa?: boolean,
+    thousandSeparated: boolean,
+    optionalMantissa?: boolean,
+    output?: string,
+    mantissa?: number
+  },
+  culture?: string
+};
+
 class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
     super.prepare(row, col, prop, td, originalValue * 100, cellProperties);
@@ -24,11 +35,6 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
   getValue() {
     return (parseFloat(this.TEXTAREA.value) / 100) || 0;
   }
-}
-
-// @ts-ignore
-class FormulasPlugin extends Handsontable.plugins.BasePlugin {
-
 }
 
 @Component({
@@ -110,9 +116,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   hotInstance() {
-    const hot = this.hotRegister.getInstance('hot');
-
-    return hot;
+    return this.hotRegister.getInstance('hot');
   }
 
   getRealRow(fullIndex) {
@@ -224,10 +228,6 @@ export class SpreadsheetComponent extends TemplateComponent {
           rowHeaders: false,
           colHeaders: false,
           cells: this.formatCell.bind(this),
-          afterInit: ((instance) => {
-            // @ts-ignore
-            instance.getPlugin('formulaPlugin').enablePlugin();
-          }).bind(this),
           afterRender: (() => {
             this.isRendered = true;
             setTimeout(_ => this.hotInstance().validateCells(_ => {}));
@@ -273,17 +273,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   formatCell(row: number, column: number) {
     const cell = {} as (Omit<Handsontable.GridSettings, 'numericFormat'> &
                        { validatorName: string } &
-                       { numericFormat: {
-                          pattern: {
-                            trimMantissa?: boolean,
-                            thousandSeparated: boolean,
-                            optionalMantissa?: boolean,
-                            output?: string,
-                            mantissa?: number
-                          },
-                          culture?: string
-                        }
-                       });
+                       { numericFormat: HotNumericFormat });
 
     const settings = this.cellSettings[row][column];
 
@@ -309,6 +299,8 @@ export class SpreadsheetComponent extends TemplateComponent {
           },
           culture: 'en-US'
         };
+
+        cell.className += ' currency';
       } else if ('percent' === tp) {
         cell.numericFormat = {
           pattern: {
@@ -330,6 +322,8 @@ export class SpreadsheetComponent extends TemplateComponent {
           }
         };
       }
+
+      cell.className += ' numeric';
 
       if (cell.numericFormat) {
         cell.numericFormat.pattern.mantissa = this.rounding[row][column];
@@ -372,6 +366,13 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   afterChange(context, changes: HandsontableCellChange, source: string) {
+
+    // sometimes the context argument is not passed (HOT 6 only)
+    if (!source) {
+      source = (changes as unknown) as string;
+      changes = context;
+    }
+
     if (source !== 'edit' && source !== 'Autofill.fill') {
       return;
     }
