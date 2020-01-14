@@ -111,8 +111,10 @@ export class SpreadsheetComponent extends TemplateComponent {
       window.dispatchEvent(new Event('resize'));
     });
 
-    // @ts-ignore
-    Handsontable.plugins.registerPlugin('formulaPlugin', FormulaPlugin);
+    if (this.keepFormulas) {
+      // @ts-ignore
+      Handsontable.plugins.registerPlugin('formulaPlugin', FormulaPlugin);
+    }
   }
 
   hotInstance() {
@@ -283,7 +285,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
 
     const tp = this.types[row][column];
-    if (tp) {
+    if (tp && tp !== 'text') {
       cell.type = 'numeric';
 
       if (!cell.readOnly) {
@@ -345,9 +347,23 @@ export class SpreadsheetComponent extends TemplateComponent {
     return cell;
   }
 
+  isEditChange(context, changes: HandsontableCellChange, source: string) {
+    // sometimes the context argument is not passed (HOT 6 only)
+    if (!source) {
+      source = (changes as unknown) as string;
+    }
+
+    return source === 'edit' || source === 'Autofill.fill';
+  }
+
   beforeChange(context, changes: HandsontableCellChange, source: string) {
-    if (source !== 'edit' && source !== 'Autofill.fill') {
+    if (!this.isEditChange(context, changes, source)) {
       return;
+    }
+
+    // sometimes the context argument is not passed (HOT 6 only)
+    if (!source) {
+      changes = context;
     }
 
     for (let i = changes.length - 1; i >= 0; i--) {
@@ -357,7 +373,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
       const tp = this.types[row][change[1]];
 
-      if (tp) {
+      if (tp && tp !== 'text') {
         changes[i][3] = parseFloat(newVal) || 0;
       }
 
@@ -366,15 +382,13 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   afterChange(context, changes: HandsontableCellChange, source: string) {
+    if (!this.isEditChange(context, changes, source)) {
+      return;
+    }
 
     // sometimes the context argument is not passed (HOT 6 only)
     if (!source) {
-      source = (changes as unknown) as string;
       changes = context;
-    }
-
-    if (source !== 'edit' && source !== 'Autofill.fill') {
-      return;
     }
 
     if (!changes.filter(change => change[2] != change[3]).length) {
