@@ -31,7 +31,7 @@
 <div *ngIf="modules$ | async as modules">
   <div *ngIf="view == 'grid'" class="panel-container">
     <div *ngFor="let category of modules; index as i" class="card module-category" [class.double]="2 == categoryColumns[i].length">
-    <div class="card-header">
+    <div class="card-header" e3-tooltip="{{category.description | uppercase}}" placement="bottom">
       {{ category.name }}
     </div>
 

@@ -16,6 +16,7 @@ import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confir
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.interface';
 import * as moment from 'moment';
+import InitIceFixSpacesPlugin from './fix-spaces-ice-plugin';
 
 export type IceEditorTracker = {
   element: HTMLElement,
@@ -81,6 +82,8 @@ export class IceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
+    InitIceFixSpacesPlugin();
+
     if (this.input) {
       this.data = this.template.getInput(this.input);
     }
