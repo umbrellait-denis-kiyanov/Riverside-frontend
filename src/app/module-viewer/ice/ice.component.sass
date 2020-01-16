@@ -39,6 +39,15 @@ $triangleColor: orange;
   background: white;
   outline: none;
   min-height: 2.2em
+  overflow: hidden
+
+  &.single-line
+    white-space: nowrap
+    max-height: 2.2em
+
+    \::ng-deep *
+      display: inline !important
+      white-space: nowrap !important
 
   &.has-error
     border-color: $red

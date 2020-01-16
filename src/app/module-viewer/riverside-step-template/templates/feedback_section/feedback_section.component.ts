@@ -48,14 +48,11 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
   }
 
   behaviorInputs() {
-    return this.contentData.steps.reduce((inputs, step) => {
+    return this.contentData.steps.reduce((inputs, step) =>
       inputs[step.sufix] = {
         prefix: 'persona_behavior',
         sufix: step.sufix
-      };
-
-      return inputs;
-    }, {});
+      }, {});
   }
 
   onSectionChange(sectionId: string) {

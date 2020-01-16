@@ -16,7 +16,9 @@ import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confir
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.interface';
 import * as moment from 'moment';
-import InitIceFixSpacesPlugin from './fix-spaces-ice-plugin';
+import FixSpacesPlugin from './plugins/fix-spaces-ice-plugin';
+import DisableNewlinesPlugin from './plugins/disable-newlines-ice-plugin';
+import { plugins } from 'handsontable';
 
 export type IceEditorTracker = {
   element: HTMLElement,
@@ -46,6 +48,8 @@ export class IceComponent implements OnInit, OnDestroy {
   // pass input as string identifier or as instance
   @Input() input: string;
   @Input() data: TemplateInput;
+  @Input() single = false;
+  @Input() numeric = false;
 
   @Input() allowRemoveSelections = false;
 
@@ -82,10 +86,19 @@ export class IceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    InitIceFixSpacesPlugin();
+    new FixSpacesPlugin();
+
+    if (this.single) {
+      new DisableNewlinesPlugin();
+    }
 
     if (this.input) {
       this.data = this.template.getInput(this.input);
+    }
+
+    if (!this.data) {
+      console.error('No input data found for ', this.input);
+      return;
     }
 
     this.data.error = this.data.error || new BehaviorSubject(null);
@@ -125,23 +138,30 @@ export class IceComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       const text = this.el.nativeElement.querySelector('.textbody');
 
+      const plugins = [
+        'IceAddTitlePlugin',
+        'IceSmartQuotesPlugin',
+        'IceEmdashPlugin',
+        {
+          name: 'IceCopyPastePlugin',
+          settings: {
+            pasteType: 'formattedClean',
+            preserve: 'ol,ul,li'
+          }
+        },
+        'FixSpacesPlugin'
+      ];
+
+      if (this.single) {
+        plugins.push('DisableNewlinesPlugin');
+      }
+
       try {
         const tracker = new window.ice.InlineChangeEditor({
           element: text,
           handleEvents: true,
           currentUser: this.user,
-          plugins: [
-            'IceAddTitlePlugin',
-            'IceSmartQuotesPlugin',
-            'IceEmdashPlugin',
-            {
-              name: 'IceCopyPastePlugin',
-              settings: {
-                pasteType: 'formattedClean',
-                preserve: 'ol,ul,li'
-              }
-            }
-          ]
+          plugins: plugins
         }).startTracking() as IceEditorTracker;
 
         if (tracker.element.innerHTML === '<p><br></p>') {

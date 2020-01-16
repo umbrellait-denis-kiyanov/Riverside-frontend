@@ -176,10 +176,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   private getUserGradeLevels() {
-    return this.gradeLevels.reduce((levels, entry) => {
-      levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue();
-      return levels;
-    }, {});
+    return this.gradeLevels.reduce((levels, entry) =>
+      levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue(), {});
   }
 
   validate() {

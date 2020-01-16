@@ -8,6 +8,7 @@
     [attr.disabled]="disabled"
     [ngClass]="{'CT-hide': template.hideChanges$ | async, hasComment: comment.list?.length, showComment: comment.show}"
     [class.has-error]="data.error | async"
+    [class.single-line]="single"
     [innerHTML]="initialContent | safehtml"
     (mouseenter)="onMouseEnter($event)"
     (blur)="onBlur($event)"

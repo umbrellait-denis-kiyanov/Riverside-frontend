@@ -24,30 +24,27 @@
                 <div class="behavior-title" style="padding-left: 0px;" >Demographics</div>
                 <div class="previous-behavior ">
                   <div class="behavior-subtitle">Gender</div>
-                  <div class="behavior-content no-color inline">Male (<ice
-                    id="{{'persona_perc_male_' + (i+1) }}"
-                    [(data)]="inputs[persona.perc_male]"
-                  ></ice>%) / Female (<ice [(data)]="inputs[persona.perc_female]"></ice>%)</div>
+                  <div class="behavior-content no-color inline">Male (<ice [input]="persona.perc_male"></ice>%) / Female (<ice [input]="persona.perc_female"></ice>%)</div>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">Average Age</div>
-                  <ice [(data)]="inputs[persona.age]"></ice>
+                  <ice [input]="persona.age" single="true"></ice>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">How They Buy</div>
-                  <ice [(data)]="inputs[persona.how_they_buy]"></ice>
+                  <ice [input]="persona.how_they_buy"></ice>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">How They Pay</div>
-                  <ice [(data)]="inputs[persona.how_they_pay]"></ice>
+                  <ice [input]="persona.how_they_pay"></ice>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">Typical Titles</div>
-                  <ice [(data)]="inputs[persona.titles]"></ice>
+                  <ice [input]="persona.titles"></ice>
                 </div>
                 <div class="behavior-title" style="padding-left: 0px;margin-top: 15px" >Watering Holes</div>
                 <div class="previous-behavior">
-                  <ice [(data)]="inputs[persona.watering_holes]"></ice>
+                  <ice [input]="persona.watering_holes"></ice>
                 </div>
               </div>
           </div>
