@@ -19,6 +19,8 @@ import * as moment from 'moment';
 import FixSpacesPlugin from './plugins/fix-spaces-ice-plugin';
 import DisableNewlinesPlugin from './plugins/disable-newlines-ice-plugin';
 import PreventTypeDeletedRangePlugin from './plugins/prevent-type-deleted-range-ice-plugin';
+import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
+
 
 export type IceEditorTracker = {
   element: HTMLElement,
@@ -88,6 +90,7 @@ export class IceComponent implements OnInit, OnDestroy {
   ngOnInit() {
     new FixSpacesPlugin();
     new PreventTypeDeletedRangePlugin();
+    IceCopyPastePluginFixed();
 
     if (this.single) {
       new DisableNewlinesPlugin();
@@ -144,7 +147,7 @@ export class IceComponent implements OnInit, OnDestroy {
         'IceSmartQuotesPlugin',
         'IceEmdashPlugin',
         {
-          name: 'IceCopyPastePlugin',
+          name: 'IceCopyPastePluginFixed',
           settings: {
             pasteType: 'formattedClean',
             preserve: 'ol,ul,li'
