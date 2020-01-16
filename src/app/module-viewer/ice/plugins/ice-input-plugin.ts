@@ -99,6 +99,16 @@ export default abstract class IceInputPlugin {
         }).call(window.ice);
     }
 
+    protected getEditor() {
+        let node = this.ice.getCurrentRange().commonAncestorContainer;
+        while (node) {
+            node = node.parentNode;
+            if (node.contentEditable === 'true') {
+                return node;
+            }
+        }
+    }
+
     protected matchInput(input: string) {
         return false;
     }

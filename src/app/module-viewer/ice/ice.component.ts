@@ -20,7 +20,7 @@ import FixSpacesPlugin from './plugins/fix-spaces-ice-plugin';
 import DisableNewlinesPlugin from './plugins/disable-newlines-ice-plugin';
 import PreventTypeDeletedRangePlugin from './plugins/prevent-type-deleted-range-ice-plugin';
 import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
-
+import UndoTrackPlugin from './plugins/undo-track-ice-plugin';
 
 export type IceEditorTracker = {
   element: HTMLElement,
@@ -90,6 +90,7 @@ export class IceComponent implements OnInit, OnDestroy {
   ngOnInit() {
     new FixSpacesPlugin();
     new PreventTypeDeletedRangePlugin();
+    new UndoTrackPlugin();
     IceCopyPastePluginFixed();
 
     if (this.single) {
@@ -154,7 +155,8 @@ export class IceComponent implements OnInit, OnDestroy {
           }
         },
         'FixSpacesPlugin',
-        'PreventTypeDeletedRangePlugin'
+        'PreventTypeDeletedRangePlugin',
+        'UndoTrackPlugin'
       ];
 
       if (this.single) {
