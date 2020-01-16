@@ -4,6 +4,8 @@ export default abstract class IceInputPlugin {
 
     pluginID: string;
 
+    ice: any;
+
     constructor() {
         const pluginID = this.constructor.name;
         const self = this;
@@ -15,6 +17,10 @@ export default abstract class IceInputPlugin {
 
             const InputPlugin = function(ice_instance) {
                 this._ice = ice_instance;
+
+                self.ice = ice_instance;
+
+                self.addEventListeners(ice_instance.element);
 
                 if (self.forceCleanPaste() && !ice_instance.hasCleanPaste) {
                     ice_instance.hasCleanPaste = true;
@@ -93,22 +99,37 @@ export default abstract class IceInputPlugin {
         }).call(window.ice);
     }
 
-    public abstract matchInput(input: string): boolean;
-
-    public abstract replaceInput(): string;
-
-    public abstract onBlur(html): string;
-
-    public keyDown(e: KeyboardEvent) {
-        return true;
-    }
-
-    public forceCleanPaste() {
+    protected matchInput(input: string) {
         return false;
     }
 
+    protected replaceInput() {
+        return '';
+    }
+
+    protected onBlur(html) {
+        return html;
+    }
+
+    protected keyDown(e: KeyboardEvent) {
+        return true;
+    }
+
+    protected addEventListeners(element: HTMLElement): void {
+    }
+
+    protected forceCleanPaste() {
+        return false;
+    }
+
+    protected stopEvent(e: Event) {
+        e.preventDefault();
+        e.stopImmediatePropagation();
+        e.stopPropagation();
+    }
+
     // remove HTML formatting except for Ice tracker elements
-    public removeFormatting(html: string) {
+    protected removeFormatting(html: string) {
         const parser = (new DOMParser().parseFromString(html || '', 'text/html'));
 
         // replace all non-ins/del elements to simple div's

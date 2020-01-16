@@ -23,7 +23,7 @@ export default class DisableNewlinesPlugin extends IceInputPlugin {
         return true;
     }
 
-    public forceCleanPaste() {
+    forceCleanPaste() {
         return true;
     }
 }

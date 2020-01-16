@@ -18,7 +18,7 @@ import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.in
 import * as moment from 'moment';
 import FixSpacesPlugin from './plugins/fix-spaces-ice-plugin';
 import DisableNewlinesPlugin from './plugins/disable-newlines-ice-plugin';
-import { plugins } from 'handsontable';
+import PreventTypeDeletedRangePlugin from './plugins/prevent-type-deleted-range-ice-plugin';
 
 export type IceEditorTracker = {
   element: HTMLElement,
@@ -87,6 +87,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     new FixSpacesPlugin();
+    new PreventTypeDeletedRangePlugin();
 
     if (this.single) {
       new DisableNewlinesPlugin();
@@ -149,7 +150,8 @@ export class IceComponent implements OnInit, OnDestroy {
             preserve: 'ol,ul,li'
           }
         },
-        'FixSpacesPlugin'
+        'FixSpacesPlugin',
+        'PreventTypeDeletedRangePlugin'
       ];
 
       if (this.single) {
