@@ -1,11 +1,6 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input } from '@angular/core';
 
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
-
-
-declare global {
-  interface Window { $: any; }
-}
 
 @Component({
   selector: 'account-left-menu',
@@ -28,6 +23,4 @@ export class AccountLeftMenuComponent implements OnInit {
   collapse() {
     this.leftMenuService.expand = false;
   }
-
-
 }

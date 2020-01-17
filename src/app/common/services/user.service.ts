@@ -32,12 +32,12 @@ export class UserService {
     return this.httpClient.get<AccountProfile>(`${this.accountBaseUrl}/me`);
   }
 
-  saveAccount(account: AccountProfile): Observable<any> {
-    return this.httpClient.post<any>(`${this.accountBaseUrl}/me`, account);
+  saveAccount(account: AccountProfile): Observable<null> {
+    return this.httpClient.post<null>(`${this.accountBaseUrl}/me`, account);
   }
 
-  updatePassword(data: UpdatePassword): Observable<any> {
-    return this.httpClient.post<any>(
+  updatePassword(data: UpdatePassword): Observable<null> {
+    return this.httpClient.post<null>(
       `${this.accountBaseUrl}/me/password`,
       data
     );
@@ -46,7 +46,7 @@ export class UserService {
   presignedProfilePictureUpload(
     ext: string
   ): Observable<PresignedProfilePictureUrl> {
-    return this.httpClient.get<any>(`${this.accountBaseUrl}/me/upload-picture`, {
+    return this.httpClient.get<null>(`${this.accountBaseUrl}/me/upload-picture`, {
       params: { ext }
     });
   }

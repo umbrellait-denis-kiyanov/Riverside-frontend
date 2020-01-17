@@ -3,6 +3,7 @@ import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
 import { Observable } from 'rxjs';
 import { ModuleService } from '../../../../common/services/module.service';
+import { TemplateField } from '.';
 
 @Component({
   selector: 'app-step-template-field',
@@ -11,17 +12,17 @@ import { ModuleService } from '../../../../common/services/module.service';
 })
 export class StepTemplateFieldComponent implements OnInit {
 
-  @Input() field: any;
-  @Input() json: any;
+  @Input() field: TemplateField;
+  @Input() json: any; // @todo - a hot mess that somehow works
   @Input() change: EventEmitter<string> = new EventEmitter<string>();
   @Output() jsonChange: EventEmitter<string> = new EventEmitter<string>();
 
-  name: string;
-  type: 'json' | 'text-input' | 'string' | 'resource' | 'select' | Array<string>;
+  name: TemplateField[0];
+  type: TemplateField[1];
   selectValues: string[];
 
   hasSubFields = false;
-  rtEditor: any;
+  rtEditor = InlineEditor;
 
   resourceValue$: Observable<string[]>;
 
@@ -40,7 +41,6 @@ export class StepTemplateFieldComponent implements OnInit {
                   this.name.toLowerCase().indexOf('url') > -1) {
         this.type = 'text-input';
       } else {
-        this.rtEditor = InlineEditor;
         this.json = this.json || '';
       }
     }

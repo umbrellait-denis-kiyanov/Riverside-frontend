@@ -3,20 +3,21 @@ import { BehaviorSubject } from 'rxjs';
 import Message from './message.model';
 import { HttpClient } from '@angular/common/http';
 import { tap } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Injectable()
 export class InboxService {
 
   messageChange$ = new BehaviorSubject(false);
 
-  constructor(private http: HttpClient) { }
+  constructor(private http: HttpClient, private toastr: ToastrService) { }
 
   loadAll() {
     return this.http.get<Message[]>(`/api/modules/0/feedback`);
   }
 
   loadCounter() {
-    return this.http.get<{counter: string}>(`/api/modules/0/feedback/counter`);
+    return this.http.get<{counter: number}>(`/api/modules/0/feedback/counter`);
   }
 
   load(id) {
@@ -24,7 +25,9 @@ export class InboxService {
   }
 
   save(message: Partial<Message & { parent_id: number }>) {
-    return this.http.post(`/api/modules/` + Number(message.module_id) + `/feedback`, message);
+    return this.http.post(`/api/modules/` + Number(message.module_id) + `/feedback`, message).pipe(
+      tap(_ => this.toastr.success('Message sent!'))
+    );
   }
 
   markAsRead(id: number) {

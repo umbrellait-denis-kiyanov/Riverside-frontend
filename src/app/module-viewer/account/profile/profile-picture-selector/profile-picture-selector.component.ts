@@ -1,10 +1,11 @@
 import { Component, OnInit, Output, EventEmitter } from '@angular/core';
 import { ImageCroppedEvent } from 'ngx-image-cropper';
 import { UserService } from 'src/app/common/services/user.service';
-import toastr from 'src/app/common/lib/toastr';
 import { HttpClient } from '@angular/common/http';
 import { Subscription } from 'rxjs';
 import { first } from 'rxjs/operators';
+import { PresignedProfilePictureUrl } from 'src/app/common/interfaces/account.interface';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'profile-picture-selector',
@@ -12,20 +13,21 @@ import { first } from 'rxjs/operators';
   styleUrls: ['./profile-picture-selector.component.sass']
 })
 export class ProfilePictureSelectorComponent implements OnInit {
-  imageChangedEvent: any = '';
-  croppedImage: any = '';
+  imageChangedEvent: string = '';
+  croppedImage: string = '';
   @Output() imageUploaded = new EventEmitter();
 
   saving: Subscription = null;
 
   constructor(
     private userService: UserService,
-    private http: HttpClient
+    private http: HttpClient,
+    private toastr: ToastrService
   ) {}
 
   ngOnInit() {}
 
-  fileChangeEvent(event: any): void {
+  fileChangeEvent(event: string): void {
     this.imageChangedEvent = event;
   }
 
@@ -46,7 +48,7 @@ export class ProfilePictureSelectorComponent implements OnInit {
     const type = this.croppedImage.split(';')[0].split('/')[1];
 
     this.userService.presignedProfilePictureUpload(type).subscribe(
-      (res: any) => {
+      (res: PresignedProfilePictureUrl) => {
         const {url, key} = res;
         const buffer = this.dataURItoBlob(this.croppedImage);
         this.saving = this.http.put(url, buffer, {headers: {
@@ -59,9 +61,10 @@ export class ProfilePictureSelectorComponent implements OnInit {
       ,
       (e) => {
         if (e.error && e.error.failure && e.error.failure === 'INVALID_EXTENSION') {
-          return toastr.error('Invalid file extension');
+          this.toastr.error('Invalid file extension');
+        } else {
+          this.toastr.error('Could not upload picture');
         }
-        toastr.error('Could not upload picture');
       }
     );
   }

@@ -1,5 +1,5 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
-import { TemplateComponent } from '../template-base.cass';
+import { TemplateComponent } from '../template-base.class';
 import { data } from './exampleData';
 import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_section.component';
 

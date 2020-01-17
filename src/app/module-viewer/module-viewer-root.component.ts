@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { UserService } from '../common/services/user.service';
+import User from '../common/interfaces/user.model';
 
 @Component({
   selector: 'app-module-viewer-root',
@@ -7,7 +8,7 @@ import { UserService } from '../common/services/user.service';
   styleUrls: ['./module-viewer-root.component.sass']
 })
 export class ModuleViewerRootComponent implements OnInit {
-  @Input() set me(value: any) {
+  @Input() set me(value: User) {
     this.userService.setMeFromData(value);
     if (value) {
       this.ready = true;
@@ -18,7 +19,7 @@ export class ModuleViewerRootComponent implements OnInit {
   constructor(private userService: UserService) { }
 
   ngOnInit() {
-    (window as any).jQuery('.loading-site-content').hide();
+    (document.querySelector('.loading-site-content') as HTMLElement).style.display = 'none';
   }
 
 }

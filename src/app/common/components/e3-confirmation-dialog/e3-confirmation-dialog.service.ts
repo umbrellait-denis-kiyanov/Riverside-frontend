@@ -11,9 +11,9 @@ export interface OpenDialogOptions {
   content: string;
   noCancel?: boolean;
   type?: DialogType;
-  onClose?: (...args: any) => void;
-  onCancel?: (...args: any) => void;
-  component?: any;
+  onClose?: () => void;
+  onCancel?: () => void;
+  component?: typeof E3ConfirmationDialogComponent;
 }
 @Injectable()
 export class E3ConfirmationDialogService {
@@ -33,7 +33,7 @@ export class E3ConfirmationDialogService {
         modalRef.componentInstance[option] = options[option];
       }
     });
-    options.onClose && modalRef.result.then((...args) => options.onClose(...args));
-    options.onCancel && modalRef.result.catch((...args) => options.onCancel(...args));
+    options.onClose && modalRef.result.then(_ => options.onClose());
+    options.onCancel && modalRef.result.catch(_ => options.onCancel());
   }
 }

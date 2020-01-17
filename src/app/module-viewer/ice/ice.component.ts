@@ -13,15 +13,25 @@ import { BehaviorSubject, Subscription } from 'rxjs';
 import { skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
-import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
-import { Input as InputType } from 'src/app/common/interfaces/module.interface';
+import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
+import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.interface';
+import * as moment from 'moment';
 import InitIceFixSpacesPlugin from './fix-spaces-ice-plugin';
 
-export type IceEditorTracker = {
-  element: HTMLElement,
-  acceptAll: () => void,
-  getUserStyle: (id: string) => string
-};
+export interface IceEditorTracker {
+  element: HTMLElement;
+  acceptAll: () => void;
+  getUserStyle: (id: string) => string;
+}
+
+export class Comments {
+  adding = false;
+  content = '';
+  list: InputComment[] = [];
+  editingIndex = 0;
+  show = false;
+  index = 0;
+}
 
 @Component({
   selector: 'ice',
@@ -35,7 +45,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
   // pass input as string identifier or as instance
   @Input() input: string;
-  @Input() data: InputType;
+  @Input() data: TemplateInput;
 
   @Input() allowRemoveSelections = false;
 
@@ -43,15 +53,8 @@ export class IceComponent implements OnInit, OnDestroy {
   @Output() dataChanged = new EventEmitter(false);
 
   tracker: IceEditorTracker;
-  comment: { [key: string]: any; index: false | number } = {
-    adding: false,
-    content: '',
-    list: [],
-    editingIndex: 0,
-    show: false,
-    index: false
-  };
-  menuComment: any;
+  comment = new Comments();
+  menuComment: InputComment;
   menuIndex: number;
 
   isInitialized = false;
@@ -99,12 +102,12 @@ export class IceComponent implements OnInit, OnDestroy {
       );
 
       selections.remove();
-    }
 
-    this.selectionsSub = this.data.selections$.pipe(skip(1)).subscribe(_ => {
-      this.onBlur();
-      this.changed.emit();
-    });
+      this.selectionsSub = this.data.selections$.pipe(skip(1)).subscribe(_ => {
+        this.onBlur();
+        this.changed.emit();
+      });
+    }
 
     this.initialContent = el.innerHTML;
 
@@ -124,7 +127,6 @@ export class IceComponent implements OnInit, OnDestroy {
             'IceAddTitlePlugin',
             'IceSmartQuotesPlugin',
             'IceEmdashPlugin',
-            'FixSpacesPlugin',
             {
               name: 'IceCopyPastePlugin',
               settings: {
@@ -165,8 +167,14 @@ export class IceComponent implements OnInit, OnDestroy {
 
   ngOnDestroy() {
     this.changed.unsubscribe();
-    this.selectionsSub.unsubscribe();
-    this.onApproveSub.unsubscribe();
+
+    if (this.selectionsSub) {
+      this.selectionsSub.unsubscribe();
+    }
+
+    if (this.onApproveSub) {
+      this.onApproveSub.unsubscribe();
+    }
   }
 
   removeSelection(selection: string) {
@@ -187,12 +195,12 @@ export class IceComponent implements OnInit, OnDestroy {
   cancelComment() {
     this.comment.adding = false;
     this.comment.content = '';
-    this.comment.index = false;
+    this.comment.index = null;
     this.closeComment();
   }
 
   saveComment(index: false | number = false) {
-    if (this.comment.index !== false) {
+    if (this.comment.index !== null) {
       this.comment.list[this.comment.index].content = this.comment.content;
     } else {
       const time = new Date().getTime();
@@ -200,7 +208,7 @@ export class IceComponent implements OnInit, OnDestroy {
         content: this.comment.content,
         user: this.user,
         time,
-        formattedTime: window.moment(time).format('MMM DD YYYY hh:mma')
+        formattedTime: moment(time).format('MMM DD YYYY hh:mma')
       });
     }
 
@@ -290,13 +298,11 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   setEndOfContenteditable(contentEditableElement) {
-    let range: any;
-    let selection: any;
     if (document.createRange) {
-      range = document.createRange(); // Create a range (a range is a like the selection but invisible)
+      const range = document.createRange(); // Create a range (a range is a like the selection but invisible)
       range.selectNodeContents(contentEditableElement); // Select the entire contents of the element with the range
       range.collapse(false); // collapse the range to the end point. false means collapse to end rather than the start
-      selection = window.getSelection(); // get the selection object (allows you to change selection)
+      const selection = window.getSelection(); // get the selection object (allows you to change selection)
       selection.removeAllRanges(); // remove any selections already made
       selection.addRange(range); // make the range you have just created the visible selection
     }

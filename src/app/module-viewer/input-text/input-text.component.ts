@@ -1,6 +1,6 @@
 import { Component, OnChanges, Input } from '@angular/core';
-import { Input as TemplateInput } from 'src/app/common/interfaces/module.interface';
-import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
+import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -19,8 +19,8 @@ export class InputTextComponent implements OnChanges {
 
   constructor(private template: TemplateComponent) { }
 
-  isInput(obj: any): obj is TemplateInput {
-    return obj.content !== undefined;
+  isInput(obj: TemplateInput | string): obj is TemplateInput {
+    return obj instanceof Object && obj.content !== undefined;
   }
 
   ngOnChanges() {

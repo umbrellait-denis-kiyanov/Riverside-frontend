@@ -5,7 +5,7 @@ import { UserService } from 'src/app/common/services/user.service';
 import { map, switchMap, filter } from 'rxjs/operators';
 import { Observable, Subscription } from 'rxjs';
 import Message from './message.model';
-import toastr from 'src/app/common/lib/toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-inbox',
@@ -25,7 +25,8 @@ export class InboxComponent implements OnInit {
   constructor(
     private inboxService: InboxService,
     private route: ActivatedRoute,
-    private userService: UserService
+    private userService: UserService,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -71,6 +72,6 @@ export class InboxComponent implements OnInit {
       module_id: message.module_id,
       parent_id: message.id,
       message: text
-    }).subscribe(_ => toastr.success('Message sent!'));
+    }).subscribe(_ => this.toastr.success('Message sent!'));
   }
 }

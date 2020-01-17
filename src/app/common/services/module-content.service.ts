@@ -4,7 +4,6 @@ import ModuleContent from '../interfaces/module-content.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 
-
 @Injectable()
 export class ModuleContentService {
 

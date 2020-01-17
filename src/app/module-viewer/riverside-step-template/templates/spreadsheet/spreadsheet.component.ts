@@ -1,12 +1,33 @@
-import { Component, forwardRef, ViewChild } from '@angular/core';
-import { TemplateComponent } from '../template-base.cass';
-import { SpreadsheetTemplateData } from './spreadsheet.interface';
+import { Component, forwardRef, ViewChild, ElementRef } from '@angular/core';
+import { TemplateComponent } from '../template-base.class';
+import { SpreadsheetTemplateData } from '.';
 import * as Handsontable from 'handsontable';
 import { Subscription } from 'rxjs';
-import { SpreadsheetResource, Input } from 'src/app/common/interfaces/module.interface';
+import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
+import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
+
+// remove after upgrading to TypeScript 3.5.1+
+type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
+
+// remove in case Handsontable is updated to 7+ (commercial version)
+type HandsontableCellChange = [number, string | number, any, any, any][];
+
+type HotCell = (Omit<Handsontable.GridSettings, 'numericFormat'> &
+                      { validatorName: string } &
+                      { numericFormat: {
+                        pattern: {
+                          trimMantissa?: boolean,
+                          thousandSeparated: boolean,
+                          optionalMantissa?: boolean,
+                          output?: string,
+                          mantissa?: number
+                        },
+                        culture?: string
+                      }
+                    });
 
 class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
@@ -31,11 +52,17 @@ export class SpreadsheetComponent extends TemplateComponent {
   sheet: SpreadsheetResource;
 
   settings: Handsontable.GridSettings;
+  hotRegister = new HotTableRegisterer();
 
   types: string[][];
   rounding: number[][];
 
-  cellSettings: { editable: boolean; className: string; renderer: string; validator?: () => boolean }[][];
+  cellSettings: {
+    editable: boolean;
+    className: string;
+    renderer: string;
+    validator?: (value: any, callback: (valid: boolean) => void) => void | RegExp
+  }[][];
 
   visibleRows: number[];
 
@@ -44,13 +71,13 @@ export class SpreadsheetComponent extends TemplateComponent {
   previewRows: undefined[];
   previewCols: undefined[];
 
-  input: Input;
+  input: TemplateInput;
 
   keepFormulas: boolean;
   downloadProgress: boolean;
 
-  @ViewChild('hot') hot;
-  @ViewChild('widthContainer') widthContainer;
+  @ViewChild('hot') hot: HotTableComponent;
+  @ViewChild('widthContainer') widthContainer: ElementRef;
 
   watchMenuExpand: Subscription;
 
@@ -59,7 +86,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   init() {
     this.spreadsheetService = this.injectorObj.get(SpreadsheetService);
 
-    const contentData = this.data.data.template_params_json;
+    const contentData = this.data.data.template_params_json as SpreadsheetTemplateData['template_params_json'];
 
     this.input = this.getInput('spreadsheet', 1);
 
@@ -85,6 +112,10 @@ export class SpreadsheetComponent extends TemplateComponent {
     this.injectorObj.get(LeftMenuService).onExpand.pipe(this.whileExists()).subscribe((state: boolean) => {
       window.dispatchEvent(new Event('resize'));
     });
+  }
+
+  hotInstance() {
+    return this.hotRegister.getInstance('hot');
   }
 
   getRealRow(fullIndex) {
@@ -198,15 +229,15 @@ export class SpreadsheetComponent extends TemplateComponent {
           cells: this.formatCell.bind(this),
           afterRender: (() => {
             this.isRendered = true;
-            setTimeout(_ => this.hot.hotInstance.validateCells());
+            setTimeout(_ => this.hotInstance().validateCells(_ => {}));
           }).bind(this),
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
-          beforeKeyDown: ((event) => {
+          beforeKeyDown: ((event: KeyboardEvent) => {
             if (46 === event.keyCode || 8 === event.keyCode) {
               event.stopImmediatePropagation();
-              (event as any).realTarget.value = '0';
-              const hot = this.hot.hotInstance;
+              (event.target as HTMLInputElement).value = '0';
+              const hot = this.hotInstance();
               hot.getSelected().forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
             }
           }).bind(this),
@@ -220,7 +251,7 @@ export class SpreadsheetComponent extends TemplateComponent {
                         .map(cell => {
                           cell.row = this.getRealRow(cell.row);
                           return cell;
-                        }),
+                        })
         };
       }
     ));
@@ -238,8 +269,9 @@ export class SpreadsheetComponent extends TemplateComponent {
     return !this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)');
   }
 
-  formatCell(row, column, prop) {
-    const cell = {} as any;
+  formatCell(row: number, column: number) {
+
+    const cell = {} as HotCell;
 
     const settings = this.cellSettings[row][column];
 
@@ -274,6 +306,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           }
         };
 
+        // @ts-ignore - looks like a wrong type definition within angular/handsontable v3.0.0 (5.0.0 works fine)
         cell.editor = PercentageEditor;
 
         cell.className += ' percent';
@@ -306,7 +339,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     return cell;
   }
 
-  beforeChange(changes, source) {
+  beforeChange(context, changes: HandsontableCellChange, source: string) {
     if (source !== 'edit' && source !== 'Autofill.fill') {
       return;
     }
@@ -326,7 +359,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
   }
 
-  afterChange(changes, source) {
+  afterChange(context, changes: HandsontableCellChange, source: string) {
     if (source !== 'edit' && source !== 'Autofill.fill') {
       return;
     }
@@ -341,7 +374,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
     changes.forEach(change => {
       const row = change[0];
-      const col = change[1];
+      const col = Number(change[1]);
 
       const dataRow = this.visibleRows.length ? this.visibleRows[row] : row;
 
@@ -349,7 +382,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       content[dataRow][col] = change[4];
 
       if (reloadData) {
-        this.hot.hotInstance.getCell(row, col).className += ' hot-saving';
+        this.hotInstance().getCell(row, col).className += ' hot-saving';
       }
     });
 
@@ -358,7 +391,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     this.moduleService.saveInput(this.input).subscribe(_ => {
       if (reloadData) {
         this.getSpreadsheetObservable().subscribe(__ => {
-          this.hot.hotInstance.updateSettings(this.settings);
+          this.hotInstance().updateSettings(this.settings, true);
         });
       }
     });

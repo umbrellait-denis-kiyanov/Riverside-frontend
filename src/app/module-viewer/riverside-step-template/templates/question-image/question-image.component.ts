@@ -1,6 +1,6 @@
-import { Component, ViewChild, forwardRef } from '@angular/core';
-import { TemplateComponent } from '../template-base.cass';
-import { QuestionImageTemplateData } from './question-image.interface';
+import { Component, ViewChild, forwardRef, ElementRef } from '@angular/core';
+import { TemplateComponent } from '../template-base.class';
+import { QuestionImageTemplateData } from '.';
 import { DomSanitizer, SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
 
 @Component({
@@ -21,7 +21,7 @@ export class QuestionImageComponent extends TemplateComponent {
 
   iframeInterval;
 
-  @ViewChild('iframe') iframe;
+  @ViewChild('iframe') iframe: ElementRef;
 
   getDescription() {
     return '';

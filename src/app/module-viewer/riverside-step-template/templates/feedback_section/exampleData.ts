@@ -1,4 +1,4 @@
-import { FeedbackSectionTemplateData } from './feedback_section.interface';
+import { FeedbackSectionTemplateData } from '.';
 
 export const data: FeedbackSectionTemplateData['template_params_json'] = {
   title: 'FEEDBACK',

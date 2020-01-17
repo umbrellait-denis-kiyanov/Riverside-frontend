@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 
-import { TemplateComponent } from '../template-base.cass';
-import { BrainstormTemplateData } from './brainstorm.interface';
+import { TemplateComponent } from '../template-base.class';
+import { BrainstormTemplateData } from '.';
 
 @Component({
   selector: 'app-brainstorm',

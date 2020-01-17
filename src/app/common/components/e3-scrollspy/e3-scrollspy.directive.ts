@@ -45,27 +45,5 @@ export class E3ScrollSpyDirective implements AfterViewInit {
         isVisible: false
       });
     });
-
-
   }
-
-  // @HostListener('window:scroll', ['$event'])
-  // onScroll(event: any) {
-  //     let currentSection: string;
-  //     const children = this._el.nativeElement.children;
-  //     const scrollTop = document.scrollingElement.scrollTop;
-  //     const parentOffset = this._el.nativeElement.offsetTop;
-  //     for (const element of children) {
-  //         if (this.spiedClassNames.some(className => element.classList.contains(className))) {
-  //             if ((element.offsetTop - parentOffset) <= scrollTop) {
-  //                 currentSection = element.id;
-  //                 // break;
-  //             }
-  //         }
-  //     }
-  //     if (currentSection !== this.currentSection) {
-  //         this.currentSection = currentSection;
-  //         this.sectionChange.emit(this.currentSection);
-  //     }
-  // }
 }

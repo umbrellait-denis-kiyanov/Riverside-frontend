@@ -68,27 +68,24 @@ export class AudioRecorderComponent implements OnInit {
     });
   }
 
-  blobToDataURL(blob: Blob, callback: any) {
+  blobToDataURL(blob: Blob, callback: (result: FileReader['result']) => void) {
     const a = new FileReader();
-    a.onload = (e: any) => { callback(e.target.result); };
+    a.onload = (e: ProgressEvent) => { callback(a.result); };
     a.readAsDataURL(blob);
   }
 
   stop() {
     this.status = STATUS.RECORDED;
-
   }
 
   upload() {
     this.status = STATUS.UPlOADING;
-    this.getPresignedUrl().then((res: any) => {
-      const {url, key} = res;
+    this.getPresignedUrl().then(({url, key}: {url: string, key: string}) => {
       this.http.put(url, this.blob).toPromise().then(() => {
         this.finish.emit(key);
         this.status = STATUS.DONE;
       }).catch(() => {
         this.status = STATUS.ERROR;
-
       });
     });
   }
