@@ -22,20 +22,20 @@ import PreventTypeDeletedRangePlugin from './plugins/prevent-type-deleted-range-
 import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
 import UndoTrackPlugin from './plugins/undo-track-ice-plugin';
 
-export type IceEditorTracker = {
-  element: HTMLElement,
-  acceptAll: () => void,
-  getUserStyle: (id: string) => string
-};
+export interface IceEditorTracker {
+  element: HTMLElement;
+  acceptAll: () => void;
+  getUserStyle: (id: string) => string;
+}
 
-export type Comments = {
-  adding: boolean,
-  content: string,
-  list: InputComment[],
-  editingIndex: number,
-  show: boolean,
-  index: number
-};
+export class Comments {
+  adding = false;
+  content = '';
+  list: InputComment[] = [];
+  editingIndex = 0;
+  show = false;
+  index = 0;
+}
 
 @Component({
   selector: 'ice',
@@ -59,14 +59,7 @@ export class IceComponent implements OnInit, OnDestroy {
   @Output() dataChanged = new EventEmitter(false);
 
   tracker: IceEditorTracker;
-  comment: Comments = {
-    adding: false,
-    content: '',
-    list: [],
-    editingIndex: 0,
-    show: false,
-    index: 0
-  };
+  comment = new Comments();
   menuComment: InputComment;
   menuIndex: number;
 

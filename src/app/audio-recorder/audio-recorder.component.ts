@@ -80,8 +80,7 @@ export class AudioRecorderComponent implements OnInit {
 
   upload() {
     this.status = STATUS.UPlOADING;
-    this.getPresignedUrl().then((res: {url: string, key: string}) => {
-      const {url, key} = res;
+    this.getPresignedUrl().then(({url, key}: {url: string, key: string}) => {
       this.http.put(url, this.blob).toPromise().then(() => {
         this.finish.emit(key);
         this.status = STATUS.DONE;
