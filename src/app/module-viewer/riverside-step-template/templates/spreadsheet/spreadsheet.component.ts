@@ -27,6 +27,10 @@ export type HotNumericFormat = {
   culture?: string
 };
 
+type HotCell = (Omit<Handsontable.GridSettings, 'numericFormat'> &
+		    { validatorName: string } &
+		    { numericFormat: HotNumericFormat });
+
 class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
     super.prepare(row, col, prop, td, originalValue * 100, cellProperties);
@@ -117,7 +121,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
   }
 
-  hotInstance() {
+  get hotInstance() {
     return this.hotRegister.getInstance('hot');
   }
 
@@ -232,7 +236,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           cells: this.formatCell.bind(this),
           afterRender: (() => {
             this.isRendered = true;
-            setTimeout(_ => this.hotInstance().validateCells(_ => {}));
+            setTimeout(_ => this.hotInstance.validateCells(_ => {}));
           }).bind(this),
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
@@ -240,7 +244,7 @@ export class SpreadsheetComponent extends TemplateComponent {
             if (46 === event.keyCode || 8 === event.keyCode) {
               event.stopImmediatePropagation();
               (event.target as HTMLInputElement).value = '0';
-              const hot = this.hotInstance();
+              const hot = this.hotInstance;
               hot.getSelected().forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
             }
           }).bind(this),
@@ -273,9 +277,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   formatCell(row: number, column: number) {
-    const cell = {} as (Omit<Handsontable.GridSettings, 'numericFormat'> &
-                       { validatorName: string } &
-                       { numericFormat: HotNumericFormat });
+    const cell = {} as HotCell;
 
     const settings = this.cellSettings[row][column];
 
@@ -409,7 +411,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       content[dataRow][col] = change[4];
 
       if (reloadData) {
-        this.hotInstance().getCell(row, col).className += ' hot-saving';
+        this.hotInstance.getCell(row, col).className += ' hot-saving';
       }
     });
 
@@ -418,7 +420,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     this.moduleService.saveInput(this.input).subscribe(_ => {
       if (reloadData) {
         this.getSpreadsheetObservable().subscribe(__ => {
-          this.hotInstance().updateSettings(this.settings, true);
+          this.hotInstance.updateSettings(this.settings, true);
         });
       }
     });
