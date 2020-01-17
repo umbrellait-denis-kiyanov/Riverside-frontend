@@ -15,6 +15,20 @@ type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: n
 // remove in case Handsontable is updated to 7+ (commercial version)
 type HandsontableCellChange = [number, string | number, any, any, any][];
 
+type HotCell = (Omit<Handsontable.GridSettings, 'numericFormat'> &
+                      { validatorName: string } &
+                      { numericFormat: {
+                        pattern: {
+                          trimMantissa?: boolean,
+                          thousandSeparated: boolean,
+                          optionalMantissa?: boolean,
+                          output?: string,
+                          mantissa?: number
+                        },
+                        culture?: string
+                      }
+                    });
+
 class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
     super.prepare(row, col, prop, td, originalValue * 100, cellProperties);
@@ -256,19 +270,8 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   formatCell(row: number, column: number) {
-    const cell = {} as (Omit<Handsontable.GridSettings, 'numericFormat'> &
-                       { validatorName: string } &
-                       { numericFormat: {
-                          pattern: {
-                            trimMantissa?: boolean,
-                            thousandSeparated: boolean,
-                            optionalMantissa?: boolean,
-                            output?: string,
-                            mantissa?: number
-                          },
-                          culture?: string
-                        }
-                       });
+
+    const cell = {} as HotCell;
 
     const settings = this.cellSettings[row][column];
 
