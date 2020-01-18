@@ -1,16 +1,17 @@
-<div class="page-wrapper">
-    <div class="tabsbar">
+<div class="tabsbar">
 
-        <div
-          class="tabitem"
-          [ngClass]="{'active': currentSection == persona.title + '_wrapper'}"
-          (click)="scrollTo(persona.title + '_wrapper')"
-          *ngFor="let persona of inputIds.fromPreviousSteps"
-          title="{{ textContent(inputs[persona.title].content) }}"
-        >
-          <riverside-persona [persona]="persona.title"></riverside-persona>
-        </div>
-    </div>
+  <div
+    class="tabitem"
+    [ngClass]="{'active': currentSection == persona.title + '_wrapper'}"
+    (click)="scrollTo(persona.title + '_wrapper')"
+    *ngFor="let persona of inputIds.fromPreviousSteps"
+    title="{{ textContent(inputs[persona.title].content) }}"
+  >
+    <riverside-persona [persona]="persona.title"></riverside-persona>
+  </div>
+</div>
+
+<div class="page-wrapper">
     <div
         e3-scroll-spy
         [spiedClassNames]="['persona-wrapper']"
@@ -24,7 +25,9 @@
                 <div class="behavior-title" style="padding-left: 0px;" >Demographics</div>
                 <div class="previous-behavior ">
                   <div class="behavior-subtitle">Gender</div>
-                  <div class="behavior-content no-color inline">Male (<ice [input]="persona.perc_male"></ice>%) / Female (<ice [input]="persona.perc_female"></ice>%)</div>
+                  <div class="behavior-content no-color inline">
+                    Male (<ice [input]="persona.perc_male" [single]="true"></ice>%) /
+                    Female (<ice [input]="persona.perc_female" [single]="true"></ice>%)</div>
                 </div>
                 <div class="previous-behavior">
                   <div class="behavior-subtitle">Average Age</div>

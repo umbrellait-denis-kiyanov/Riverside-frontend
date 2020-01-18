@@ -49,10 +49,10 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
 
   behaviorInputs() {
     return this.contentData.steps.reduce((inputs, step) =>
-      inputs[step.sufix] = {
+      Object.assign(inputs, {[step.sufix]: {
         prefix: 'persona_behavior',
         sufix: step.sufix
-      }, {});
+      }}), {});
   }
 
   onSectionChange(sectionId: string) {
