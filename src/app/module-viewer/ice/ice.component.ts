@@ -110,6 +110,12 @@ export class IceComponent implements OnInit, OnDestroy {
 
     const el: HTMLDivElement = document.createElement('div');
     el.innerHTML = this.data.content;
+
+    // Add missing root element (can happen because of a bug elsewhere)
+    if (el.innerHTML.length && el.innerHTML.substr(0, 2).toLowerCase() !== '<p') {
+      el.innerHTML = '<p>' + el.innerHTML + '</p>';
+    }
+
     const selections = el.querySelector('.matrix-options');
 
     if (selections) {
