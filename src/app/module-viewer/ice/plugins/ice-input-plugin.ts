@@ -26,6 +26,12 @@ export default abstract class IceInputPlugin {
 
                 if (self.forceCleanPaste() && !ice_instance.hasCleanPaste) {
                     ice_instance.hasCleanPaste = true;
+
+                    // temporarily prevent text drag&drop into <ice> field. @todo: implement
+                    ice_instance.element.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                    });
+
                     ice_instance.element.addEventListener('paste', (e) => {
                         e.preventDefault();
                         const text = e.clipboardData.getData('text/plain');
@@ -134,7 +140,7 @@ export default abstract class IceInputPlugin {
     }
 
     protected forceCleanPaste() {
-        return false;
+        return true;
     }
 
     protected stopEvent(e: Event) {

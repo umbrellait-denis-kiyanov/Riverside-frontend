@@ -14,9 +14,7 @@ export default class NumericInputPlugin extends IceInputPlugin {
             nodes
                 .filter(node => node.textContent.length !== 1 /* not 100% sure why it's necessary, but it prevents typing within a deleted block */
                      && node.textContent.match(/[^0-9]/))
-                .forEach(node => {
-                    node.textContent = node.textContent.split(/[^0-9]/).join('')
-                });
+                .forEach(node => node.textContent = node.textContent.split(/[^0-9]/).join(''));
 
             this.ice.getCurrentRange().collapse();
         });

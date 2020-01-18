@@ -23,14 +23,22 @@ import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
 import UndoTrackPlugin from './plugins/undo-track-ice-plugin';
 import NumericInputPlugin from './plugins/numeric-input-ice-plugin';
 
+export type TextRange = Range & {
+  moveStart: (unit, offset: number) => void;
+};
+
 export interface IceEditorTracker {
   element: HTMLElement;
+  env: {
+    document: Document;
+  },
   acceptAll: () => void;
   getUserStyle: (id: string) => string;
-  getCurrentRange: () => Range,
+  getCurrentRange: () => TextRange,
+  _insertNode: (node: Node, range: Range) => void;
   selection: {
-    addRange: (range: Range) => void,
-    createRange: () => Range
+    addRange: (range: TextRange) => void,
+    createRange: () => TextRange
   },
   hasCleanPaste: boolean
 }
