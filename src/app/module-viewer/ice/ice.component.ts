@@ -40,7 +40,8 @@ export interface IceEditorTracker {
     addRange: (range: TextRange) => void,
     createRange: () => TextRange
   },
-  hasCleanPaste: boolean
+  hasCleanPaste: boolean;
+  disableDragDrop: boolean;
 }
 
 export class Comments {

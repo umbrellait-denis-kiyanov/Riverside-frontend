@@ -93,7 +93,7 @@ IceCopyPastePlugin.prototype = {
     this._tmpNode = this._ice.env.document.createElement(this._tmpNodeTagName);
     range.insertNode(this._tmpNode);
 
-    const html = (e.originalEvent || e).clipboardData.getData('text/plain');
+    const html = (e.originalEvent || e).clipboardData.getData('text/html');
     e.preventDefault();
     e.stopPropagation();
     e.stopImmediatePropagation();
