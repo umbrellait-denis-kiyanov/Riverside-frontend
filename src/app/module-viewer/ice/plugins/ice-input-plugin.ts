@@ -50,8 +50,7 @@ export default abstract class IceInputPlugin {
 
                 convertKey: function(e) {
                     const range = this._ice.getCurrentRange();
-
-                    const editor = range.nativeRange.commonAncestorContainer.parentElement.parentElement.parentElement;
+                    const editor = self.getEditor();
                     const blur = 'blur' + pluginID;
                     if (!editor.hasAttribute(blur)) {
                         editor.setAttribute(blur, '1');
