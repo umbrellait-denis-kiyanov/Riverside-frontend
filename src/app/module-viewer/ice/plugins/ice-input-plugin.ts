@@ -52,7 +52,7 @@ export default abstract class IceInputPlugin {
                     const range = this._ice.getCurrentRange();
                     const editor = self.getEditor();
                     const blur = 'blur' + pluginID;
-                    if (!editor.hasAttribute(blur)) {
+                    if (editor && !editor.hasAttribute(blur)) {
                         editor.setAttribute(blur, '1');
                         editor.addEventListener('blur', () => editor.innerHTML = self.onBlur(editor.innerHTML));
                     }
@@ -100,7 +100,7 @@ export default abstract class IceInputPlugin {
 
     protected getEditor() {
         let node = this.ice.getCurrentRange().commonAncestorContainer;
-        while (node) {
+        while (node && node.parentNode) {
             node = node.parentNode;
             if (node.contentEditable === 'true') {
                 return node;

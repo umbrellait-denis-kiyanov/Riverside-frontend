@@ -32,9 +32,9 @@ export class Comments {
   adding = false;
   content = '';
   list: InputComment[] = [];
-  editingIndex = 0;
+  editingIndex: number = null;
   show = false;
-  index = 0;
+  index: number = null;
 }
 
 @Component({
@@ -335,10 +335,7 @@ export class IceComponent implements OnInit, OnDestroy {
     }
   }
 
-  @HostListener('paste', ['$event'])
   onPaste(e: KeyboardEvent) {
-    setTimeout(_ => {
-      this.changed.emit(e);
-    }, 100);
+    setTimeout(_ => this.onBlur(), 100);
   }
 }

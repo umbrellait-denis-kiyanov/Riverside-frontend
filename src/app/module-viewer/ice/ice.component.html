@@ -13,6 +13,7 @@
     (mouseenter)="onMouseEnter($event)"
     (blur)="onBlur($event)"
     (paste)="onPaste()"
+    (cut)="onPaste()"
   ></div>
   <error-msg [input]="data"></error-msg>
   <div class="add-comment" *ngIf="!disabled">
