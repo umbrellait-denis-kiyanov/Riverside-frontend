@@ -20,10 +20,12 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
     {
       id: 'perc_male',
       title: '% Male',
+      numeric: true
     },
     {
       id: 'perc_female',
       title: '% Female',
+      numeric: true
     },
     {
       id: 'education',

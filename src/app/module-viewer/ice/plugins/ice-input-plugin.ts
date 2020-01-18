@@ -1,10 +1,12 @@
+import { IceEditorTracker } from '../ice.component';
+
 // based on IceEmdashPlugin plugin - https://github.com/nytimes/ice/blob/master/src/plugins/IceEmdashPlugin/IceEmdashPlugin.js
 
 export default abstract class IceInputPlugin {
 
     pluginID: string;
 
-    ice: any;
+    ice: IceEditorTracker;
 
     constructor() {
         const pluginID = this.constructor.name;
@@ -15,7 +17,7 @@ export default abstract class IceInputPlugin {
                 return;
             }
 
-            const InputPlugin = function(ice_instance) {
+            const InputPlugin = function(ice_instance: IceEditorTracker) {
                 this._ice = ice_instance;
 
                 self.ice = ice_instance;
@@ -26,7 +28,7 @@ export default abstract class IceInputPlugin {
                     ice_instance.hasCleanPaste = true;
                     ice_instance.element.addEventListener('paste', (e) => {
                         e.preventDefault();
-                        const text = (e.originalEvent || e).clipboardData.getData('text/plain');
+                        const text = e.clipboardData.getData('text/plain');
 
                         const node = this._ice.env.document.createTextNode(text);
 
@@ -42,6 +44,10 @@ export default abstract class IceInputPlugin {
             InputPlugin.prototype = {
 
                 keyDown: function(e) {
+                    if (e.which === 8 || e.which === 46 || (e.which >= 35 && e.which <= 40)) {
+                        return true;
+                    }
+
                     if (self.keyDown(e)) {
                         this.convertKey(e);
                         return true;
@@ -99,9 +105,9 @@ export default abstract class IceInputPlugin {
     }
 
     protected getEditor() {
-        let node = this.ice.getCurrentRange().commonAncestorContainer;
-        while (node && node.parentNode) {
-            node = node.parentNode;
+        let node = this.ice.getCurrentRange().commonAncestorContainer as HTMLElement;
+        while (node && node.parentElement) {
+            node = node.parentElement;
             if (node.contentEditable === 'true') {
                 return node;
             }

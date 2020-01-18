@@ -21,11 +21,18 @@ import DisableNewlinesPlugin from './plugins/disable-newlines-ice-plugin';
 import PreventTypeDeletedRangePlugin from './plugins/prevent-type-deleted-range-ice-plugin';
 import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
 import UndoTrackPlugin from './plugins/undo-track-ice-plugin';
+import NumericInputPlugin from './plugins/numeric-input-ice-plugin';
 
 export interface IceEditorTracker {
   element: HTMLElement;
   acceptAll: () => void;
   getUserStyle: (id: string) => string;
+  getCurrentRange: () => Range,
+  selection: {
+    addRange: (range: Range) => void,
+    createRange: () => Range
+  },
+  hasCleanPaste: boolean
 }
 
 export class Comments {
@@ -36,6 +43,11 @@ export class Comments {
   show = false;
   index: number = null;
 }
+
+type IcePluginConfig = {
+  name: string,
+  settings: {[key: string]: string}
+};
 
 @Component({
   selector: 'ice',
@@ -85,6 +97,11 @@ export class IceComponent implements OnInit, OnDestroy {
     new PreventTypeDeletedRangePlugin();
     new UndoTrackPlugin();
     IceCopyPastePluginFixed();
+
+    if (this.numeric) {
+      this.single = true;
+      new NumericInputPlugin();
+    }
 
     if (this.single) {
       new DisableNewlinesPlugin();
@@ -142,25 +159,32 @@ export class IceComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       const text = this.el.nativeElement.querySelector('.textbody');
 
-      const plugins = [
-        'IceAddTitlePlugin',
-        'IceSmartQuotesPlugin',
-        'IceEmdashPlugin',
-        {
-          name: 'IceCopyPastePluginFixed',
-          settings: {
-            pasteType: 'formattedClean',
-            preserve: 'ol,ul,li'
-          }
-        },
-        'FixSpacesPlugin',
-        'PreventTypeDeletedRangePlugin',
-        'UndoTrackPlugin'
-      ];
+      const plugins: (string | IcePluginConfig)[] = ['IceAddTitlePlugin'];
+
+      if (!this.numeric) {
+        plugins.push('IceSmartQuotesPlugin');
+        plugins.push('IceEmdashPlugin');
+        plugins.push('FixSpacesPlugin');
+      }
+
+      plugins.push('PreventTypeDeletedRangePlugin');
+      plugins.push('UndoTrackPlugin');
 
       if (this.single) {
         plugins.push('DisableNewlinesPlugin');
       }
+
+      if (this.numeric) {
+        plugins.push('NumericInputPlugin');
+      }
+
+      plugins.push({
+        name: 'IceCopyPastePluginFixed',
+        settings: {
+          pasteType: 'formattedClean',
+          preserve: 'ol,ul,li'
+        }
+      });
 
       try {
         const tracker = new window.ice.InlineChangeEditor({

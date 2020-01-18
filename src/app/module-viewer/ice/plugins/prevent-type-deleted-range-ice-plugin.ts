@@ -4,8 +4,7 @@ import IceInputPlugin from './ice-input-plugin';
 // automatically start a new range after the deleted text instead
 export default class PreventTypeDeletedRangePlugin extends IceInputPlugin {
     keyDown(e: KeyboardEvent) {
-        //    backspace         delete              home/end, arrow keys
-        if (e.which !== 8 && e.which !== 46 && !(e.which >= 35 && e.which <= 40) && !this.isCurrentRangeEditable()) {
+        if (!this.isCurrentRangeEditable()) {
             this.createNewRange();
         }
 
@@ -24,7 +23,7 @@ export default class PreventTypeDeletedRangePlugin extends IceInputPlugin {
     private createNewRange() {
         const range = this.ice.getCurrentRange();
 
-        const delElement = range.nativeRange.commonAncestorContainer.parentElement;
+        const delElement = range.commonAncestorContainer.parentElement;
         const newRange = this.ice.selection.createRange();
         const placeholder = document.createElement('span');
 
@@ -37,6 +36,6 @@ export default class PreventTypeDeletedRangePlugin extends IceInputPlugin {
 
     private isCurrentRangeEditable() {
         const range = this.ice.getCurrentRange();
-        return !range.startContainer.parentNode.className.split(' ').includes('del');
+        return !range.startContainer.parentElement.className.split(' ').includes('del');
     }
 }
