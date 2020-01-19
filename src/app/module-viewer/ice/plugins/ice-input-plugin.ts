@@ -2,6 +2,8 @@ import { IceEditorTracker } from '../ice.component';
 
 // based on IceEmdashPlugin plugin - https://github.com/nytimes/ice/blob/master/src/plugins/IceEmdashPlugin/IceEmdashPlugin.js
 
+// @todo - define plugin dependencies to make sure they are loaded in a correct order?
+
 export default abstract class IceInputPlugin {
 
     pluginID: string;
@@ -83,7 +85,11 @@ export default abstract class IceInputPlugin {
                                     range.extractContents();
                                     range.collapse();
 
-                                    const replacedNode = this._ice.env.document.createTextNode(self.replaceInput());
+                                    const replacedInput = self.replaceInput();
+
+                                    const replacedNode = typeof replacedInput === 'string' ?
+                                        this._ice.env.document.createTextNode() :
+                                        replacedInput;
 
                                     if (this._ice.isTracking) {
                                         this._ice._insertNode(replacedNode, range);
@@ -124,7 +130,7 @@ export default abstract class IceInputPlugin {
         return false;
     }
 
-    protected replaceInput() {
+    protected replaceInput(): string | HTMLElement {
         return '';
     }
 

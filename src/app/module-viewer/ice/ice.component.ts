@@ -22,6 +22,7 @@ import PreventTypeDeletedRangePlugin from './plugins/prevent-type-deleted-range-
 import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
 import UndoTrackPlugin from './plugins/undo-track-ice-plugin';
 import NumericInputPlugin from './plugins/numeric-input-ice-plugin';
+import InitListPlugin from './plugins/init-list-ice-plugin';
 
 export type TextRange = Range & {
   moveStart: (unit, offset: number) => void;
@@ -114,6 +115,8 @@ export class IceComponent implements OnInit, OnDestroy {
 
     if (this.single) {
       new DisableNewlinesPlugin();
+    } else {
+      new InitListPlugin();
     }
 
     if (this.input) {
@@ -181,6 +184,8 @@ export class IceComponent implements OnInit, OnDestroy {
 
       if (this.single) {
         plugins.push('DisableNewlinesPlugin');
+      } else {
+        plugins.push('InitListPlugin');
       }
 
       if (this.numeric) {
@@ -191,7 +196,7 @@ export class IceComponent implements OnInit, OnDestroy {
         name: 'IceCopyPastePluginFixed',
         settings: {
           pasteType: 'formattedClean',
-          preserve: 'ol,ul,li'
+          preserve: this.single ? '' : 'ol,ul,li'
         }
       });
 
