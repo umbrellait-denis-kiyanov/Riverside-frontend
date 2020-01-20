@@ -62,7 +62,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
     // grade customers
     if (7 === this.step) {
-      this.gradePrefix = this.contentData.inputs.split(',').map(s => s.trim()).find(s => s.substr(-5) === '_name').slice(0, -5);
+      this.gradePrefix = this.prefix + this.contentData.inputs.split(',').map(s => s.trim()).find(s => s.substr(-5) === '_name').slice(0, -5);
       this.grades = Array.from(Array(this.contentData.number_of_inputs + 1).keys()).slice(1);
       this.userGradeLevels = this.getUserGradeLevels();
     }
@@ -176,8 +176,10 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   private getUserGradeLevels() {
-    return this.gradeLevels.reduce((levels, entry) =>
-      levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue(), {});
+    return this.gradeLevels.reduce((levels, entry) => {
+      levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue();
+      return levels;
+    }, {});
   }
 
   validate() {

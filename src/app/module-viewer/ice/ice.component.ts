@@ -72,7 +72,10 @@ export class IceComponent implements OnInit, OnDestroy {
   @Input() placeholder: string = '';
 
   // pass input as string identifier or as instance
-  @Input() input: string;
+  @Input() input?: string;
+  @Input() prefix?: string;
+  @Input() idx?: number;
+
   @Input() data: TemplateInput;
   @Input() single = false;
   @Input() numeric = false;
@@ -122,7 +125,7 @@ export class IceComponent implements OnInit, OnDestroy {
     }
 
     if (this.input) {
-      this.data = this.template.getInput(this.input);
+      this.data = this.template.getInput(this.input, this.idx, this.prefix);
     }
 
     if (!this.data) {
