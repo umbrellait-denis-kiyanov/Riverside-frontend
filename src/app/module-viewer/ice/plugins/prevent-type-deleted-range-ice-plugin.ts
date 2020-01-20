@@ -25,7 +25,7 @@ export default class PreventTypeDeletedRangePlugin extends IceInputPlugin {
 
         const delElement = range.commonAncestorContainer.parentElement;
         const newRange = this.ice.selection.createRange();
-        const placeholder = document.createElement('span');
+        const placeholder = document.createElement('div');
 
         // insert placeholder before or after deleted text depending on cursor position
         delElement.parentNode.insertBefore(placeholder, 0 === range.endOffset ? delElement : delElement.nextSibling);

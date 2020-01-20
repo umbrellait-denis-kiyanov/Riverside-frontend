@@ -24,7 +24,10 @@ export default abstract class IceInputPlugin {
 
                 self.ice = ice_instance;
 
-                self.addEventListeners(ice_instance.element);
+                const editor = ice_instance.element;
+                self.addEventListeners(editor);
+
+                editor.addEventListener('blur', () => editor.innerHTML = self.onBlur(editor.innerHTML));
 
                 // temporarily prevent text drag&drop into <ice> field. @todo: implement
                 if (!ice_instance.disableDragDrop) {
@@ -64,12 +67,6 @@ export default abstract class IceInputPlugin {
 
                 convertKey: function(e) {
                     const range = this._ice.getCurrentRange();
-                    const editor = self.getEditor();
-                    const blur = 'blur' + pluginID;
-                    if (editor && !editor.hasAttribute(blur)) {
-                        editor.setAttribute(blur, '1');
-                        editor.addEventListener('blur', () => editor.innerHTML = self.onBlur(editor.innerHTML));
-                    }
 
                     if (range.collapsed) {
                         try {
@@ -85,7 +82,7 @@ export default abstract class IceInputPlugin {
                                     range.extractContents();
                                     range.collapse();
 
-                                    const replacedInput = self.replaceInput();
+                                    const replacedInput = self.replaceInput(c);
 
                                     const replacedNode = typeof replacedInput === 'string' ?
                                         this._ice.env.document.createTextNode() :
@@ -130,7 +127,7 @@ export default abstract class IceInputPlugin {
         return false;
     }
 
-    protected replaceInput(): string | HTMLElement {
+    protected replaceInput(input: string): string | HTMLElement {
         return '';
     }
 
@@ -139,7 +136,7 @@ export default abstract class IceInputPlugin {
     }
 
     protected keyDown(e: KeyboardEvent) {
-        return true;
+        return false;
     }
 
     protected addEventListeners(element: HTMLElement): void {

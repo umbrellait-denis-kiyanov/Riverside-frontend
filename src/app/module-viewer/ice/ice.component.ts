@@ -173,6 +173,12 @@ export class IceComponent implements OnInit, OnDestroy {
 
       const plugins: (string | IcePluginConfig)[] = ['IceAddTitlePlugin'];
 
+      if (this.single) {
+        plugins.push('DisableNewlinesPlugin');
+      } else {
+        plugins.push('InitListPlugin');
+      }
+
       if (!this.numeric) {
         plugins.push('IceSmartQuotesPlugin');
         plugins.push('IceEmdashPlugin');
@@ -181,12 +187,6 @@ export class IceComponent implements OnInit, OnDestroy {
 
       plugins.push('PreventTypeDeletedRangePlugin');
       plugins.push('UndoTrackPlugin');
-
-      if (this.single) {
-        plugins.push('DisableNewlinesPlugin');
-      } else {
-        plugins.push('InitListPlugin');
-      }
 
       if (this.numeric) {
         plugins.push('NumericInputPlugin');
@@ -205,7 +205,19 @@ export class IceComponent implements OnInit, OnDestroy {
           element: text,
           handleEvents: true,
           currentUser: this.user,
-          plugins: plugins
+          plugins: plugins,
+          changeTypes: {
+            insertType: {
+              tag: 'div',
+              alias: 'ins',
+              action: 'Inserted'
+            },
+            deleteType: {
+              tag: 'div',
+              alias: 'del',
+              action: 'Deleted'
+            }
+          }
         }).startTracking() as IceEditorTracker;
 
         if (tracker.element.innerHTML === '<p><br></p>') {
