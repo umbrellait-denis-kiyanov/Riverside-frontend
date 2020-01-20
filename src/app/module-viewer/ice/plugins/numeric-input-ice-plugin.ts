@@ -1,7 +1,7 @@
 import IceInputPlugin from './ice-input-plugin';
 
 // only allow numeric input
-export default class NumericInputPlugin extends IceInputPlugin {
+export class NumericInputPlugin extends IceInputPlugin {
     public addEventListeners(element: HTMLElement) {
         const observer = new MutationObserver(changes => {
             let node: Node;

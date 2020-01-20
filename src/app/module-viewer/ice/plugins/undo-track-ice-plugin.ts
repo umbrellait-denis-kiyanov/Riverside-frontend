@@ -9,7 +9,7 @@ type Editor = HTMLElement & {
               }
 
 // implement Undo/Redo functionality
-export default class UndoTrackPlugin extends IceInputPlugin {
+export class UndoTrackPlugin extends IceInputPlugin {
 
     protected addEventListeners(editor: Editor) {
 

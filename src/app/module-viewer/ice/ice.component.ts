@@ -16,13 +16,15 @@ import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confir
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.interface';
 import * as moment from 'moment';
-import FixSpacesPlugin from './plugins/fix-spaces-ice-plugin';
-import DisableNewlinesPlugin from './plugins/disable-newlines-ice-plugin';
-import PreventTypeDeletedRangePlugin from './plugins/prevent-type-deleted-range-ice-plugin';
+import {
+  FixSpacesPlugin,
+  DisableNewlinesPlugin,
+  UndoTrackPlugin,
+  NumericInputPlugin,
+  InitListPlugin,
+  PreventTypeDeletedRangePlugin
+} from './plugins';
 import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
-import UndoTrackPlugin from './plugins/undo-track-ice-plugin';
-import NumericInputPlugin from './plugins/numeric-input-ice-plugin';
-import InitListPlugin from './plugins/init-list-ice-plugin';
 
 export type TextRange = Range & {
   moveStart: (unit, offset: number) => void;

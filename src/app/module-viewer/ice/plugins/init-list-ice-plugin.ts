@@ -1,7 +1,7 @@
 import IceInputPlugin from './ice-input-plugin';
 
 // start an ordered or unordered list after user types * or 1. followed by a space at a beginning of a new line
-export default class InitListPlugin extends IceInputPlugin {
+export class InitListPlugin extends IceInputPlugin {
     keyDown(e: KeyboardEvent) {
         const range = this.ice.getCurrentRange();
         const cont = range.startContainer.parentElement;

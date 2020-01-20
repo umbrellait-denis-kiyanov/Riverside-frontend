@@ -1,7 +1,7 @@
 import IceInputPlugin from './ice-input-plugin';
 
 // disable line breaks in input for single-line inputs
-export default class DisableNewlinesPlugin extends IceInputPlugin {
+export class DisableNewlinesPlugin extends IceInputPlugin {
     matchInput(input: string) {
         return input.match(/[\n\r]/).length > 0;
     }
