@@ -103,6 +103,7 @@ FormulaPlugin.prototype.enablePlugin = function() {
     values = calculateValues(this.hot.getData());
   });
 
+  // returns a calculated value for validation (instead of formula)
   this.addHook('beforeValidate',
     (value: any, row: number, prop: string | number, source?: string) => values[row][prop]
   );
