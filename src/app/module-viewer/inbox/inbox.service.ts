@@ -23,7 +23,7 @@ export class InboxService {
     return this.http.get<Message>(`/api/modules/0/feedback/${id}`);
   }
 
-  save(message: Partial<Message & { parent_id: number }>) {
+  save(message: Partial<Message & { parent_id: number,  isAssessmentFeedback: boolean}>) {
     return this.http.post(`/api/modules/` + Number(message.module_id) + `/feedback`, message);
   }
 
