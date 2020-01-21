@@ -49,41 +49,34 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
 })
 export class SpreadsheetComponent extends TemplateComponent {
 
+  private spreadsheetService: SpreadsheetService;
+  private hotRegister = new HotTableRegisterer();
+
   contentData: SpreadsheetTemplateData['template_params_json'];
-
   sheet: SpreadsheetResource;
-
   settings: Handsontable.GridSettings;
-  hotRegister = new HotTableRegisterer();
 
-  types: string[][];
-  rounding: number[][];
+  private input: TemplateInput;
 
-  cellSettings: {
+  private keepFormulas: boolean;
+  private visibleRows: number[];
+  private types: string[][];
+  private rounding: number[][];
+  private cellSettings: {
     editable: boolean;
     className: string;
     renderer: string;
     validator?: (value: any, callback: (valid: boolean) => void) => void | RegExp
   }[][];
 
-  visibleRows: number[];
-
   isRendered = false;
-
   previewRows: undefined[];
   previewCols: undefined[];
 
-  input: TemplateInput;
-
-  keepFormulas: boolean;
   downloadProgress: boolean;
 
   @ViewChild('hot') hot: HotTableComponent;
   @ViewChild('widthContainer') widthContainer: ElementRef;
-
-  watchMenuExpand: Subscription;
-
-  spreadsheetService: SpreadsheetService;
 
   init() {
     this.spreadsheetService = this.injectorObj.get(SpreadsheetService);
@@ -121,16 +114,16 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
   }
 
-  get hotInstance() {
+  private get hotInstance() {
     return this.hotRegister.getInstance('hot');
   }
 
-  getRealRow(fullIndex) {
+  private getRealRow(fullIndex) {
     const idx = this.visibleRows.length ? this.visibleRows.indexOf(fullIndex) : fullIndex;
     return idx > -1 ? idx : null;
   }
 
-  getSpreadsheetObservable() {
+  private getSpreadsheetObservable() {
     return this.spreadsheetService.getSpreadsheet(this.input, this.contentData.apiResource, this.visibleRows, this.keepFormulas).pipe(
       tap(data => {
         if (!(data.data instanceof Array)) {
@@ -276,7 +269,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     return !this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)');
   }
 
-  formatCell(row: number, column: number) {
+  private formatCell(row: number, column: number) {
     const cell = {} as HotCell;
 
     const settings = this.cellSettings[row][column];
@@ -349,7 +342,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     return cell;
   }
 
-  isEditChange(context, changes: HandsontableCellChange, source: string) {
+  private isEditChange(context, changes: HandsontableCellChange, source: string) {
     // sometimes the context argument is not passed (HOT 6 only)
     if (!source) {
       source = (changes as unknown) as string;
@@ -358,7 +351,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     return source === 'edit' || source === 'Autofill.fill';
   }
 
-  beforeChange(context, changes: HandsontableCellChange, source: string) {
+  private beforeChange(context, changes: HandsontableCellChange, source: string) {
     if (!this.isEditChange(context, changes, source)) {
       return;
     }
@@ -383,7 +376,7 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
   }
 
-  afterChange(context, changes: HandsontableCellChange, source: string) {
+  private afterChange(context, changes: HandsontableCellChange, source: string) {
     if (!this.isEditChange(context, changes, source)) {
       return;
     }
@@ -426,7 +419,8 @@ export class SpreadsheetComponent extends TemplateComponent {
     });
   }
 
-  aboveBelowQuota(instance, td, row, col, prop, value, cellProperties) {
+  // cell renderer
+  private aboveBelowQuota(instance, td, row, col, prop, value, cellProperties) {
     Handsontable.renderers.NumericRenderer.apply(this, arguments);
     td.style.fontWeight = 'bold';
 
@@ -439,7 +433,8 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
   }
 
-  formulaError(instance, td, row, col, prop, value, cellProperties) {
+  // cell renderer
+  private formulaError(instance, td, row, col, prop, value, cellProperties) {
     if (value && value.substr && value.substr(0, 1) == '#') {
       arguments[5] = 0;
       td.className += 'dontValidate';
