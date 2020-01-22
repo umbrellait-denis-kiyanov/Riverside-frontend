@@ -158,12 +158,12 @@ export class ModuleService {
     return this.getOrganizations().pipe(map(orgs => orgs[0]));
   }
 
-  exportUrl() {
-    return `${this.baseUrl}/export`;
+  exportUrl(moduleId: number) {
+    return `${this.baseUrl}/export/${moduleId}`;
   }
 
-  sync(): Observable<null> {
-    return this.httpClient.get<null>(`${this.baseUrl}/sync`);
+  sync(moduleId: number): Observable<null> {
+    return this.httpClient.get<null>(`${this.baseUrl}/sync/${moduleId}`);
   }
 
   markAsDone(moduleId: number, orgId: number, stepId: number, is_checked: boolean = true): Observable<null> {
