@@ -19,35 +19,46 @@
 .dropdown-toggle:after
     display:none
 
-.image-parent
-    min-width: 40px
-    max-width: 40px
+.buyer-persona-icon
 
     img
         border-radius: 28px
+        min-width: 60px
+        max-width: 60px
 
-.list-buyer-personas
-    padding-left: 0px
-    padding-right: 0px
+.buyer-personas-item
     background-color: white
+    word-wrap: break-word;
 
-    li
-        background-color: white
+    .buyer-persona-data
+        white-space: initial
+
+        .bp-name
+            font-size: 15px
+            color: #1ab0ff
+
+        .bp-title
+            font-size: 13px
+            color: #868686
+
+        .bp-name
+            margin-top: 0px;
+            margin-bottom: 5px;
+
+        .bp-title
+            margin-top: 0px;
+            margin-bottom: 0px;
+
+    &.selected
+        background-color: $blue
 
         .buyer-persona-data
-            margin-left: 40px
-            white-space: initial
-
             .bp-name
-                font-size: 15px
-                color: #1ab0ff
+                color:white
 
             .bp-title
-                font-size: 13px
-                color: #868686
+                #00c0f4
 
-        &.selected
-            background-color: $blue
-            color:white
-
-
+#buyerPersonasList
+    overflow-x: hidden;
+    padding-bottom: 0px;

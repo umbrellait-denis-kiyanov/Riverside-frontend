@@ -3,18 +3,15 @@
     <div ngbDropdown class="d-inline-block" #bpSel="ngbDropdown">
       <button class="btn btn-default" ngbDropdownToggle>Select Buyer Personas</button>
       <div ngbDropdownMenu aria-labelledby="grid-sort" id="buyerPersonasList" >
-        <ul class="list-group list-buyer-personas" ngbDropdownItem>
-          <li class="list-group-item d-flex " *ngFor="let bp of personas">
-            <div class="image-parent">
-                <img src="{{bp.picture}}" class="img-fluid" alt="quixote">
-            </div>
-
-            <div class="buyer-persona-data">
-              <p class="bp-name"> {{ bp.name }}  </p>
-              <p class="bp-title"> {{ bp.title }}  </p>
-            </div>
-          </li>
-        </ul>
+        <div class="row buyer-personas-item py-2 align-items-center"  *ngFor="let bp of personas" [ngClass]="{'selected': bp.index%2 == 0}" (click)="selectBuyerPersona($event, bp.index)">
+          <div class="col-sm-3 offset-sm-1 buyer-persona-icon">
+            <img src="{{bp.picture}}" class="img-fluid" alt="{{bp.name}}">
+          </div>
+          <div class="col-sm-7 buyer-persona-data">
+            <p class="bp-name text-truncate"> {{ bp.name }}  </p>
+            <p class="bp-title"> {{ bp.title }}  </p>
+          </div>
+        </div>
       </div>
     </div>
   </div>

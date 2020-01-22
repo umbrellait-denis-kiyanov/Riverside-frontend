@@ -16,11 +16,10 @@ export class BuyerPersonasSelectorComponent implements OnInit {
 
   selectBuyerPersona($event) {
     $event.stopPropagation();
-
   }
 
   onClick() {
-    //alert("clicked");
+    //close dropdown
   }
 
   ngOnInit() {
