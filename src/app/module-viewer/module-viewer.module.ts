@@ -101,6 +101,7 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
+import { BuyerPersonasSelectorComponent } from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
 
 @NgModule({
   imports: [
@@ -197,7 +198,8 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ErrorMsgComponent,
     SpinnerComponent,
     SpreadsheetComponent,
-    LoginComponent
+    LoginComponent,
+    BuyerPersonasSelectorComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,

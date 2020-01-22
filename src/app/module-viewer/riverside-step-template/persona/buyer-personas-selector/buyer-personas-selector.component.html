@@ -1,0 +1,22 @@
+<div >
+  <div class="buyer-personas-selector" >
+    <div ngbDropdown class="d-inline-block" #bpSel="ngbDropdown">
+      <button class="btn btn-default" ngbDropdownToggle>Select Buyer Personas</button>
+      <div ngbDropdownMenu aria-labelledby="grid-sort" id="buyerPersonasList" >
+        <ul class="list-group list-buyer-personas" ngbDropdownItem>
+          <li class="list-group-item d-flex " *ngFor="let bp of personas">
+            <div class="image-parent">
+                <img src="{{bp.picture}}" class="img-fluid" alt="quixote">
+            </div>
+
+            <div class="buyer-persona-data">
+              <p class="bp-name"> {{ bp.name }}  </p>
+              <p class="bp-title"> {{ bp.title }}  </p>
+            </div>
+          </li>
+        </ul>
+      </div>
+    </div>
+  </div>
+</div>
+

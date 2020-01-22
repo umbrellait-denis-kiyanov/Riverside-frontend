@@ -1,0 +1,53 @@
+@import "src/app/common/sass/variables.sass"
+
+\:host
+    display: block
+    margin: 10px 0
+    ::ng-deep
+        .dropdown-menu
+            max-height: 85vh
+            overflow-y: auto
+            width: 100%
+            margin-top: 5px
+
+.dropdown, .dropdown button
+    width: 100%
+
+.buyer-personas-selector
+    background-color: $blue
+
+.dropdown-toggle:after
+    display:none
+
+.image-parent
+    min-width: 40px
+    max-width: 40px
+
+    img
+        border-radius: 28px
+
+.list-buyer-personas
+    padding-left: 0px
+    padding-right: 0px
+    background-color: white
+
+    li
+        background-color: white
+
+        .buyer-persona-data
+            margin-left: 40px
+            white-space: initial
+
+            .bp-name
+                font-size: 15px
+                color: #1ab0ff
+
+            .bp-title
+                font-size: 13px
+                color: #868686
+
+        &.selected
+            background-color: $blue
+            color:white
+
+

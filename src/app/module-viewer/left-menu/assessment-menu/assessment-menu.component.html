@@ -1,4 +1,5 @@
 <module-org-selector [warning]="pendingSessions$ | async" (changed)="setOrganization($event)"></module-org-selector>
+<buyer-personas-selector></buyer-personas-selector>
 
 <div class="row" *ngIf="{sessions: (pendingSessions$ | async)} as pendingApproval">
   <div class="col-sm-9" *ngIf="(orgObserver$ | async) as org_id">
