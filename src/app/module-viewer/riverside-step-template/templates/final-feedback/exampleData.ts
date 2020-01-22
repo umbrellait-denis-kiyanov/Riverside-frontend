@@ -1,4 +1,4 @@
-import { FinalFeedbackTemplateData } from './final-feedback.interface';
+import { FinalFeedbackTemplateData } from '.';
 
 export const data: FinalFeedbackTemplateData['template_params_json'] = {
   title: 'BUYER PERSONAS',

@@ -1,4 +1,4 @@
-import { Template2Component } from './template2/template2.component';
+import { NarrowDownComponent } from './narrow-down/narrow-down.component';
 import { BrainstormTemplateComponent } from './brainstorm/brainstorm.component';
 import { GenericTemplateComponent } from './generic/generic.component';
 import { NamePersonasTemplateComponent } from './name_personas/name_personas.component';
@@ -13,7 +13,7 @@ import { VideoComponent } from './video/video.component';
 import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
 
 export const Templates = {
-  template2: Template2Component,
+  narrow_down: NarrowDownComponent,
   brainstorm: BrainstormTemplateComponent,
   generic: GenericTemplateComponent,
   name_personas: NamePersonasTemplateComponent,

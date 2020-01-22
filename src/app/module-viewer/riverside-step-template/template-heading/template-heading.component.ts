@@ -19,16 +19,15 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
 
   time = 0;
   timeStart: number;
-  timerInterval: any;
 
   isTimerOn = false;
 
-  timeInterval$: Observable<any>;
+  timeInterval$: Observable<number>;
   uuid$ = new BehaviorSubject<string>(null);
 
   sub: Subscription;
 
-  contentData: any;
+  contentData: TemplateContentData['data']['template_params_json'];
 
   uuid: string;
 

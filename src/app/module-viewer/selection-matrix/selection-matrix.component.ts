@@ -1,14 +1,12 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { TemplateComponent } from '../riverside-step-template/templates/template-base.cass';
-import { Input as InputType } from 'src/app/common/interfaces/module.interface';
-import { BehaviorSubject } from 'rxjs';
+import { Component, Input } from '@angular/core';
+import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 
 @Component({
   selector: 'app-selection-matrix',
   templateUrl: './selection-matrix.component.html',
   styleUrls: ['./selection-matrix.component.sass']
 })
-export class SelectionMatrixComponent  {
+export class SelectionMatrixComponent {
 
   @Input()
   question: string;
@@ -17,7 +15,7 @@ export class SelectionMatrixComponent  {
   personas: string[];
 
   @Input()
-  options: any[] = [];
+  options: Array<{option: string}>;
 
   @Input()
   horizontal = false;
@@ -31,10 +29,6 @@ export class SelectionMatrixComponent  {
   constructor(
     private template: TemplateComponent
   ) {}
-
-  ngOnInit() {
-    this.options = this.options.map(opt => opt.option || opt);
-  }
 
   toggleSelection(personaIdx, option, $event) {
     if ($event.target.tagName === 'INPUT') {

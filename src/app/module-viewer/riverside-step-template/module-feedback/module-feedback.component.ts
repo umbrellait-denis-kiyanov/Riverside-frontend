@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { TemplateComponent } from '../templates/template-base.cass';
+import { TemplateComponent } from '../templates/template-base.class';
 import Message from '../../inbox/message.model';
 import { InboxService } from '../../inbox/inbox.service';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';

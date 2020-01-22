@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 
-import { TemplateComponent } from '../template-base.cass';
-import { NamePersonasTemplateData } from './name_personas.interface';
+import { TemplateComponent } from '../template-base.class';
+import { NamePersonasTemplateData } from '.';
 
 @Component({
   selector: 'app-name_personas',

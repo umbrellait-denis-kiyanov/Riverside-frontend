@@ -1,21 +1,27 @@
 import { TemplateContentData } from './template-data.class';
-import { Template2Data } from './template2/template2.interface';
-import { GenericTemplateData } from './generic/generic.interface';
-import { BrainstormTemplateData } from './brainstorm/brainstorm.interface';
-import { NamePersonasTemplateData } from './name_personas/name_personas.interface';
-import { PersonaBehaviorTemplateData } from './persona_behavior/persona_behavior.interface';
-import { FeedbackSectionTemplateData } from './feedback_section/feedback_section.interface';
-import { QuestionImageTemplateData } from './question-image/question-image.interface';
-import { Input } from 'src/app/common/interfaces/module.interface';
+import { AgeGenderTemplateData } from './age-gender';
+import { NarrowDownData } from './narrow-down';
+import { GenericTemplateData } from './generic';
+import { BrainstormTemplateData } from './brainstorm';
+import { NamePersonasTemplateData } from './name_personas';
+import { PersonaBehaviorTemplateData } from './persona_behavior';
+import { FeedbackSectionTemplateData } from './feedback_section';
+import { QuestionImageTemplateData } from './question-image';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
+import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define';
+import { SpreadsheetTemplateData } from './spreadsheet';
 
 export type TemplateContentDataType =
-  Template2Data |
+  AgeGenderTemplateData |
+  NarrowDownData |
   GenericTemplateData |
   BrainstormTemplateData |
   NamePersonasTemplateData |
   PersonaBehaviorTemplateData |
   FeedbackSectionTemplateData |
-  QuestionImageTemplateData
+  QuestionImageTemplateData |
+  SpreadsheetTemplateData |
+  SegmentCriteriaDefineTemplateData
   ;
 
 export interface TemplateComponentInterface {
@@ -23,6 +29,11 @@ export interface TemplateComponentInterface {
 }
 
 export interface TemplateContentDataBase {
-  inputs?: {[key: string]: Input};
+  inputs?: {[key: string]: TemplateInput};
   disabled?: boolean;
+  template_params_json?: {
+    description: string;
+    title: string;
+    inputs?: string;
+  }
 }

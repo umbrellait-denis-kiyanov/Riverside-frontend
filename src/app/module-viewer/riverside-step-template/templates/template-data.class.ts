@@ -1,5 +1,4 @@
 import { BehaviorSubject } from 'rxjs';
-import { TemplateContentDataType } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
 import ModuleContent from 'src/app/common/interfaces/module-content.model';
 

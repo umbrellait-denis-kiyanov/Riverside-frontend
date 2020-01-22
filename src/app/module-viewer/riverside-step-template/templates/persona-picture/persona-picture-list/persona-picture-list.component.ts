@@ -8,7 +8,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 })
 export class PersonaPictureListComponent implements OnInit {
 
-  params: any;
   list = [
     'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic1.jpg',
     'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic2.jpg',

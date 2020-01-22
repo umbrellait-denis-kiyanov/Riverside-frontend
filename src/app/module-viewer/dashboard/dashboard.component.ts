@@ -1,13 +1,15 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Module, Organization } from 'src/app/common/interfaces/module.interface';
+import { Module, Organization, ModuleCategory } from 'src/app/common/interfaces/module.interface';
 import { ModuleScores } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable, BehaviorSubject, Subscription } from 'rxjs';
-import { map, shareReplay, filter } from 'rxjs/operators';
+import { map, shareReplay, tap } from 'rxjs/operators';
 import { combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
+import { HttpResponse } from '@angular/common/http';
+import { CanModifyPipe } from 'src/app/common/pipes/canModify.pipe';
 
 @Component({
   selector: 'app-dashboard',
@@ -19,12 +21,14 @@ export class DashboardComponent implements OnInit, OnDestroy {
   constructor(private moduleService: ModuleService,
               private asmService: AssessmentService,
               private route: ActivatedRoute,
-              private router: Router
+              private router: Router,
+              private canModifyPipe: CanModifyPipe
             ) { }
 
-  modulesRequest$: Observable<any>;
-  modules$: Observable<any>;
-  listModules$: Observable<any>;
+  modulesRequest$: Observable<HttpResponse<ModuleCategory[]>>;
+  modules$: Observable<ModuleCategory[]>;
+  categoryColumns: Module[][][];
+  listModules$: Observable<Module[]>;
   assessmentScores$: Observable<ModuleScores>;
 
   organizations$: Observable<Organization[]>;
@@ -36,6 +40,8 @@ export class DashboardComponent implements OnInit, OnDestroy {
   listSortOrder$ = new BehaviorSubject<Sort>({active: 'due_date', direction: 'asc'});
 
   organizationSubscription: Subscription;
+
+  canActivate = false;
 
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
@@ -64,18 +70,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     this.assessmentScores$ = this.asmService.getModuleScores(organization.id).pipe(shareReplay(1));
 
-    this.modules$ = this.modulesRequest$.pipe(map(response => {
-      return response.body.map(category => {
-        if (category.modules.length >= 12) {
-          const chunkSize = Math.ceil(category.modules.length / 2);
-          category.columns = [category.modules.slice(0, chunkSize), category.modules.slice(chunkSize)];
-        } else {
-          category.columns = [category.modules];
-        }
-
-        return category;
-      });
-    }));
+    this.modules$ = this.modulesRequest$.pipe(
+      tap(response => this.canActivate = this.canModifyPipe.transform(response)),
+      map(response => response.body),
+      tap(categories => {
+        this.categoryColumns = categories.map(category => {
+          if (category.modules.length >= 12) {
+            const chunkSize = Math.ceil(category.modules.length / 2);
+            return [category.modules.slice(0, chunkSize), category.modules.slice(chunkSize)];
+          } else {
+            return [category.modules];
+          }
+        });
+      })
+    );
 
     this.listModules$ = combineLatest([this.modulesRequest$, this.listSortOrder$, this.assessmentScores$]).
       pipe(map(([response, listSortOrder, assessmentScores]) => {
@@ -105,8 +113,9 @@ export class DashboardComponent implements OnInit, OnDestroy {
               bValue = 'idx' === field ? b[field] : (b.status ? b.status[field] : null);
             }
 
+            // @todo - duplication with master-dashboard code
             let defLowValue = isNaN(parseInt(aValue, 10)) && isNaN(parseInt(bValue, 10)) || ('due_date' === field) ? 'ZZZ' : 9999;
-            let defHiValue = '' as any;
+            let defHiValue = '' as string | number;
 
             if ('assessment' === field.substring(0, 10)) {
               defLowValue = 9999 * direction;

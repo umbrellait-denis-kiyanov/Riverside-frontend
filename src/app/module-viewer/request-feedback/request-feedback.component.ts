@@ -1,4 +1,4 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Module } from '../../common/interfaces/module.interface';
 import { AssessmentType } from '../../common/interfaces/assessment.interface';
@@ -13,8 +13,6 @@ import { Observable, Subscription } from 'rxjs';
   styleUrls: ['./request-feedback.component.sass']
 })
 export class RequestFeedbackComponent implements OnInit {
-
-  @Input() params: any;
 
   module$: Observable<Module>;
   assessment : any;

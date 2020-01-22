@@ -1,5 +1,5 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { TemplateComponent } from '../templates/template-base.cass';
+import { TemplateComponent } from '../templates/template-base.class';
 
 @Component({
   selector: 'riverside-persona',

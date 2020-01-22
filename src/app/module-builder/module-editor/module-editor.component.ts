@@ -8,7 +8,7 @@ import { StepTemplateEditorComponent } from './step-template-editor/step-templat
 import { StepLinkEditorComponent } from './step-link-editor/step-link-editor.component';
 import { Subscription } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
-import toastr from 'src/app/common/lib/toastr';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
   selector: 'app-module-editor',
@@ -36,6 +36,7 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
     private route: ActivatedRoute,
     private moduleService: ModuleService,
     private modalService: NgbModal,
+    private toastr: ToastrService
   ) { }
 
   ngOnInit() {
@@ -104,7 +105,7 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
     this.moduleData.steps = this.generateStepsData();
     this.saving = this.moduleService.saveModule(this.moduleData).subscribe(_ => {
       this.setPristineState();
-      toastr.success('Saved!');
+      this.toastr.success('Saved!');
     });
   }
 

@@ -1,22 +1,24 @@
 import { TemplateContentData } from './template-data.class';
 import { OnInit, ElementRef, Component, OnDestroy } from '@angular/core';
-import { TemplateComponentInterface, TemplateContentDataType } from './template.interface';
+import { TemplateComponentInterface } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
-import { Input } from 'src/app/common/interfaces/module.interface';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
-  contentData: any;
+
+  abstract contentData;
+
   data: TemplateContentData;
   hideChanges$: Observable<boolean>;
-  inputs: {[key: string]: Input};
+  inputs: {[key: string]: TemplateInput};
   disabled: boolean;
   me: User;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
@@ -45,8 +47,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
 
-    this.activePersonas = Object.values(this.inputs).filter(i => i).map(i => {
-      const input = (i as any);
+    this.activePersonas = Object.values(this.inputs).filter(i => i).map(input => {
       return input.element_key &&
              input.element_key.match(/^persona_[0-9]+$/) &&
              input.content && input.content !== '<p><br></p>' ?
@@ -81,7 +82,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return true;
   }
 
-  contentChanged(data: Input) {
+  contentChanged(data: TemplateInput) {
     if (data) {
       this.moduleService.saveInput(data).subscribe();
       if (data.observer) {
@@ -106,7 +107,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return true;
   }
 
-  decorateInput(inp: Input) {
+  decorateInput(inp: TemplateInput) {
     if (inp && !inp.getValue) {
       inp.getValue = () => {
         if (!inp.content) {
@@ -117,7 +118,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
         // Remove contents deleted but still visible because of changes tracker
         const deletedEls = div.getElementsByClassName('del');
-        for (const el of deletedEls  as any) {
+        for (const el of Array.prototype.slice.call(deletedEls) as Element[]) {
           el.parentNode.removeChild(el);
         }
 
@@ -134,11 +135,11 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return inp;
   }
 
-  getInput(fieldName: string, num?: number): Input {
+  getInput(fieldName: string, num?: number): TemplateInput {
     return this.decorateInput(this.inputs[this.prefix + fieldName + (num ? '_' + String(num) : '')]);
   }
 
-  validateInput(inp: Input, validators: Validation[] = []) {
+  validateInput(inp: TemplateInput, validators: Validation[] = []) {
     if (!validators.length) {
       validators.push(Validate.required('Please fill out this field'));
     }
@@ -149,7 +150,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return !err;
   }
 
-  resetError(input: Input) {
+  resetError(input: TemplateInput) {
     if (input.error) {
       input.error.next(null);
     }

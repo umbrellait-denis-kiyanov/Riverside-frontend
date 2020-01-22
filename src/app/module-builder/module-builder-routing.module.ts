@@ -9,7 +9,6 @@ import {
 } from '@angular/router';
 
 import { ModuleEditorComponent } from './module-editor/module-editor.component';
-import { MatcherComponent } from './matcher/matcher.component';
 import { ModuleSelectorComponent } from './module-selector/module-selector.component';
 import { MainComponent } from '../module-viewer/main/main.component';
 

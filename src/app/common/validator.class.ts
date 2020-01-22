@@ -36,14 +36,14 @@ function validateRequired(value) {
     return !!value;
 }
 
-function validateMin(value, params) {
+function validateMin(value: number, params: number) {
     return value >= params;
 }
 
-function validateMax(value, params) {
+function validateMax(value: number, params: number) {
     return value <= params;
 }
 
-function validateNumber(value) {
+function validateNumber(value: string) {
     return !isNaN(parseFloat(value));
 }

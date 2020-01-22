@@ -39,7 +39,7 @@ import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
 import { E3CommonModule } from '../common/e3-common.module';
 import { ModuleNavComponent } from './content/module-nav/module-nav.component';
 import { ModuleNavService } from '../common/services/module-nav.service';
-import { Template2Component } from './riverside-step-template/templates/template2/template2.component';
+import { NarrowDownComponent } from './riverside-step-template/templates/narrow-down/narrow-down.component';
 import { BrainstormTemplateComponent } from './riverside-step-template/templates/brainstorm/brainstorm.component';
 import { GenericTemplateComponent } from './riverside-step-template/templates/generic/generic.component';
 import { NamePersonasTemplateComponent } from './riverside-step-template/templates/name_personas/name_personas.component';
@@ -51,7 +51,6 @@ import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { ReadableTimePipe } from '../common/pipes/readabletime.pipe';
 import { CanModifyPipe } from '../common/pipes/canModify.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
-// tslint:disable-next-line:max-line-length
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
 import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
@@ -67,7 +66,6 @@ import { NgbStringAdapter } from './ngb-string-adapter';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
 import { ListStyleToggleComponent } from './list-style-toggle/list-style-toggle.component';
-import { NgLetDirective } from '../common/directives/nglet.directive';
 import { NgxChartsModule } from '@swimlane/ngx-charts';
 import { ModuleLinkComponent } from './dashboard/module-link/module-link.component';
 import { SelectionMatrixComponent } from './selection-matrix/selection-matrix.component';
@@ -99,6 +97,7 @@ import { ErrorMsgComponent } from './error-msg/error-msg.component';
 import { SpreadsheetComponent } from './riverside-step-template/templates/spreadsheet/spreadsheet.component';
 import { HotTableModule } from '@handsontable/angular';
 import { SpreadsheetService } from '../common/services/spreadsheet.service';
+import { ToastrModule } from 'ngx-toastr';
 
 @NgModule({
   imports: [
@@ -126,7 +125,8 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     MatInputModule,
     ReactiveFormsModule,
     ImageCropperModule,
-    HotTableModule.forRoot()
+    HotTableModule.forRoot(),
+    ToastrModule.forRoot()
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -135,7 +135,6 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     InboxLeftMenuComponent,
     AccountLeftMenuComponent,
     ContentComponent,
-    // E3CheckboxComponent,
     LoadingComponent,
     FormatDatePipe,
     ReadableDatePipe,
@@ -151,7 +150,7 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     E3TableComponent,
     RequestFeedbackComponent,
     ModuleNavComponent,
-    Template2Component,
+    NarrowDownComponent,
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
@@ -168,7 +167,6 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     MasterDashboardComponent,
     DashboardProgressBarComponent,
     ListStyleToggleComponent,
-    NgLetDirective,
     ModuleLinkComponent,
     SelectionMatrixComponent,
     QuestionImageComponent,
@@ -199,7 +197,7 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
   entryComponents: [
     ModuleViewerRootComponent,
     RequestFeedbackComponent,
-    Template2Component,
+    NarrowDownComponent,
     BrainstormTemplateComponent,
     GenericTemplateComponent,
     NamePersonasTemplateComponent,
@@ -228,7 +226,6 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
     CanModifyPipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
-  bootstrap: [ModuleViewerRootComponent],
-  exports: [NgLetDirective]
+  bootstrap: [ModuleViewerRootComponent]
 })
 export class ModuleViewerModule { }
