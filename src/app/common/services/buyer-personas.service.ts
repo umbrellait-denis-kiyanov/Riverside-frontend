@@ -10,7 +10,6 @@ import { HttpClient  } from '@angular/common/http';
 export class BuyerPersonasService {
 
   baseUrl = '/api/modules';
-
   buyerPersonas$: Observable<BuyerPersona[]> = this.getBuyerPersonas();
 
   constructor( private httpClient: HttpClient ) {}

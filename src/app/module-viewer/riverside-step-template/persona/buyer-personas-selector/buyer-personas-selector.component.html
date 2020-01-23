@@ -4,9 +4,8 @@
       <span *ngIf="personas.length == 0">Select Buyer Personas</span>
       <div *ngIf="personas.length > 0">
         <span *ngFor="let buyerPersonaSelected of personasList ">
-          <img *ngIf="personas.indexOf(buyerPersonaSelected.index) > -1 && personas.indexOf(buyerPersonaSelected.index) < 4" [e3-tooltip]="buyerPersonaSelected.name+' - '+buyerPersonaSelected.title" placement="bottom" class="selectedPersonasImg" src="{{buyerPersonaSelected.picture}}" alt="{{buyerPersonaSelected-name}}">
+          <img *ngIf="personas.indexOf(buyerPersonaSelected.index) > -1 " [e3-tooltip]="buyerPersonaSelected.name+' - '+buyerPersonaSelected.title" placement="bottom" class="selectedPersonasImg" src="{{buyerPersonaSelected.picture}}" alt="{{buyerPersonaSelected-name}}">
         </span>
-        <span *ngIf="personas.length > 4" class="amoutExtraSelectedPersonas" >+{{personas.length - 4}}</span>
       </div>
     </div>
     <div  aria-labelledby="grid-sort" class="buyerPersonasList" >
@@ -25,4 +24,3 @@
 <div *ngIf="readonly" class="btn btn-default w-100 text-truncate" [e3-tooltip]="getReadOnlyTitles()" placement="bottom">
   {{ getReadOnlyTitles() }}
 </div>
-

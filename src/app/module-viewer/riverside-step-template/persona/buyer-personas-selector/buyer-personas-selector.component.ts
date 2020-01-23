@@ -5,7 +5,7 @@ import { Observable, combineLatest } from 'rxjs';
 
 @Component({
   host: {
-    '(document:click)': 'onClick($event)',
+    '(document:click)': 'clickOut($event)',
   },
   selector: 'buyer-personas-selector',
   templateUrl: './buyer-personas-selector.component.html',
@@ -15,9 +15,9 @@ export class BuyerPersonasSelectorComponent implements OnInit {
 
   buyerPersonas$: Observable<BuyerPersona[]>;
   personasList : BuyerPersona[];
-
   @Input () readonly : boolean = false;
   @Input () personas : number[] = [];
+  @Output() onChange = new EventEmitter<void>();
 
   constructor( private buyerPersonasService: BuyerPersonasService ) { }
 
@@ -28,20 +28,22 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   }
 
   selectBuyerPersona($event, index : number) {
-    console.log(this.personas);
     $event.stopPropagation();
     if(this.personas.indexOf(index) > -1){
       this.personas.splice(this.personas.indexOf(index),1); //Remove selected persona
     }else{
       this.personas.push(index); //Add selected persona
     }
-    console.log(this.personas);
+    this.onChange.emit();
   }
 
-  onClick() {
+  clickOut($event, listClicked : HTMLElement) {
     document.querySelectorAll('.buyerPersonasList').forEach(element => {
       let dropdown: HTMLElement = element as HTMLElement;
-      dropdown.style.display = "none";
+      if(dropdown != listClicked){
+        //Avoid to close the current dropdown
+        dropdown.style.display = "none";
+      }
     });
   }
 
@@ -49,12 +51,13 @@ export class BuyerPersonasSelectorComponent implements OnInit {
     let buyerPersonasList : HTMLElement = this.getBPListElement($event.toElement) as HTMLElement;
     if (buyerPersonasList.style.display != "block" ) {
       buyerPersonasList.style.display = "block";
+      //Close other dropdowns when click a buyer personas selector
       $event.stopPropagation();
+      this.clickOut(null,buyerPersonasList);
     }
   }
 
   getBPListElement(currentElement : HTMLElement){
-    console.log(currentElement);
     if(currentElement.className.indexOf("bpSelect") > -1){
       return currentElement.nextElementSibling;
     }else{
@@ -65,11 +68,13 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   //Show personas selected titles only in case it's read only
   getReadOnlyTitles(){
     let readOnlyTitles = "";
-    this.personasList.forEach(persona => {
-      if(this.personas.indexOf(persona.index) > -1 ){
-        readOnlyTitles += persona.title + ", ";
-      }
-    });
+    if(this.personasList){
+      this.personasList.forEach(persona => {
+        if(this.personas.indexOf(persona.index) > -1 ){
+          readOnlyTitles += persona.title + ", ";
+        }
+      });
+    }
     if(!readOnlyTitles){
       return "No personas selected";
     }else{
