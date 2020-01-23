@@ -1,4 +1,7 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { BuyerPersonasService } from "../../../../common/services/buyer-personas.service";
+import { BuyerPersona } from "../../../../common/interfaces/buyer-persona.interface";
+import { Observable, combineLatest } from 'rxjs';
 
 @Component({
   host: {
@@ -10,19 +13,67 @@ import { Component, OnInit } from '@angular/core';
 })
 export class BuyerPersonasSelectorComponent implements OnInit {
 
-  constructor() { }
+  buyerPersonas$: Observable<BuyerPersona[]>;
+  personasList : BuyerPersona[];
 
-  personas = [{ "name": "Sam RcomendationsMake RecommendationsEvaluate SolutionsDefine", "title": "ISSS Director", "picture": "https:\/\/riverside-seagage.s3-us-west-2.amazonaws.com\/Buyer+Personas+images\/pic14.jpg", "index": 1 }, { "name": "Shelby", "title": "Associate Director of XYZ!", "picture": "https:\/\/riverside-seagage.s3-us-west-2.amazonaws.com\/Buyer+Personas+images\/pic5.jpg", "index": 2 }, { "name": "David", "title": "Scholar Advisor", "picture": "https:\/\/riverside-seagage.s3-us-west-2.amazonaws.com\/Buyer+Personas+images\/pic22.jpg", "index": 3 }, { "name": "Patrick!", "title": "ESL Dept Director", "picture": "https:\/\/riverside-seagage.s3-us-west-2.amazonaws.com\/Buyer+Personas+images\/picTed.jpg", "index": 4 }, { "name": "Kristaps Porzi??is!", "title": "Here's a New Guy!!!", "picture": "https:\/\/riverside-seagage.s3-us-west-2.amazonaws.com\/Buyer+Personas+images\/pic3.jpg", "index": 5 }, { "name": "Giannis Ougko Antetokounmpo!", "title": "Forgot About Thisnnnn", "picture": "https:\/\/riverside-seagage.s3-us-west-2.amazonaws.com\/Buyer+Personas+images\/pic4.jpg", "index": 6 }]
+  @Input () readonly : boolean = false;
+  @Input () personas : number[] = [];
 
-  selectBuyerPersona($event) {
+  constructor( private buyerPersonasService: BuyerPersonasService ) { }
+
+  ngOnInit() {
+    this.buyerPersonasService.buyerPersonas$.subscribe(buyerPersonas =>
+      this.personasList = buyerPersonas
+    );
+  }
+
+  selectBuyerPersona($event, index : number) {
+    console.log(this.personas);
     $event.stopPropagation();
+    if(this.personas.indexOf(index) > -1){
+      this.personas.splice(this.personas.indexOf(index),1); //Remove selected persona
+    }else{
+      this.personas.push(index); //Add selected persona
+    }
+    console.log(this.personas);
   }
 
   onClick() {
-    //close dropdown
+    document.querySelectorAll('.buyerPersonasList').forEach(element => {
+      let dropdown: HTMLElement = element as HTMLElement;
+      dropdown.style.display = "none";
+    });
   }
 
-  ngOnInit() {
+  openDropdown($event){
+    let buyerPersonasList : HTMLElement = this.getBPListElement($event.toElement) as HTMLElement;
+    if (buyerPersonasList.style.display != "block" ) {
+      buyerPersonasList.style.display = "block";
+      $event.stopPropagation();
+    }
   }
 
+  getBPListElement(currentElement : HTMLElement){
+    console.log(currentElement);
+    if(currentElement.className.indexOf("bpSelect") > -1){
+      return currentElement.nextElementSibling;
+    }else{
+      return this.getBPListElement(currentElement.parentElement);
+    }
+  }
+
+  //Show personas selected titles only in case it's read only
+  getReadOnlyTitles(){
+    let readOnlyTitles = "";
+    this.personasList.forEach(persona => {
+      if(this.personas.indexOf(persona.index) > -1 ){
+        readOnlyTitles += persona.title + ", ";
+      }
+    });
+    if(!readOnlyTitles){
+      return "No personas selected";
+    }else{
+      return readOnlyTitles.substr(0, readOnlyTitles.length -2);
+    }
+  }
 }

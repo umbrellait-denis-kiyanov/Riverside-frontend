@@ -13,9 +13,6 @@
 .dropdown, .dropdown button
     width: 100%
 
-.buyer-personas-selector
-    background-color: $blue
-
 .dropdown-toggle:after
     display:none
 
@@ -29,6 +26,9 @@
 .buyer-personas-item
     background-color: white
     word-wrap: break-word;
+    margin-left: 0px
+    margin-right: 0px
+    cursor: pointer
 
     .buyer-persona-data
         white-space: initial
@@ -52,13 +52,22 @@
     &.selected
         background-color: $blue
 
-        .buyer-persona-data
-            .bp-name
-                color:white
+.buyerPersonasList
+    overflow-x: hidden
+    padding-bottom: 0px
+    display: none
+    border: 1px solid rgba(0,0,0,.15);
+    border-radius: .25rem;
 
-            .bp-title
-                #00c0f4
+.c-pointer
+    cursor: pointer
 
-#buyerPersonasList
-    overflow-x: hidden;
-    padding-bottom: 0px;
+.selectedPersonasImg
+    width: 30px;
+
+.amoutExtraSelectedPersonas
+    padding: 5px 10px 5px 5px;
+    background-color: white;
+    border-radius: 20px;
+    border: solid #00529f 1px;
+    color: #00529f;

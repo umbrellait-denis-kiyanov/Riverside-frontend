@@ -1,19 +1,28 @@
-<div >
-  <div class="buyer-personas-selector" >
-    <div ngbDropdown class="d-inline-block" #bpSel="ngbDropdown">
-      <button class="btn btn-default" ngbDropdownToggle>Select Buyer Personas</button>
-      <div ngbDropdownMenu aria-labelledby="grid-sort" id="buyerPersonasList" >
-        <div class="row buyer-personas-item py-2 align-items-center"  *ngFor="let bp of personas" [ngClass]="{'selected': bp.index%2 == 0}" (click)="selectBuyerPersona($event, bp.index)">
-          <div class="col-sm-3 offset-sm-1 buyer-persona-icon">
-            <img src="{{bp.picture}}" class="img-fluid" alt="{{bp.name}}">
-          </div>
-          <div class="col-sm-7 buyer-persona-data">
-            <p class="bp-name text-truncate"> {{ bp.name }}  </p>
-            <p class="bp-title"> {{ bp.title }}  </p>
-          </div>
+<div class="buyer-personas-selector" >
+  <div  class="d-block"  *ngIf="!readonly">
+    <div class="btn btn-default w-100 c-pointer bpSelect"  (click)="openDropdown($event)">
+      <span *ngIf="personas.length == 0">Select Buyer Personas</span>
+      <div *ngIf="personas.length > 0">
+        <span *ngFor="let buyerPersonaSelected of personasList ">
+          <img *ngIf="personas.indexOf(buyerPersonaSelected.index) > -1 && personas.indexOf(buyerPersonaSelected.index) < 4" [e3-tooltip]="buyerPersonaSelected.name+' - '+buyerPersonaSelected.title" placement="bottom" class="selectedPersonasImg" src="{{buyerPersonaSelected.picture}}" alt="{{buyerPersonaSelected-name}}">
+        </span>
+        <span *ngIf="personas.length > 4" class="amoutExtraSelectedPersonas" >+{{personas.length - 4}}</span>
+      </div>
+    </div>
+    <div  aria-labelledby="grid-sort" class="buyerPersonasList" >
+      <div class="row buyer-personas-item py-2 align-items-center"  *ngFor="let buyerPersona of personasList" [ngClass]="{'selected': personas.indexOf(buyerPersona.index) > -1}" (click)="selectBuyerPersona($event, buyerPersona.index)">
+        <div class="col-sm-3 offset-sm-1 buyer-persona-icon">
+          <img src="{{buyerPersona.picture}}" class="img-fluid" alt="{{buyerPersona.name}}">
+        </div>
+        <div class="col-sm-7 buyer-persona-data">
+          <p class="bp-name text-truncate" [e3-tooltip]="buyerPersona.name" placement="right"> {{ buyerPersona.name }}  </p>
+          <p class="bp-title"> {{ buyerPersona.title }}  </p>
         </div>
       </div>
     </div>
   </div>
+</div>
+<div *ngIf="readonly" class="btn btn-default w-100 text-truncate" [e3-tooltip]="getReadOnlyTitles()" placement="bottom">
+  {{ getReadOnlyTitles() }}
 </div>
 
