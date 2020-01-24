@@ -1,4 +1,4 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { data } from './exampleData';
 import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_section.component';
@@ -9,7 +9,7 @@ import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_s
   styleUrls: ['./final-feedback.component.sass'],
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FinalFeedbackComponent) }]
 })
-export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent implements OnInit  {
+export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent {
   contentData = data;
 
   columnBoxes = [

@@ -26,6 +26,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   activePersonas: string[];
   action: string;
   instanceExists = true;
+  isEmbedded = false;
 
   public prefix = '';
 

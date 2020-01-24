@@ -1,0 +1,18 @@
+<div *ngIf="moduleResultContent$ | async as content; else contentLoader">
+  <riverside-step-template
+    [template]="content.data.template_component"
+    [data]="content"
+    [canModify]="false"
+    [embedded]="true"
+  ></riverside-step-template>
+</div>
+
+<ng-template #contentLoader>
+  <div class="module-result-loading">
+    Loading module...
+  </div>
+</ng-template>
+
+<div *ngIf="contentData.content" [innerHtml]="contentData.content | safehtml"></div>
+
+<module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

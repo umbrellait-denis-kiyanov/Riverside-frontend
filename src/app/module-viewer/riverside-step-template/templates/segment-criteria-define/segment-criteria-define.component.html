@@ -213,7 +213,9 @@
   </div>
 </div>
 
-<module-feedback *ngIf="step == 5 || step == 8; else nav"></module-feedback>
-<ng-template #nav>
-  <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
-</ng-template>
+<div *ngIf="!isEmbedded">
+  <module-feedback *ngIf="step == 5 || step == 8; else nav"></module-feedback>
+  <ng-template #nav>
+    <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
+  </ng-template>
+</div>

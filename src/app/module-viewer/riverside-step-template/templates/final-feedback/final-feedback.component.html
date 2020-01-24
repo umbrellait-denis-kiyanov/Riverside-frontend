@@ -85,8 +85,8 @@
 
 <div
   class="template-footer"
-  *ngIf="contentData.instructions && !disabled"
+  *ngIf="contentData.instructions && !disabled && !isEmbedded"
   [innerHtml]="contentData.instructions | safehtml"
 ></div>
 
-<module-feedback></module-feedback>
+<module-feedback *ngIf="!isEmbedded"></module-feedback>
