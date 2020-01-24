@@ -11,6 +11,7 @@ import { QuestionImageComponent } from './question-image/question-image.componen
 import { SegmentCriteriaDefineComponent } from './segment-criteria-define/segment-criteria-define.component';
 import { VideoComponent } from './video/video.component';
 import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
+import { PreRequisiteModulesComponent } from './pre-requisite-modules/pre-requisite-modules.component';
 
 export const Templates = {
   narrow_down: NarrowDownComponent,
@@ -23,6 +24,7 @@ export const Templates = {
   persona_picture: PersonaPictureTemplateComponent,
   final_feedback: FinalFeedbackComponent,
   age_gender: AgeGenderComponent,
+  pre_requisite_modules: PreRequisiteModulesComponent,
   question_image: QuestionImageComponent,
   spreadsheet: SpreadsheetComponent,
   video: VideoComponent

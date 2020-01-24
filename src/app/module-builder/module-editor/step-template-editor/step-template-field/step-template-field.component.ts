@@ -1,9 +1,10 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
-import { Observable } from 'rxjs';
+import { Observable, of } from 'rxjs';
 import { ModuleService } from '../../../../common/services/module.service';
 import { TemplateField } from '.';
+import { map } from 'rxjs/operators';
 
 @Component({
   selector: 'app-step-template-field',
@@ -19,12 +20,11 @@ export class StepTemplateFieldComponent implements OnInit {
 
   name: TemplateField[0];
   type: TemplateField[1];
-  selectValues: string[];
+  // should be Observable<[string | number, string][]> but TS 3.1 doesn't like it
+  selectValues$: Observable<string[][]>;
 
   hasSubFields = false;
   rtEditor = InlineEditor;
-
-  resourceValue$: Observable<string[]>;
 
   constructor(private moduleService: ModuleService) { }
 
@@ -45,9 +45,16 @@ export class StepTemplateFieldComponent implements OnInit {
       }
     }
 
+    if (this.type === 'Module') {
+      this.type = 'select';
+      this.selectValues$ = this.moduleService.getModules().pipe(
+        map(modules => modules.map(module => [module.id.toString(), module.name]))
+      );
+    }
+
     if (this.type instanceof Array) {
       if (this.name.substr(-7) === '_select') {
-        this.selectValues = this.type;
+        this.selectValues$ = of(this.type.map(val => [val, val]));
         this.type = 'select';
       } else {
         this.hasSubFields = true;
@@ -59,8 +66,10 @@ export class StepTemplateFieldComponent implements OnInit {
     }
 
     if (this.name.substr(0, 11) === 'apiResource') {
-      this.type = 'resource';
-      this.resourceValue$ = this.moduleService.getTemplateResources(0, 'spreadsheet');
+      this.type = 'select';
+      this.selectValues$ = this.moduleService.getTemplateResources(0, 'spreadsheet').pipe(
+        map(resources => resources.map(resource => [resource, resource]))
+      );
     }
   }
 

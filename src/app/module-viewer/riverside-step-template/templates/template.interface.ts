@@ -10,6 +10,7 @@ import { QuestionImageTemplateData } from './question-image';
 import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define';
 import { SpreadsheetTemplateData } from './spreadsheet';
+import { PreRequisiteModuleTemplateData } from './pre-requisite-modules';
 
 export type TemplateContentDataType =
   AgeGenderTemplateData |
@@ -21,7 +22,8 @@ export type TemplateContentDataType =
   FeedbackSectionTemplateData |
   QuestionImageTemplateData |
   SpreadsheetTemplateData |
-  SegmentCriteriaDefineTemplateData
+  SegmentCriteriaDefineTemplateData |
+  PreRequisiteModuleTemplateData
   ;
 
 export interface TemplateComponentInterface {

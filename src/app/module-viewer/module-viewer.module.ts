@@ -102,6 +102,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
 import { BuyerPersonasSelectorComponent } from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
+import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
 
 @NgModule({
   imports: [
@@ -199,7 +200,8 @@ import { BuyerPersonasSelectorComponent } from './riverside-step-template/person
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
-    BuyerPersonasSelectorComponent
+    BuyerPersonasSelectorComponent,
+    PreRequisiteModulesComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -218,7 +220,8 @@ import { BuyerPersonasSelectorComponent } from './riverside-step-template/person
     TemplateHeadingComponent,
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
-    VideoComponent
+    VideoComponent,
+    PreRequisiteModulesComponent
   ],
   providers: [
     AssessmentService,

@@ -2,7 +2,7 @@ import { Component, forwardRef, ViewChild, ElementRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { SpreadsheetTemplateData } from '.';
 import * as Handsontable from 'handsontable';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
@@ -266,7 +266,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   validate() {
-    return !this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)');
+    return of(!this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)'));
   }
 
   private formatCell(row: number, column: number) {
