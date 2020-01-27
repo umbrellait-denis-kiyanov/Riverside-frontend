@@ -18,13 +18,28 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   @Input () readonly : boolean = false;
   @Input () personas : number[] = [];
   @Output() onChange = new EventEmitter<void>();
-
+  selectedPersonasInit : number[] = [];
   constructor( private buyerPersonasService: BuyerPersonasService ) { }
 
   ngOnInit() {
-    this.buyerPersonasService.buyerPersonas$.subscribe(buyerPersonas =>
-      this.personasList = buyerPersonas
+    this.personas.map(persona =>
+      this.selectedPersonasInit.push(persona)
     );
+    this.buyerPersonasService.buyerPersonas$.subscribe(buyerPersonas =>
+      this.updatePersonas(buyerPersonas)
+    );
+  }
+
+  updatePersonas(buyerPersonas : BuyerPersona[]){
+    this.personasList = buyerPersonas;
+    if(this.personas != this.selectedPersonasInit){
+      //Empty personas array and fill it again with the initial values
+      this.personas.length = 0;
+      this.selectedPersonasInit.map(persona =>
+        this.personas.push(persona)
+      );
+      this.onChange.emit();
+    }
   }
 
   selectBuyerPersona($event, index : number) {

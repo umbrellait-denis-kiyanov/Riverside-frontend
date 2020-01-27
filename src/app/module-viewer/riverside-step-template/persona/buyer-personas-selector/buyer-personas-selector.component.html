@@ -1,12 +1,16 @@
 <div class="buyer-personas-selector" >
   <div  class="d-block"  *ngIf="!readonly">
-    <div class="btn btn-default w-100 c-pointer bpSelect"  (click)="openDropdown($event)">
+    <div class="btn btn-default w-100 c-pointer bpSelect" *ngIf="personasList && personasList.length > 0" (click)="openDropdown($event)">
       <span *ngIf="personas.length == 0">Select Buyer Personas</span>
       <div *ngIf="personas.length > 0">
         <span *ngFor="let buyerPersonaSelected of personasList ">
-          <img *ngIf="personas.indexOf(buyerPersonaSelected.index) > -1 " [e3-tooltip]="buyerPersonaSelected.name+' - '+buyerPersonaSelected.title" placement="bottom" class="selectedPersonasImg" src="{{buyerPersonaSelected.picture}}" alt="{{buyerPersonaSelected-name}}">
+          <img *ngIf="personas.indexOf(buyerPersonaSelected.index) > -1 && personas.indexOf(buyerPersonaSelected.index) < 6" [e3-tooltip]="buyerPersonaSelected.name+' - '+buyerPersonaSelected.title" placement="bottom" class="selectedPersonasImg" src="{{buyerPersonaSelected.picture}}" alt="{{buyerPersonaSelected-name}}">
         </span>
+        <span *ngIf="personas.length > 6" class="amoutExtraSelectedPersonas" >+{{personas.length - 6}}</span>
       </div>
+    </div>
+    <div class="btn btn-default w-100  bpSelect" *ngIf="!personasList || personasList.length == 0" >
+      No buyer personas to select
     </div>
     <div  aria-labelledby="grid-sort" class="buyerPersonasList" >
       <div class="row buyer-personas-item py-2 align-items-center"  *ngFor="let buyerPersona of personasList" [ngClass]="{'selected': personas.indexOf(buyerPersona.index) > -1}" (click)="selectBuyerPersona($event, buyerPersona.index)">
