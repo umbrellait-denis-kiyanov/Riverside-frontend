@@ -37,6 +37,7 @@ export interface TemplateContentDataBase {
   disabled?: boolean;
   template_params_json?: {
     description: string;
+    number_of_inputs?: number;
     title: string;
     inputs?: string;
   }
