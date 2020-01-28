@@ -15,11 +15,11 @@ export class BuyerPersonasService {
   buyerPersonas$: Observable<BuyerPersona[]>
 
   constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {
-    this.getBuyerPersonas();
+    this.buyerPersonas$ = this.getBuyerPersonas();
   }
 
   getBuyerPersonas() {
-    this.buyerPersonas$ = this.moduleNavService.organization$.pipe(switchMap(orgId =>
+    return this.moduleNavService.organization$.pipe(switchMap(orgId =>
       this.httpClient.get<BuyerPersona[]>(`${this.baseUrl}/org/${orgId}/buyer-personas`).pipe(shareReplay(1))
     ))
   }

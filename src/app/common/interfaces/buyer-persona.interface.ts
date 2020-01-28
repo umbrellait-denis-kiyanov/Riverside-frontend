@@ -1,6 +1,6 @@
 export interface BuyerPersona {
-    "name": String,
-    "title": String,
-    "picture": String,
-    "index": number
+    name: string;
+    title: string;
+    picture: string;
+    index: number;
 }

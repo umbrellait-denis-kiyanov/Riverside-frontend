@@ -1,7 +1,7 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BuyerPersonasService } from "../../../../common/services/buyer-personas.service";
-import { BuyerPersona } from "../../../../common/interfaces/buyer-persona.interface";
-import { Observable, combineLatest } from 'rxjs';
+import { Observable, combineLatest, observable } from 'rxjs';
+import { map  } from "rxjs/operators";
 
 @Component({
   host: {
@@ -13,32 +13,16 @@ import { Observable, combineLatest } from 'rxjs';
 })
 export class BuyerPersonasSelectorComponent implements OnInit {
 
-  buyerPersonas$: Observable<BuyerPersona[]>;
-  personasList : BuyerPersona[];
+  constructor( private buyerPersonasService: BuyerPersonasService ) { }
+
   @Input () readonly : boolean = false;
   @Input () personas : number[] = [];
   @Output() onChange = new EventEmitter<void>();
-  selectedPersonasInit : number[] = [];
-  constructor( private buyerPersonasService: BuyerPersonasService ) { }
+  readOnlyTitles$: Observable<string>;
 
   ngOnInit() {
-    this.personas.map(persona =>
-      this.selectedPersonasInit.push(persona)
-    );
-    this.buyerPersonasService.buyerPersonas$.subscribe(buyerPersonas =>
-      this.updatePersonas(buyerPersonas)
-    );
-  }
-
-  updatePersonas(buyerPersonas : BuyerPersona[]){
-    this.personasList = buyerPersonas;
-    if(this.personas != this.selectedPersonasInit){
-      //Empty personas array and fill it again with the initial values
-      this.personas.length = 0;
-      this.selectedPersonasInit.map(persona =>
-        this.personas.push(persona)
-      );
-      this.onChange.emit();
+    if(this.readonly){
+      this.getReadOnlyTitles();
     }
   }
 
@@ -81,19 +65,10 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   }
 
   //Show personas selected titles only in case it's read only
-  getReadOnlyTitles(){
-    let readOnlyTitles = "";
-    if(this.personasList){
-      this.personasList.forEach(persona => {
-        if(this.personas.indexOf(persona.index) > -1 ){
-          readOnlyTitles += persona.title + ", ";
-        }
-      });
-    }
-    if(!readOnlyTitles){
-      return "No personas selected";
-    }else{
-      return readOnlyTitles.substr(0, readOnlyTitles.length -2);
-    }
+  getReadOnlyTitles() {
+   this.readOnlyTitles$ =  this.buyerPersonasService.buyerPersonas$.pipe(map(personas => personas
+    .filter(persona => this.personas.indexOf(persona.index) > -1)
+    .map(persona => persona.name)
+    .join(', ') || 'No personas selected'));
   }
 }
