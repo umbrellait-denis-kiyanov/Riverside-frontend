@@ -14,6 +14,7 @@ class Message extends BaseModel {
   sent_on: Date = null;
   read_on: Date = null;
   is_pending: boolean = false;
+  isAssessmentFeedback : boolean = false;
 }
 
 export default Message;
