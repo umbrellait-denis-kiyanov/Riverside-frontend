@@ -15,14 +15,8 @@ export class BuyerPersonasService {
   buyerPersonas$: Observable<BuyerPersona[]>
 
   constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {
-    this.buyerPersonas$ = this.getBuyerPersonas();
-  }
-
-  getBuyerPersonas() {
-    if(!this.buyerPersonas$){
-      return this.moduleNavService.organization$.pipe(switchMap(orgId =>
-        this.httpClient.get<BuyerPersona[]>(`${this.baseUrl}/org/${orgId}/buyer-personas`).pipe(shareReplay(1))
-      ))
-    }
+    this.buyerPersonas$ = this.moduleNavService.organization$.pipe(switchMap(orgId =>
+      this.httpClient.get<BuyerPersona[]>(`${this.baseUrl}/org/${orgId}/buyer-personas`).pipe(shareReplay(1))
+    ));
   }
 }

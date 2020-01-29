@@ -21,7 +21,11 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   readOnlyTitles$: Observable<string>;
 
   ngOnInit() {
-    this.getReadOnlyTitles();
+    //Show personas selected titles only in case it's read only
+    this.readOnlyTitles$ =  this.buyerPersonasService.buyerPersonas$.pipe(map(personas => personas
+      .filter(persona => this.selected.indexOf(persona.index) > -1)
+      .map(persona => persona.name)
+      .join(', ') || 'No personas selected'));
   }
 
   selectBuyerPersona($event, index : number) {
@@ -62,11 +66,4 @@ export class BuyerPersonasSelectorComponent implements OnInit {
     }
   }
 
-  //Show personas selected titles only in case it's read only
-  getReadOnlyTitles() {
-   this.readOnlyTitles$ =  this.buyerPersonasService.buyerPersonas$.pipe(map(personas => personas
-    .filter(persona => this.selected.indexOf(persona.index) > -1)
-    .map(persona => persona.name)
-    .join(', ') || 'No personas selected'));
-  }
 }
