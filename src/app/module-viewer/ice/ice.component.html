@@ -37,7 +37,7 @@
   </div>
 
   <div *ngIf="!comment.adding && comment.list?.length && comment.show" class="comment-wrapper comment-list">
-    <div *ngFor="let c of comment.list; let i=index">
+    <div *ngFor="let c of comment.list | reverse; let i=index">
       <ice-user [user]="c.user" [time]="c.formattedTime" [tracker]="tracker"></ice-user>
       <div class="comment-content">
         <div>{{ c.content }}</div>

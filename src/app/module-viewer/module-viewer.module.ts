@@ -50,6 +50,7 @@ import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { ReadableTimePipe } from '../common/pipes/readabletime.pipe';
 import { CanModifyPipe } from '../common/pipes/canModify.pipe';
+import { ReversePipe } from '../common/pipes/reverse.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
@@ -140,6 +141,7 @@ import { ToastrModule } from 'ngx-toastr';
     ReadableDatePipe,
     ReadableTimePipe,
     CanModifyPipe,
+    ReversePipe,
     IceComponent,
     RiversideStepTemplateComponent,
     RTemplateDirective,
@@ -224,6 +226,7 @@ import { ToastrModule } from 'ngx-toastr';
     LeftMenuService,
     InboxService,
     CanModifyPipe,
+    ReversePipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter}
   ],
   bootstrap: [ModuleViewerRootComponent]
