@@ -110,7 +110,7 @@ FormulaPlugin.prototype.enablePlugin = function() {
 
   this.addHook('beforeValueRender',
     (value: any, cellProperties: {row: number, col: number, numericFormat: HotNumericFormat}) => {
-      if (value[0] !== '=') {
+      if (!value || value[0] !== '=') {
         return value;
       }
 
