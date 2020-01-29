@@ -3,11 +3,12 @@ import { Module, Step, TemplateInput, Template, Organization, ModuleStatus, Spre
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 import { shareReplay, switchMap, map, filter, debounceTime, distinctUntilChanged, share, take, tap } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ModuleService {
 
-  baseUrl = '/api/modules';
+  baseUrl = environment.apiRoot + '/api/modules';
 
   organizations$: Observable<Organization[]>;
 
@@ -167,10 +168,10 @@ export class ModuleService {
   }
 
   markAsDone(moduleId: number, orgId: number, stepId: number, is_checked: boolean = true): Observable<null> {
-    return this.httpClient.post<null>('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
+    return this.httpClient.post<null>(this.baseUrl + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
   }
 
   markAsApproved(moduleId: number, orgId: number, stepId: number, is_approved: boolean = true): Observable<number[]> {
-    return this.httpClient.post<number[]>('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, org_id: orgId});
+    return this.httpClient.post<number[]>(this.baseUrl + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, org_id: orgId});
   }
 }

@@ -4,11 +4,12 @@ import { AssessmentGroup, AssessmentQuestion, AssessmentType,
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { tap, shareReplay, map, take } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AssessmentService {
 
-  baseUrl = '/api/assessment';
+  baseUrl = environment.apiRoot + '/api/assessment';
 
   groupsUpdated$ = new BehaviorSubject<number>(0);
 

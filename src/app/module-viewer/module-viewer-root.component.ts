@@ -8,18 +8,18 @@ import User from '../common/interfaces/user.model';
   styleUrls: ['./module-viewer-root.component.sass']
 })
 export class ModuleViewerRootComponent implements OnInit {
-  @Input() set me(value: User) {
-    this.userService.setMeFromData(value);
-    if (value) {
-      this.ready = true;
-    }
-  }
-  ready = false;
 
-  constructor(private userService: UserService) { }
+  me: User;
+
+  constructor(private userService: UserService) {
+    this.userService.getAccount().subscribe(me => {
+      this.userService.setMeFromData(me);
+      this.me = this.userService.me;
+    });
+  }
 
   ngOnInit() {
-    (document.querySelector('.loading-site-content') as HTMLElement).style.display = 'none';
+    // (document.querySelector('.loading-site-content') as HTMLElement).style.display = 'none';
   }
 
 }

@@ -3,11 +3,12 @@ import { HttpClient, HttpResponse } from '@angular/common/http';
 import ModuleContent from '../interfaces/module-content.model';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ModuleContentService {
 
-  baseUrl = '/api/modules';
+  baseUrl = environment.apiRoot + '/api/modules';
 
   constructor(private httpClient: HttpClient) { }
 
@@ -17,6 +18,7 @@ export class ModuleContentService {
         const res = fullResponse.body;
         let object;
         if (res.content) {
+          console.log(fullResponse);
           object = Object.assign(res.content, {
             template_params_json: res.template_params_json,
             template_component: res.template_component,

@@ -7,9 +7,12 @@ import {
 } from '../interfaces/account.interface';
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class UserService {
+
+  baseUrl = environment.apiRoot + '/api/modules';
 
   get me(): User {
     return this.meChanged.getValue();
@@ -20,7 +23,7 @@ export class UserService {
 
   meChanged: BehaviorSubject<User> = new BehaviorSubject(null);
 
-  accountBaseUrl = '/api/account';
+  accountBaseUrl = environment.apiRoot + '/api/account';
 
   constructor(private httpClient: HttpClient) {}
 

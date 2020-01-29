@@ -1,7 +1,14 @@
 @import "src/assets/styles/theme.sass"
-@import url('https://fonts.googleapis.com/css?family=Quicksand&display=swap')
 @import "src/app/common/components/e3-async-button/e3-async-button.directive.sass"
 @import '~handsontable/dist/handsontable.full.css'
+
+body
+  font-size: 14px
+  font-family: Verdana, Geneva, sans-serif
+  font-weight: 500
+
+h1, .h1
+  font-weight: 600
 
 .picture-modal .modal-dialog
   width: 80%
@@ -86,6 +93,11 @@ body
 
   button:focus
     outline: 0
+
+.btn-default
+  color: #333
+  background-color: #fff
+  border-color: #ccc
 
 @media (min-width: 576px)
   body .modal-dialog

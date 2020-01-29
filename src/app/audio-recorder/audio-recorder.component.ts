@@ -4,6 +4,7 @@ import { STATUS } from './status.enum';
 import { Recorder } from 'vmsg';
 import { HttpClient } from '@angular/common/http';
 import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import { environment } from '../../environments/environment';
 
 @Component({
   selector: 'audio-recorder',
@@ -23,6 +24,8 @@ export class AudioRecorderComponent implements OnInit {
   ext = 'mp3';
 
   redoIcon = faRedoAlt;
+
+  baseUrl = environment.apiRoot + '/api/modules';
 
   constructor(
     private http: HttpClient
@@ -91,7 +94,8 @@ export class AudioRecorderComponent implements OnInit {
   }
 
   getPresignedUrl() {
-    return this.http.get('/api/modules/0/feedback/presignedurl?ext=' + this.ext)
+
+    return this.http.get(this.baseUrl + '/0/feedback/presignedurl?ext=' + this.ext)
       .toPromise();
   }
 

@@ -1,15 +1,23 @@
-<!doctype html>
+<!DOCTYPE html>
 <html lang="en">
-<head>
-  <meta charset="utf-8">
-  <title>Front</title>
-  <!-- <base href="/"> -->
-
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="icon" type="image/x-icon" href="favicon.ico">
-  <!-- <link href="https://fonts.googleapis.com/css?family=Roboto:300,400,500" rel="stylesheet"> -->
-</head>
-<body class="mat-typography">
-  <app-root></app-root>
-</body>
+  <head>
+    <meta charset="utf-8" />
+    <!-- needs to be right at the top to prevent Chrome from reloading favicon on every route change -->
+    <link rel="icon" type="image/x-icon" href="/assets/img/riverside_favicon.png" />
+    <title>RMCF</title>
+    <base href="/" />
+    <meta name="viewport" content="width=device-width, initial-scale=1" />
+    <meta name="theme-color" content="#4e8ef7" />
+    <link href="https://fonts.googleapis.com/css?family=Material+Icons|Material+Icons+Outlined|Quicksand|Montserrat:500,600,700,800,900&display=swap&subset=latin-ext" rel="stylesheet">
+  </head>
+  <body>
+    <noscript>
+      <p>
+        This page requires JavaScript to work properly. Please enable JavaScript in your browser.
+      </p>
+    </noscript>
+    <!-- <app-root></app-root> -->
+    <app-module-viewer-root></app-module-viewer-root>
+  </body>
 </html>
+

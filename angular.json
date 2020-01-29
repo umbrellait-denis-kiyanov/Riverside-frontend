@@ -43,13 +43,14 @@
             "tsConfig": "src/tsconfig.app.json",
             "assets": ["src/favicon.ico", "src/assets"],
             "styles": [
+              "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.sass",
-              "src/assets/styles/ice.css",
-              "node_modules/ng-bootstrap-to-bootstrap-3/dist/ng-bootstrap-to-bootstrap-3.min.css"
+              "src/assets/styles/ice.css"
             ],
             "scripts": [
-              "src/assets/scripts/jqueryBrowser.js",
               "src/assets/scripts/mictest.js",
+              "node_modules/jquery/dist/jquery.min.js",
+              "src/assets/scripts/jqueryBrowser.js",
               "node_modules/ice/lib/rangy/rangy-core.js",
               "node_modules/ice/src/polyfills.js",
               "node_modules/ice/src/ice.js",
