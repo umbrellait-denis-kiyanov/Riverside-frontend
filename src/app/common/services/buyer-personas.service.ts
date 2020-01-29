@@ -19,8 +19,10 @@ export class BuyerPersonasService {
   }
 
   getBuyerPersonas() {
-    return this.moduleNavService.organization$.pipe(switchMap(orgId =>
-      this.httpClient.get<BuyerPersona[]>(`${this.baseUrl}/org/${orgId}/buyer-personas`).pipe(shareReplay(1))
-    ))
+    if(!this.buyerPersonas$){
+      return this.moduleNavService.organization$.pipe(switchMap(orgId =>
+        this.httpClient.get<BuyerPersona[]>(`${this.baseUrl}/org/${orgId}/buyer-personas`).pipe(shareReplay(1))
+      ))
+    }
   }
 }

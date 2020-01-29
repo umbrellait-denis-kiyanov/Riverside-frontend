@@ -16,22 +16,20 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   constructor( private buyerPersonasService: BuyerPersonasService ) { }
 
   @Input () readonly : boolean = false;
-  @Input () personas : number[] = [];
+  @Input () selected : number[] = [];
   @Output() onChange = new EventEmitter<void>();
   readOnlyTitles$: Observable<string>;
 
   ngOnInit() {
-    if(this.readonly){
-      this.getReadOnlyTitles();
-    }
+    this.getReadOnlyTitles();
   }
 
   selectBuyerPersona($event, index : number) {
     $event.stopPropagation();
-    if(this.personas.indexOf(index) > -1){
-      this.personas.splice(this.personas.indexOf(index),1); //Remove selected persona
+    if(this.selected.indexOf(index) > -1){
+      this.selected.splice(this.selected.indexOf(index),1); //Remove selected persona
     }else{
-      this.personas.push(index); //Add selected persona
+      this.selected.push(index); //Add selected persona
     }
     this.onChange.emit();
   }
@@ -67,7 +65,7 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   //Show personas selected titles only in case it's read only
   getReadOnlyTitles() {
    this.readOnlyTitles$ =  this.buyerPersonasService.buyerPersonas$.pipe(map(personas => personas
-    .filter(persona => this.personas.indexOf(persona.index) > -1)
+    .filter(persona => this.selected.indexOf(persona.index) > -1)
     .map(persona => persona.name)
     .join(', ') || 'No personas selected'));
   }
