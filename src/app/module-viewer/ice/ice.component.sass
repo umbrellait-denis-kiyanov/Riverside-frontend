@@ -1,8 +1,8 @@
 @import "src/app/common/sass/variables.sass"
 
-$padding: 0;
-$triangleSize: 10px;
-$triangleColor: orange;
+$padding: 0
+$triangleSize: 10px
+$triangleColor: orange
 
 \:host
   display: block
@@ -34,10 +34,10 @@ $triangleColor: orange;
   color: orange
 
 .textbody
-  margin: 0 auto;
-  border: solid 2px #BFBFBF;
-  background: white;
-  outline: none;
+  margin: 0 auto
+  border: solid 2px #BFBFBF
+  background: white
+  outline: none
   min-height: 2.2em
 
   &.has-error
@@ -49,14 +49,14 @@ $triangleColor: orange;
 
   &[disabled="true"]
     &:before
-      content: "";
-      position: absolute;
-      width: 100%;
-      height: 100%;
-      background: white;
-      opacity: 0.4;
-      top: 0;
-      left: 0;
+      content: ""
+      position: absolute
+      width: 100%
+      height: 100%
+      background: white
+      opacity: 0.4
+      top: 0
+      left: 0
 
   &[contenteditable][placeholder]:empty:before
     content: attr(placeholder)
@@ -78,18 +78,18 @@ $triangleColor: orange;
 
 .comment-content
 
-  margin-bottom: 10px;
-  padding-bottom: 10px;
-  display: flex;
-  justify-content: space-between;
+  margin-bottom: 10px
+  padding-bottom: 10px
+  display: flex
+  justify-content: space-between
 
 textarea
-  margin: 10px 0;
+  margin: 10px 0
 
 .btn-wrapper
-  text-align: right;
+  text-align: right
   button
-    margin-left: 5px;
+    margin-left: 5px
 
 .matrix-selection
   display: inline-block
