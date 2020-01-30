@@ -24,7 +24,7 @@ export class InboxService {
   }
 
   load(id) {
-    return this.http.get<Message>(`/api/modules/0/feedback/${id}`);
+    return this.http.get<Message>(this.baseUrl + `/0/feedback/${id}`);
   }
 
   save(message: Partial<Message & { parent_id: number }>) {

@@ -47,7 +47,6 @@ export class UserService {
     return this.httpClient.post<boolean>(`${this.legacyBaseUrl}/signin/`, credentials).pipe(
       tap(res => {
         if (res) {
-          console.log(res);
           this.getAccount().subscribe(account => this.setMeFromData(account))
         }
       })
