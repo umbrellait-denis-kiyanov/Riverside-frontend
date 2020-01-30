@@ -28,13 +28,13 @@ export class InboxService {
   }
 
   save(message: Partial<Message & { parent_id: number }>) {
-    return this.http.post(this.baseUrl + Number(message.module_id) + `/feedback`, message).pipe(
+    return this.http.post(this.baseUrl + '/' + Number(message.module_id).toString() + `/feedback`, message).pipe(
       tap(_ => this.toastr.success('Message sent!'))
     );
   }
 
   markAsRead(id: number) {
-    return this.http.post(this.baseUrl + `0/feedback/${id}/read`, {}).pipe(
+    return this.http.post(this.baseUrl + `/0/feedback/${id}/read`, {}).pipe(
       tap(_ => this.messageChange$.next(true))
     );
   }

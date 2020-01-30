@@ -18,7 +18,6 @@ export class ModuleContentService {
         const res = fullResponse.body;
         let object;
         if (res.content) {
-          console.log(fullResponse);
           object = Object.assign(res.content, {
             template_params_json: res.template_params_json,
             template_component: res.template_component,

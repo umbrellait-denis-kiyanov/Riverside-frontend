@@ -12,8 +12,6 @@ import { environment } from '../../../environments/environment';
 @Injectable()
 export class UserService {
 
-  baseUrl = environment.apiRoot + '/api/modules';
-
   get me(): User {
     return this.meChanged.getValue();
   }
@@ -25,6 +23,8 @@ export class UserService {
 
   accountBaseUrl = environment.apiRoot + '/api/account';
 
+  legacyBaseUrl = environment.apiRoot + '/user';
+
   constructor(private httpClient: HttpClient) {}
 
   setMeFromData(data: any) {
@@ -32,7 +32,7 @@ export class UserService {
   }
 
   getAccount(): Observable<AccountProfile> {
-    return this.httpClient.get<AccountProfile>(`${this.accountBaseUrl}/me`);
+    return this.httpClient.get<AccountProfile>(`${this.legacyBaseUrl}/me`);
   }
 
   saveAccount(account: AccountProfile): Observable<null> {
