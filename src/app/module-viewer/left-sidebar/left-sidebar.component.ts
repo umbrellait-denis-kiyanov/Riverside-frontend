@@ -42,8 +42,6 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
 
     this.initialLoad();
 
-    console.log(this.menus);
-
     this.menus.forEach(item => {
       if (item.linkFn) {
         item.linkObservable = item.linkFn(this.navService);

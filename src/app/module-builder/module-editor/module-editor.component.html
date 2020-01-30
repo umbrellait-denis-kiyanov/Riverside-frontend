@@ -6,7 +6,7 @@
         (click)="onClickSave()"
       >
         <ng-container *ngIf="!saving || saving.closed; else elseTemplate">
-          <img src="/public/img/page builder icons/save-filled.png">
+          <mat-icon class="tab-icon">save</mat-icon>
         </ng-container>
 
         <ng-template #elseTemplate>

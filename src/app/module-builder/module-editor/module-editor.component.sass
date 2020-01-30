@@ -1,12 +1,11 @@
+
+
 $maxWidth: 1000px
 \:host
   display: block
-  // max-width: $maxWidth
   margin: 10px auto
   position: relative
-  // border: 1px solid #ddd
-  // padding: 20px
-  // text-align: center
+
 .module-title
   font-size: 22px
 
@@ -72,7 +71,6 @@ $maxWidth: 1000px
   .card-header
     background-color: #3d67c8
 
-
 .steps-header
   font-size: 20px
 
@@ -106,18 +104,57 @@ $maxWidth: 1000px
 .cdk-drop-list-dragging
   cursor: grabbing
 
-@media (max-width: $maxWidth)
-  .float-btn-group
-    right: 10px
-
-
-
 .floating-btn
   margin: 15px 0
   width: 50px
   height: 50px
   fa
     color: white
+
+.float-btn-group
+  position: fixed
+  top: 125px
+  right: 45px
+  z-index: 999
+
+.floating-btn
+  margin: 15px 0
+  width: 50px
+  height: 50px
+  border: none
+  display: block
+  box-shadow: 0 0 5px 0 rgba(10, 10, 10, 0.4)
+  outline: none
+  border-radius: 50%
+  cursor: pointer
+
+.floating-btn img
+  width: 60%
+
+.floating-btn.bg-save ,.bg-save
+  background: #2252c0 !important
+  color: white
+
+.floating-btn.bg-trash , .bg-trash
+  background: red !important
+
+.floating-btn.bg-trash img
+  width: 80%
+
+.floating-btn.bg-view, .bg-view
+  background: #25b138 !important
+
+.floating-btn.bg-read ,.bg-read
+  background: #ffbb2e !important
+
+.floating-btn.bg-versions, .bg-versions
+  background:#5bc0de !important
+
+.bg-listPreview
+  background:#d43318 !important
+
+.floating-btn.bg-read img
+  width: 65%
 
 .btn-flat
   border: 0px
@@ -126,13 +163,14 @@ $maxWidth: 1000px
   padding: 9px
   display: inline-block
 
-
+@media (max-width: $maxWidth)
+  .float-btn-group
+    right: 10px
 
   &.btn-flat-primary
     box-shadow: inset 0 0 0 2px #0084bf !important
     &:hover
       background-color: #ebf9ff !important
-
 
 .divider
   border-bottom: 1px solid #ccc
