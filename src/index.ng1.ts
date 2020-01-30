@@ -6,7 +6,7 @@ import Ng1RiversideModuleViewerApp from './ng1modules/riverside_module_viewer';
 // import * as angular from '../../../public/lib/angular-1.3.2.min'
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 import { downgradeModule, downgradeComponent } from '@angular/upgrade/static';
-// import { ExampleDowngradeComponent } from './app/example_downgrade/example_downgrade.component'
+
 
 import { ModuleBuilderModule } from './app/module-builder/module-builder.module';
 import { StaticProvider, enableProdMode } from '@angular/core';

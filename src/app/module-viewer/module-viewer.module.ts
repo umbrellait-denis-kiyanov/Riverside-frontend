@@ -1,6 +1,6 @@
 
 import { NgModule } from '@angular/core';
-import { HttpClientModule } from '@angular/common/http';
+import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModuleViewerRootComponent } from './module-viewer-root.component';
@@ -98,6 +98,8 @@ import { SpreadsheetComponent } from './riverside-step-template/templates/spread
 import { HotTableModule } from '@handsontable/angular';
 import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
+import { LoginComponent } from './login/login.component';
+import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
 
 @NgModule({
   imports: [
@@ -192,7 +194,8 @@ import { ToastrModule } from 'ngx-toastr';
     ModuleFeedbackComponent,
     ErrorMsgComponent,
     SpinnerComponent,
-    SpreadsheetComponent
+    SpreadsheetComponent,
+    LoginComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -224,7 +227,8 @@ import { ToastrModule } from 'ngx-toastr';
     LeftMenuService,
     InboxService,
     CanModifyPipe,
-    {provide: NgbDateAdapter, useClass: NgbStringAdapter}
+    {provide: NgbDateAdapter, useClass: NgbStringAdapter},
+    {provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true}
   ],
   bootstrap: [ModuleViewerRootComponent]
 })

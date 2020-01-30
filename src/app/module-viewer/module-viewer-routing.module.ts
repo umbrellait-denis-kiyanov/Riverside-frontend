@@ -16,6 +16,7 @@ import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-
 import { AssessmentFinishComponent } from './assessment/assessment-finish/assessment-finish.component';
 import { ProfileComponent } from './account/profile/profile.component';
 import { ChangePasswordComponent } from './account/change-password/change-password.component';
+import { LoginComponent } from './login/login.component';
 
 const moduleContentRoute = [
   {
@@ -30,6 +31,10 @@ const moduleContentRoute = [
 ];
 
 const routes: Routes = [
+  {
+    path: 'login',
+    component: LoginComponent
+  },
   {
     path: '',
     pathMatch: 'full',

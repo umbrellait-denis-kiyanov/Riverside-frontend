@@ -8,6 +8,8 @@ import {
 import { Observable, BehaviorSubject } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
+import { tap } from 'rxjs/operators';
+import { Router } from '@angular/router';
 
 @Injectable()
 export class UserService {
@@ -23,16 +25,33 @@ export class UserService {
 
   accountBaseUrl = environment.apiRoot + '/api/account';
 
-  legacyBaseUrl = environment.apiRoot + '/user';
+  legacyBaseUrl = environment.apiRoot;
 
-  constructor(private httpClient: HttpClient) {}
+  constructor(private httpClient: HttpClient, private router: Router) {}
 
   setMeFromData(data: any) {
     this.me = User.fromObject<User>(data);
   }
 
-  getAccount(): Observable<AccountProfile> {
-    return this.httpClient.get<AccountProfile>(`${this.legacyBaseUrl}/me`);
+  getAccount(): Observable<AccountProfile & {status: string}> {
+    return this.httpClient.get<AccountProfile & {status: string}>(`${this.legacyBaseUrl}/user/me`).pipe(
+      tap(res => {
+        if (res.status && res.status === 'error') {
+          this.router.navigate(['login']);
+        }
+      }
+    ));
+  }
+
+  signin(credentials: FormData): Observable<boolean> {
+    return this.httpClient.post<boolean>(`${this.legacyBaseUrl}/signin/`, credentials).pipe(
+      tap(res => {
+        if (res) {
+          console.log(res);
+          this.getAccount().subscribe(account => this.setMeFromData(account))
+        }
+      })
+    )
   }
 
   saveAccount(account: AccountProfile): Observable<null> {
