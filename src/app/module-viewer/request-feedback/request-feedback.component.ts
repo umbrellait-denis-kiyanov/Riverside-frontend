@@ -5,6 +5,7 @@ import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { InboxService } from '../inbox/inbox.service';
 import { Observable, Subscription } from 'rxjs';
 import { take } from "rxjs/operators";
+import { Router } from '@angular/router';
 
 @Component({
   selector: 'app-request-feedback',
@@ -23,12 +24,13 @@ export class RequestFeedbackComponent implements OnInit {
   constructor(
     public modal: NgbActiveModal,
     private navService: ModuleNavService,
-    private inboxService: InboxService
+    private inboxService: InboxService,
+    private router: Router
   ) { }
 
   ngOnInit() {
     this.module$ = this.navService.moduleDataReplay$;
-    if(window.location.href.indexOf("/assessment") > -1){
+    if(this.router.url.indexOf("/assessment") > -1){
       this.isAssessmentPage = true;
       this.navService.activeAssessmentSessionId$.pipe(take(1)).subscribe(assessmentSessionId => { 
         this.assessmentSessionId = assessmentSessionId;
