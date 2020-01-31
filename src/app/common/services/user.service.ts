@@ -5,11 +5,13 @@ import {
   UpdatePassword,
   PresignedProfilePictureUrl
 } from '../interfaces/account.interface';
-import { Observable, BehaviorSubject } from 'rxjs';
+import { Observable, BehaviorSubject, of } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
-import { tap } from 'rxjs/operators';
+import { tap, switchMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+
+type AccountProfileStatus = AccountProfile & {status: string};
 
 @Injectable()
 export class UserService {
@@ -33,12 +35,11 @@ export class UserService {
     this.me = User.fromObject<User>(data);
   }
 
-  getAccount(): Observable<AccountProfile & {status: string}> {
-    return this.httpClient.get<AccountProfile & {status: string}>(`${this.legacyBaseUrl}/user/me`).pipe(
-      tap(res => {
-        if (res.status && res.status === 'error') {
-          this.router.navigate(['login']);
-        }
+  getAccount(): Observable<AccountProfileStatus> {
+    return this.httpClient.get<AccountProfileStatus>(`${this.legacyBaseUrl}/user/me`).pipe(
+      catchError(err => {
+        this.router.navigate(['login']);
+        return of(null);
       }
     ));
   }
@@ -51,6 +52,12 @@ export class UserService {
         }
       })
     )
+  }
+
+  signout(): Observable<AccountProfileStatus> {
+    return this.httpClient.get(`${this.legacyBaseUrl}/signout?legacy_no_redirect=true`).pipe(
+      switchMap(res => this.getAccount())
+    );
   }
 
   saveAccount(account: AccountProfile): Observable<null> {

@@ -7,7 +7,7 @@
   <div style="padding: 20px">
     <div><a [routerLink]="['/account/profile']" routerLinkActive="active">Profile</a></div>
     <div><a [routerLink]="['/account/password']" routerLinkActive="active">Change Password</a></div>
-    <div><a href="/signout">Sign out</a></div>
+    <div><a (click)="signout()" href="#" onclick="return false;">Sign out</a></div>
   </div>
 </div>
 

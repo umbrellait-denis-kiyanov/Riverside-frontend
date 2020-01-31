@@ -1,6 +1,7 @@
 import { Component, OnInit, Input } from '@angular/core';
 
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
+import { UserService } from 'src/app/common/services/user.service';
 
 @Component({
   selector: 'account-left-menu',
@@ -13,11 +14,15 @@ export class AccountLeftMenuComponent implements OnInit {
 
   constructor(
     private leftMenuService: LeftMenuService,
-
+    private userService: UserService
   ) { }
 
   ngOnInit() {
 
+  }
+
+  signout() {
+    this.userService.signout().subscribe();
   }
 
   collapse() {
