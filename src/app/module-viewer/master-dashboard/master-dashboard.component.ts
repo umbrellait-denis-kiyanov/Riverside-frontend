@@ -1,4 +1,4 @@
-import { Component, OnInit, ElementRef, ViewChild } from '@angular/core';
+import { Component, OnInit, ElementRef, ViewChildren } from '@angular/core';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { Observable, fromEvent, BehaviorSubject, combineLatest } from 'rxjs';
 import { map, startWith } from 'rxjs/operators';
@@ -25,7 +25,7 @@ export class MasterDashboardComponent implements OnInit {
 
   gridHeight$: Observable<string>;
 
-  @ViewChild('orgItem') orgItem: ElementRef;
+  @ViewChildren('orgItem') orgItem: ElementRef;
 
   constructor(private moduleService: ModuleService,
               private router: Router
