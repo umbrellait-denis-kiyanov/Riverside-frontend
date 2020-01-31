@@ -6,6 +6,7 @@ import { InboxService } from '../inbox/inbox.service';
 import { Observable, Subscription } from 'rxjs';
 import { take } from "rxjs/operators";
 import { Router } from '@angular/router';
+import Message from '../inbox/message.model';
 
 @Component({
   selector: 'app-request-feedback',
@@ -40,20 +41,15 @@ export class RequestFeedbackComponent implements OnInit {
 
   submit(message: string) {
     const msg = {
-      assessment_session_id: 0,
       from_org_id : this.navService.lastOrganization.current,
-      module_id : 0,
-      parent_id : 0,
-      step_id : 0,
-      isAssessmentFeedback: false,
-      message: message
-    }
+      message: message,
+      module_id:0
+    } as Message;
+
     if(this.isAssessmentPage){
-      //Assessment feedback
       msg.assessment_session_id = this.assessmentSessionId;
       msg.isAssessmentFeedback  = true;
     }else{
-      //Module feedback 
       msg.module_id = this.navService.module.current,
       msg.step_id = this.navService.step.current;
     }
