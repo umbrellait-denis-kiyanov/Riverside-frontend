@@ -162,7 +162,7 @@ export class IceComponent implements OnInit, OnDestroy {
       selections.remove();
 
       this.selectionsSub = this.data.selections$.pipe(skip(1)).subscribe(_ => {
-        this.onBlur();
+        this.blur();
         this.changed.emit();
       });
     }
@@ -248,7 +248,7 @@ export class IceComponent implements OnInit, OnDestroy {
       this.tracker.element.blur();
       this.onApproveSub = this.iceService.onApprove.subscribe(() => {
         this.tracker.acceptAll();
-        this.onBlur();
+        this.blur();
       });
     });
   }
@@ -307,7 +307,7 @@ export class IceComponent implements OnInit, OnDestroy {
     setTimeout(_ => this.openComment(), 100);
   }
 
-  onMouseEnter() {
+  mouseEnter() {
     if (this.comment.list && this.comment.list.length) {
       this.openComment();
     }
@@ -322,7 +322,7 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('click', ['$event'])
-  onClick() {
+  click() {
     if (this.iceService.shouldShowWarning && !this.disabled) {
       this.dialogService.open({
         content: this.iceService.warningText,
@@ -364,7 +364,7 @@ export class IceComponent implements OnInit, OnDestroy {
     this.data.error.next(null);
   }
 
-  onBlur() {
+  blur() {
     if (!this.isInitialized) {
       this.isInitialized = true;
       return;
@@ -385,18 +385,7 @@ export class IceComponent implements OnInit, OnDestroy {
     this.changed.emit(this.data);
   }
 
-  setEndOfContenteditable(contentEditableElement) {
-    if (document.createRange) {
-      const range = document.createRange(); // Create a range (a range is a like the selection but invisible)
-      range.selectNodeContents(contentEditableElement); // Select the entire contents of the element with the range
-      range.collapse(false); // collapse the range to the end point. false means collapse to end rather than the start
-      const selection = window.getSelection(); // get the selection object (allows you to change selection)
-      selection.removeAllRanges(); // remove any selections already made
-      selection.addRange(range); // make the range you have just created the visible selection
-    }
-  }
-
-  onPaste(e: KeyboardEvent) {
-    setTimeout(_ => this.onBlur(), 100);
+  change(e: KeyboardEvent) {
+    setTimeout(_ => this.blur(), 100);
   }
 }

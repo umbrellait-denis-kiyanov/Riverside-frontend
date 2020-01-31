@@ -10,10 +10,10 @@
     [class.has-error]="data.error | async"
     [class.single-line]="single"
     [innerHTML]="initialContent | safehtml"
-    (mouseenter)="onMouseEnter($event)"
-    (blur)="onBlur($event)"
-    (paste)="onPaste()"
-    (cut)="onPaste()"
+    (mouseenter)="mouseEnter($event)"
+    (blur)="blur($event)"
+    (paste)="change()"
+    (cut)="change()"
   ></div>
   <error-msg [input]="data"></error-msg>
   <div class="add-comment" *ngIf="!disabled">
