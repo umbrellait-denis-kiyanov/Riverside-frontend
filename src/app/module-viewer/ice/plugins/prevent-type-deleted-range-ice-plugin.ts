@@ -3,7 +3,7 @@ import IceInputPlugin from './ice-input-plugin';
 // disallow typing or pasting in the middle of a range of deleted text
 // automatically start a new range after the deleted text instead
 export class PreventTypeDeletedRangePlugin extends IceInputPlugin {
-    keyDown(e: KeyboardEvent) {
+    protected keyDown(e: KeyboardEvent) {
         if (!this.isCurrentRangeEditable()) {
             this.createNewRange();
         }

@@ -22,9 +22,9 @@ import {
   UndoTrackPlugin,
   NumericInputPlugin,
   InitListPlugin,
-  PreventTypeDeletedRangePlugin
+  PreventTypeDeletedRangePlugin,
+  IceCopyPastePluginFixed
 } from './plugins';
-import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
 
 export type TextRange = Range & {
   moveStart: (unit, offset: number) => void;
@@ -188,14 +188,12 @@ export class IceComponent implements OnInit, OnDestroy {
         plugins.push('IceSmartQuotesPlugin');
         plugins.push('IceEmdashPlugin');
         plugins.push('FixSpacesPlugin');
+      } else {
+        plugins.push('NumericInputPlugin');
       }
 
       plugins.push('PreventTypeDeletedRangePlugin');
       plugins.push('UndoTrackPlugin');
-
-      if (this.numeric) {
-        plugins.push('NumericInputPlugin');
-      }
 
       plugins.push({
         name: 'IceCopyPastePluginFixed',

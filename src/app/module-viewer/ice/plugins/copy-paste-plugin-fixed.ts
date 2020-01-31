@@ -1,4 +1,4 @@
-export default function IceCopyPastePluginFixed() {
+export function IceCopyPastePluginFixed() {
 
 (function() {
 
