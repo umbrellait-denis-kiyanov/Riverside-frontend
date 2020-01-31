@@ -1,7 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
 import { BuyerPersonasService } from "../../../../common/services/buyer-personas.service";
-import { Observable, combineLatest, observable } from 'rxjs';
-import { map  } from "rxjs/operators";
+import { BuyerPersona } from "../../../../common/interfaces/buyer-persona.interface";
+import { Observable, combineLatest, of, observable, concat } from 'rxjs';
+import { map, ignoreElements, startWith   } from "rxjs/operators";
 
 @Component({
   host: {
@@ -19,14 +20,26 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   @Input () selected : number[] = [];
   @Output() onChange = new EventEmitter<void>();
   readOnlyTitles$: Observable<string>;
+  buyerPersonasList$: Observable<BuyerPersona[]>
 
   ngOnInit() {
+    this.buyerPersonasList$ = this.buyerPersonasService.getBuyerPersonas();
     //Show personas selected titles only in case it's read only
-    this.readOnlyTitles$ =  this.buyerPersonasService.buyerPersonas$.pipe(map(personas => personas
+    this.readOnlyTitles$ =  this.buyerPersonasList$.pipe(map(personas => personas
       .filter(persona => this.selected.indexOf(persona.index) > -1)
       .map(persona => persona.name)
       .join(', ') || 'No personas selected'));
-  }
+
+      this.buyerPersonasList$ = combineLatest(
+        this.buyerPersonasService.getBuyerPersonas(),
+        this.onChange.pipe(startWith(null))
+      ).pipe(
+        map(([buyerPersonas]) => buyerPersonas.map((persona: BuyerPersona & {isSelected: boolean}) => {
+          persona.isSelected = this.selected.includes(persona.index);
+          return persona;
+        }))
+      )
+    }
 
   selectBuyerPersona($event, index : number) {
     $event.stopPropagation();
@@ -65,5 +78,4 @@ export class BuyerPersonasSelectorComponent implements OnInit {
       return this.getBPListElement(currentElement.parentElement);
     }
   }
-
 }

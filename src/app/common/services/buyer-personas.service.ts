@@ -12,11 +12,15 @@ import { ModuleNavService } from "./module-nav.service";
 export class BuyerPersonasService {
 
   baseUrl = '/api/modules';
-  buyerPersonas$: Observable<BuyerPersona[]>
+  private buyerPersonas$: Observable<BuyerPersona[]>
 
   constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {
     this.buyerPersonas$ = this.moduleNavService.organization$.pipe(switchMap(orgId =>
       this.httpClient.get<BuyerPersona[]>(`${this.baseUrl}/org/${orgId}/buyer-personas`).pipe(shareReplay(1))
     ));
+  }
+
+  getBuyerPersonas(){
+    return this.buyerPersonas$;
   }
 }
