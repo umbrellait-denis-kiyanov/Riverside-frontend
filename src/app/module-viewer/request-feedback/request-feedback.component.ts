@@ -30,7 +30,7 @@ export class RequestFeedbackComponent implements OnInit {
 
   ngOnInit() {
     this.module$ = this.navService.moduleDataReplay$;
-    if(this.router.url.indexOf("/assessment") > -1){
+    if(this.router.url.includes("/assessment")){
       this.isAssessmentPage = true;
       this.navService.activeAssessmentSessionId$.pipe(take(1)).subscribe(assessmentSessionId => { 
         this.assessmentSessionId = assessmentSessionId;
