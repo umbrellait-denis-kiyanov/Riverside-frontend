@@ -150,16 +150,16 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
     this.lastSavedModule = JSON.stringify(this.moduleData);
   }
 
-  export() {
-    window.location.href = this.moduleService.exportUrl();
+  export(moduleId: number) {
+    window.location.href = this.moduleService.exportUrl(moduleId);
   }
 
-  sync() {
+  sync(moduleId: number) {
     if (prompt(`Data synchronization is a destructive action which will overwrite your current module and step configuration. Please make sure to export a data backup before proceeding. Are you sure you want to continue with the synchronization? Type "Yes" to confirm.`) !== 'Yes') {
       return;
     }
 
-    this.moduleService.sync().subscribe((res) => {
+    this.moduleService.sync(moduleId).subscribe((res) => {
       alert('Synchronization complete. The application will be reloaded to refresh your data.');
       window.location.reload();
     });

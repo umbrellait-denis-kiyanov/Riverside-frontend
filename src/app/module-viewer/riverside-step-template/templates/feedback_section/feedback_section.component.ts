@@ -53,7 +53,6 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
         prefix: 'persona_behavior',
         sufix: step.sufix
       };
-
       return inputs;
     }, {});
   }

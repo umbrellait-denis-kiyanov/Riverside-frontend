@@ -20,10 +20,12 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
     {
       id: 'perc_male',
       title: '% Male',
+      numeric: true
     },
     {
       id: 'perc_female',
       title: '% Female',
+      numeric: true
     },
     {
       id: 'education',
@@ -57,12 +59,6 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
   }
 
   traitInputs() {
-    const traitInputs = {};
-    this.traits.forEach(trait => {
-      traitInputs[trait.id] = {
-        prefix: 'persona_' + trait.id,
-      };
-    });
-    return traitInputs;
+    return this.traits.reduce((traitInputs, trait) => traitInputs[trait.id] = { prefix: 'persona_' + trait.id }, {});
   }
 }

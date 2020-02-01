@@ -130,16 +130,16 @@
     <div class="col-sm-6 import-export">
       <button
         class="floating-btn bg-save"
-        (click)="export()"
-        title="Export Module Data...."
+        (click)="export(moduleData.id)"
+        title="Export {{ moduleData.name }} Module Data"
       >
         <mat-icon class="tab-icon">cloud_download</mat-icon>
       </button>
 
       <button
         class="floating-btn bg-save"
-        (click)="sync()"
-        title="Synchronize Module Data From File"
+        (click)="sync(moduleData.id)"
+        title="Synchronize {{ moduleData.name }} Module Data From File"
       >
         <mat-icon class="tab-icon">sync</mat-icon>
       </button>

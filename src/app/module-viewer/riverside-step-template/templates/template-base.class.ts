@@ -135,8 +135,9 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return inp;
   }
 
-  getInput(fieldName: string, num?: number): TemplateInput {
-    return this.decorateInput(this.inputs[this.prefix + fieldName + (num ? '_' + String(num) : '')]);
+  getInput(fieldName: string, num?: number, prefix?: string): TemplateInput {
+    const id = (typeof prefix === 'string' ? prefix : this.prefix) + fieldName + (num ? '_' + String(num) : '');
+    return this.decorateInput(this.inputs[id]);
   }
 
   validateInput(inp: TemplateInput, validators: Validation[] = []) {

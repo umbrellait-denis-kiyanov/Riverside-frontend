@@ -1,6 +1,7 @@
 @import "src/app/module-viewer/riverside-step-template/templates/template.sass"
 \:host
-  max-width: fit-content
+  max-width: 100%
+
   \::ng-deep
     .textbody
       padding: 5px
@@ -174,13 +175,10 @@
         color: black !important
   &.inline
     \::ng-deep ice
+      vertical-align: middle
       display: inline-block
       width: auto
-      min-width: 35px
-      .textbody
-        min-height: 0
-        border: 1px solid #ccc
-        padding: 5px 5px
+      min-width: 20px
       .add-comment
         display: none !important
 
