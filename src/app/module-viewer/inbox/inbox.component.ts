@@ -69,9 +69,9 @@ export class InboxComponent implements OnInit {
     this.submitting = this.inboxService.save({
       assessment_session_id: message.assessment_session_id,
       to_org_id: message.from_org_id,
-      module_id: message.module_id,
+      module_id: message.module_id || 0,
       parent_id: message.id,
       message: text
-    }).subscribe(_ => this.toastr.success('Message sent!'));
+    }).subscribe();
   }
 }
