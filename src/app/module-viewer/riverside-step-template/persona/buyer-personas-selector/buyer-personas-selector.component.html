@@ -1,7 +1,7 @@
 <div class="buyer-personas-selector" >
   <div  class="d-block"  *ngIf="!readonly">
     <div class="btn btn-default w-100 bpSelect" *ngIf="(buyerPersonasList$ | async) as personasList " >
-      <div *ngIf="personasList.length > 0" class="c-pointer" (click)="openDropdown($event)">
+      <div *ngIf="personasList.length > 0" class="c-pointer" (click)="this.dropdownOpen = !this.dropdownOpen">
         <span *ngIf="selected.length == 0">Select Buyer Personas</span>
         <div *ngIf="selected.length > 0">
           <span *ngFor="let buyerPersonaSelected of personasList ">
@@ -13,8 +13,8 @@
         No buyer personas to select
       </div>
     </div>
-    <div  aria-labelledby="grid-sort" class="buyerPersonasList" *ngIf="(buyerPersonasList$ | async) as personasList" >
-      <div class="row buyer-personas-item py-2 align-items-center"  *ngFor="let buyerPersona of personasList" [ngClass]="{'selected': buyerPersona.isSelected }" (click)="selectBuyerPersona($event, buyerPersona.index)">
+    <div  aria-labelledby="grid-sort" class="buyerPersonasList" [ngClass]="{'d-none': !dropdownOpen }" *ngIf="(buyerPersonasList$ | async) as personasList" >
+      <div class="row buyer-personas-item py-2 align-items-center"  *ngFor="let buyerPersona of personasList" [ngClass]="{'selected': buyerPersona.isSelected }" (click)="selectBuyerPersona(buyerPersona.index)">
         <div class="col-sm-3 offset-sm-1 buyer-persona-icon">
           <img src="{{buyerPersona.picture}}" class="img-fluid" alt="{{buyerPersona.name}}">
         </div>

@@ -1,12 +1,12 @@
-import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Component, OnInit, Input, Output, EventEmitter, ElementRef } from '@angular/core';
 import { BuyerPersonasService } from "../../../../common/services/buyer-personas.service";
 import { BuyerPersona } from "../../../../common/interfaces/buyer-persona.interface";
 import { Observable, combineLatest, of, observable, concat } from 'rxjs';
-import { map, ignoreElements, startWith   } from "rxjs/operators";
+import { map, startWith   } from "rxjs/operators";
 
 @Component({
   host: {
-    '(document:click)': 'clickOut($event)',
+    '(document:click)': 'hideDropdown($event)',
   },
   selector: 'buyer-personas-selector',
   templateUrl: './buyer-personas-selector.component.html',
@@ -14,35 +14,32 @@ import { map, ignoreElements, startWith   } from "rxjs/operators";
 })
 export class BuyerPersonasSelectorComponent implements OnInit {
 
-  constructor( private buyerPersonasService: BuyerPersonasService ) { }
+  constructor( private buyerPersonasService: BuyerPersonasService, private eRef: ElementRef) { }
 
   @Input () readonly : boolean = false;
   @Input () selected : number[] = [];
   @Output() onChange = new EventEmitter<void>();
   readOnlyTitles$: Observable<string>;
   buyerPersonasList$: Observable<BuyerPersona[]>
-
+  dropdownOpen = false;
   ngOnInit() {
-    this.buyerPersonasList$ = this.buyerPersonasService.getBuyerPersonas();
+    this.buyerPersonasList$ = combineLatest(
+      this.buyerPersonasService.getBuyerPersonas(),
+      this.onChange.pipe(startWith(null))
+    ).pipe(
+      map(([buyerPersonas]) => buyerPersonas.map((persona: BuyerPersona & {isSelected: boolean}) => {
+        persona.isSelected = this.selected.includes(persona.index);
+        return persona;
+      }))
+    )
     //Show personas selected titles only in case it's read only
     this.readOnlyTitles$ =  this.buyerPersonasList$.pipe(map(personas => personas
       .filter(persona => this.selected.indexOf(persona.index) > -1)
       .map(persona => persona.name)
       .join(', ') || 'No personas selected'));
+  }
 
-      this.buyerPersonasList$ = combineLatest(
-        this.buyerPersonasService.getBuyerPersonas(),
-        this.onChange.pipe(startWith(null))
-      ).pipe(
-        map(([buyerPersonas]) => buyerPersonas.map((persona: BuyerPersona & {isSelected: boolean}) => {
-          persona.isSelected = this.selected.includes(persona.index);
-          return persona;
-        }))
-      )
-    }
-
-  selectBuyerPersona($event, index : number) {
-    $event.stopPropagation();
+  selectBuyerPersona(index : number) {
     if(this.selected.indexOf(index) > -1){
       this.selected.splice(this.selected.indexOf(index),1); //Remove selected persona
     }else{
@@ -51,23 +48,9 @@ export class BuyerPersonasSelectorComponent implements OnInit {
     this.onChange.emit();
   }
 
-  clickOut($event, listClicked : HTMLElement) {
-    document.querySelectorAll('.buyerPersonasList').forEach(element => {
-      let dropdown: HTMLElement = element as HTMLElement;
-      if(dropdown != listClicked){
-        //Avoid to close the current dropdown
-        dropdown.style.display = "none";
-      }
-    });
-  }
-
-  openDropdown($event){
-    let buyerPersonasList : HTMLElement = this.getBPListElement($event.toElement) as HTMLElement;
-    if (buyerPersonasList.style.display != "block" ) {
-      buyerPersonasList.style.display = "block";
-      //Close other dropdowns when click a buyer personas selector
-      $event.stopPropagation();
-      this.clickOut(null,buyerPersonasList);
+  hideDropdown(event) {
+    if(!this.eRef.nativeElement.contains(event.target)){
+      this.dropdownOpen = false;
     }
   }
 
