@@ -170,7 +170,7 @@ export class ModuleService {
     return this.httpClient.post<null>('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
   }
 
-  markAsApproved(moduleId: number, orgId: number, stepId: number, is_approved: boolean = true): Observable<number[]> {
-    return this.httpClient.post<number[]>('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, org_id: orgId});
+  markAsApproved(moduleId: number, orgId: number, stepId: number, is_approved, is_section): Observable<number[]> {
+    return this.httpClient.post<number[]>('/api/modules/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, is_section, org_id: orgId});
   }
 }
