@@ -162,7 +162,7 @@ export class IceComponent implements OnInit, OnDestroy {
       selections.remove();
 
       this.selectionsSub = this.data.selections$.pipe(skip(1)).subscribe(_ => {
-        this.blur();
+        this.onBlur();
         this.changed.emit();
       });
     }
@@ -246,7 +246,7 @@ export class IceComponent implements OnInit, OnDestroy {
       this.tracker.element.blur();
       this.onApproveSub = this.iceService.onApprove.subscribe(() => {
         this.tracker.acceptAll();
-        this.blur();
+        this.onBlur();
       });
     });
   }
@@ -305,7 +305,7 @@ export class IceComponent implements OnInit, OnDestroy {
     setTimeout(_ => this.openComment(), 100);
   }
 
-  mouseEnter() {
+  onMouseEnter() {
     if (this.comment.list && this.comment.list.length) {
       this.openComment();
     }
@@ -320,7 +320,7 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('click', ['$event'])
-  click() {
+  onClick() {
     if (this.iceService.shouldShowWarning && !this.disabled) {
       this.dialogService.open({
         content: this.iceService.warningText,
@@ -354,7 +354,7 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('keyup', ['$event'])
-  keyEvent(e: KeyboardEvent) {
+  onKeyEvent(e: KeyboardEvent) {
     if ((e.which < 48 && e.which !== 32 && e.which !== 8) || e.which > 90) {
       return false;
     }
@@ -362,7 +362,7 @@ export class IceComponent implements OnInit, OnDestroy {
     this.data.error.next(null);
   }
 
-  blur() {
+  onBlur() {
     if (!this.isInitialized) {
       this.isInitialized = true;
       return;
@@ -383,7 +383,7 @@ export class IceComponent implements OnInit, OnDestroy {
     this.changed.emit(this.data);
   }
 
-  change(e: KeyboardEvent) {
-    setTimeout(_ => this.blur(), 100);
+  onChange(e: KeyboardEvent) {
+    setTimeout(_ => this.onBlur(), 100);
   }
 }
