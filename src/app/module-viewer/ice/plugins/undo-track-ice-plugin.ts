@@ -39,7 +39,7 @@ export class UndoTrackPlugin extends IceInputPlugin {
         });
     }
 
-    keyDown(e: KeyboardEvent) {
+    protected keyDown(e: KeyboardEvent) {
         if (e.ctrlKey && (e.key === 'z' || e.key === 'y')) {
             const editor = e.target as Editor;
 

@@ -2,7 +2,7 @@ import IceInputPlugin from './ice-input-plugin';
 
 // start an ordered or unordered list after user types * or 1. followed by a space at a beginning of a new line
 export class InitListPlugin extends IceInputPlugin {
-    keyDown(e: KeyboardEvent) {
+    protected keyDown(e: KeyboardEvent) {
         const range = this.ice.getCurrentRange();
         const cont = range.startContainer.parentElement;
 
@@ -15,7 +15,7 @@ export class InitListPlugin extends IceInputPlugin {
         return true;
     }
 
-    insertList(e: KeyboardEvent, range: Range, cont: HTMLElement, tag: 'ul' | 'ol') {
+    private insertList(e: KeyboardEvent, range: Range, cont: HTMLElement, tag: 'ul' | 'ol') {
         this.stopEvent(e);
         cont.innerHTML = '<' + tag + '><li>\u2004</li></' + tag + '>';
 
@@ -24,7 +24,7 @@ export class InitListPlugin extends IceInputPlugin {
         setTimeout(_ => li.innerHTML = '');
     }
 
-    onBlur(html) {
+    protected onBlur(html) {
         return html.split('<li><br></li>').join('<li></li>');
     }
 }

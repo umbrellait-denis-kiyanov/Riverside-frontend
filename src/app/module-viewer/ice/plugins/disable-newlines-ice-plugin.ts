@@ -2,19 +2,19 @@ import IceInputPlugin from './ice-input-plugin';
 
 // disable line breaks in input for single-line inputs
 export class DisableNewlinesPlugin extends IceInputPlugin {
-    matchInput(input: string) {
+    protected matchInput(input: string) {
         return input.match(/[\n\r]/).length > 0;
     }
 
-    replaceInput() {
+    protected replaceInput() {
         return '';
     }
 
-    onBlur(html) {
+    protected onBlur(html) {
         return this.removeFormatting(html);
     }
 
-    keyDown(e: KeyboardEvent) {
+    protected keyDown(e: KeyboardEvent) {
         if (e.which === 13) {
             e.preventDefault();
             return false;
@@ -23,7 +23,7 @@ export class DisableNewlinesPlugin extends IceInputPlugin {
         return true;
     }
 
-    forceCleanPaste() {
+    protected forceCleanPaste() {
         return true;
     }
 }

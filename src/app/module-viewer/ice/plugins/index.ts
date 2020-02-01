@@ -4,3 +4,4 @@ export { PreventTypeDeletedRangePlugin } from './prevent-type-deleted-range-ice-
 export { UndoTrackPlugin } from './undo-track-ice-plugin';
 export { NumericInputPlugin } from './numeric-input-ice-plugin';
 export { InitListPlugin } from './init-list-ice-plugin';
+export { IceCopyPastePluginFixed } from './copy-paste-plugin-fixed';

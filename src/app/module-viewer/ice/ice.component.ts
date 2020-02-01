@@ -22,9 +22,9 @@ import {
   UndoTrackPlugin,
   NumericInputPlugin,
   InitListPlugin,
-  PreventTypeDeletedRangePlugin
+  PreventTypeDeletedRangePlugin,
+  IceCopyPastePluginFixed
 } from './plugins';
-import IceCopyPastePluginFixed from './plugins/copy-paste-plugin-fixed';
 
 export type TextRange = Range & {
   moveStart: (unit, offset: number) => void;
@@ -188,14 +188,12 @@ export class IceComponent implements OnInit, OnDestroy {
         plugins.push('IceSmartQuotesPlugin');
         plugins.push('IceEmdashPlugin');
         plugins.push('FixSpacesPlugin');
+      } else {
+        plugins.push('NumericInputPlugin');
       }
 
       plugins.push('PreventTypeDeletedRangePlugin');
       plugins.push('UndoTrackPlugin');
-
-      if (this.numeric) {
-        plugins.push('NumericInputPlugin');
-      }
 
       plugins.push({
         name: 'IceCopyPastePluginFixed',
@@ -356,7 +354,7 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('keyup', ['$event'])
-  keyEvent(e: KeyboardEvent) {
+  onKeyEvent(e: KeyboardEvent) {
     if ((e.which < 48 && e.which !== 32 && e.which !== 8) || e.which > 90) {
       return false;
     }
@@ -385,18 +383,7 @@ export class IceComponent implements OnInit, OnDestroy {
     this.changed.emit(this.data);
   }
 
-  setEndOfContenteditable(contentEditableElement) {
-    if (document.createRange) {
-      const range = document.createRange(); // Create a range (a range is a like the selection but invisible)
-      range.selectNodeContents(contentEditableElement); // Select the entire contents of the element with the range
-      range.collapse(false); // collapse the range to the end point. false means collapse to end rather than the start
-      const selection = window.getSelection(); // get the selection object (allows you to change selection)
-      selection.removeAllRanges(); // remove any selections already made
-      selection.addRange(range); // make the range you have just created the visible selection
-    }
-  }
-
-  onPaste(e: KeyboardEvent) {
+  onChange(e: KeyboardEvent) {
     setTimeout(_ => this.onBlur(), 100);
   }
 }

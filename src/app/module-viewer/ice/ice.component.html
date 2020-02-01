@@ -12,8 +12,8 @@
     [innerHTML]="initialContent | safehtml"
     (mouseenter)="onMouseEnter($event)"
     (blur)="onBlur($event)"
-    (paste)="onPaste()"
-    (cut)="onPaste()"
+    (paste)="onChange()"
+    (cut)="onChange()"
   ></div>
   <error-msg [input]="data"></error-msg>
   <div class="add-comment" *ngIf="!disabled">
