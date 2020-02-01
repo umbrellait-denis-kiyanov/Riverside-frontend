@@ -16,11 +16,11 @@ import Message from '../inbox/message.model';
 export class RequestFeedbackComponent implements OnInit {
 
   module$: Observable<Module>;
-  assessmentSessionId :number;
+  assessmentSessionId: number;
   submitting: Subscription;
-  message: string = '';
-  currentTab: string = 'text';
-  isAssessmentPage :boolean = false;
+  message = '';
+  currentTab = 'text';
+  isAssessmentPage = false;
 
   constructor(
     public modal: NgbActiveModal,
