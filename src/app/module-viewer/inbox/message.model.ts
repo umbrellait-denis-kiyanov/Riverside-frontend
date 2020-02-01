@@ -13,7 +13,8 @@ class Message extends BaseModel {
   orgName: string = null;
   sent_on: Date = null;
   read_on: Date = null;
-  is_pending: boolean = false;
+  is_pending = false;
+  isAssessmentFeedback = false;
 }
 
 export default Message;

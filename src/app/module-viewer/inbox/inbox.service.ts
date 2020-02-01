@@ -24,7 +24,7 @@ export class InboxService {
     return this.http.get<Message>(`/api/modules/0/feedback/${id}`);
   }
 
-  save(message: Partial<Message & { parent_id: number }>) {
+  save(message: Partial<Message & { parent_id: number}>) {
     return this.http.post(`/api/modules/` + Number(message.module_id) + `/feedback`, message).pipe(
       tap(_ => this.toastr.success('Message sent!'))
     );
