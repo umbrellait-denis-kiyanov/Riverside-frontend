@@ -90,7 +90,7 @@ export class LeftMenuComponent implements OnInit {
 
     clearTimeout(this.lockMessageClearTimeout);
     this.lockMessageStep$.next(step.id);
-    this.lockMessageClearTimeout = setTimeout(_ => this.lockMessageStep$.next(null), 5000);
+    this.lockMessageClearTimeout = window.setTimeout(_ => this.lockMessageStep$.next(null), 5000);
   }
 
   hideLockMessage() {
