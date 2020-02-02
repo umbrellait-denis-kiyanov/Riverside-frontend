@@ -13,8 +13,8 @@
         No buyer personas to select
       </div>
     </div>
-    <div  aria-labelledby="grid-sort" class="buyerPersonasList" [ngClass]="{'d-none': !dropdownOpen }" *ngIf="(buyerPersonasList$ | async) as personasList" >
-      <div class="row buyer-personas-item py-2 align-items-center"  *ngFor="let buyerPersona of personasList" [ngClass]="{'selected': buyerPersona.isSelected }" (click)="selectBuyerPersona(buyerPersona.index)">
+    <div  aria-labelledby="grid-sort" class="buyerPersonasList" [class.d-none]="!dropdownOpen" *ngIf="(buyerPersonasList$ | async) as personasList" >
+      <div class="row buyer-personas-item py-2 align-items-center"  *ngFor="let buyerPersona of personasList" [class.selected]="buyerPersona.isSelected" (click)="selectBuyerPersona(buyerPersona.index)">
         <div class="col-sm-3 offset-sm-1 buyer-persona-icon">
           <img src="{{buyerPersona.picture}}" class="img-fluid" alt="{{buyerPersona.name}}">
         </div>
@@ -27,5 +27,5 @@
   </div>
 </div>
 <div *ngIf="readonly" class="btn btn-default w-100 text-truncate" [e3-tooltip]="readOnlyTitles$ | async" placement="bottom">
-  <span *ngIf="(readOnlyTitles$ | async) as readOnlyTitles" > {{ readOnlyTitles }} </span>
+  <span *ngIf="(readOnlyTitles$ | async) " > {{ readOnlyTitles$ }} </span>
 </div>

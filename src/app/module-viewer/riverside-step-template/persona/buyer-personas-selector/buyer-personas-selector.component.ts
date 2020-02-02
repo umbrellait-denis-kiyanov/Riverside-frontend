@@ -1,8 +1,8 @@
 import { Component, OnInit, Input, Output, EventEmitter, ElementRef } from '@angular/core';
-import { BuyerPersonasService } from "../../../../common/services/buyer-personas.service";
-import { BuyerPersona } from "../../../../common/interfaces/buyer-persona.interface";
+import { BuyerPersonasService } from '../../../../common/services/buyer-personas.service';
+import { BuyerPersona } from '../../../../common/interfaces/buyer-persona.interface';
 import { Observable, combineLatest, of, observable, concat } from 'rxjs';
-import { map, startWith   } from "rxjs/operators";
+import { map, startWith   } from 'rxjs/operators';
 
 @Component({
   host: {
@@ -14,14 +14,15 @@ import { map, startWith   } from "rxjs/operators";
 })
 export class BuyerPersonasSelectorComponent implements OnInit {
 
-  constructor( private buyerPersonasService: BuyerPersonasService, private eRef: ElementRef) { }
-
-  @Input () readonly : boolean = false;
+  @Input () readonly = false;
   @Input () selected : number[] = [];
   @Output() onChange = new EventEmitter<void>();
   readOnlyTitles$: Observable<string>;
   buyerPersonasList$: Observable<BuyerPersona[]>
   dropdownOpen = false;
+
+  constructor( private buyerPersonasService: BuyerPersonasService, private eRef: ElementRef) { }
+
   ngOnInit() {
     this.buyerPersonasList$ = combineLatest(
       this.buyerPersonasService.getBuyerPersonas(),
@@ -34,13 +35,13 @@ export class BuyerPersonasSelectorComponent implements OnInit {
     )
     //Show personas selected titles only in case it's read only
     this.readOnlyTitles$ =  this.buyerPersonasList$.pipe(map(personas => personas
-      .filter(persona => this.selected.indexOf(persona.index) > -1)
+      .filter(persona => this.selected.includes(persona.index))
       .map(persona => persona.name)
       .join(', ') || 'No personas selected'));
   }
 
   selectBuyerPersona(index : number) {
-    if(this.selected.indexOf(index) > -1){
+    if(this.selected.includes(index)){
       this.selected.splice(this.selected.indexOf(index),1); //Remove selected persona
     }else{
       this.selected.push(index); //Add selected persona
@@ -51,14 +52,6 @@ export class BuyerPersonasSelectorComponent implements OnInit {
   hideDropdown(event) {
     if(!this.eRef.nativeElement.contains(event.target)){
       this.dropdownOpen = false;
-    }
-  }
-
-  getBPListElement(currentElement : HTMLElement){
-    if(currentElement.className.indexOf("bpSelect") > -1){
-      return currentElement.nextElementSibling;
-    }else{
-      return this.getBPListElement(currentElement.parentElement);
     }
   }
 }

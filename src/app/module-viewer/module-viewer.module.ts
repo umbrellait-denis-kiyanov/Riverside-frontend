@@ -105,7 +105,7 @@ import { BuyerPersonasSelectorComponent } from './riverside-step-template/person
 import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
 import { BuyerPersonasSelectorComponent } from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
-import { BuyerPersonasService } from "..//common/services/buyer-personas.service";
+import { BuyerPersonasService } from '../common/services/buyer-personas.service';
 
 @NgModule({
   imports: [
