@@ -3,7 +3,7 @@ import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
 import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
 import { ModuleService } from './module.service';
 import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
-import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, share, take, map } from 'rxjs/operators';
+import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, share, take, map, withLatestFrom, skip } from 'rxjs/operators';
 import { AssessmentService } from './assessment.service';
 
 export class ResourceFromStorage<T extends {toString: () => string}> {
@@ -84,6 +84,8 @@ export class ModuleNavService {
   assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
   activeAssessmentSessionId$ = new BehaviorSubject<number>(null);
 
+  private moveStep$ = new BehaviorSubject<number>(null);
+
   lastOrganization = new ResourceFromStorage<number>('last_organization_id',
                         this.moduleService.getDefaultOrganization().pipe(map(org => org.id)),
                         'number');
@@ -149,7 +151,7 @@ export class ModuleNavService {
         startWith(this.assessmentType.current || 1),
         distinctUntilChanged(),
         filter(t => !!t),
-        switchMap((type_id: number) => this.asmService.getType(type_id))
+        switchMap((type_id) => this.asmService.getType(type_id))
       );
     }
 
@@ -176,7 +178,29 @@ export class ModuleNavService {
         }
       });
     });
-   }
+
+    // move to next (or previous) step
+    this.moveStep$.pipe(
+      filter(offset => !!offset),
+      switchMap(_ => this.moduleDataReplay$.pipe(skip(1), take(1), withLatestFrom(this.moveStep$)))
+    ).subscribe(([module, offset]) => {
+      let index = module.steps.findIndex(s => s.id === this.step.current);
+      let step = null;
+
+      do {
+        index = Math.min(Math.max(0, index + offset), module.steps.length - 1);
+        step = module.steps[index];
+      } while ((index !== module.steps.length - 1) && (step.is_section_break || step.isLocked || !index));
+
+      if (step.is_section_break) {
+        step = module.steps.find(step => !step.is_section_break && !step.isLocked);
+      }
+
+      if (!step.isLocked) {
+        this.goToStep(step.id);
+      }
+    });
+  }
 
   getActivatedRoute(): ActivatedRoute {
     return this.route;
@@ -187,11 +211,11 @@ export class ModuleNavService {
   }
 
   nextStep() {
-    this.moveToStep(1);
+    this.moveStep$.next(1);
   }
 
   previousStep() {
-    this.moveToStep(-1);
+    this.moveStep$.next(-1);
   }
 
   setAssessmentType(type: AssessmentType) {
@@ -205,29 +229,4 @@ export class ModuleNavService {
   getModuleService() {
     return this.moduleService;
   }
-
-  private moveToStep(offset: number) {
-    this.moduleDataReplay$.pipe(take(1)).subscribe(module => {
-      let index = module.steps.findIndex(s => s.id === this.step.current);
-      let step = null;
-      do {
-        index = Math.min(Math.max(0, index + offset), module.steps.length - 1);
-        step = module.steps[index];
-
-        if ((index === module.steps.length - 1) || !index) {
-          break;
-        }
-      } while (step.is_section_break || step.isLocked || !index);
-
-      if (step.is_section_break) {
-        step = module.steps.find(step => !step.is_section_break && !step.isLocked);
-      }
-
-      if (!step.isLocked) {
-        this.goToStep(step.id);
-      }
-    });
-  }
 }
-
-
