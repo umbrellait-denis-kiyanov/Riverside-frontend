@@ -5,7 +5,7 @@
         <span *ngIf="selected.length == 0">Select Buyer Personas</span>
         <div *ngIf="selected.length > 0">
           <span *ngFor="let buyerPersonaSelected of personasList ">
-            <img *ngIf="buyerPersonaSelected.isSelected" [e3-tooltip]="buyerPersonaSelected.name+' - '+buyerPersonaSelected.title" placement="bottom" class="selectedPersonasImg" src="{{buyerPersonaSelected.picture}}" alt="{{buyerPersonaSelected-name}}">
+            <img *ngIf="buyerPersonaSelected.isSelected" [e3-tooltip]="buyerPersonaSelected.name+' - '+buyerPersonaSelected.title" placement="bottom" class="selectedPersonasImg" src="{{buyerPersonaSelected.picture}}" alt="{{buyerPersonaSelected.name}}">
           </span>
         </div>
       </div>
