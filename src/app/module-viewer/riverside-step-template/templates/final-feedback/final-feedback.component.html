@@ -50,7 +50,7 @@
                 <div class="behavior-title" style="margin-top: 10px">{{item.title}}</div>
                 <ice
                   *ngIf="inputs[item.inputId(i)]"
-                  [(data)]="inputs[item.inputId(i)]"
+                  [input]="item.inputId(i)"
                   [allowRemoveSelections]="true"
                 ></ice>
             </div>
@@ -60,7 +60,7 @@
                 <div class="behavior-title">{{item.title}}</div>
                 <ice
                   *ngIf="inputs[item.inputId(i)]"
-                  [(data)]="inputs[item.inputId(i)]"
+                  [input]="item.inputId(i)"
                   [allowRemoveSelections]="true"
                 ></ice>
             </div>
@@ -70,7 +70,7 @@
                   <div class="behavior-title">{{item.title}}</div>
                   <ice
                     *ngIf="inputs[item.inputId(i)]"
-                    [(data)]="inputs[item.inputId(i)]"
+                    [input]="item.inputId(i)"
                     [allowRemoveSelections]="true"
                   ></ice>
               </div>

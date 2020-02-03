@@ -39,6 +39,15 @@ $triangleColor: orange
   background: white
   outline: none
   min-height: 2.2em
+  overflow: hidden
+
+  &.single-line
+    white-space: nowrap
+    max-height: 2.2em
+
+    \::ng-deep *
+      display: inline !important
+      white-space: nowrap !important
 
   &.has-error
     border-color: $red
@@ -46,6 +55,9 @@ $triangleColor: orange
   \::ng-deep
     > ul
       padding-left: 20px
+
+    .del, .ins
+      display: inline !important
 
   &[disabled="true"]
     &:before
@@ -75,6 +87,7 @@ $triangleColor: orange
   z-index: 1000
   top: 100%
   width: 100%
+  min-width: 400px
 
 .comment-content
 
@@ -113,3 +126,8 @@ textarea
         line-height: 14px
         margin-left: -3px
         margin-right: 10px
+
+.comment-list
+  overflow-y: auto
+  height: auto
+  max-height: 300px

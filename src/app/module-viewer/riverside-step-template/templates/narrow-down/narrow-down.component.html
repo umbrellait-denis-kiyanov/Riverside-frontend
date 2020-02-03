@@ -14,7 +14,8 @@
   <div class="inputs-wrapper-column">
     <ice
       *ngFor="let inputId of inputIds.personas"
-      [(data)]="inputs[inputId]"
+      [input]="inputId"
+      single="true"
     ></ice>
   </div>
 </div>

@@ -10,10 +10,10 @@
     </div>
   </div>
 
+  <div *ngIf="message$ | async as message">
   <div
     class="page-content"
     style="margin-top: 20px"
-    *ngIf="message$ | async as message"
     >
     <h3 *ngIf="message.moduleName">{{message.moduleName}}
       <span *ngIf="message.step_id"> - {{message.stepName}}</span>
@@ -41,7 +41,6 @@
 
   <div
     class="buttons-wrapper"
-    *ngIf="message"
   >
     <a [routerLink]="routerLink" *ngIf="message.module_id">
       <button
@@ -59,7 +58,7 @@
 
   <div
     class="page-content"
-    *ngIf="message && !message.step_id && canProvideFeedback"
+    *ngIf="!message.step_id && canProvideFeedback"
   >
     <div class="feedback">
       <p class="instructions">
@@ -67,7 +66,7 @@
       </p>
 
       <feedback-source
-          (submit)="provideFeedback($event)"
+          (submit)="provideFeedback(message, $event)"
           (messageChanged)="feedbackMessage=$event"
           (currentTabChanged)="currentTab=$event"
           >
@@ -79,10 +78,11 @@
       <button
         mat-stroked-button="mat-stroked-button"
         color="accent"
-        (click)="provideFeedback(feedbackMessage)"
+        (click)="provideFeedback(message, feedbackMessage)"
         e3-async-button
         [running]="submitting && !submitting.closed"
       >Submit Feedback</button>
     </div>
+  </div>
   </div>
 </div>

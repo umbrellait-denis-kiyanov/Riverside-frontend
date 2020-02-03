@@ -14,11 +14,13 @@
 </div>
 
 <div class="modal-body" *ngIf="(module$ | async) as module">
-  <p *ngIf="module">
+  <p *ngIf="module && !isAssessmentPage">
     You are requesting feedback for the module <b>{{module.name}}</b>.
     <a class="pointer">(Change module)</a>
   </p>
-
+  <p *ngIf="isAssessmentPage && (navService.activeAssessmentType$ | async) as assessment ">
+    You are requesting feedback on the <b>{{assessment.name}} Assessment</b>.
+  </p>
   <p>
     What feedback would you like from your Managing Director?
   </p>
