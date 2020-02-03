@@ -122,7 +122,10 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
           el.parentNode.removeChild(el);
         }
 
-        const text = (div.textContent || div.innerText || '').trim();
+        const text = (div.innerHTML || '').trim().
+          split('<p></p>').join('').
+          split('class="ins cts-').join('class="');
+
         div.remove();
         return text;
       };
