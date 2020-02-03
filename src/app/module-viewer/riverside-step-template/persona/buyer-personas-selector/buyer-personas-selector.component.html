@@ -19,13 +19,13 @@
           <img src="{{buyerPersona.picture}}" class="img-fluid" alt="{{buyerPersona.name}}">
         </div>
         <div class="col-sm-7 buyer-persona-data">
-          <p class="bp-name text-truncate" [e3-tooltip]="buyerPersona.name" placement="right"> {{ buyerPersona.name }}  </p>
+          <p class="bp-name"> {{ buyerPersona.name }}  </p>
           <p class="bp-title"> {{ buyerPersona.title }}  </p>
         </div>
       </div>
     </div>
   </div>
 </div>
-<div *ngIf="readonly" class="btn btn-default w-100 text-truncate" [e3-tooltip]="readOnlyTitles$ | async" placement="bottom">
-  <span *ngIf="(readOnlyTitles$ | async) " > {{ readOnlyTitles$ }} </span>
+<div *ngIf="readonly && (readOnlyTitles$ | async) as readOnlyTitles" class="btn btn-default w-100">
+  {{ readOnlyTitles }}
 </div>
