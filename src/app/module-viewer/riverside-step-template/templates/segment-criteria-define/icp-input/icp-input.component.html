@@ -11,6 +11,7 @@
             *ngIf="mode == 'criteria'"
             (changed)="syncCriteria()"
             [(data)]="criteria.name"
+            single="true"
             class="side-comment"
           ></ice>
         </div>

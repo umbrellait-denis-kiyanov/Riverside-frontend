@@ -37,7 +37,7 @@ export class IcpInputComponent implements OnChanges {
   }
 
   initGrades() {
-    const inp = this.template.getInput(this.inputPrefix, this.inputIndex);
+    const inp = this.template.getInput(this.inputPrefix, this.inputIndex, '');
     this.selectedGrades = inp && inp.content ? JSON.parse(inp.content) : {};
 
     // in case the grade weight has been changed, make sure previously set values don't exceed the new threshold
@@ -54,7 +54,7 @@ export class IcpInputComponent implements OnChanges {
     this.calcAllGradesSelected = this.allGradesSelected();
 
     if (this.calcAllGradesSelected) {
-      const input = this.template.getInput(this.inputPrefix, this.inputIndex);
+      const input = this.template.getInput(this.inputPrefix, this.inputIndex, '');
 
       input.content = JSON.stringify(this.selectedGrades);
 

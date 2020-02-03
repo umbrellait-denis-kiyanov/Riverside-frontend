@@ -1,4 +1,4 @@
-<table class="market-segments" *ngIf="step < 3">
+<table class="market-segments" *ngIf="step < 3 && inputs">
   <thead>
     <tr>
       <th>
@@ -22,7 +22,9 @@
         <ice
           placeholder="Segment {{ segment }}"
           [disabled]="step > 1"
-          [(data)]="inputs['segment_criteria_define_name_' + segment]"
+          single="true"
+          input="name"
+          [idx]="segment"
         ></ice>
 
         <div *ngIf="step === 1 && activeSegments.length > 1">
@@ -33,21 +35,24 @@
         <ice
           class="ice-textarea"
           [disabled]="step > 1"
-          [(data)]="inputs['segment_criteria_define_industries_' + segment]"
+          input="industries"
+          [idx]="segment"
         ></ice>
       </td>
       <td *ngIf="step < 3">
         <ice
           class="ice-textarea"
           [disabled]="step > 1"
-          [(data)]="inputs['segment_criteria_define_pain_points_' + segment]"
+          input="pain_points"
+          [idx]="segment"
         ></ice>
       </td>
       <td *ngIf="step > 1">
         <ice
           class="ice-textarea"
           [disabled]="step > 2"
-          [(data)]="inputs['segment_criteria_define_brainstorm_' + segment]"
+          input="brainstorm"
+          [idx]="segment"
         ></ice>
       </td>
     </tr>
@@ -81,7 +86,8 @@
     <ice
       class="ice-textarea"
       [disabled]="step > 3"
-      [(data)]="inputs['segment_criteria_define_where_mine_' + segment]"
+      input="where_mine"
+      [idx]="segment"
     ></ice>
 
   </div>
@@ -118,7 +124,9 @@
           <span>{{ grade.grade }} &gt;= </span>
           <ice
             class="number"
-            [(data)]="inputs['segment_criteria_define_grade_pct_' + grade.i]"
+            input="grade_pct"
+            [idx]="grade.i"
+            numeric="true"
           ></ice>
         </td>
       </tr>
@@ -137,13 +145,16 @@
       <div class="col-sm-1 text-center">
         <h2>{{ customerIndex }}</h2>
       </div>
-      <div class="col-sm-11" *ngFor="let segmentSel of [inputs['segment_criteria_define_' + gradePrefix + '_segment_' + customerIndex]]">
+      <div class="col-sm-11" *ngFor="let segmentSel of [inputs[gradePrefix + '_segment_' + customerIndex]]">
 
         <div class="row inputs-wrapper">
           <label class="col-sm-3">Customer Name:</label>
           <div class="col-sm-9">
             <ice
-              [(data)]="inputs['segment_criteria_define_' + gradePrefix + '_name_' + customerIndex]"
+              input="name"
+              prefix="{{ gradePrefix }}_"
+              [idx]="customerIndex"
+              single="true"
             ></ice>
           </div>
         </div>
@@ -179,16 +190,17 @@
 <div *ngIf="step == 8">
   <div class="grade-feedback-section" *ngFor="let section of gradeSections">
     <h2 *ngIf="section.grades.length != 6">{{ section.title }}</h2>
+
     <ng-container *ngFor="let customerIndex of section.grades">
       <h2 *ngIf="section.grades.length == 6 && customerIndex % 2">{{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers</h2>
-      <div class="grade-container" *ngIf="inputs['segment_criteria_define_' + section.prefix + '_segment_' + customerIndex].content as segIdx">
+      <div class="grade-container" *ngIf="inputs[prefix + section.prefix + '_segment_' + customerIndex].content as segIdx">
         <h3 inputText="{{ section.prefix }}_name" [num]="customerIndex"></h3>
         <h5 inputText="name" [num]="segIdx"></h5>
 
         <div class="segment-container">
           <app-icp-input
             [criterias]="criterias[segIdx]"
-            [inputPrefix]="section.prefix"
+            [inputPrefix]="prefix + section.prefix"
             [inputIndex]="customerIndex"
             [gradeLevels]="userGradeLevels"
             mode="grade"

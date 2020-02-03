@@ -16,22 +16,50 @@ import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confir
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
 import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.interface';
 import * as moment from 'moment';
-import InitIceFixSpacesPlugin from './fix-spaces-ice-plugin';
+import {
+  FixSpacesPlugin,
+  DisableNewlinesPlugin,
+  UndoTrackPlugin,
+  NumericInputPlugin,
+  InitListPlugin,
+  PreventTypeDeletedRangePlugin,
+  IceCopyPastePluginFixed
+} from './plugins';
+
+export type TextRange = Range & {
+  moveStart: (unit, offset: number) => void;
+};
 
 export interface IceEditorTracker {
   element: HTMLElement;
+  env: {
+    document: Document;
+  },
   acceptAll: () => void;
   getUserStyle: (id: string) => string;
+  getCurrentRange: () => TextRange,
+  _insertNode: (node: Node, range: Range) => void;
+  selection: {
+    addRange: (range: TextRange) => void,
+    createRange: () => TextRange
+  },
+  hasCleanPaste: boolean;
+  disableDragDrop: boolean;
 }
 
 export class Comments {
   adding = false;
   content = '';
   list: InputComment[] = [];
-  editingIndex = 0;
+  editingIndex: number = null;
   show = false;
-  index = 0;
+  index: number = null;
 }
+
+type IcePluginConfig = {
+  name: string,
+  settings: {[key: string]: string}
+};
 
 @Component({
   selector: 'ice',
@@ -44,8 +72,13 @@ export class IceComponent implements OnInit, OnDestroy {
   @Input() placeholder: string = '';
 
   // pass input as string identifier or as instance
-  @Input() input: string;
+  @Input() input?: string;
+  @Input() prefix?: string;
+  @Input() idx?: number;
+
   @Input() data: TemplateInput;
+  @Input() single = false;
+  @Input() numeric = false;
 
   @Input() allowRemoveSelections = false;
 
@@ -75,10 +108,29 @@ export class IceComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    InitIceFixSpacesPlugin();
+    new FixSpacesPlugin();
+    new PreventTypeDeletedRangePlugin();
+    new UndoTrackPlugin();
+    IceCopyPastePluginFixed();
+
+    if (this.numeric) {
+      this.single = true;
+      new NumericInputPlugin();
+    }
+
+    if (this.single) {
+      new DisableNewlinesPlugin();
+    } else {
+      new InitListPlugin();
+    }
 
     if (this.input) {
-      this.data = this.template.getInput(this.input);
+      this.data = this.template.getInput(this.input, this.idx, this.prefix);
+    }
+
+    if (!this.data) {
+      console.error('No input data found for ', this.input);
+      return;
     }
 
     this.data.error = this.data.error || new BehaviorSubject(null);
@@ -92,6 +144,12 @@ export class IceComponent implements OnInit, OnDestroy {
 
     const el: HTMLDivElement = document.createElement('div');
     el.innerHTML = this.data.content;
+
+    // Add missing root element (can happen because of a bug elsewhere)
+    if (el.innerHTML.length && el.innerHTML.substr(0, 2).toLowerCase() !== '<p') {
+      el.innerHTML = '<p>' + el.innerHTML + '</p>';
+    }
+
     const selections = el.querySelector('.matrix-options');
 
     if (selections) {
@@ -118,23 +176,51 @@ export class IceComponent implements OnInit, OnDestroy {
     setTimeout(() => {
       const text = this.el.nativeElement.querySelector('.textbody');
 
+      const plugins: (string | IcePluginConfig)[] = ['IceAddTitlePlugin'];
+
+      if (this.single) {
+        plugins.push('DisableNewlinesPlugin');
+      } else {
+        plugins.push('InitListPlugin');
+      }
+
+      if (!this.numeric) {
+        plugins.push('IceSmartQuotesPlugin');
+        plugins.push('IceEmdashPlugin');
+        plugins.push('FixSpacesPlugin');
+      } else {
+        plugins.push('NumericInputPlugin');
+      }
+
+      plugins.push('PreventTypeDeletedRangePlugin');
+      plugins.push('UndoTrackPlugin');
+
+      plugins.push({
+        name: 'IceCopyPastePluginFixed',
+        settings: {
+          pasteType: 'formattedClean',
+          preserve: this.single ? '' : 'ol,ul,li'
+        }
+      });
+
       try {
         const tracker = new window.ice.InlineChangeEditor({
           element: text,
           handleEvents: true,
           currentUser: this.user,
-          plugins: [
-            'IceAddTitlePlugin',
-            'IceSmartQuotesPlugin',
-            'IceEmdashPlugin',
-            {
-              name: 'IceCopyPastePlugin',
-              settings: {
-                pasteType: 'formattedClean',
-                preserve: 'ol,ul,li'
-              }
+          plugins: plugins,
+          changeTypes: {
+            insertType: {
+              tag: 'div',
+              alias: 'ins',
+              action: 'Inserted'
+            },
+            deleteType: {
+              tag: 'div',
+              alias: 'del',
+              action: 'Deleted'
             }
-          ]
+          }
         }).startTracking() as IceEditorTracker;
 
         if (tracker.element.innerHTML === '<p><br></p>') {
@@ -268,7 +354,7 @@ export class IceComponent implements OnInit, OnDestroy {
   }
 
   @HostListener('keyup', ['$event'])
-  keyEvent(e: KeyboardEvent) {
+  onKeyEvent(e: KeyboardEvent) {
     if ((e.which < 48 && e.which !== 32 && e.which !== 8) || e.which > 90) {
       return false;
     }
@@ -297,21 +383,7 @@ export class IceComponent implements OnInit, OnDestroy {
     this.changed.emit(this.data);
   }
 
-  setEndOfContenteditable(contentEditableElement) {
-    if (document.createRange) {
-      const range = document.createRange(); // Create a range (a range is a like the selection but invisible)
-      range.selectNodeContents(contentEditableElement); // Select the entire contents of the element with the range
-      range.collapse(false); // collapse the range to the end point. false means collapse to end rather than the start
-      const selection = window.getSelection(); // get the selection object (allows you to change selection)
-      selection.removeAllRanges(); // remove any selections already made
-      selection.addRange(range); // make the range you have just created the visible selection
-    }
-  }
-
-  @HostListener('paste', ['$event'])
-  onPaste(e: KeyboardEvent) {
-    setTimeout(_ => {
-      this.changed.emit(e);
-    }, 100);
+  onChange(e: KeyboardEvent) {
+    setTimeout(_ => this.onBlur(), 100);
   }
 }
