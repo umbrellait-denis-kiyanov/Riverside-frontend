@@ -30,7 +30,7 @@ export class StepTemplateEditorComponent implements OnInit {
       this.stepEdit.template_params_json = {};
     }
 
-    this.templates = Object.entries(Templates).map(([id, tplClass]) => {
+    this.templates = Object.keys(Templates).map(id => {
       const inst = new Templates[id]();
 
       return {
