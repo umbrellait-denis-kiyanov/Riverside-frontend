@@ -106,6 +106,7 @@ import { PreRequisiteModulesComponent } from './riverside-step-template/template
 import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
 import { BuyerPersonasService } from '../common/services/buyer-personas.service';
 import { CampaignCalendarTemplateComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar-template.component';
+import { CampaignCalendarComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-calendar.component';
 
 @NgModule({
   imports: [
@@ -206,7 +207,8 @@ import { CampaignCalendarTemplateComponent } from './riverside-step-template/tem
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
-    CampaignCalendarTemplateComponent
+    CampaignCalendarTemplateComponent,
+    CampaignCalendarComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -227,7 +229,8 @@ import { CampaignCalendarTemplateComponent } from './riverside-step-template/tem
     SpreadsheetComponent,
     VideoComponent,
     PreRequisiteModulesComponent,
-    ModuleResultComponent
+    ModuleResultComponent,
+    CampaignCalendarTemplateComponent
   ],
   providers: [
     AssessmentService,
