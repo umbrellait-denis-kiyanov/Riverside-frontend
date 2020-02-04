@@ -11,7 +11,6 @@ import { Validate } from 'src/app/common/validator.class';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => BrainstormTemplateComponent) }]
 })
 export class BrainstormTemplateComponent extends TemplateComponent {
-
   contentData: BrainstormTemplateData['template_params_json'];
   inputIds: string[];
 

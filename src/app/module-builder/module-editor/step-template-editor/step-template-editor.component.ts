@@ -1,10 +1,7 @@
 import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Step, Template } from 'src/app/common/interfaces/module.interface';
-import { ModuleService } from '../../../common/services/module.service';
 import { Templates } from '../../../module-viewer/riverside-step-template/templates';
-import { BehaviorSubject } from 'rxjs';
-import { map } from 'rxjs/operators';
 import { TemplateField } from './step-template-field';
 
 @Component({
@@ -19,14 +16,13 @@ export class StepTemplateEditorComponent implements OnInit {
 
   stepEdit: Step;
 
-  templates$ = new BehaviorSubject<Template[]>(null);
+  templates: Template[];
 
   templateFields: TemplateField[];
 
   description = '';
 
-  constructor(public modal: NgbActiveModal,
-              private moduleService: ModuleService) {}
+  constructor(public modal: NgbActiveModal) {}
 
   ngOnInit() {
     this.stepEdit = JSON.parse(JSON.stringify(this.step));
@@ -34,18 +30,19 @@ export class StepTemplateEditorComponent implements OnInit {
       this.stepEdit.template_params_json = {};
     }
 
-    this.moduleService.getTemplates(this.step.module_id).pipe(
-      map(templates => templates.map(tpl => {
-        const inst = new Templates[tpl.id]();
-        tpl.name = inst.getName();
-        tpl.description = inst.getDescription();
-        tpl.hasInputs = inst.hasInputs();
-        return tpl;
-      }))
-    ).subscribe(tpls => {
-      this.templates$.next(tpls);
-      this.onTemplateChange(this.stepEdit.template_component);
+    this.templates = Object.entries(Templates).map(([id, tplClass]) => {
+      const inst = new Templates[id]();
+
+      return {
+        id,
+        name: inst.getName(),
+        description: inst.getDescription(),
+        hasInputs: inst.hasInputs(),
+        params_json: inst.getBuilderParams()
+      };
     });
+
+    this.onTemplateChange(this.stepEdit.template_component);
   }
 
   save() {
@@ -55,7 +52,7 @@ export class StepTemplateEditorComponent implements OnInit {
   }
 
   onTemplateChange(templateId: string) {
-    const template = this.templates$.value.find(tpl => tpl.id === templateId);
+    const template = this.templates.find(tpl => tpl.id === templateId);
 
     const fields = template ? template.params_json.
       replace(/\s/g, '').
