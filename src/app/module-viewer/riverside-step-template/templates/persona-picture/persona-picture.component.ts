@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { PersonaPictureTemplateData } from '.';
+import { PersonaPictureTemplateData, TemplateParams } from '.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
 
@@ -14,6 +14,7 @@ import { PersonaPictureListComponent } from './persona-picture-list/persona-pict
 })
 
 export class PersonaPictureTemplateComponent extends TemplateComponent {
+  params = TemplateParams;
   inputIds = {
     fromPreviousStep: [ ],
     personas: [ ]

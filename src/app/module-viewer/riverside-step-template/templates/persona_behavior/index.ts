@@ -16,3 +16,18 @@ export interface PersonaBehaviorTemplateData extends TemplateContentDataBase {
     }>
   };
 }
+
+export const TemplateParams = `{
+  description: string;
+  resource: string;
+  example: string;
+  instructions: string;
+  title: string;
+  input_sufix: string;
+  behavior: string;
+  formatAsList: boolean;
+  selection_matrix: Array<{
+    question: string,
+    options: Array<{option: string}>
+  }>
+}`;

@@ -70,10 +70,6 @@ export class ModuleService {
     );
   }
 
-  getTemplates(moduleId: number): Observable<Template[]> {
-    return this.httpClient.get<Template[]>(`${this.baseUrl}/${moduleId}/templates`);
-  }
-
   getTemplateResources(moduleId: number, template: string): Observable<string[]> {
     return this.httpClient.get<string[]>(`${this.baseUrl}/${moduleId}/templates/resources?template=` + template);
   }

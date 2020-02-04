@@ -10,3 +10,12 @@ export interface SpreadsheetTemplateData extends TemplateContentDataBase {
     calculateFormulasOnServer: boolean;
   };
 }
+
+export const TemplateParams = `{
+  description: string;
+  apiResource: string;
+  visibleRows: string;
+  title: string;
+  requireFeedback: boolean;
+  calculateFormulasOnServer: boolean;
+}`;
