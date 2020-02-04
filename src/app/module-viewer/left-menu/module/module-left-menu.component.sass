@@ -1,0 +1,158 @@
+@import "src/app/common/sass/variables.sass"
+\:host
+  display: block
+  min-height: 100vh
+  box-shadow: -3px 0 5px 0 #555
+  background: white
+  margin-left: $left-sidebar-width
+  top: 0
+  position: sticky
+  height: 100vh
+  overflow: auto
+  \::ng-deep
+    .mat-progress-bar-buffer
+      background-color: white !important
+      border: 1px solid grey
+    .mat-progress-bar .mat-progress-bar-fill::after
+      background-color: #5aad3f
+
+
+.site-tbox
+  margin: 0
+
+.left-menu-header
+  display: flex
+  align-items: center
+
+.header-title
+  font-size: 21px
+
+[disabled]
+  background: white
+
+.paper
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3)
+
+.left-menu-summary
+  padding: 10px
+
+  .summary-title
+    font-size: 25px
+    margin-bottom: 5px
+    letter-spacing: 2px
+    color: #504f4f
+    text-align: center
+
+  .summary-body
+    .summary-row
+      display: flex
+      margin-top: 10px
+      align-items: center
+
+      .summary-label
+        width: 105px
+
+      .summary-content
+        flex-grow: 1
+        .site-tbox
+          width: 200px
+          text-align: center
+
+.left-menu-actions
+  padding: 10px
+
+  .step-list
+    list-style: none
+    padding-left: 0
+
+    a
+      color: inherit
+      text-decoration: none
+      width: 100%
+      display: block
+      white-space: nowrap
+
+      span
+        vertical-align: middle
+        display: inline-block
+
+    .step-list-item.active
+      background: white
+
+      .step-title
+        color: #00529f
+
+      .checkmark
+        color: white
+
+    .step-list-item.section-break
+      color: #585858
+      border-radius: 7px
+      font-size: 22px
+      margin-top: 20px
+
+    .step-list-item:not(.section-break)
+      padding: 0
+      font-size: 15px
+      color: gray
+
+    .checkmark
+      color: white
+
+      mat-icon
+        position: relative
+        top: 5px
+
+    .checkmark.checked
+      color: #ffc800 !important
+      .approved
+        color: green !important
+
+    .step-title
+      padding: 0 5px
+
+    .step-number
+      display: inline-block
+      width: 2em
+      padding-right: 3px
+      text-align: right
+      margin-top: -2px
+
+      mat-icon.lock
+        display: none
+        font-size: 16px
+        height: 13px
+        width: 13px
+        margin-top: 2px
+
+    li.is-locked:hover
+      .step-number
+        .step-number-value
+          display: none
+
+        mat-icon.lock
+          display: inline-block
+
+  .lock-message
+    padding: 10px
+    position: absolute
+    z-index: 1
+    cursor: pointer
+    margin-top: 2em
+
+    ul
+      margin-top: 10px
+
+a.fa
+  text-decoration: none
+.request-feedback
+  td
+    background: #279a27
+    color: white
+  .fa
+    font-size: 24px
+
+.users-icon
+  img
+    width: 20px
+    height: 20px

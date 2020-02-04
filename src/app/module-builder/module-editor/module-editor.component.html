@@ -1,0 +1,149 @@
+<ng-container *ngIf="ready">
+  <div class="float-btn-group-wrapper">
+    <div class="float-group">
+      <button
+        class="floating-btn bg-save flt-btn-group"
+        (click)="onClickSave()"
+      >
+        <ng-container *ngIf="!saving || saving.closed; else elseTemplate">
+          <mat-icon class="tab-icon">save</mat-icon>
+        </ng-container>
+
+        <ng-template #elseTemplate>
+          <span class="fa fa-pulse fa-spinner"></span>
+        </ng-template>
+      </button>
+    </div>
+  </div>
+
+  <div class="form-group">
+      <label class="control-label module-title">Module Name</label>
+
+      <input
+        type="text"
+        class="site-tbox margin_0"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="moduleData.name"
+        required="required"
+      />
+    </div>
+
+  <div class="form-group">
+    <label class="control-label module-title">Short Name</label>
+
+    <input
+      type="text"
+      class="site-tbox margin_0"
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="moduleData.shortName"
+      required="required"
+    />
+  </div>
+
+  <div cdkDropList (cdkDropListDropped)="onSectionDrop($event)">
+  <div class="steps-wrapper card" *ngFor="let section of sections; index as sectionIndex" cdkDrag cdkDragLockAxis="y">
+
+    <div class="card-header section-title steps-row" cdkDragHandle>
+
+      <span
+        class="fa fa-file-text-o"
+        (click)="onClickEditSectionTemplate(sectionIndex)"
+        title="Configure section template"
+      ></span>
+
+      <span
+        class="fa fa-link"
+        (click)="onClickLinkStep(sectionIndex)"
+        title="Link to another step"
+      ></span>
+
+      <span
+        class="fa fa-trash-o"
+        (click)="onClickRemoveSection(sectionIndex)"
+      ></span>
+
+      <input
+        class="site-tbox"
+        [ngModelOptions]="{standalone: true}"
+        [(ngModel)]="section.section.description"
+        placeholder="Section Description"
+      />
+    </div>
+
+    <div class="card-body">
+
+      <div id="drop-{{ sectionIndex }}" cdkDropList [cdkDropListData]="section.steps" (cdkDropListDropped)="onStepDrop($event)" [cdkDropListConnectedTo]="getSortableListIDs()">
+      <div *ngFor="let step of section.steps; index as s" cdkDrag cdkDragLockAxis="y" class="steps-item">
+        <div class="step">
+          <div class="step-input-wrapper step-name">
+
+            <span
+              class="fa fa-file-text-o"
+              (click)="onClickEditStepTemplate(sectionIndex, s)"
+              title="Configure step template"
+            ></span>
+
+            <span
+              class="fa fa-link"
+              (click)="onClickLinkStep(sectionIndex, s)"
+              title="Link to another step"
+            ></span>
+
+            <span
+              class="fa fa-trash-o"
+              (click)="onClickRemoveStep(sectionIndex, s)"
+              title="Delete step"
+            ></span>
+
+            <input
+              class="site-tbox"
+              [ngModelOptions]="{standalone: true}"
+              [(ngModel)]="step.description"
+              placeholder="Step Description"
+            />
+          </div>
+        </div>
+
+        <div class="divider"></div>
+      </div>
+      </div>
+
+      <div class="add-new">
+        <button
+          class="btn btn-primary btn-lg"
+          (click)="onClickAddStep(sectionIndex)"
+        >Add new step</button>
+      </div>
+    </div>
+  </div>
+  </div>
+
+  <div class="row">
+    <div class="col-sm-6">
+      <div class="add-new">
+        <button
+          class="btn btn-primary btn-lg"
+          (click)="onClickAddSection()"
+        >Add new section</button>
+      </div>
+    </div>
+    <div class="col-sm-6 import-export">
+      <button
+        class="floating-btn bg-save"
+        (click)="export(moduleData.id)"
+        title="Export {{ moduleData.name }} Module Data"
+      >
+        <mat-icon class="tab-icon">cloud_download</mat-icon>
+      </button>
+
+      <button
+        class="floating-btn bg-save"
+        (click)="sync(moduleData.id)"
+        title="Synchronize {{ moduleData.name }} Module Data From File"
+      >
+        <mat-icon class="tab-icon">sync</mat-icon>
+      </button>
+    </div>
+  </div>
+
+</ng-container>

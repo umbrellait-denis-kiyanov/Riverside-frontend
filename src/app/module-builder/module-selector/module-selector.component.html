@@ -1,0 +1,32 @@
+<div class="classes-with-description goals-performance">
+  <div class="classes-with-description-header">
+    <div class="header-wrapper">
+      <div class="header-title">Module Builder</div>
+
+      <div class="clearfix"></div>
+    </div>
+  </div>
+
+  <div class="row classes-row">
+    <div class="col-sm-12">
+      <div class="tabs-content">
+        <label class="control-label">Select a module:</label>
+
+        <select
+          [ngModel]="selectedModule"
+          (change)="onChange($event.target.value)"
+          *ngIf="(modules$ | async) as modules"
+          class="site-tbox margin_0"
+        >
+          <option
+            *ngFor="let m of modules"
+            [value]="m.id"
+          >{{m.name}}</option>
+        </select>
+
+        <div class="divider"></div>
+        <router-outlet></router-outlet>
+      </div>
+    </div>
+  </div>
+</div>

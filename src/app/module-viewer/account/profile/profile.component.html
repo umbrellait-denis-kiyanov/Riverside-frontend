@@ -1,0 +1,51 @@
+<div class="page-container">
+  <div class="page-content">
+    <h3>Profile</h3>
+    <div>
+      <form
+        *ngIf="account$ | async as account; else loading"
+        [formGroup]="form"
+        (ngSubmit)="save()"
+      >
+        <div formGroupName="meta">
+          
+          <profile-picture-input
+            [(fileUrl)]="form.controls.meta.controls.profile_picture"
+          ></profile-picture-input>
+        </div>
+        <div class="form-group">
+          <label for="fname">First Name</label>
+          <input id="fname" class="site-tbox" formControlName="fname" />
+          <e3-required [formGroup]="form" controlName="fname"></e3-required>
+        </div>
+
+        <div class="form-group">
+          <label for="lname">Last Name</label>
+          <input id="lname" class="site-tbox" formControlName="lname" />
+          <e3-required [formGroup]="form" controlName="lname"></e3-required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            id="email"
+            class="site-tbox"
+            formControlName="email"
+          />
+          
+        </div>
+        <button
+          class="btn btn-primary"
+          type="button"
+          [disabled]="saving && !saving.closed"
+          (click)="save()"
+        >
+          Save
+        </button>
+      </form>
+      <ng-template #loading>
+        <h4>Loading...</h4>
+      </ng-template>
+    </div>
+  </div>
+</div>

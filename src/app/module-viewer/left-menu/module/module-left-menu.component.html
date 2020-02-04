@@ -1,0 +1,59 @@
+<div
+  [ngStyle]="{'width.px': width}"
+  *ngIf="(module$ | async) as module"
+>
+  <div class="left-menu-header"></div>
+
+  <div class="left-menu-summary">
+    <module-org-selector [activeOrganizations]="organizationsList$" (changed)="setOrganization($event, module)"></module-org-selector>
+
+    <div class="summary-title">{{module.name}}</div>
+
+    <div>
+      <mat-progress-bar
+      style="height: 10px"
+        mode="determinate"
+        color="accent"
+        [value]="module.status?.progress">
+      </mat-progress-bar>
+    </div>
+
+  </div>
+
+  <div class="left-menu-actions">
+    <ul class="step-list">
+      <li
+        class="step-list-item"
+        *ngFor="let step of module.steps"
+        [class.section-break]="step.is_section_break"
+        [class.is-locked]="step.isLocked"
+        [routerLinkActive]="!step.isLocked ? 'active' : ''"
+        (click)="showLockMessage(step)"
+      >
+        <a *ngIf="step.is_section_break">{{step.description}}</a>
+
+        <div class="lock-message alert alert-danger" *ngIf="(lockMessageStep$ | async) == step.id">
+          Please complete the following prerequisite steps first:
+          <ul>
+            <li *ngFor="let pendingStep of step.isLocked">
+              {{ pendingStep }}
+            </li>
+          </ul>
+        </div>
+
+        <a *ngIf="!step.is_section_break" [routerLink]="stepRouterLink(module, step)">
+          <span class="checkmark" [ngClass]="{'checked': isChecked(step)}">
+            <mat-icon [ngClass]="{'approved': step.is_approved}" >done</mat-icon>
+          </span>
+
+          <span class="step-number" [class.double]="step.step_index >= 10">
+            <span class="step-number-value">{{step.step_index}}</span>
+            <mat-icon class="lock">lock</mat-icon>
+          </span>
+
+          <span class="step-title">{{step.description}}</span>
+        </a>
+      </li>
+    </ul>
+  </div>
+</div>

@@ -1,0 +1,29 @@
+<div class="template-title-bar">
+  <h2
+    class="template-title"
+    [innerHtml]="contentData.title | safehtml"
+  ></h2>
+  <div class="timer-container">
+    <span class="timer-control" *ngIf="!disabled" (click)="toggleTimer()">
+      <mat-icon *ngIf="!isTimerOn">play_arrow</mat-icon>
+      <mat-icon *ngIf="isTimerOn">pause</mat-icon>
+    </span>
+    <span class="timer">
+      {{ time * 1000 | date:'mm:ss':'UTC' }}
+    </span>
+  </div>
+</div>
+
+<div class="heading-content-wrapper">
+  <div
+    class="template-description"
+    [innerHtml]="contentData.description | safehtml"
+    *ngIf="contentData.description"
+  ></div>
+
+    <div
+    class="template-resource"
+    [innerHtml]="contentData.resource | safehtml"
+    *ngIf="contentData.resource"
+  ></div>
+</div>

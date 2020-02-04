@@ -1,0 +1,32 @@
+
+\:host
+    display: block
+    padding: 20px
+    border: 1px solid #ccc
+    margin: 10px 0
+    \::ng-deep
+        image-cropper
+            max-height: calc(100vh - 680px)
+            min-height: 300px
+            
+
+$size: 128px
+
+img
+    width: $size
+    height: $size
+    border-radius: $size
+    border: 1px solid #ccc
+
+.preview-wrapper    
+    display: flex
+    margin: 20px 0
+
+    > div
+        padding: 10px 30px
+
+    > div:first-child
+        border-right: 1px solid #ccc
+        
+    > div:last-child
+        flex-grow: 1

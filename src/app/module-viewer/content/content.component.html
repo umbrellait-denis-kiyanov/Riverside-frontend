@@ -1,0 +1,3 @@
+<div class="content-wrapper" [class.leftMenuExpanded]="leftMenuExpanded$ | async" *ngIf="moduleContent$ | async">
+    <riverside-step-template *ngIf="templateData" [canModify]="canModify" [template]="templateComponentName" [data]="templateData"></riverside-step-template>
+</div>

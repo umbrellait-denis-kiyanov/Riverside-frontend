@@ -1,0 +1,62 @@
+<module-org-selector [warning]="pendingSessions$ | async" (changed)="setOrganization($event)"></module-org-selector>
+
+<div class="row" *ngIf="{sessions: (pendingSessions$ | async)} as pendingApproval">
+  <div class="col-sm-9" *ngIf="(orgObserver$ | async) as org_id">
+    <div class="btn-group">
+      <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" [class.pending-approval]="((pendingApproval.sessions || {})[org_id] || {})[type.id]" (click)="setType(type)">{{ type.name }} <mat-icon class="pending">warning</mat-icon></button>
+    </div>
+  </div>
+  <div class="col-sm-3">
+    <div class="btn-group view-completed">
+      <button type="button" class="btn btn-default" (click)="viewPastAssessments()" title="View past assessments">&nbsp;<mat-icon>show_chart</mat-icon></button>
+    </div>
+  </div>
+</div>
+
+<ng-container *ngIf="activeType$ | async as activeType">
+  <ng-container *ngIf="session$ | async as session">
+  <div class="alert" [class.alert-success]="session.isApproved" [class.alert-warning]="!session.isApproved" *ngIf="session.isDone">
+    <span *ngIf="(sessionRequest$ | async | canModify); else review_pending">Please review this assessment</span>
+    <ng-template #review_pending>
+      <div *ngIf="session.isApproved">
+        This assessment has been approved.<br/><br/>Please complete the {{ activeType.name == 'Marketing' ? 'Sales' : 'Marketing' }} assessment
+        before retaking the {{ activeType.name }} assessment.
+      </div>
+      <div *ngIf="!session.isApproved">
+        This assessment is being reviewed by your managing director
+      </div>
+    </ng-template>
+  </div>
+
+  <h2>{{ activeType.name }} Strategy Assessment</h2>
+
+  <table *ngIf="(orgGroups$ | async) as orgGroups" [class.approved]="session.isApproved">
+    <tr *ngFor="let group of groups$ | async; let i = index;" (click)="setGroup(group)" class="step-list-item"
+      [class.not-applicable]="orgGroups[group.id]?.isNA" [class.approved]="orgGroups[group.id]?.isApproved" [class.active]="(activeGroup$ | async)?.id == group.id">
+      <td class="group-status">
+        <mat-icon *ngIf="orgGroups[group.id]?.isDone && !orgGroups[group.id]?.isNA">check</mat-icon>
+        <mat-icon *ngIf="orgGroups[group.id]?.isNA">block</mat-icon>
+      </td>
+      <td class="step-num-td">
+        <span class="step-number" [class.double]="i > 8">{{ i + 1 }}<span class="dot">.</span></span>
+      </td>
+      <td class="group-name">{{ group.shortName }}</td>
+      <td class="score">{{ orgGroups[group.id]?.isNA ? 'N/A' : (orgGroups[group.id]?.score || 0) }}</td>
+    </tr>
+    <tr class="step-list-item finish"  [class.active]="!(activeGroup$ | async)">
+      <td class="group-status"></td>
+      <td class="step-num-td">
+        <span class="step-number double"><mat-icon>check</mat-icon></span>
+      </td>
+
+      <td colspan="2" (click)="finish(null)">
+        Finish Assessment
+      </td>
+    </tr>
+  </table>
+
+  <div class="alert alert-danger" *ngIf="(finishError$ | async)">
+    Please complete all sections first
+  </div>
+</ng-container>
+</ng-container>

@@ -1,0 +1,23 @@
+<ng-container *ngIf="ready; else elseTemplate">
+  <left-sidebar></left-sidebar>
+
+      <!-- <router-outlet name="left-menu"></router-outlet> -->
+      <div  [hidden]="!expanded">
+          <router-outlet name="left-menu"></router-outlet>
+      </div>
+    <!-- <module-left-menu [width]="500" [module]="moduleData" (collapse)="expanded = false"></module-left-menu> -->
+  <ng-container *ngIf="!expanded">
+    <span class="expand-wrapper"></span>
+
+  </ng-container>
+  <router-outlet></router-outlet>
+</ng-container>
+<ng-template #elseTemplate>
+  <app-loading></app-loading>
+</ng-template>
+
+
+
+
+
+

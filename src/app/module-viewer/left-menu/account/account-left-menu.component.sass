@@ -1,0 +1,94 @@
+@import "src/app/common/sass/variables.sass"
+\:host
+  display: block
+  min-height: calc(100vh)
+  box-shadow: -3px 0 5px 0 #555
+  background: white
+  margin-left: $left-sidebar-width
+
+.site-tbox
+  margin: 0
+
+
+.active
+  font-weight: bold
+.header-title
+  font-size: 30px
+  margin-bottom: 15px
+  letter-spacing: 2px
+  padding: 5px
+  color: #504f4f
+  border-bottom: 2px solid #ccc
+  display: block
+  padding-left: 20px
+
+
+[disabled]
+  background: white
+
+.paper
+
+  box-shadow: 0px 0px 4px 0px rgba(0,0,0,0.3)
+
+.left-menu-summary
+  padding: 20px
+  .summary-title
+    text-align: center
+    font-size: 20px
+    margin-bottom: 15px
+  .summary-body
+    .summary-row
+      display: flex
+      margin-top: 10px
+      align-items: center
+      .summary-label
+        width: 105px
+
+
+      .summary-content
+        flex-grow: 1
+        .site-tbox
+          width: 200px
+          text-align: center
+
+.left-menu-actions
+  margin-top: 20px
+  table
+    width: 100%
+    th
+      text-align: center
+    th, td
+      padding: 8px
+      border: 1px solid #ccc
+    .key-action
+      display: flex
+      align-items: flex-start
+      > a
+        cursor: pointer
+      > span, > a
+        flex-grow: 1
+        margin-left: 10px
+    .learning-center
+      text-align: center
+      min-width: 160px
+      > span
+        cursor: pointer
+        margin: 0 5px
+      .fa
+        font-size: 20px
+      .fa-youtube-play, .fa-file-pdf-o
+        color: red
+
+a.fa
+  text-decoration: none
+.request-feedback
+  td
+    background: #279a27
+    color: white
+  .fa
+    font-size: 24px
+
+.users-icon
+  img
+    width: 20px
+    height: 20px

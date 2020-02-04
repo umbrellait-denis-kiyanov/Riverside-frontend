@@ -1,0 +1,83 @@
+@import "src/app/common/sass/variables.sass"
+
+\:host
+    flex: 1
+    display: flex
+    font-family: Montserrat
+
+.page-content
+    display: flex
+    flex-direction: column
+    flex: 1
+
+.top-bar
+    display: flex
+    margin-bottom: 1em
+
+    .btn-group
+        display: block
+        text-align: left
+        margin-right: 2em
+
+        .btn
+            text-transform: uppercase
+            font-size: 14px
+
+        .btn:focus
+            outline: 0
+            box-shadow: none
+
+        .btn-primary
+            color: white
+
+    h2
+        flex: 1
+        background-color: $blue
+        color: white
+        text-align: center
+        font-size: 18px
+        border-radius: 5px
+        text-transform: uppercase
+        padding: 7px
+
+.assessment-content
+    flex: 1
+    display: flex
+
+    > .row
+        flex: 1
+
+    table
+        text-transform: uppercase
+
+        tbody, thead
+            tr
+                height: 10px
+
+            td, th
+                height: 10px
+                padding: 5px 10px
+                border-top-width: 0
+                border-bottom-width: 0
+
+            th
+                border-bottom-width: 1px
+
+
+        tfoot
+            td
+                vertical-align: bottom
+
+        .session
+            width: 30px
+            text-align: center
+
+            span
+                color: black
+
+            &.activated
+                span
+                    color: inherit !important
+
+    assessment-chart
+        max-height: 80vh

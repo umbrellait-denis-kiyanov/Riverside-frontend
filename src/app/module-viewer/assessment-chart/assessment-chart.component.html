@@ -1,0 +1,62 @@
+<ngx-charts-line-chart *ngIf="series" [class.d-none]="!isLineChart"
+  [xAxisTickFormatting]="xAxisTickFormatting"
+  [results]="series"
+  [animations]="false"
+  [xAxisTicks]="xTicks"
+  [yAxisTicks]="yTicks"
+  [trimXAxisTicks]="false"
+  [xAxis]="true"
+  [yAxis]="true"
+  [scheme]="colorScheme"
+  [xScaleMin]="0.01"
+  [xScaleMax]="xTicks.length - 1"
+  [yScaleMin]="-55"
+  [yScaleMax]="50"
+  [autoScale]="true"
+  [appChartLabelTooltips]="fullLabels"
+  (activate)="activate($event)"
+  (deactivate)="deactivate($event)"
+  [activeEntries]="activeEntries"
+  appLineChartValueLabels
+  >
+  <ng-template #tooltipTemplate let-model="model">
+    {{ fullLabels[model.name] }}: {{ model.formattedValue || model.value }}
+  </ng-template>
+
+  <ng-template #seriesTooltipTemplate let-model="model">
+    <div *ngIf="model.length == 1">
+      {{ fullLabels[model[0].name] }}: <span class="tooltip-value">{{ model[0].formattedValue || model[0].value }}</span>
+    </div>
+    <div *ngIf="model.length > 1" style="text-align: left">
+      {{ fullLabels[model[0].name] }}:
+      <table style="margin: 1em 0">
+        <tr *ngFor="let m of model; index as i" [style.color]="colors[i]">
+          <td>{{ seriesIndex[i + 1] }}:</td>
+          <td><span class="tooltip-value"><strong>{{ m.formattedValue || m.value }}</strong></span></td>
+        </tr>
+      </table>
+    </div>
+  </ng-template>
+</ngx-charts-line-chart>
+
+<ngx-charts-bar-vertical *ngIf="series && !isLineChart" [class.d-none]="isLineChart"
+  [xAxisTickFormatting]="xAxisTickFormatting"
+  [results]="series[1].series"
+  [animations]="false"
+  [xAxisTicks]="xTicks"
+  [yAxisTicks]="yTicks"
+  [maxXAxisTickLength]="50"
+  [trimXAxisTicks]="true"
+  [xAxis]="true"
+  [yAxis]="true"
+  [yScaleMin]="-55"
+  [yScaleMax]="50"
+  [scheme]="colorScheme"
+  [showDataLabel]="true"
+  [customColors]="barCustomColors"
+  [appChartLabelTooltips]="fullLabels"
+  >
+  <ng-template #tooltipTemplate let-model="model">
+    {{ fullLabels[model.name] }}: <span class="tooltip-value">{{ model.formattedValue || model.value }}</span>
+  </ng-template>
+</ngx-charts-bar-vertical>

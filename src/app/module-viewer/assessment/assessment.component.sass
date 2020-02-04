@@ -1,0 +1,179 @@
+@import "src/app/common/sass/variables.sass"
+
+\:host
+    padding: 2em
+    padding-left: 4em
+    font-family: Montserrat
+    width: 100%
+
+h2
+    font-size: 25px
+    text-transform: uppercase
+
+.description
+    font-size: 16px
+
+table.questions
+    margin-top: 2em
+
+    &.not-applicable
+        opacity: 0.5
+
+    &.answers-loading
+        .answer
+            opacity: 0.5
+
+    &.readonly ::ng-deep
+        .mat-radio-button.mat-accent
+            pointer-events: none
+
+            &.mat-radio-checked .mat-radio-outer-circle
+                border-color: rgba(0, 0, 0, 0.54)
+
+            .mat-radio-inner-circle
+                background-color: rgba(0, 0, 0, 0.54)
+
+    tbody.highlight-yes .answer-yes,
+    tbody.highlight-no .answer-no
+        ::ng-deep mat-radio-button .mat-radio-inner-circle
+            transform: scale(.5)
+
+    tbody.highlight-yes .answer-no,
+    tbody.highlight-no .answer-yes
+        ::ng-deep mat-radio-button .mat-radio-inner-circle
+            transform: scale(.001)
+
+    th
+        text-transform: uppercase
+        padding-bottom: 2px
+        text-align: left
+        font-weight: normal
+
+        &.answer
+            text-align: center
+
+    td
+        height: 4em
+        vertical-align: middle
+
+        &.question
+            width: 60%
+            padding: 0.5em 3em 0.5em 1em
+
+        &.answer
+            text-align: center
+            padding: 0
+            width: 65px
+
+            \::ng-deep
+                .mat-radio-button
+                    width: 100%
+                    height: 100%
+                    cursor: pointer
+
+                .mat-radio-label
+                    width: 100%
+                    height: 100%
+                    display: block
+                    margin: 0
+
+                    .mat-radio-label-content
+                        height: calc(50% + 15px)
+                        padding-left: 0
+                        vertical-align: bottom
+
+
+        &.notes
+            padding: 5px
+            background-color: white
+            border: 1px solid #ddd
+
+            textarea
+                border: 0
+                padding: 0
+                width: 100%
+                min-height: 100%
+                min-width: 15vw
+                outline: 0 !important
+                background-color: white
+
+    tr.asm-error
+        color: $red
+
+        td.answer
+            border-color: $red
+            border-width: 1px
+
+    tr.answer-all
+        background: transparent
+
+        td.answer-label
+            text-align: right
+            font-size: 12px
+
+            .clear-all-link
+                margin-right: 2em
+
+        td.clear-all
+            text-align: right
+            padding-right: 0
+
+    tr.importance
+        td
+            height: 0
+            border: 0
+
+        td.importance-label
+            text-align: right
+            font-size: 12px
+
+        td.importance-select
+            padding: 0
+
+            select
+                width: 100%
+                height: 100%
+                font-size: 20px
+                border: 0
+                text-align-last: center
+                padding: 5px
+                background-color: lightgrey
+
+                &.yellow
+                    background-color: $yellow
+                    color: black
+
+                &.red
+                    background-color: $red
+
+    .clear-all-link
+        font-size: 12px
+        cursor: pointer
+
+table.summary
+    margin: 0 auto
+    width: auto
+    margin-top: 2em
+    text-transform: uppercase
+    text-align: right
+
+    td.score
+        padding-left: 2em
+        padding-right: 2em
+
+.done
+    text-align: center
+    margin-top: 2em
+
+    .not-applicable
+        margin-right: 1em
+
+    .btn
+        text-transform: uppercase
+        padding: 10px 20px
+
+        &.success
+            background-color: $green
+
+    .alert
+        margin-top: 2em

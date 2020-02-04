@@ -1,0 +1,5 @@
+<div>
+  <div [innerHtml]="contentData.content | safehtml"></div>
+</div>
+
+<module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

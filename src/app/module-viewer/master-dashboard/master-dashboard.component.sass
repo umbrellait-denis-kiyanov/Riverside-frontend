@@ -1,0 +1,237 @@
+@import "src/app/common/sass/variables.sass"
+\:host
+    padding: 2em
+    width: 100%
+    margin-left: $left-sidebar-width
+
+.organizations
+    text-transform: uppercase
+    font-family: Montserrat
+    margin-top: 1em
+    flex-direction: column
+    max-height: 60em
+    width: 100%
+
+    .organization-item
+        padding: 2em
+        height: 8em
+        text-align: center
+        flex: 0 0 20%
+        max-width: 20%
+
+        .org-item-container
+            display: block
+            max-width: 150px
+            margin: 0 auto
+
+            .org-name
+                height: 4em
+                display: flex
+                justify-content: center
+                align-items: center
+                color: #999
+                font-size: 1.1em
+
+        \&.has-progress
+            .org-name
+                color: black !important
+
+            .org-progress
+                display: flex !important
+
+                .progress-pct
+                    display: inline-block
+                    width: 4em
+                    text-align: left
+
+                app-dashboard-progress-bar
+                    margin-top: 6px
+
+.org-name
+    cursor: pointer
+
+.dashboard-menu
+
+    .dashboard-menu-wrapper
+        width: 250px
+        float: right
+
+        .sort-menu
+            margin-top: 3em
+            font-family: Montserrat
+            display: flex
+            width: 100%
+            white-space: nowrap
+
+            .sort-dropdown
+                flex: 1
+
+                .btn
+                    width: 100%
+
+            .btn
+                text-transform: uppercase
+                line-height: 1
+                text-align: left
+
+            .btn-primary
+                background-color: #00529f
+                color: white
+                border-color: #00529f
+                padding-right: 2em
+
+            .dropdown-toggle::after
+                position: absolute
+                right: 12px
+                top: 45%
+
+            .dropdown-menu
+                width: 100%
+
+                .dropdown-item
+                    padding: 0.5em
+                    text-transform: uppercase
+
+            .sort-direction
+                padding: 0 0.3em
+                font-size: 2em
+                margin-left: 0.2em
+
+.list-view
+
+    thead tr th
+        &.org-progress
+
+            padding-left: 2px
+            padding-right: 2px
+            white-space: nowrap
+            position: relative
+
+            &.current-quarter
+                .q-complete
+                    visibility: visible
+                    width: auto
+
+                    span
+                        position: relative
+                        left: -8vw
+
+                .q-current
+                    display: inline-block
+                    font-size: smaller
+                    margin-left: 3px
+
+                .button-inner
+                    background-color: #5e8ab4
+
+            .q-complete
+                visibility: hidden
+                width: 0
+                white-space: nowrap
+
+            .q-current
+                display: none
+
+            .button-inner
+                border: 1px solid white
+                border-radius: 5px
+                display: inline-block
+                padding: 2px 10px 4px
+                white-space: nowrap
+                margin-top: 3px
+
+                span
+                    vertical-align: middle
+
+            \::ng-deep .mat-sort-header-container
+                .mat-sort-header-arrow
+                    display: none !important
+
+                &.mat-sort-header-sorted
+                    .mat-sort-header-arrow
+                        display: inline-block !important
+                        vertical-align: bottom
+                        margin-bottom: 10px
+                        margin-left: 2px
+                        margin-right: 4px
+
+
+    tbody
+        border: 1px solid #dee2e6
+
+        tr
+            td
+                &.man-director, &.mkt-director
+                    min-width: 120px
+
+                &.org-progress
+                    text-align: center
+                    padding: 8px
+
+                &.org-progress-chart
+                    text-align: center
+                    max-width: 8em
+                    max-height: 1em
+                    padding: 0
+                    position: relative
+
+                    .org-chart-container
+                        position: absolute
+                        width: 100%
+                        height: 100%
+                        left: 0%
+                        top: 0
+
+                        ngx-charts-line-chart
+                            position: absolute
+                            left: 0
+                            top: 0
+
+                app-assessment-score
+                    cursor: pointer
+
+@media only screen and (max-width: 1300px)
+    h1
+        font-size: 3vw
+
+@media only screen and (max-width: 991px)
+    h1
+        font-size: 3.7vw
+        white-space: nowrap
+        margin-bottom: 0
+
+    .dashboard-menu
+        text-align: left !important
+        margin-top: 2em
+        margin-bottom: 2em
+        width: 100%
+
+        .dashboard-menu-wrapper
+            width: 100%
+            float: none
+
+            .sort-menu
+                float: right
+                margin-top: 0
+                width: auto
+
+            app-list-style-toggle
+                float: left
+
+    .organizations
+        margin-top: -1em
+
+        .organization-item
+            flex: 0 0 25%
+            max-width: 25%
+
+    .list-view
+        .op-partner, .fin-director, .man-director
+            display: none
+
+
+@media only screen and (max-width: 768px)
+    .organizations
+        .organization-item
+            flex: 0 0 33%
+            max-width: 33%

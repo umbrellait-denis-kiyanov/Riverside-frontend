@@ -1,0 +1,129 @@
+@import "src/app/common/sass/variables.sass"
+\:host
+    display: block
+    min-height: 100vh
+    height: 100%
+    box-shadow: -3px 0 5px 0 #555
+    background: white
+    margin-left: $left-sidebar-width
+    width: 350px
+    padding: 10px
+    font-family: Montserrat
+    text-transform: uppercase
+
+.step-number
+    display: inline-block
+    width: 2em
+    padding-right: 3px
+    text-align: right
+
+.step-list-item
+    &.not-applicable
+        opacity: 0.4
+
+    &.active .step-number
+        position: relative
+        left: -3px
+
+        &.double
+            left: 0
+
+.btn-group
+    display: block
+    text-align: left
+    padding: 1em 0
+    margin-bottom: 1em
+
+    .btn
+        text-transform: uppercase
+        font-size: 12px
+
+        mat-icon.pending
+            display: none
+
+        &.pending-approval
+            mat-icon.pending
+                display: inline-block
+                font-size: 12px
+                height: 12px
+                width: 12px
+                color: #e89600
+                top: 2px
+                position: relative
+
+    .btn:focus
+        outline: 0
+        box-shadow: none
+
+    .btn-primary
+        color: white
+
+    &.view-completed
+        text-align: right
+
+        .btn
+            position: relative
+            width: 4em
+
+            .mat-icon
+                position: absolute
+                left: 0
+                width: 100%
+                top: 4px
+
+h2
+    font-size: 2vw
+    font-size: 17px
+    text-align: center
+    padding-bottom: 8px
+    border-bottom: 1px solid #ddd
+    margin-bottom: 10px
+
+table
+    tr
+        cursor: pointer
+
+        td
+            vertical-align: top
+            padding-bottom: 5px
+
+            &.step-num-td
+                width: 30px
+
+            &.group-status
+                width: 18px
+                padding-top: 2px
+                color: $green
+
+                \::ng-deep .mat-icon
+                    font-size: 16px
+                    width: auto
+                    height: auto
+                    color: #ffc800
+
+            &.score
+                width: 3em
+                text-align: right
+                color: #666
+                font-size: 0.9em
+
+        &.finish
+            &.active
+                mat-icon
+                    color: white !important
+
+            td
+                padding-top: 10px
+
+                .step-number
+                    left: -2px
+
+                    .mat-icon
+                        width: 20px
+                        height: 20px
+                        font-size: 20px
+                        line-height: 25px
+
+    &.approved, tr.approved
+        \::ng-deep .mat-icon
+            color: $green !important

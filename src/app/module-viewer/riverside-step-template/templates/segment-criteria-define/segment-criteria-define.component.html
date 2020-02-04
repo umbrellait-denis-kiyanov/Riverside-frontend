@@ -1,0 +1,219 @@
+<table class="market-segments" *ngIf="step < 3 && inputs">
+  <thead>
+    <tr>
+      <th>
+        <div *ngIf="step === 1">Enter segment name</div>
+      </th>
+      <th *ngIf="step < 3" [class.inactive]="step > 1">
+        <div>What industries do your customers belong to?</div>
+        <div class="example" *ngIf="step === 1">Healthcare, education, insurance, corporate, manufacturing, etc.</div>
+      </th>
+      <th *ngIf="step < 3" [class.inactive]="step > 1">
+        What are their pain points?
+      </th>
+      <th *ngIf="step > 1">
+        Brainstorm criteria for your ICP
+      </th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr *ngFor="let segment of activeSegments; index as i;">
+      <td class="segment-label">
+        <ice
+          placeholder="Segment {{ segment }}"
+          [disabled]="step > 1"
+          single="true"
+          input="name"
+          [idx]="segment"
+        ></ice>
+
+        <div *ngIf="step === 1 && activeSegments.length > 1">
+          <a (click)="removeSegment(i)" class="add-rem">REMOVE segment</a>
+        </div>
+      </td>
+      <td *ngIf="step < 3">
+        <ice
+          class="ice-textarea"
+          [disabled]="step > 1"
+          input="industries"
+          [idx]="segment"
+        ></ice>
+      </td>
+      <td *ngIf="step < 3">
+        <ice
+          class="ice-textarea"
+          [disabled]="step > 1"
+          input="pain_points"
+          [idx]="segment"
+        ></ice>
+      </td>
+      <td *ngIf="step > 1">
+        <ice
+          class="ice-textarea"
+          [disabled]="step > 2"
+          input="brainstorm"
+          [idx]="segment"
+        ></ice>
+      </td>
+    </tr>
+    <tr *ngIf="step === 1">
+      <td>
+        <a (click)="addSegment()" class="add-rem">ADD market segment</a>
+      </td>
+    </tr>
+  </tbody>
+</table>
+
+<div
+  class="template-instructions"
+  [innerHtml]="contentData.instructions | safehtml"
+  *ngIf="contentData.instructions"
+></div>
+
+<div *ngIf="step === 3">
+  <div class="segment-container" *ngFor="let segment of activeSegments">
+    <h2 inputText="name" [num]="segment"></h2>
+
+    <div inputText="brainstorm" [num]="segment"></div>
+
+    <app-icp-input
+      [criterias]="criterias[segment]"
+      [inputIndex]="segment"
+      mode="criteria"
+    ></app-icp-input>
+
+    <div>Where and how will you mine the necessary data to support your decision?</div>
+    <ice
+      class="ice-textarea"
+      [disabled]="step > 3"
+      input="where_mine"
+      [idx]="segment"
+    ></ice>
+
+  </div>
+</div>
+
+<div *ngIf="step === 4 || step === 5">
+  <div class="segment-container" *ngFor="let segment of activeSegments">
+    <h2 inputText="name" [num]="segment"></h2>
+
+    <app-icp-input
+      [criterias]="criterias[segment]"
+      [inputIndex]="segment"
+      mode="weight"
+      [review]="step === 5"
+    ></app-icp-input>
+
+  </div>
+</div>
+
+<div *ngIf="step == 6">
+  <table class="table assign-grades">
+    <thead>
+      <tr>
+        <th>Example:</th>
+        <th>Assign Percentages</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let grade of gradeLevels">
+        <td>
+          <span class="">{{ grade.grade }} &gt;=</span> {{ grade.level }}
+        </td>
+        <td>
+          <span>{{ grade.grade }} &gt;= </span>
+          <ice
+            class="number"
+            input="grade_pct"
+            [idx]="grade.i"
+            numeric="true"
+          ></ice>
+        </td>
+      </tr>
+      <tr>
+        <td>F &lt; {{lastGradeLevel.level}}</td>
+        <td>F &lt; <span class="calculated-grade-pct" inputText="grade_pct" num="4" inline="true"></span></td>
+      </tr>
+    </tbody>
+  </table>
+</div>
+
+<div *ngIf="step == 7">
+  <ng-container *ngFor="let customerIndex of grades">
+    <h2 *ngIf="grades.length == 6 && customerIndex % 2">{{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers</h2>
+    <div class="grade-container row">
+      <div class="col-sm-1 text-center">
+        <h2>{{ customerIndex }}</h2>
+      </div>
+      <div class="col-sm-11" *ngFor="let segmentSel of [inputs[gradePrefix + '_segment_' + customerIndex]]">
+
+        <div class="row inputs-wrapper">
+          <label class="col-sm-3">Customer Name:</label>
+          <div class="col-sm-9">
+            <ice
+              input="name"
+              prefix="{{ gradePrefix }}_"
+              [idx]="customerIndex"
+              single="true"
+            ></ice>
+          </div>
+        </div>
+
+        <div class="row inputs-wrapper">
+          <label class="col-sm-3">Select a segment:</label>
+          <div class="col-sm-9">
+            <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel); resetError(segmentSel);">
+              <option *ngFor="let segment of activeSegments" [value]="segment">
+                <span inputText="name" [num]="segment"></span>
+              </option>
+            </select>
+            <error-msg [input]="segmentSel"></error-msg>
+          </div>
+        </div>
+
+        <div class="segment-container">
+
+          <app-icp-input
+            [criterias]="criterias[segmentSel.content]"
+            [inputPrefix]="gradePrefix"
+            [inputIndex]="customerIndex"
+            [gradeLevels]="userGradeLevels"
+            mode="grade"
+          ></app-icp-input>
+
+        </div>
+      </div>
+    </div>
+  </ng-container>
+</div>
+
+<div *ngIf="step == 8">
+  <div class="grade-feedback-section" *ngFor="let section of gradeSections">
+    <h2 *ngIf="section.grades.length != 6">{{ section.title }}</h2>
+
+    <ng-container *ngFor="let customerIndex of section.grades">
+      <h2 *ngIf="section.grades.length == 6 && customerIndex % 2">{{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers</h2>
+      <div class="grade-container" *ngIf="inputs[prefix + section.prefix + '_segment_' + customerIndex].content as segIdx">
+        <h3 inputText="{{ section.prefix }}_name" [num]="customerIndex"></h3>
+        <h5 inputText="name" [num]="segIdx"></h5>
+
+        <div class="segment-container">
+          <app-icp-input
+            [criterias]="criterias[segIdx]"
+            [inputPrefix]="prefix + section.prefix"
+            [inputIndex]="customerIndex"
+            [gradeLevels]="userGradeLevels"
+            mode="grade"
+            review="true"
+          ></app-icp-input>
+
+        </div>
+      </div>
+    </ng-container>
+  </div>
+</div>
+
+<module-feedback *ngIf="step == 5 || step == 8; else nav"></module-feedback>
+<ng-template #nav>
+  <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
+</ng-template>

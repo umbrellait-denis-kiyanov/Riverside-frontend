@@ -1,0 +1,27 @@
+@import "src/app/common/sass/variables.sass"
+
+\:host
+    display: block
+    margin: 10px 0
+    ::ng-deep
+        .dropdown-menu
+            max-height: 85vh
+            overflow-y: auto
+            width: 100%
+            margin-top: 5px
+
+.dropdown, .dropdown button
+    width: 100%
+
+.dropdown-item.warning
+    &:before
+        color: #e89600
+        content: "\e002"
+        font-family: "Material Icons"
+        position: absolute
+        margin-left: -15px
+        font-size: 12px
+        margin-top: 3px
+
+.dropdown-item.inactive
+    color: $grey

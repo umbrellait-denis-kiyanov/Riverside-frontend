@@ -1,0 +1,29 @@
+@import "src/app/module-viewer/riverside-step-template/templates/template.sass"
+
+.persona-behavior-wrapper
+  font-size: large
+  margin-top: 40px
+  .persona-row
+    display: flex
+    align-items: center
+    margin-bottom: 15px
+
+
+    .persona-behavior-column
+      flex-grow: 1
+
+      &.behavior-title
+        font-size: x-large
+        text-align: center
+        margin-bottom: 20px
+
+\::ng-deep .persona-behavior-column
+  .textbody
+    min-height: 120px
+
+.resource-row
+  display: flex
+  justify-content: space-between
+
+.template-example-resource
+  text-align: center

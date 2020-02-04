@@ -1,0 +1,46 @@
+<div class="page-content" *ngIf="(activeType$ | async) as type">
+
+  <div class="top-bar">
+    <div class="btn-group">
+      <button *ngFor="let type of types$ | async" type="button" class="btn btn-default" [class.btn-primary]="type.id == ((activeType$ | async) || {}).id" (click)="setType(type)">{{ type.name }}</button>
+    </div>
+    <h2>{{ type.name}} strategy rapid diagnostic results</h2>
+  </div>
+
+  <div class="assessment-content" *ngIf="(sessions$ | async) as sessions">
+    <div class="row" *ngIf="sessions.length && chart">
+      <div class="col-sm-4">
+        <table class="table table-bordered">
+          <thead>
+            <tr>
+              <th>Phase</th>
+              <th class="session" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i">{{ session.formattedDate }}</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr *ngFor="let group of type.groups; index as gIdx">
+              <td class="group-title">{{ gIdx + 1 }}. {{ group.name }}</td>
+              <td class="session" (mouseenter)="activate(i)" (mouseleave)="deactivate(i)" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i">
+                <span>{{ session.groups[group.id]?.score === null ? 'N/A' : session.groups[group.id]?.score }}</span>
+              </td>
+            </tr>
+          </tbody>
+          <tfoot>
+            <tr>
+              <td>Average</td>
+              <td class="session" [class.activated]="activatedSeries == i" [style.color]="colors[i]" *ngFor="let session of sessions; index as i"><span>{{ session.score | number:'1.1-1' }}</span></td>
+            </tr>
+          </tfoot>
+        </table>
+      </div>
+
+      <div class="col-sm-8">
+        <assessment-chart *ngIf="chart && chart.length" [series]="chart" [colors]="colors" (activatedSeriesChange)="setActiveSeries($event)" [activeEntries]="activeEntries" [isLineChart]="true"></assessment-chart>
+      </div>
+    </div>
+
+    <div *ngIf="!sessions.length">
+      <div class="alert alert-danger">No {{ type.name }} assessments have been completed yet</div>
+    </div>
+  </div>
+</div>

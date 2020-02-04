@@ -1,0 +1,20 @@
+<h3>{{ question }}</h3>
+
+<table class="table matrix" [class.horizontal]="horizontal">
+  <tr>
+    <td class="empty-corner"><div class="empty-container"></div></td>
+    <th *ngFor="let option of options">
+      <span class="option-wrapper">{{ option.option }}</span>
+    </th>
+  </tr>
+  <ng-container *ngFor="let persona of personas; let i=index">
+    <tr>
+      <td class="riverside-persona">
+        <riverside-persona [persona]="persona"></riverside-persona>
+      </td>
+      <td class="checkbox-container" *ngFor="let option of options" (click)="!disabled && toggleSelection(i, option.option, $event)">
+        <input type="checkbox" class="checkbox" [disabled]="disabled" (change)="updateTextInput(i, option.option, $event)" [checked]="(template.inputs[inputIds.personas[i]].selections$ | async)?.includes(option.option)" />
+      </td>
+    </tr>
+  </ng-container>
+</table>

@@ -1,0 +1,30 @@
+<div class="page-content" *ngIf="(session$ | async) as session">
+  <h2>
+    Finish Assessment
+    <button class="btn btn-primary" (click)="isLineChart = !isLineChart" style="box-shadow: none !important">
+      <mat-icon *ngIf="isLineChart">bar_chart</mat-icon>
+      <mat-icon *ngIf="!isLineChart">show_chart</mat-icon>
+    </button>
+  </h2>
+
+  <div class="chart">
+    <assessment-chart *ngIf="chart" [series]="chart" [isLineChart]="isLineChart"></assessment-chart>
+  </div>
+
+  <div *ngIf="!session.isApproved && !isSubmittedForReview && !(sessionRequest$ | async | canModify:'X-Can-Record')" class="alert alert-warning">
+    NOTE: Once your assessment has been submitted you will not be able to change your answers
+  </div>
+
+  <div class="done" *ngIf="(sessionRequest$ | async | canModify) && !isSubmittedForReview">
+    <button class="btn btn-success" (click)="(!isFinishing || !isFinishing.closed) && finish(session)">
+      <span *ngIf="sessionRequest$ | async | canModify:'X-Can-Record'; else submit">Finish & Record</span>
+      <ng-template #submit>Finish & Submit</ng-template>
+      <spinner [sub]="isFinishing"></spinner>
+    </button>
+  </div>
+
+  <div *ngIf="isSubmittedForReview" class="alert alert-warning">
+    This assessment has been submitted for review to your managing director
+  </div>
+
+</div>

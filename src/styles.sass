@@ -1,0 +1,113 @@
+@import "src/assets/styles/theme.sass"
+@import "src/app/common/components/e3-async-button/e3-async-button.directive.sass"
+@import '~handsontable/dist/handsontable.full.css'
+$fa-font-path: "node_modules/font-awesome/fonts"
+@import "node_modules/font-awesome/scss/font-awesome.scss"
+
+body
+  font-size: 14px
+  font-family: Verdana, Geneva, sans-serif
+  font-weight: 500
+
+h1, .h1
+  font-weight: 600
+
+.site-tbox
+  outline: none
+  width: 100%
+  padding: 8px 10px
+  border: 1px solid #ccc
+  margin: 15px 0
+
+.picture-modal .modal-dialog
+  width: 80%
+  max-width: 1200px
+
+.modal-open
+  position: relative !important
+  overflow: hidden !important
+
+.ck-balloon-panel_visible
+  z-index: 99999 !important
+.learning-element-modal
+  .modal-dialog
+    width: 90%
+    max-width: 1200px
+    height: 90vh
+    .modal-content
+      height: 100%
+
+.ng-tooltip
+  position: absolute
+  max-width: 150px
+  font-size: 14px
+  text-align: center
+  color: #f8f8f2
+  padding: 3px 8px
+  background: #282a36
+  border-radius: 4px
+  z-index: 1000
+  opacity: 0
+
+.ng-tooltip:after
+  content: ""
+  position: absolute
+  border-style: solid
+
+.ng-tooltip-top:after
+  top: 100%
+  left: 50%
+  margin-left: -5px
+  border-width: 5px
+  border-color: black transparent transparent transparent
+
+.ng-tooltip-bottom:after
+  bottom: 100%
+  left: 50%
+  margin-left: -5px
+  border-width: 5px
+  border-color: transparent transparent black transparent
+
+.ng-tooltip-left:after
+  top: 50%
+  left: 100%
+  margin-top: -5px
+  border-width: 5px
+  border-color: transparent transparent transparent black
+
+.ng-tooltip-right:after
+  top: 50%
+  right: 100%
+  margin-top: -5px
+  border-width: 5px
+  border-color: transparent black transparent transparent
+
+.ng-tooltip-show
+  opacity: 0.9
+
+#toast-container > div
+  opacity: 1 !important
+
+// global Bootstrap 4 overrides
+body
+  .btn-primary
+    background-color: #00529f
+    border-color: #00529f
+
+    &:active, &:focus, &:hover
+      background-color: #00529f
+
+  .card
+    box-shadow: none
+
+  button:focus
+    outline: 0
+
+.btn-default
+  color: #333
+  background-color: #fff
+  border-color: #ccc
+
+@media (min-width: 576px)
+  body .modal-dialog
+    max-width: 600px

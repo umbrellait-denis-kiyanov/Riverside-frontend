@@ -1,0 +1,113 @@
+\:host
+  display: flex
+
+  \::ng-deep
+    .content-wrapper
+      flex: 1
+
+    .step-list-item.active
+      .step-number
+        font-weight: bold
+        background-color: #00529f
+        color: white
+        border-radius: 100%
+        height: 1.5em
+        width: 1.5em !important
+        text-align: center !important
+        line-height: 1.5em
+        padding-left: 3px
+        margin-left: 12px
+        margin-right: -2px
+        font-size: 0.9em
+        margin-top: 0
+
+        .dot
+          display: none
+
+        &.double
+          height: 2em
+          width: 2em !important
+          line-height: 2em
+          margin-left: 4px
+          margin-right: -1px
+          position: relative
+          margin-top: -0.35em
+
+  \::ng-deep h1
+      text-transform: uppercase
+      font-family: Montserrat
+      margin-bottom: 0.6em
+      font-size: 3em
+
+  \::ng-deep .dashboard-table
+    font-family: Montserrat
+
+    thead:after
+      content: "@"
+      display: block
+      line-height: 10px
+      text-indent: -99999px
+
+    thead
+      border-radius: 5px
+
+      tr th
+        background-color: #00529f
+        color: white
+        border: 0
+        vertical-align: middle
+
+        &:first-of-type
+          border-radius: 5px 0 0 5px
+          padding-left: 2em
+
+        &:last-of-type
+          border-radius: 0 5px 5px 0
+
+        \::ng-deep .mat-sort-header-container
+          display: block
+          text-align: center
+          white-space: nowrap
+
+          button
+            display: inline-block !important
+            text-transform: uppercase !important
+            white-space: normal
+            vertical-align: middle
+
+          .mat-sort-header-arrow
+            color: white
+            display: inline-block !important
+
+    tbody
+      border: 1px solid #dee2e6
+
+      tr
+        td:first-of-type
+          padding-left: 2em
+          font-size: 1.1em
+          white-space: nowrap
+          text-transform: uppercase
+
+        td
+          vertical-align: middle
+          padding-top: 0.3rem
+          padding-bottom: 0.3rem
+
+          &.org-progress
+            text-align: center
+            padding: 8px
+
+          &.due-date
+            text-align: center
+
+          &.assessment
+            text-align: center
+            padding-top: 3px
+            padding-bottom: 3px
+
+        &.no-progress
+            color: #999
+
+            td.org-progress div
+                display: none

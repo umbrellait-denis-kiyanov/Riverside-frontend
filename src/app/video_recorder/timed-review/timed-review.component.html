@@ -1,0 +1,12 @@
+<app-loading [hidden]="status != statusEnum.CREATE_SOURCE_START"></app-loading>
+
+<ng-container>
+  <timed-review-iframe
+    *ngIf="status == statusEnum.SOURCE_READY"
+    [iframe]="iframe"
+    (finish)="onFinished($event)"
+  ></timed-review-iframe>
+  <div *ngIf="status == statusEnum.SUBMIT_START">
+    Submitting...
+  </div>
+</ng-container>

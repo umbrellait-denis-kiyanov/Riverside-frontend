@@ -1,0 +1,75 @@
+<div *ngIf="!hasSubFields" class="form-group" class="type-{{ type }} name-{{ name }}">
+
+  <label *ngIf="type != 'boolean'">{{ fieldTitle(name) }}</label>
+
+  <input *ngIf="type == 'text-input'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="json"
+    (change)="valueChange()"
+    type="text"
+    class="site-tbox"
+  />
+
+  <input *ngIf="type == 'number'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="json"
+    (change)="valueChange()"
+    type="number"
+    class="site-tbox"
+  />
+
+  <select *ngIf="type == 'select'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="json"
+    (change)="valueChange()"
+    class="site-tbox"
+  >
+    <option *ngFor="let opt of selectValues" [value]="opt">{{ opt | builderSelectOption }}</option>
+  </select>
+
+  <select *ngIf="type == 'resource'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="json"
+    (change)="valueChange()"
+    class="site-tbox"
+  >
+    <option *ngFor="let opt of resourceValue$ | async" [value]="opt">{{ opt | builderSelectOption }}</option>
+  </select>
+
+  <textarea *ngIf="type == 'json'"
+    [ngModelOptions]="{standalone: true}"
+    [(ngModel)]="json"
+    (change)="valueChange()"
+    class="site-tbox"
+  ></textarea>
+
+  <ckeditor
+    *ngIf="type == 'string'"
+    class="ckeditor"
+    [editor]="rtEditor"
+    (change)="valueChange()"
+    [(ngModel)]="json"
+  ></ckeditor>
+
+  <label *ngIf="type == 'boolean'">
+    <input
+      type="checkbox"
+      [ngModelOptions]="{standalone: true}"
+      [(ngModel)]="json"
+      (change)="valueChange()"
+    >
+    {{ fieldTitle(name) }}
+  </label>
+
+</div>
+
+<div *ngIf="hasSubFields" cdkDropList (cdkDropListDropped)="onSubValueDrop($event)">
+  <label>{{ fieldTitle(name) }}</label>
+  <div class="card sub-fields fields-cnt-{{ type.length }}" cdkDrag cdkDragLockAxis="y" *ngFor="let val of json; index as idx">
+    <div class="card-body">
+      <button class="btn btn-danger remove-subvalue" (click)="onClickRemoveSubField(idx)">Remove</button>
+      <app-step-template-field *ngFor="let field of type" (change)="valueChange()" [field]="field" [(json)]="json[idx][field[0]]"></app-step-template-field>
+    </div>
+  </div>
+  <button class="btn btn-primary" (click)="onClickAddSubField()">Add</button>
+</div>

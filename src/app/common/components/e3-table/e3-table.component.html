@@ -1,0 +1,25 @@
+<table>
+  <tr>
+    <th
+      *ngFor="let col of header"
+      (click)="headerClicked(col)"
+    >
+      {{col.label}}
+
+      <span
+        *ngIf="col.id == sortBy.id"
+        class="fa"
+        [ngClass]="{'fa-sort-alpha-desc': sortBy.orderMult == -1,'fa-sort-alpha-asc': sortBy.orderMult == 1}"
+      ></span>
+    </th>
+  </tr>
+
+  <tr *ngFor="let row of tableData$ | async; let r=index" class="{{ row.className }}" [class.pointer]="row.onClick || row.link" [routerLink]="row.link" routerLinkActive="active">
+    <td
+      *ngFor="let col of header; let c=index"
+      (click)="cellClicked(row.cells[c],col,row,r,c)"
+    >
+      {{ row.cells[c].formattedValue }}
+    </td>
+  </tr>
+</table>

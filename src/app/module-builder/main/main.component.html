@@ -1,0 +1,20 @@
+<ul class="nav nav-tabs font-size-12">
+  <li
+    [ngClass]="{
+      'active':  rla.isActive
+    }"
+    *ngFor="let tab of tabs"
+  >
+    <a
+      data-toggle="tab"
+      class="padding-10"
+      [routerLink]="['/' + tab.key]"
+      routerLinkActive="routerLinkActive"
+      #rla="routerLinkActive"
+    >{{tab.display}}</a>
+  </li>
+</ul>
+<router-outlet></router-outlet>
+
+
+

@@ -1,0 +1,117 @@
+@import "src/app/common/sass/variables.sass"
+$iconsize: 25px
+
+\:host
+  position: fixed
+  z-index: 1
+  width: $left-sidebar-width
+  height: 100vh
+  border-right: 1px solid #ccc
+  background: white
+  color: #00529f
+  \::ng-deep
+    .letter-image
+      border-radius: 50%
+      border: 1px solid white
+      width: 40px
+      height: 40px
+      margin: auto
+      display: flex
+      align-items: center
+      justify-content: center
+      color: #00519e
+      background: white
+      font-size: 18px
+    svg
+      fill: #00529f
+    path
+      stroke: #00529f
+
+  &.expanded
+    background: #00529f
+    color: white
+    \::ng-deep
+      svg
+        fill: white
+      path
+        stroke: white
+
+.logo
+  display: flex
+  justify-content: center
+  align-items: center
+  height: 50px
+  img
+    width: 80%
+ul
+  list-style-type: none
+  list-style: none
+  padding-left: 0
+
+  li
+
+    list-style: none
+    a
+      padding: 5px
+      color: inherit
+      text-decoration: none
+  .menu-item
+    &[hidden]
+      display: none
+
+    min-height: 60px
+    text-align: center
+    display: flex
+    flex-direction: column
+    justify-content: center
+    cursor: pointer
+
+    .menu-item-inactive
+      opacity: 0.7
+
+    .menu-item-container
+      display: inline-block
+      position: relative
+
+    .mat-icon
+      font-size: $iconsize
+      height: $iconsize
+      width: $iconsize
+    .active
+      background: white
+      color: #00529f
+      \::ng-deep
+        svg
+          fill: #00529f
+        path
+          stroke: #00529f
+        .letter-image
+          color:  white
+          background: #00519e
+          border-color: white
+
+
+    .menu-item-counter
+      position: absolute
+      right: -20%
+      top: -20%
+      font-size: 10px
+      border-radius: 100%
+      background: #e89600
+      color: white
+      width: 2em
+
+      &:after
+        content: ""
+        display: block
+        padding-bottom: 100%
+
+      .counter-content
+        position: absolute
+        width: 100%
+        height: 100%
+        top: 0
+        left: 0
+        align-items: center
+        display: flex
+        justify-content: center

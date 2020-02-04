@@ -1,0 +1,47 @@
+<div class="modal-header">
+  <h3>Request feedback</h3>
+
+  <button
+    type="button"
+    class="close"
+    aria-label="Close"
+    (click)="modal.dismiss('Cross click')"
+  >
+    <span aria-hidden="true">&times;</span>
+  </button>
+
+
+</div>
+
+<div class="modal-body" *ngIf="(module$ | async) as module">
+  <p *ngIf="module && !isAssessmentPage">
+    You are requesting feedback for the module <b>{{module.name}}</b>.
+    <a class="pointer">(Change module)</a>
+  </p>
+  <p *ngIf="isAssessmentPage && (navService.activeAssessmentType$ | async) as assessment ">
+    You are requesting feedback on the <b>{{assessment.name}} Assessment</b>.
+  </p>
+  <p>
+    What feedback would you like from your Managing Director?
+  </p>
+  <feedback-source
+      (submit)="submit($event)"
+      (messageChanged)="message=$event"
+      (currentTabChanged)="currentTab=$event"
+      >
+  </feedback-source>
+
+</div>
+
+<div class="modal-footer" >
+  <button
+    mat-raised-button
+    e3-async-button
+    [running]="submitting && !submitting.closed"
+    color="accent"
+    [disabled]="!message"
+    (click)="submit(message)"
+  >Submit</button>
+</div>
+
+
