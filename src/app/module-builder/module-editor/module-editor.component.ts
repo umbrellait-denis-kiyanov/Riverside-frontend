@@ -9,6 +9,7 @@ import { StepLinkEditorComponent } from './step-link-editor/step-link-editor.com
 import { Subscription } from 'rxjs';
 import { switchMap, catchError } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
+import { CampaignCalendarTemplateData } from 'src/app/module-viewer/riverside-step-template/templates/campaign-calendar-template';
 
 @Component({
   selector: 'app-module-editor',

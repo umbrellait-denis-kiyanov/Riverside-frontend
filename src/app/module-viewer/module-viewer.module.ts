@@ -105,6 +105,7 @@ import { BuyerPersonasSelectorComponent } from './riverside-step-template/person
 import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
 import { BuyerPersonasService } from '../common/services/buyer-personas.service';
+import { CampaignCalendarTemplateComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar-template.component';
 
 @NgModule({
   imports: [
@@ -204,7 +205,8 @@ import { BuyerPersonasService } from '../common/services/buyer-personas.service'
     LoginComponent,
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
-    ModuleResultComponent
+    ModuleResultComponent,
+    CampaignCalendarTemplateComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
