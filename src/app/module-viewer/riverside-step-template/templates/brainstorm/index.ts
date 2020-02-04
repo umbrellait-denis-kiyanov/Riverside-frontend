@@ -8,3 +8,8 @@ export interface BrainstormTemplateData extends TemplateContentDataBase {
     number_of_inputs: number;
   };
 }
+
+export const TemplateParams = `{
+  description: string;
+  title: string;
+}`;

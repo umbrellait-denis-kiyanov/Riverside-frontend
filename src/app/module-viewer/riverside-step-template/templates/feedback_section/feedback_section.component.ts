@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { data } from './exampleData';
 import { PersonaInputs } from '../persona-ids.class';
+import { TemplateParams } from '.';
 
 @Component({
   selector: 'app-feedback_section',
@@ -10,6 +11,7 @@ import { PersonaInputs } from '../persona-ids.class';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FeedbackSectionTemplateComponent) }]
 })
 export class FeedbackSectionTemplateComponent extends TemplateComponent {
+  params = TemplateParams;
   inputIds: PersonaInputs;
 
   contentData = data;

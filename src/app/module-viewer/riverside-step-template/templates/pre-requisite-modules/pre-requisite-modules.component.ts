@@ -1,6 +1,6 @@
 import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { PreRequisiteModuleTemplateData } from '.';
+import { PreRequisiteModuleTemplateData, TemplateParams } from '.';
 import { map, switchMap, tap } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { Module } from 'src/app/common/interfaces/module.interface';
@@ -12,7 +12,7 @@ import { Module } from 'src/app/common/interfaces/module.interface';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PreRequisiteModulesComponent) }],
 })
 export class PreRequisiteModulesComponent  extends TemplateComponent {
-
+  params = TemplateParams;
   contentData: PreRequisiteModuleTemplateData['template_params_json'];
 
   modules$: Observable<Module[]>;

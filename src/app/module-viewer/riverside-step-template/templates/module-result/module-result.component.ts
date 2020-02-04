@@ -1,5 +1,5 @@
 import { Component, forwardRef } from '@angular/core';
-import { ModuleResultTemplateData } from '.';
+import { ModuleResultTemplateData, TemplateParams } from '.';
 import { TemplateComponent } from '../template-base.class';
 import { switchMap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
@@ -12,7 +12,7 @@ import { TemplateContentData } from '../template-data.class';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => ModuleResultComponent) }],
 })
 export class ModuleResultComponent extends TemplateComponent {
-
+  params = TemplateParams;
   contentData: ModuleResultTemplateData['template_params_json'];
 
   moduleResultContent$: Observable<TemplateContentData>;

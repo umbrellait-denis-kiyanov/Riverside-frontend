@@ -9,3 +9,10 @@ export interface PreRequisiteModuleTemplateData extends TemplateContentDataBase 
     modules: Array<{module: Module}>
   };
 }
+
+export const TemplateParams = `{
+  description: string;
+  instructions: string;
+  title: string;
+  modules: Array<{module: Module}>
+}`;

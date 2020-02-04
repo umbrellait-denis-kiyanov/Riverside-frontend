@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { NarrowDownData } from '.';
+import { NarrowDownData, TemplateParams } from '.';
 
 @Component({
   selector: 'app-template2',
@@ -10,6 +10,7 @@ import { NarrowDownData } from '.';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => NarrowDownComponent) }]
 })
 export class NarrowDownComponent extends TemplateComponent {
+  params = TemplateParams;
   inputIds = {
     fromPreviousStep: ['brainstorm_personas'],
     personas: [

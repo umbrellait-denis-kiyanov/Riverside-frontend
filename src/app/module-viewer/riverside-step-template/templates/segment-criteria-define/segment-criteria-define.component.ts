@@ -1,6 +1,6 @@
 import { Component, OnInit, forwardRef, QueryList, ViewChildren } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from '.';
+import { SegmentCriteria, SegmentCriteriaDefineTemplateData, TemplateParams } from '.';
 import { IcpInputComponent } from './icp-input/icp-input.component';
 import { Validate } from 'src/app/common/validator.class';
 import { of } from 'rxjs';
@@ -16,6 +16,8 @@ const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'whe
 export class SegmentCriteriaDefineComponent extends TemplateComponent implements OnInit {
 
   @ViewChildren(IcpInputComponent) icpInputs: QueryList<IcpInputComponent>;
+
+  params = TemplateParams;
 
   contentData: SegmentCriteriaDefineTemplateData['template_params_json'];
 
