@@ -1,6 +1,6 @@
 
 import { NgModule } from '@angular/core';
-import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
+import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ModuleViewerRootComponent } from './module-viewer-root.component';
@@ -50,6 +50,7 @@ import { FormatDatePipe } from '../common/pipes/fomartdate.pipe';
 import { ReadableDatePipe } from '../common/pipes/readabledate.pipe';
 import { ReadableTimePipe } from '../common/pipes/readabletime.pipe';
 import { CanModifyPipe } from '../common/pipes/canModify.pipe';
+import { ReversePipe } from '../common/pipes/reverse.pipe';
 import { PersonaPictureTemplateComponent } from './riverside-step-template/templates/persona-picture/persona-picture.component';
 import { PersonaPictureListComponent } from './riverside-step-template/templates/persona-picture/persona-picture-list/persona-picture-list.component';
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
@@ -142,6 +143,7 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ReadableDatePipe,
     ReadableTimePipe,
     CanModifyPipe,
+    ReversePipe,
     IceComponent,
     RiversideStepTemplateComponent,
     RTemplateDirective,
@@ -227,6 +229,7 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     LeftMenuService,
     InboxService,
     CanModifyPipe,
+    ReversePipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true}
   ],

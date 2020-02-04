@@ -172,6 +172,6 @@ export class ModuleService {
   }
 
   markAsApproved(moduleId: number, orgId: number, stepId: number, is_approved: boolean = true): Observable<number[]> {
-    return this.httpClient.post<number[]>(this.baseUrl + '/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, org_id: orgId});
+    return this.httpClient.post<number[]>(this.baseUrl + '/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, is_section, org_id: orgId});
   }
 }

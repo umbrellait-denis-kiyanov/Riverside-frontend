@@ -111,12 +111,11 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
 
     this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
       .subscribe(_ => {
-        this.moduleService.moduleChanged$.next(true);
-
         if (newState) {
           this.navService.nextStep();
         }
 
+        this.moduleService.moduleChanged$.next(true);
         this[key] = newState;
       });
   }
@@ -126,18 +125,17 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
     const newState = state !== null ? state : !this[key];
     const step = this.step.data;
 
-    this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.moduleService.markAsApproved(step.module_id, step.org_id, step.step_id, newState)
+    this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.moduleService.markAsApproved(step.module_id, step.org_id, step.step_id, newState, isSubaction)
       .subscribe((response: number[]) => {
-        this.moduleService.moduleChanged$.next(true);
-
         if (newState) {
           this.iceService.onApprove.emit();
 
           if (!step.requires_feedback) {
-            setTimeout(_ => this.navService.nextStep());
+            this.navService.nextStep();
           }
         }
 
+        this.moduleService.moduleChanged$.next(true);
         this[key] = newState;
       });
   }
