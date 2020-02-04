@@ -7,3 +7,9 @@ export interface NamePersonasTemplateData extends TemplateContentDataBase {
     title: string;
   };
 }
+
+export const TemplateParams = `{
+  description: string;
+  resource: string;
+  title: string;
+}`;

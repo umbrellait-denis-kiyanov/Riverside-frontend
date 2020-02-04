@@ -15,3 +15,11 @@ export interface SegmentCriteria {
   description: {content: string, comments_json: string};
   weight?: number;
 }
+
+export const TemplateParams = `{
+  description: string;
+  instructions: string;
+  image: string;
+  title: string;
+  questions: Array<{question: string}>
+}`;
