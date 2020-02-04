@@ -14,6 +14,7 @@ import { Validation, Validate } from 'src/app/common/validator.class';
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
 
+  protected abstract params: string;
   abstract contentData;
 
   data: TemplateContentData;
@@ -158,5 +159,9 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     if (input.error) {
       input.error.next(null);
     }
+  }
+
+  getBuilderParams() {
+    return this.params;
   }
 }

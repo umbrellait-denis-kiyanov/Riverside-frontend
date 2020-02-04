@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { GenericTemplateData } from '.';
+import { GenericTemplateData, TemplateParams } from '.';
 
 @Component({
   selector: 'app-generic',
@@ -10,6 +10,7 @@ import { GenericTemplateData } from '.';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => GenericTemplateComponent) }]
 })
 export class GenericTemplateComponent extends TemplateComponent {
+  params = TemplateParams;
   contentData: GenericTemplateData['template_params_json'];
 
   protected init() {

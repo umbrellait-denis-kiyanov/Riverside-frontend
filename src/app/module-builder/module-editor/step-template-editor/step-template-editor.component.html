@@ -8,7 +8,6 @@
   <div class="form-group">
     <label>Template</label>
     <select
-      *ngIf="(templates$ | async) as templates"
       [ngModelOptions]="{standalone: true}"
       [(ngModel)]="stepEdit.template_component"
       (ngModelChange)="onTemplateChange($event)"

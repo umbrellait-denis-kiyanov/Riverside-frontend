@@ -7,3 +7,9 @@ export interface AgeGenderTemplateData extends TemplateContentDataBase {
     instructions?: string;
   };
 }
+
+export const TemplateParams = `{
+  description: string;
+  title: string;
+  instructions?: string;
+}`;
