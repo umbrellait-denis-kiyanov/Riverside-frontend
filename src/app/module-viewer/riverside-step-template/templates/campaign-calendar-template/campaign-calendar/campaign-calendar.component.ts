@@ -1,4 +1,4 @@
-import { Component, OnChanges, EventEmitter, Output, Input } from '@angular/core';
+import { Component, EventEmitter, Output, Input } from '@angular/core';
 import { Campaign } from '.';
 
 @Component({
@@ -6,7 +6,7 @@ import { Campaign } from '.';
   templateUrl: './campaign-calendar.component.html',
   styleUrls: ['./campaign-calendar.component.sass']
 })
-export class CampaignCalendarComponent implements OnChanges {
+export class CampaignCalendarComponent {
 
   @Output() campaignsChange = new EventEmitter<Campaign[]>();
 
@@ -14,8 +14,9 @@ export class CampaignCalendarComponent implements OnChanges {
 
   constructor() { }
 
-  ngOnChanges() {
-    console.log(this.campaigns);
+  test() {
+    this.campaigns.push(this.campaigns.length + 1);
+    this.campaignsChange.emit(this.campaigns);
   }
 
 }

@@ -1,7 +1,6 @@
-import { Component, OnInit, forwardRef } from '@angular/core';
+import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { CampaignCalendarTemplateData, TemplateParams } from '.';
-import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { Campaign } from './campaign-calendar';
 
 @Component({
@@ -10,15 +9,24 @@ import { Campaign } from './campaign-calendar';
   styleUrls: ['./campaign-calendar-template.component.sass'],
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => CampaignCalendarTemplateComponent) }]
 })
-export class CampaignCalendarTemplateComponent extends TemplateComponent {
+export class CampaignCalendarTemplateComponent extends TemplateComponent{
 
   params = TemplateParams;
 
   contentData: CampaignCalendarTemplateData['template_params_json'];
 
-  input: TemplateInput;
+  get input() {
+    return this.getInput('campaign_calendar_1');
+  }
 
-  campaigns: Campaign[];
+  set campaigns(campaigns: Campaign[]) {
+    this.input.content = JSON.stringify(campaigns);
+    this.contentChanged(this.input);
+  }
+
+  get campaigns() {
+    return JSON.parse(this.input.getValue() || '[]') as Campaign[];
+  }
 
   getDescription() {
     return '';
@@ -26,9 +34,5 @@ export class CampaignCalendarTemplateComponent extends TemplateComponent {
 
   getName() {
     return 'Campaign Calendar';
-  }
-
-  init() {
-    this.campaigns = JSON.parse(this.getInput('campaign_calendar_1').getValue() || '[]') as Campaign[];
   }
 }
