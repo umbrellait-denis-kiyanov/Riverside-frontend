@@ -105,6 +105,9 @@ import { BuyerPersonasSelectorComponent } from './riverside-step-template/person
 import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
 import { BuyerPersonasService } from '../common/services/buyer-personas.service';
+import { CampaignCalendarComponent } from './campaign-calendar/campaign-calendar.component';
+import { ModalAddCampaignComponent } from './campaign-calendar/modal-add-campaign/modal-add-campaign.component';
+import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pipe';
 
 @NgModule({
   imports: [
@@ -204,7 +207,10 @@ import { BuyerPersonasService } from '../common/services/buyer-personas.service'
     LoginComponent,
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
-    ModuleResultComponent
+    ModuleResultComponent,
+    CampaignCalendarComponent,
+    ModalAddCampaignComponent,
+    StringToDateStructPipe,
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -225,7 +231,8 @@ import { BuyerPersonasService } from '../common/services/buyer-personas.service'
     SpreadsheetComponent,
     VideoComponent,
     PreRequisiteModulesComponent,
-    ModuleResultComponent
+    ModuleResultComponent,
+    ModalAddCampaignComponent
   ],
   providers: [
     AssessmentService,

@@ -17,6 +17,7 @@ import { AssessmentFinishComponent } from './assessment/assessment-finish/assess
 import { ProfileComponent } from './account/profile/profile.component';
 import { ChangePasswordComponent } from './account/change-password/change-password.component';
 import { LoginComponent } from './login/login.component';
+import { CampaignCalendarComponent } from './campaign-calendar/campaign-calendar.component';
 
 const moduleContentRoute = [
   {
@@ -31,6 +32,10 @@ const moduleContentRoute = [
 ];
 
 const routes: Routes = [
+  {
+    path: 'calendar',
+    component: CampaignCalendarComponent
+  },
   {
     path: 'login',
     component: LoginComponent
