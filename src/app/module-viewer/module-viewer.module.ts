@@ -105,6 +105,7 @@ import { BuyerPersonasSelectorComponent } from './riverside-step-template/person
 import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
 import { BuyerPersonasService } from '../common/services/buyer-personas.service';
+import { PersonaStrategyComponent } from './riverside-step-template/templates/persona-strategy/persona-strategy.component';
 
 @NgModule({
   imports: [
@@ -204,7 +205,8 @@ import { BuyerPersonasService } from '../common/services/buyer-personas.service'
     LoginComponent,
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
-    ModuleResultComponent
+    ModuleResultComponent,
+    PersonaStrategyComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -225,7 +227,8 @@ import { BuyerPersonasService } from '../common/services/buyer-personas.service'
     SpreadsheetComponent,
     VideoComponent,
     PreRequisiteModulesComponent,
-    ModuleResultComponent
+    ModuleResultComponent,
+    PersonaStrategyComponent
   ],
   providers: [
     AssessmentService,
