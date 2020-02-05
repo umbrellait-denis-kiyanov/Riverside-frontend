@@ -107,6 +107,9 @@ import { ModuleResultComponent } from './riverside-step-template/templates/modul
 import { BuyerPersonasService } from '../common/services/buyer-personas.service';
 import { CampaignCalendarTemplateComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar-template.component';
 import { CampaignCalendarComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-calendar.component';
+import { CampaignCalendarComponent } from './campaign-calendar/campaign-calendar.component';
+import { ModalAddCampaignComponent } from './campaign-calendar/modal-add-campaign/modal-add-campaign.component';
+import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pipe';
 
 @NgModule({
   imports: [
@@ -208,7 +211,11 @@ import { CampaignCalendarComponent } from './riverside-step-template/templates/c
     PreRequisiteModulesComponent,
     ModuleResultComponent,
     CampaignCalendarTemplateComponent,
-    CampaignCalendarComponent
+    CampaignCalendarComponent,
+    ModuleResultComponent,
+    CampaignCalendarComponent,
+    ModalAddCampaignComponent,
+    StringToDateStructPipe,
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -230,7 +237,9 @@ import { CampaignCalendarComponent } from './riverside-step-template/templates/c
     VideoComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
-    CampaignCalendarTemplateComponent
+    CampaignCalendarTemplateComponent,
+    ModuleResultComponent,
+    ModalAddCampaignComponent
   ],
   providers: [
     AssessmentService,
