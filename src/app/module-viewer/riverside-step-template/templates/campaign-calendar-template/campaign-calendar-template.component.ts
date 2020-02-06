@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { CampaignCalendarTemplateData, TemplateParams } from '.';
-import { Campaign } from './campaign-calendar';
+import { Campaign } from '../../../../common/interfaces/campaign.interface';
 
 @Component({
   selector: 'app-campaign-calendar-template',
@@ -9,7 +9,7 @@ import { Campaign } from './campaign-calendar';
   styleUrls: ['./campaign-calendar-template.component.sass'],
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => CampaignCalendarTemplateComponent) }]
 })
-export class CampaignCalendarTemplateComponent extends TemplateComponent{
+export class CampaignCalendarTemplateComponent extends TemplateComponent {
 
   params = TemplateParams;
 

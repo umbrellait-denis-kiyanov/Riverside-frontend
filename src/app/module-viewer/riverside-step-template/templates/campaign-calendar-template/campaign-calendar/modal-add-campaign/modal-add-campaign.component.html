@@ -17,7 +17,14 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Theme</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" required [(ngModel)]="campaign.theme">
+            <input type="text"
+                   class="form-control"
+                   [(ngModel)]="campaign.theme"
+                   [class.invalid]="isValidationError"
+            >
+            <div class="invalid-feedback d-block" *ngIf="isValidationError">
+              This is a required field
+            </div>
           </div>
         </div>
 
@@ -46,7 +53,7 @@
           <label class="col-sm-2 col-form-label">Start Date</label>
           <div class="col-sm-10 date-picker d-flex align-items-center">
             <input
-                readonly
+                class="form-control"
                 type="text"
                 ngbDatepicker
                 #pickerStart="ngbDatepicker"
@@ -66,7 +73,7 @@
           <label class="col-sm-2 col-form-label">End Date</label>
           <div class="col-sm-10 date-picker d-flex align-items-center">
             <input
-                readonly
+                class="form-control"
                 type="text"
                 ngbDatepicker
                 #pickerEnd="ngbDatepicker"

@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Campaign } from '../../../common/interfaces/campaign.interface';
+import { Campaign } from '../../../../../../common/interfaces/campaign.interface';
 
 @Component({
   selector: 'app-modal-add-campaign',
@@ -15,8 +15,10 @@ export class ModalAddCampaignComponent implements OnInit {
     tacticalMap: '',
     startDate: '',
     endDate: '',
-    assigned: ''
+    assigned: '',
+    color: '',
   };
+  isValidationError = false;
 
   constructor(public modal: NgbActiveModal) { }
 
@@ -28,6 +30,11 @@ export class ModalAddCampaignComponent implements OnInit {
   }
 
   submit() {
+    if (this.campaign.theme.length === 0) {
+      this.isValidationError = true;
+      return;
+    }
+    this.isValidationError = false;
     this.modal.close(this.campaign);
   }
 }

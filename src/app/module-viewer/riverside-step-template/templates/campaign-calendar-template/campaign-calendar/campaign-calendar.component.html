@@ -1,2 +1,58 @@
-{{ campaigns | json }}
-<button (click)="test()">Add</button>
+<div class="container mx-auto">
+  <button type="button" class="btn btn-primary mt-4" (click)="openModal()">Add campaign</button>
+
+  <table class="table table-striped mt-3">
+    <thead>
+      <tr>
+        <th scope="col"></th>
+        <th scope="col">Theme</th>
+        <th scope="col">Persona</th>
+        <th scope="col">Messaging</th>
+        <th scope="col">Tactical Map</th>
+        <th scope="col">Start Date</th>
+        <th scope="col">End Date</th>
+        <th scope="col">Assigned</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr *ngFor="let campaign of campaigns; trackBy: trackByFn">
+        <td>
+          <i class="material-icons" (click)="editCampaign(campaign)">create</i>
+          <i class="material-icons ml-1" (click)="deleteCampaign(campaign)">delete</i>
+        </td>
+        <td class="d-flex align-items-center">
+          <div class="rounded-circle circle"></div>
+          <div class="ml-2">{{campaign.theme}}</div>
+        </td>
+        <td>{{campaign.persona}}</td>
+        <td>{{campaign.messaging}}</td>
+        <td>{{campaign.tacticalMap}}</td>
+        <td>{{campaign.startDate ? (campaign.startDate | readabledate) : ''}}</td>
+        <td>{{campaign.endDate ? (campaign.endDate | readabledate) : ''}}</td>
+        <td>{{campaign.assigned}}</td>
+      </tr>
+    </tbody>
+  </table>
+
+    <table class="table table-bordered mt-5" #table>
+      <thead>
+      <tr>
+        <th scope="col" #tableLabel>Campaign</th>
+        <th scope="col" *ngFor="let month of months">{{month}}</th>
+      </tr>
+      </thead>
+      <tbody>
+      <tr *ngFor="let campaign of campaigns; trackBy: trackByFn">
+        <th scope="row" class="position-relative">{{campaign.theme}}
+          <div
+                  class="campaign-line"
+                  [style.width.px]="getCampaignWidth(campaign)"
+                  [style.left.px]="getCampaignOffset(campaign)"
+          ></div>
+        </th>
+        <td *ngFor="let month of months"></td>
+      </tr>
+      </tbody>
+    </table>
+
+</div>

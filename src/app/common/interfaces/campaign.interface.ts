@@ -6,4 +6,5 @@ export interface Campaign {
   startDate?: string;
   endDate?: string;
   assigned?: string;
+  color?: string;
 }
