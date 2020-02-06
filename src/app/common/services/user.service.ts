@@ -50,15 +50,23 @@ export class UserService {
       ));
   }// getAccount
 
+  startCheckTime() {
+    // Start check session time
+    this.getAccount().subscribe( result => {
+      if ( result ) {
+        this.intervalSubscriptionId = interval(environment.checkSessionTimeLeftInterval).subscribe( (val: number) => {
+          this.checkTimeLeft();
+        });
+      }// if
+    });
+  }// startCheckTime
+
   signin(credentials: FormData): Observable<boolean> {
     return this.httpClient.post<boolean>(`${this.legacyBaseUrl}/signin/`, credentials).pipe(
       tap(res => {
         if (res) {
           this.getAccount().subscribe(account => this.setMeFromData(account));
-          // Start check session time
-          this.intervalSubscriptionId = interval(environment.checkSessionTimeLeftInterval).subscribe( (val: number) => {
-            this.checkTimeLeft();
-          });
+          this.startCheckTime();
         }
       })
     );
