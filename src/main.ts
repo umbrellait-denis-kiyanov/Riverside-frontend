@@ -15,7 +15,6 @@ import { ModuleViewerRootComponent } from './app/module-viewer/module-viewer-roo
 import { environment } from './environments/environment';
 import './globals';
 
-
 import { platformBrowserDynamic } from '@angular/platform-browser-dynamic';
 
 window.CONSTANTS = environment;

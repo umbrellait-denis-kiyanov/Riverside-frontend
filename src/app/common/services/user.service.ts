@@ -5,11 +5,13 @@ import {
   UpdatePassword,
   PresignedProfilePictureUrl
 } from '../interfaces/account.interface';
-import { Observable, BehaviorSubject, of } from 'rxjs';
+import {Observable, BehaviorSubject, of, interval, Subscription,} from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { tap, switchMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
+import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {SessionExpirationModalComponent} from '../components/session-expiration-modal/session-expiration-modal.component';
 
 type AccountProfileStatus = AccountProfile & {status: string};
 
@@ -27,31 +29,39 @@ export class UserService {
 
   accountBaseUrl = environment.apiRoot + '/api/account';
 
+  accountSessionRemainingTime = environment.apiRoot + '/timeout';
+
   legacyBaseUrl = environment.apiRoot;
 
-  constructor(private httpClient: HttpClient, private router: Router) {}
+  intervalSubscriptionId: Subscription;
+
+  constructor(private httpClient: HttpClient, private router: Router, private modalService: NgbModal) {}
 
   setMeFromData(data: any) {
     this.me = User.fromObject<User>(data);
   }
 
   getAccount(): Observable<AccountProfileStatus> {
-    return this.httpClient.get<AccountProfileStatus>(`${this.legacyBaseUrl}/user/me`).pipe(
-      catchError(err => {
-        this.router.navigate(['login']);
-        return of(null);
-      }
-    ));
-  }
+      return this.httpClient.get<AccountProfileStatus>(`${this.legacyBaseUrl}/user/me`).pipe(
+        catchError(err => {
+          this.router.navigate(['login']);
+          return of(null);
+        }
+      ));
+  }// getAccount
 
   signin(credentials: FormData): Observable<boolean> {
     return this.httpClient.post<boolean>(`${this.legacyBaseUrl}/signin/`, credentials).pipe(
       tap(res => {
         if (res) {
-          this.getAccount().subscribe(account => this.setMeFromData(account))
+          this.getAccount().subscribe(account => this.setMeFromData(account));
+          // Start check session time
+          this.intervalSubscriptionId = interval(environment.checkSessionTimeLeftInterval).subscribe( (val: number) => {
+            this.checkTimeLeft();
+          });
         }
       })
-    )
+    );
   }
 
   signout(): Observable<AccountProfileStatus> {
@@ -78,4 +88,34 @@ export class UserService {
       params: { ext }
     });
   }
+
+  showTimeLeftModal(timer: Date) {
+    if ( !this.modalService.hasOpenModals() && this.getAccount()) {
+      const modalRef = this.modalService.open(SessionExpirationModalComponent);
+      modalRef.result.then( ( result: boolean ) => {
+
+        if ( result === false ) {
+          this.intervalSubscriptionId.unsubscribe();
+          this.signout().subscribe( s => this.router.navigate(['login']) );
+        } else {
+          this.getAccount().subscribe( _ => console.log(_) );
+        }// else
+      } ); // then (...)
+      modalRef.componentInstance.timer = timer;
+      modalRef.componentInstance.modalRef = modalRef;
+    }// if
+  }
+
+  checkTimeLeft() {
+    return this.httpClient.get(this.accountSessionRemainingTime).subscribe( (response: any) => {
+      const timeLeft = +response.timeleft;
+      if ( timeLeft && timeLeft <= environment.sessionSecondsTimeLeft ) {
+        const minutes = timeLeft / 60;
+        const seconds = timeLeft % 60;
+        // this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
+        this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
+      }// if
+    });
+  }
+
 }
