@@ -26,7 +26,7 @@ class ConfirmDeactivateGuard implements CanDeactivate<ModuleEditorComponent> {
 const routes: Routes = [
   {
     path: 'builder',
-    canDeactivate:[ConfirmDeactivateGuard],
+    canDeactivate: [ConfirmDeactivateGuard],
     component: MainComponent,
     children: [
       {
@@ -35,7 +35,7 @@ const routes: Routes = [
         children: [
           {
             path: ':id',
-            canDeactivate:[ConfirmDeactivateGuard],
+            canDeactivate: [ConfirmDeactivateGuard],
             component: ModuleEditorComponent
           }
         ]
