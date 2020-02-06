@@ -2,7 +2,7 @@
   display: block
   width: 100%
   height: 100%
-  font-family: Quicksand
+  font-family: Quicksand, serif
   font-size: 14px
 
 i
@@ -12,17 +12,29 @@ i
   flex-shrink: 0
   width: 25px
   height: 25px
-  background-color: red
   border: 1px solid #505050
 
-.table-bordered
+table tr:first-child td
+    border-top: none
+
+td
+  word-break: break-word
+
+.table
   thead
     background-color: rgba(0,0,0,.05)
+    th
+      vertical-align: middle
 
   .campaign-line
     position: absolute
-    background-color: red
     width: 20px
     height: 30px
     left: 100%
     top: calc(50% - 15px)
+    cursor: pointer
+
+    &:hover
+      box-sizing: border-box
+      border: 1px solid #00529f
+

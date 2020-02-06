@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -18,10 +17,10 @@ import { RiversideStepTemplateComponent } from './riverside-step-template/rivers
 import { RTemplateDirective } from './riverside-step-template/riverside-step-template-host.directive';
 import { ModuleContentService } from '../common/services/module-content.service';
 import { LetterImageComponent } from './ice/letter-image/letter-image.component';
-import { MatMenuModule} from '@angular/material/menu';
-import { MatIconModule} from '@angular/material/icon';
-import { MatButtonModule} from '@angular/material/button';
-import { MatRadioModule} from '@angular/material/radio';
+import { MatMenuModule } from '@angular/material/menu';
+import { MatIconModule } from '@angular/material/icon';
+import { MatButtonModule } from '@angular/material/button';
+import { MatRadioModule } from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
 import { UserComponent } from './ice/user/user.component';
@@ -56,7 +55,7 @@ import { PersonaPictureListComponent } from './riverside-step-template/templates
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
 import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
 import { PersonaComponent } from './riverside-step-template/persona/persona.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
@@ -109,12 +108,16 @@ import { CampaignCalendarTemplateComponent } from './riverside-step-template/tem
 import { CampaignCalendarComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-calendar.component';
 import { ModalAddCampaignComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/modal-add-campaign/modal-add-campaign.component';
 import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pipe';
+import { PersonaNamePipe } from '../common/pipes/personaName.pipe';
+import {
+  CampaignDeletionConfirmationComponent
+} from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], { useHash: true }),
+    RouterModule.forRoot([], {useHash: true}),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -151,6 +154,7 @@ import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pi
     ReadableDatePipe,
     ReadableTimePipe,
     CanModifyPipe,
+    PersonaNamePipe,
     ReversePipe,
     IceComponent,
     RiversideStepTemplateComponent,
@@ -213,6 +217,7 @@ import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pi
     CampaignCalendarComponent,
     ModuleResultComponent,
     ModalAddCampaignComponent,
+    CampaignDeletionConfirmationComponent,
     StringToDateStructPipe,
   ],
   entryComponents: [
@@ -237,7 +242,8 @@ import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pi
     ModuleResultComponent,
     CampaignCalendarTemplateComponent,
     ModuleResultComponent,
-    ModalAddCampaignComponent
+    ModalAddCampaignComponent,
+    CampaignDeletionConfirmationComponent,
   ],
   providers: [
     AssessmentService,
@@ -257,4 +263,5 @@ import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pi
   ],
   bootstrap: [ModuleViewerRootComponent]
 })
-export class ModuleViewerModule { }
+export class ModuleViewerModule {
+}

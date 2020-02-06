@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Campaign } from '../../../../../../common/interfaces/campaign.interface';
 
@@ -7,10 +7,12 @@ import { Campaign } from '../../../../../../common/interfaces/campaign.interface
   templateUrl: './modal-add-campaign.component.html',
   styleUrls: ['./modal-add-campaign.component.sass'],
 })
-export class ModalAddCampaignComponent implements OnInit {
+export class ModalAddCampaignComponent {
+  @Input() isEdit: boolean = false;
   campaign: Campaign = {
+    id: '',
     theme: '',
-    persona: '',
+    persona: [],
     messaging: '',
     tacticalMap: '',
     startDate: '',
@@ -22,11 +24,8 @@ export class ModalAddCampaignComponent implements OnInit {
 
   constructor(public modal: NgbActiveModal) { }
 
-  ngOnInit() {
-  }
-
-  close() {
-    this.modal.close();
+  personaChange(selectedPersonas: number[]) {
+    this.campaign.persona = selectedPersonas.slice();
   }
 
   submit() {
@@ -34,7 +33,14 @@ export class ModalAddCampaignComponent implements OnInit {
       this.isValidationError = true;
       return;
     }
+    if (!this.isEdit) {
+      this.campaign.id = this.getId();
+    }
     this.isValidationError = false;
     this.modal.close(this.campaign);
+  }
+
+  private getId(): string {
+    return Math.random().toString(36).substring(2, 15) + Math.random().toString(36).substring(2, 15);
   }
 }

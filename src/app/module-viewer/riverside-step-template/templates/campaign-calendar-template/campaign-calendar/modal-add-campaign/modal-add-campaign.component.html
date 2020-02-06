@@ -2,12 +2,12 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">Add Campaign</h5>
+        <h5 class="modal-title">{{!isEdit ? 'Add Campaign' : 'Edit Campaign'}}</h5>
         <button type="button"
                 class="close"
                 data-dismiss="modal"
                 aria-label="Close"
-                (click)="modal.dismiss()"
+                (click)="modal.dismiss('Cross click')"
         >
           <span aria-hidden="true">&times;</span>
         </button>
@@ -31,7 +31,11 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Persona</label>
           <div class="col-sm-10">
-            <button type="button" class="btn btn-outline-primary">Select buyer persons</button>
+            <buyer-personas-selector
+                    [selected]="campaign.persona || []"
+                    #buyerPersonasSelectorComponent
+                    (onChange)="personaChange(buyerPersonasSelectorComponent.selected)"
+            ></buyer-personas-selector>
           </div>
         </div>
 
@@ -101,7 +105,7 @@
         <button type="button"
                 class="btn btn-secondary"
                 data-dismiss="modal"
-                (click)="modal.dismiss()"
+                (click)="modal.dismiss('Cancel click')"
         >
           Close
         </button>

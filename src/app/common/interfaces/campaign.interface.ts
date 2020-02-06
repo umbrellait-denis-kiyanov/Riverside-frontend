@@ -1,6 +1,7 @@
 export interface Campaign {
+  id: string;
   theme: string;
-  persona?: any;
+  persona?: number[];
   messaging?: string;
   tacticalMap?: string;
   startDate?: string;
