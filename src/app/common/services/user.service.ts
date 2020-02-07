@@ -12,7 +12,6 @@ import { tap, switchMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {SessionExpirationModalComponent} from '../components/session-expiration-modal/session-expiration-modal.component';
-import {compareLogSummaries} from '@angular/core/src/render3/styling/class_and_style_bindings';
 
 type AccountProfileStatus = AccountProfile & {status: string};
 
@@ -34,9 +33,9 @@ export class UserService {
 
   legacyBaseUrl = environment.apiRoot;
 
-  sessionSecondsTimeLeft =  120;
+  sessionSecondsTimeLeft =  1200;
 
-  checkSessionTimeLeftInterval =  60000;
+  checkSessionTimeLeftInterval =  6000;
 
   intervalSubscriptionId: Subscription;
 
@@ -119,10 +118,17 @@ export class UserService {
           this.intervalSubscriptionId.unsubscribe();
           this.signout().subscribe( s => this.router.navigate(['login']) );
         } else {
-          this.getAccount().subscribe( );
+          this.intervalSubscriptionId = this.getAccount().pipe(
+              switchMap ( account => interval(this.checkSessionTimeLeftInterval))
+          ).subscribe( id => {
+            this.checkTimeLeft();
+            return id;
+          } );
         }
       } );
       modalRef.componentInstance.timer = timer;
+    } else {
+      this.intervalSubscriptionId.unsubscribe();
     }
 
   }
