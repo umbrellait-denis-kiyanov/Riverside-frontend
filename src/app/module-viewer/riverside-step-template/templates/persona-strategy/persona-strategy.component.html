@@ -28,14 +28,19 @@
       <h5 class="text-center">QUESTIONS/ASSERTIONS</h5>
       <div *ngFor="let input of getPrefixCount(inputPrefixes['2_additional_questions'].name);"
            class="row person-strategy-additional-questions">
-        <div class="col-sm-2 text-right">{{ input }}-</div>
-        <ice
-            [idx]="item + 1"
-            [prefix]="prefix"
-            [input]="inputPrefixes['2_additional_questions'].name + '_' + input"
-            [disabled]="inputState > 2"
-            class="col-sm-8"
-        ></ice>
+        <div class="col-sm-2"></div>
+        <div class="col-sm-8 row">
+          <span class="col-sm-1">
+            {{ input }}-
+          </span>
+          <ice
+              [idx]="item + 1"
+              [prefix]="prefix"
+              [input]="inputPrefixes['2_additional_questions'].name + '_' + input"
+              [disabled]="inputState > 2"
+              class="col-sm-11"
+          ></ice>
+        </div>
       </div>
     </div>
 
