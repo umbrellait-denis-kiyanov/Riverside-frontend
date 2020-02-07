@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from '@angular/core';
+import { Injectable } from '@angular/core';
 import User from '../interfaces/user.model';
 import {
   AccountProfile,
@@ -33,9 +33,9 @@ export class UserService {
 
   legacyBaseUrl = environment.apiRoot;
 
-  sessionSecondsTimeLeft =  1200;
+  sessionSecondsTimeLeft =  120;
 
-  checkSessionTimeLeftInterval =  6000;
+  checkSessionTimeLeftInterval =  60000;
 
   intervalSubscriptionId: Subscription;
 
