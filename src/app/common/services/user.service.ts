@@ -58,7 +58,6 @@ export class UserService {
 
     this.getAccount().subscribe( result => {
       if ( result ) {
-        alert(this.checkSessionTimeLeftInterval);
         this.intervalSubscriptionId = interval(this.checkSessionTimeLeftInterval).subscribe( (val: number) => {
           this.checkTimeLeft();
         });
