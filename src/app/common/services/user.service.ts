@@ -54,8 +54,8 @@ export class UserService {
       ));
   }
 
-  startCheckTime() {
-    // Start check session time
+  startCheckingSessionTime() {
+
     this.getAccount().subscribe( result => {
       if ( result ) {
         this.intervalSubscriptionId = interval(this.checkSessionTimeLeftInterval).subscribe( (val: number) => {
@@ -70,7 +70,7 @@ export class UserService {
       tap(res => {
         if (res) {
           this.getAccount().subscribe(account => this.setMeFromData(account));
-          this.startCheckTime();
+          this.startCheckingSessionTime();
         }
       })
     );

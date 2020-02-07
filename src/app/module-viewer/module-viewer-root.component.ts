@@ -18,7 +18,7 @@ export class ModuleViewerRootComponent implements OnInit {
 
   constructor(private userService: UserService, private router: Router) {
 
-    this.userService.startCheckTime();
+    this.userService.startCheckingSessionTime();
 
     this.me$ = this.userService.getAccount().pipe(
       catchError(err => this.router.navigate(['login'])),
