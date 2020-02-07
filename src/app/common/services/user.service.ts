@@ -119,7 +119,7 @@ export class UserService {
           this.signout().subscribe( s => this.router.navigate(['login']) );
         } else {
           this.intervalSubscriptionId = this.getAccount().pipe(
-              switchMap ( account => interval(this.checkSessionTimeLeftInterval))
+              switchMap(account => interval(this.checkSessionTimeLeftInterval))
           ).subscribe( id => {
             this.checkTimeLeft();
             return id;
