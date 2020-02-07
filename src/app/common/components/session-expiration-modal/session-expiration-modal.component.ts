@@ -1,6 +1,6 @@
 import { Component, OnInit , Input } from '@angular/core';
 import {interval, Subscription} from 'rxjs';
-import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
+import {NgbActiveModal, NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 @Component({
   selector: 'app-session-expiration-modal',
   templateUrl: './session-expiration-modal.component.html',
@@ -9,10 +9,9 @@ import {NgbModalRef} from '@ng-bootstrap/ng-bootstrap';
 export class SessionExpirationModalComponent implements OnInit {
 
   @Input() timer: Date;
-  @Input() modalRef: NgbModalRef;
   intervalSubject: Subscription;
 
-  constructor() {}
+  constructor(public modalRef: NgbActiveModal) {}
 
   ngOnInit() {
 

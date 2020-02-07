@@ -122,7 +122,6 @@ export class UserService {
       } );
 
       modalRef.componentInstance.timer = timer;
-      modalRef.componentInstance.modalRef = modalRef;
 
     }
 
