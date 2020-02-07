@@ -103,7 +103,7 @@ export class UserService {
 
   showTimeLeftModal(timer: Date) {
 
-    if ( !this.modalService.hasOpenModals() && this.getAccount()) {
+    if ( !this.modalService.hasOpenModals() ) {
 
       const modalRef = this.modalService.open(SessionExpirationModalComponent);
       modalRef.result.then( ( result: boolean ) => {
