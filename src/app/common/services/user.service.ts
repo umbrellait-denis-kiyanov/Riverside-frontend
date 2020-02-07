@@ -115,7 +115,7 @@ export class UserService {
 
         } else {
 
-          this.getAccount().subscribe( _ => console.log(_) );
+          this.getAccount().subscribe( );
 
         }
 
