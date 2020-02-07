@@ -10,7 +10,7 @@ import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { tap, switchMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
-import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
+import {NgbModal} from '@ng-bootstrap/ng-bootstrap';
 import {SessionExpirationModalComponent} from '../components/session-expiration-modal/session-expiration-modal.component';
 
 type AccountProfileStatus = AccountProfile & {status: string};
@@ -39,7 +39,9 @@ export class UserService {
 
   intervalSubscriptionId: Subscription;
 
-  constructor(private httpClient: HttpClient, private router: Router, private modalService: NgbModal) {}
+  isSessionPopupOpen = false;
+
+  constructor(private httpClient: HttpClient, private router: Router, private modalService: NgbModal ) {}
 
   setMeFromData(data: any) {
     this.me = User.fromObject<User>(data);
@@ -111,13 +113,15 @@ export class UserService {
   }
 
   showTimeLeftModal(timer: Date) {
-    if ( !this.modalService.hasOpenModals() ) {
+    if ( !this.isSessionPopupOpen ) {
       const modalRef = this.modalService.open(SessionExpirationModalComponent);
+      this.isSessionPopupOpen = true;
       modalRef.result.then( ( result: boolean ) => {
         if ( !result ) {
           this.intervalSubscriptionId.unsubscribe();
           this.signout().subscribe( s => this.router.navigate(['login']) );
         } else {
+          this.isSessionPopupOpen = false;
           this.intervalSubscriptionId = this.getAccount().pipe(
               switchMap(account => interval(this.checkSessionTimeLeftInterval))
           ).subscribe( id => {
