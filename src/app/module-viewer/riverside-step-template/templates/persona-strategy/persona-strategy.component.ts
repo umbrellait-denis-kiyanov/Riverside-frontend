@@ -1,7 +1,8 @@
-import { Component, forwardRef } from '@angular/core';
+import { Component, forwardRef, OnDestroy } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { PersonaStrategyTemplateData, TemplateParams } from '.';
 import { BuyerPersona } from '../../../../common/interfaces/buyer-persona.interface';
+import { Subscription } from 'rxjs';
 
 @Component({
   selector: 'app-persona-strategy',
@@ -9,14 +10,16 @@ import { BuyerPersona } from '../../../../common/interfaces/buyer-persona.interf
   styleUrls: ['./persona-strategy.component.sass'],
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PersonaStrategyComponent) }]
 })
-export class PersonaStrategyComponent extends TemplateComponent {
-  params = TemplateParams;
+export class PersonaStrategyComponent extends TemplateComponent implements OnDestroy{
+  params: string = TemplateParams;
   contentData: PersonaStrategyTemplateData['template_params_json'];
 
-  prefix = 'persona_strategy_';
+  private buyerPersonaSubscription: Subscription;
+  prefix: string = 'persona_strategy_';
   inputState: number;
   buyerPersonasList$: BuyerPersona[];
-  inputPrefixes = {
+
+  inputPrefixes: object = {
     '1_key_issues': {
       name: 'issues',
       count: []
@@ -31,7 +34,7 @@ export class PersonaStrategyComponent extends TemplateComponent {
     }
   };
 
-  relevantMessaging = [
+  relevantMessaging: object[] = [
     {
       title: 'Inform',
       description: 'Loosen the Status Quo'
@@ -58,15 +61,13 @@ export class PersonaStrategyComponent extends TemplateComponent {
     }
   ];
 
-  protected init() {
+  protected init(): void {
     // @ts-ignore - template_params_json.inputs property causes error with TypeScript 3.1
     this.contentData = (this.data.data.template_params_json as PersonaStrategyTemplateData['template_params_json']);
     this.inputState = Number(this.contentData.step_type_select.substr(0, 1));
     this.initStates();
 
-    this.buyerPersonasService.getBuyerPersonas()
-        .pipe()
-        .subscribe(el => this.buyerPersonasList$ = el);
+    this.buyerPersonaSubscription = this.buyerPersonasService.getBuyerPersonas().subscribe(el => this.buyerPersonasList$ = el);
   }
 
   initStates(): void {
@@ -94,15 +95,21 @@ export class PersonaStrategyComponent extends TemplateComponent {
     return Array.from(Array(number + 1).keys()).slice(1);
   }
 
-  getDescription() {
+  getDescription(): string {
     return 'Buyer Persona strategy';
   }
 
-  getName() {
+  getName(): string {
     return 'Persona Strategy';
   }
 
-  hasInputs() {
+  hasInputs(): boolean {
     return true;
+  }
+
+  ngOnDestroy(): void {
+    if (this.buyerPersonaSubscription) {
+      this.buyerPersonaSubscription.unsubscribe();
+    }
   }
 }
