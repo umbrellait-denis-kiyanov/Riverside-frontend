@@ -5,7 +5,7 @@ import {
   UpdatePassword,
   PresignedProfilePictureUrl
 } from '../interfaces/account.interface';
-import {Observable, BehaviorSubject, of, interval, Subscription,} from 'rxjs';
+import {Observable, BehaviorSubject, of, interval, Subscription, } from 'rxjs';
 import { HttpClient } from '@angular/common/http';
 import { environment } from '../../../environments/environment';
 import { tap, switchMap, catchError } from 'rxjs/operators';
@@ -29,7 +29,7 @@ export class UserService {
 
   accountBaseUrl = environment.apiRoot + '/api/account';
 
-  accountSessionRemainingTime = environment.apiRoot + '/timeout';
+  accountSessionRemainingTimeUrl = environment.apiRoot + '/timeout';
 
   legacyBaseUrl = environment.apiRoot;
 
@@ -48,7 +48,7 @@ export class UserService {
           return of(null);
         }
       ));
-  }// getAccount
+  }
 
   startCheckTime() {
     // Start check session time
@@ -57,9 +57,9 @@ export class UserService {
         this.intervalSubscriptionId = interval(environment.checkSessionTimeLeftInterval).subscribe( (val: number) => {
           this.checkTimeLeft();
         });
-      }// if
+      }
     });
-  }// startCheckTime
+  }
 
   signin(credentials: FormData): Observable<boolean> {
     return this.httpClient.post<boolean>(`${this.legacyBaseUrl}/signin/`, credentials).pipe(
@@ -98,31 +98,47 @@ export class UserService {
   }
 
   showTimeLeftModal(timer: Date) {
+
     if ( !this.modalService.hasOpenModals() && this.getAccount()) {
+
       const modalRef = this.modalService.open(SessionExpirationModalComponent);
       modalRef.result.then( ( result: boolean ) => {
 
         if ( result === false ) {
+
           this.intervalSubscriptionId.unsubscribe();
           this.signout().subscribe( s => this.router.navigate(['login']) );
+
         } else {
+
           this.getAccount().subscribe( _ => console.log(_) );
-        }// else
-      } ); // then (...)
+
+        }
+
+      } );
+
       modalRef.componentInstance.timer = timer;
       modalRef.componentInstance.modalRef = modalRef;
-    }// if
+
+    }
+
   }
 
   checkTimeLeft() {
-    return this.httpClient.get(this.accountSessionRemainingTime).subscribe( (response: any) => {
+
+    return this.httpClient.get(this.accountSessionRemainingTimeUrl).subscribe( (response: { timeleft: number } ) => {
+
       const timeLeft = +response.timeleft;
+
       if ( timeLeft && timeLeft <= environment.sessionSecondsTimeLeft ) {
+
         const minutes = timeLeft / 60;
         const seconds = timeLeft % 60;
-        // this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
+
         this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
+
       }// if
+
     });
   }
 
