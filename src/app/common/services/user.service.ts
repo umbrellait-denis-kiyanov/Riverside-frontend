@@ -62,9 +62,12 @@ export class UserService {
     }
 
     this.intervalSubscriptionId = this.getAccount().pipe(
-        switchMap( account => interval(this.checkSessionTimeLeftInterval))
+        catchError( err => of(err)),
+        switchMap( account => !account ? of(null) : interval(this.checkSessionTimeLeftInterval))
     ).subscribe( id => {
-      this.checkTimeLeft();
+      if ( id ) {
+        this.checkTimeLeft();
+      }
       return id;
     });
   }
@@ -81,6 +84,9 @@ export class UserService {
   }
 
   signout(): Observable<AccountProfileStatus> {
+    if ( this.intervalSubscriptionId ) {
+      this.intervalSubscriptionId.unsubscribe();
+    }
     return this.httpClient.get(`${this.legacyBaseUrl}/signout?legacy_no_redirect=true`).pipe(
       switchMap(res => this.getAccount())
     );
