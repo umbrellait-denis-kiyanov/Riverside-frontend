@@ -12,6 +12,7 @@ import { tap, switchMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 import {NgbModal, ModalDismissReasons} from '@ng-bootstrap/ng-bootstrap';
 import {SessionExpirationModalComponent} from '../components/session-expiration-modal/session-expiration-modal.component';
+import {compareLogSummaries} from '@angular/core/src/render3/styling/class_and_style_bindings';
 
 type AccountProfileStatus = AccountProfile & {status: string};
 
@@ -31,11 +32,11 @@ export class UserService {
 
   accountSessionRemainingTimeUrl = environment.apiRoot + '/timeout';
 
-  sessionSecondsTimeLeft: number =  120;
-
-  checkSessionTimeLeftInterval: number =  60000;
-
   legacyBaseUrl = environment.apiRoot;
+
+  sessionSecondsTimeLeft =  120;
+
+  checkSessionTimeLeftInterval =  60000;
 
   intervalSubscriptionId: Subscription;
 
@@ -56,13 +57,24 @@ export class UserService {
 
   startCheckingSessionTime() {
 
-    this.getAccount().subscribe( result => {
-      if ( result ) {
-        this.intervalSubscriptionId = interval(this.checkSessionTimeLeftInterval).subscribe( (val: number) => {
-          this.checkTimeLeft();
-        });
-      }
+    if ( this.intervalSubscriptionId ) {
+      this.intervalSubscriptionId.unsubscribe();
+    }
+
+    this.intervalSubscriptionId = this.getAccount().pipe(
+        switchMap( account => interval(this.checkSessionTimeLeftInterval))
+    ).subscribe( id => {
+      this.checkTimeLeft();
+      return id;
     });
+
+    // this.getAccount().subscribe( result => {
+    //   if ( result ) {
+    //     this.intervalSubscriptionId = interval(this.checkSessionTimeLeftInterval).subscribe( (val: number) => {
+    //
+    //     });
+    //   }
+    // });
   }
 
   signin(credentials: FormData): Observable<boolean> {
@@ -102,46 +114,29 @@ export class UserService {
   }
 
   showTimeLeftModal(timer: Date) {
-
     if ( !this.modalService.hasOpenModals() ) {
-
       const modalRef = this.modalService.open(SessionExpirationModalComponent);
       modalRef.result.then( ( result: boolean ) => {
-
-        if ( result === false ) {
-
+        if ( !result ) {
           this.intervalSubscriptionId.unsubscribe();
           this.signout().subscribe( s => this.router.navigate(['login']) );
-
         } else {
-
           this.getAccount().subscribe( );
-
         }
-
       } );
-
       modalRef.componentInstance.timer = timer;
-
     }
 
   }
 
   checkTimeLeft() {
-
     return this.httpClient.get(this.accountSessionRemainingTimeUrl).subscribe( (response: { timeleft: number } ) => {
-
       const timeLeft = +response.timeleft;
-
       if ( timeLeft && timeLeft <= this.sessionSecondsTimeLeft ) {
-
         const minutes = timeLeft / 60;
         const seconds = timeLeft % 60;
-
         this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
-
-      }// if
-
+      }
     });
   }
 
