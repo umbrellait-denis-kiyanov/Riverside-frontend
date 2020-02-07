@@ -1,3 +1,70 @@
-<p>
-  persona-strategy works!
-</p>
+<div *ngIf="buyerPersonasList$?.length && inputState > 0">
+  <div class="row">
+    <div class="col-sm-2"></div>
+    <h5 class="text-center col-sm-5">KEY RATIONAL ISSUES</h5>
+    <h5 class="text-center col-sm-5">KEY EMOTIONAL ISSUES</h5>
+  </div>
+  <div *ngFor="let buyerPersona of buyerPersonasList$; index as item" class="row person-strategy-key-issue">
+    <div class="col-sm-2">
+      <div class="buyer-personas-item">
+        <img [src]="buyerPersona.picture" width="100px" height="100px">
+        <div class="person-strategy-key-issue-description">
+          <h3>{{ buyerPersona.name }}</h3>
+          <p>{{ buyerPersona.title }}</p>
+        </div>
+      </div>
+    </div>
+    <div *ngFor="let input of getPrefixCount(inputPrefixes['1_key_issues'].name);"
+         class="col-sm-5 person-strategy-key-issue-item">
+      <ice
+          [idx]="item + 1"
+          [prefix]="prefix"
+          [input]="inputPrefixes['1_key_issues'].name + '_' + input"
+          [disabled]="inputState > 1"
+          class="col-sm-12 ice-textarea"
+      ></ice>
+    </div>
+    <div *ngIf="inputState > 1" class="col-sm-12">
+      <h5 class="text-center">QUESTIONS/ASSERTIONS</h5>
+      <div *ngFor="let input of getPrefixCount(inputPrefixes['2_additional_questions'].name);"
+           class="row person-strategy-additional-questions">
+        <div class="col-sm-2 text-right">{{ input }}-</div>
+        <ice
+            [idx]="item + 1"
+            [prefix]="prefix"
+            [input]="inputPrefixes['2_additional_questions'].name + '_' + input"
+            [disabled]="inputState > 2"
+            class="col-sm-8"
+        ></ice>
+      </div>
+    </div>
+
+    <div *ngIf="inputState > 2" class="col-sm-12">
+      <div class="row">
+        <div class="col-sm-2"></div>
+        <p class="text-center col-sm-10">Relevant and appropriate messages for each stage of a model buyer’s journey.
+          (Note: if a
+          buying stage does not apply to a certain persona, simply type “N/A” into the box.)
+        </p>
+      </div>
+      <div *ngFor="let input of getPrefixCount(inputPrefixes['3_message_flow'].name);"
+           class="row person-strategy-relevant-messaging">
+        <div class="col-sm-2"></div>
+        <div class="col-sm-2">
+          <div class="person-strategy-relevant-messaging-left-block">
+            <p class="text-center font-weight-bold">{{ relevantMessaging[input - 1].title }}</p>
+            <p class="text-center">{{ relevantMessaging[input - 1].description }}</p>
+          </div>
+        </div>
+        <ice
+            [idx]="item + 1"
+            [prefix]="prefix"
+            [input]="inputPrefixes['3_message_flow'].name + '_' + input"
+            class="col-sm-8 ice-textarea"
+        ></ice>
+      </div>
+    </div>
+  </div>
+</div>
+
+<module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>
