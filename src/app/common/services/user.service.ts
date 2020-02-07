@@ -67,14 +67,6 @@ export class UserService {
       this.checkTimeLeft();
       return id;
     });
-
-    // this.getAccount().subscribe( result => {
-    //   if ( result ) {
-    //     this.intervalSubscriptionId = interval(this.checkSessionTimeLeftInterval).subscribe( (val: number) => {
-    //
-    //     });
-    //   }
-    // });
   }
 
   signin(credentials: FormData): Observable<boolean> {
