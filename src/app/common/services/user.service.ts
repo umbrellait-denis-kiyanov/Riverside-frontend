@@ -31,9 +31,9 @@ export class UserService {
 
   accountSessionRemainingTimeUrl = environment.apiRoot + '/timeout';
 
-  sessionSecondsTimeLeft: 120;
+  sessionSecondsTimeLeft: number =  120;
 
-  checkSessionTimeLeftInterval: 60000;
+  checkSessionTimeLeftInterval: number =  60000;
 
   legacyBaseUrl = environment.apiRoot;
 
@@ -58,6 +58,7 @@ export class UserService {
 
     this.getAccount().subscribe( result => {
       if ( result ) {
+        alert(this.checkSessionTimeLeftInterval);
         this.intervalSubscriptionId = interval(this.checkSessionTimeLeftInterval).subscribe( (val: number) => {
           this.checkTimeLeft();
         });
