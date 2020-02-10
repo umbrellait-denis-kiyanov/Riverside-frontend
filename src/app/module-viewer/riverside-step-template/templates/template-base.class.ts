@@ -7,9 +7,10 @@ import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { Injector } from '@angular/core';
 import { TemplateInput } from 'src/app/common/interfaces/module.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
@@ -26,6 +27,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   activePersonas: string[];
   action: string;
   instanceExists = true;
+  isEmbedded = false;
 
   public prefix = '';
 
@@ -33,6 +35,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
       protected el: ElementRef,
       protected moduleContentService: ModuleContentService,
       protected moduleService: ModuleService,
+      protected navService: ModuleNavService,
       protected userService: UserService,
       protected injectorObj: Injector
     ) {}
@@ -72,9 +75,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return takeWhile(() => this.instanceExists);
   }
 
-  // abstract validate(): boolean;
   validate() {
-    return true;
+    return of(true);
   }
 
   protected init() {}

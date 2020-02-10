@@ -8,6 +8,7 @@ export interface SpreadsheetTemplateData extends TemplateContentDataBase {
     title: string;
     requireFeedback: boolean;
     calculateFormulasOnServer: boolean;
+    input_sufix: string;
   };
 }
 

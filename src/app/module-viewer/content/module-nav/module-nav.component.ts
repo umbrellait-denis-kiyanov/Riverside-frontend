@@ -2,10 +2,11 @@ import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChange
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import Message from '../../inbox/message.model';
 import { IceService } from '../../ice/ice.service';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { TemplateContentData } from '../../riverside-step-template/templates/template-data.class';
 import { TemplateComponent } from '../../riverside-step-template/templates/template-base.class';
+import { switchMap, tap, take } from 'rxjs/operators';
 
 type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedback' | 'provide_final_feedback' | 'approve';
 @Component({
@@ -29,7 +30,7 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
 
   unApproveSub: Subscription;
 
-  hasValidationError = false;
+  hasValidationError: number;
 
   actionButtonText: string;
   subactionButtonText: string;
@@ -103,21 +104,22 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
     const newState = state !== null ? state : !this[key];
     const step = this.step.data;
 
-    if (newState && this.template && !this.template.validate()) {
-      this.hasValidationError = true;
-      setTimeout(_ => this.hasValidationError = false, 5000);
-      return;
-    }
+    this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.template.validate().pipe(switchMap(isValid => {
+      if (!isValid) {
+        clearTimeout(this.hasValidationError);
+        this.hasValidationError = window.setTimeout(_ => this.hasValidationError = null, 5000);
+        return of(false);
+      } else
+        return this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState).pipe(tap(_ => {
+          this.moduleService.moduleChanged$.next(true);
 
-    this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
-      .subscribe(_ => {
-        if (newState) {
-          this.navService.nextStep();
-        }
+          if (newState) {
+            this.navService.nextStep();
+          }
 
-        this.moduleService.moduleChanged$.next(true);
-        this[key] = newState;
-      });
+          this[key] = newState;
+        }))
+    })).pipe(take(1)).subscribe();
   }
 
   markAsApproved(isSubaction: boolean = false, state: boolean = null) {

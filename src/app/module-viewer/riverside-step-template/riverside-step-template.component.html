@@ -1,2 +1,2 @@
-<template-heading [disabled]="!canModify" [content]="data"></template-heading>
+<template-heading [disabled]="!canModify" [content]="data" *ngIf="!embedded"></template-heading>
 <ng-template riverside-step-template-host></ng-template>

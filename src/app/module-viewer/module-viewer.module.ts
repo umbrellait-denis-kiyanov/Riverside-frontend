@@ -201,7 +201,11 @@ import { CheckboxSelectorComponent } from './riverside-step-template/templates/c
     SpreadsheetComponent,
     LoginComponent,
     SessionExpirationModalComponent,
-    CheckboxSelectorComponent
+    CheckboxSelectorComponent,
+    LoginComponent,
+    BuyerPersonasSelectorComponent,
+    PreRequisiteModulesComponent,
+    ModuleResultComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -222,7 +226,10 @@ import { CheckboxSelectorComponent } from './riverside-step-template/templates/c
     SpreadsheetComponent,
     VideoComponent,
     SessionExpirationModalComponent,
-    CheckboxSelectorComponent
+    CheckboxSelectorComponent,
+    VideoComponent,
+    PreRequisiteModulesComponent,
+    ModuleResultComponent
   ],
   providers: [
     AssessmentService,
@@ -235,6 +242,7 @@ import { CheckboxSelectorComponent } from './riverside-step-template/templates/c
     LeftMenuService,
     InboxService,
     CanModifyPipe,
+    BuyerPersonasService,
     ReversePipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true}

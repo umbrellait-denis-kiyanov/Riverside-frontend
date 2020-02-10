@@ -1,0 +1,83 @@
+@import "src/app/common/sass/variables.sass"
+
+\:host
+    display: block
+    margin: 10px 0
+
+.buyer-personas-selector
+    position: relative
+
+.buyer-persona-icon
+
+    img
+        border-radius: 28px
+        min-width: 60px
+        max-width: 60px
+
+.buyer-personas-item
+    background-color: white
+    word-wrap: break-word
+    margin-left: 0px
+    margin-right: 0px
+    cursor: pointer
+
+    .buyer-persona-data
+        white-space: initial
+
+        .bp-name
+            font-size: 15px
+            color: #1ab0ff
+
+        .bp-title
+            font-size: 13px
+            color: #868686
+
+        .bp-name
+            margin-top: 0px
+            margin-bottom: 5px
+
+        .bp-title
+            margin-top: 0px
+            margin-bottom: 0px
+
+    &.selected
+        background-color: $blue
+
+        .buyer-persona-data
+
+            .bp-name
+                color: white
+
+            .bp-title
+                color: #00a5ee
+
+.buyerPersonasList
+    position: absolute
+    overflow-x: hidden
+    padding-bottom: 0px
+    display: block
+    border: 1px solid rgba(0,0,0,.15)
+    border-radius: .25rem
+    z-index: 1000
+    width: 100%
+
+.c-pointer
+    cursor: pointer
+
+.selectedPersonasImg
+    width: 30px
+
+
+.amoutExtraSelectedPersonas
+    padding: 5px 10px 5px 5px
+    background-color: white
+    border-radius: 20px
+    border: solid #00529f 1px
+    color: #00529f
+    margin-left: 4px
+
+.bpSelect
+    padding: 0px
+
+    div
+        padding: 0.375rem 0.75rem

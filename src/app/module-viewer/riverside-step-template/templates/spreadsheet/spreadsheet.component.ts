@@ -2,7 +2,7 @@ import { Component, forwardRef, ViewChild, ElementRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { SpreadsheetTemplateData, TemplateParams } from '.';
 import * as Handsontable from 'handsontable';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
@@ -174,14 +174,14 @@ export class SpreadsheetComponent extends TemplateComponent {
           })
         );
 
-        this.cellSettings = data.meta.editable.reduce((editable, range) => {
+        this.cellSettings = (data.meta.editable || []).reduce((editable, range) => {
           const row = this.getRealRow(parseInt(range, 10) - 1);
 
           if (row === null) {
             return editable;
           }
 
-          const cellRange = range.split(/[0-9]/).join('').split('-');
+          const cellRange = range.split(/[0-9]/).join('').split('-').filter(r => r);
 
           for (let idx = cellRange[0].charCodeAt(0) - 65; idx <= cellRange[cellRange.length - 1].charCodeAt(0) - 65; idx++) {
             editable[row][idx].editable = true;
@@ -191,10 +191,11 @@ export class SpreadsheetComponent extends TemplateComponent {
         }, this.cellSettings);
 
         const metaConfig = (field: string, callback) => {
-          this.cellSettings = Object.entries(data.meta[field]).reduce((settings, [range, value]) => {
+          this.cellSettings = Object.entries(data.meta[field] || {}).reduce((settings, [range, value]) => {
             if ('*' === range.substr(-1)) {
               range = range.slice(0, -1) + 'A-' + data.meta.maxColumn;
             }
+
             const rowRange = range.match(/[\-0-9]+/)[0].split('-');
             const colRange = range.split(/[0-9]/).join('').match(/[\-A-Z]+/)[0].split('-').filter(a => a);
 
@@ -233,14 +234,46 @@ export class SpreadsheetComponent extends TemplateComponent {
             this.isRendered = true;
             setTimeout(_ => this.hotInstance.validateCells(_ => {}));
           }).bind(this),
+          afterSelectionEnd: (context, row, col, row2, col2) => {
+            if (row === row2 && col === col2) {
+              const cell = this.cellSettings[row][col];
+              if (cell.editable) {
+                const editor = (this.hotInstance.getActiveEditor() as any);
+                editor.enableFullEditMode();
+                editor.beginEditing();
+              }
+            }
+          },
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           beforeKeyDown: ((event: KeyboardEvent) => {
-            if (46 === event.keyCode || 8 === event.keyCode) {
+            const key = event.keyCode;
+
+            if (![8, 46, 13].includes(key)) {
+              return;
+            }
+
+            const hot = this.hotInstance;
+            if (hot.getSelected().reduce((stopPropagation, sel) => {
+              const cell = this.cellSettings[sel[0]][sel[1]];
+              const meta = hot.getCellMeta(sel[0], sel[1]);
+
+              if (!cell.editable) {
+                return;
+              }
+
+              if ([8, 46].includes(key) && meta.numericFormat) {
+                hot.setDataAtCell(sel[0], sel[1], 0);
+                return true;
+              }
+              else if (13 === event.keyCode && !meta.numericFormat) {
+                return true;
+              }
+              else {
+                return stopPropagation;
+              }
+            }, false)) {
               event.stopImmediatePropagation();
-              (event.target as HTMLInputElement).value = '0';
-              const hot = this.hotInstance;
-              hot.getSelected().forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
             }
           }).bind(this),
           invalidCellClassName: 'invalidCell',
@@ -248,7 +281,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           colWidths: ((col) => {
             return data.meta.colWidths[col] * ((this.widthContainer.nativeElement.clientWidth + 20) / totalWidth);
           }).bind(this),
-          mergeCells: this.sheet.meta.mergeCells
+          mergeCells: (this.sheet.meta.mergeCells || [])
                         .filter(cell => this.getRealRow(cell.row) !== null)
                         .map(cell => {
                           cell.row = this.getRealRow(cell.row);
@@ -268,13 +301,17 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   validate() {
-    return !this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)');
+    return of(!this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)'));
   }
 
   private formatCell(row: number, column: number) {
     const cell = {} as HotCell;
 
     const settings = this.cellSettings[row][column];
+
+    if (!settings) {
+      return cell;
+    }
 
     cell.readOnly = !settings.editable;
     if (!cell.readOnly) {

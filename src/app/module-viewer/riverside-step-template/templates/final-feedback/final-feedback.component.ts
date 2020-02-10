@@ -10,7 +10,7 @@ import { TemplateParams } from '.';
   styleUrls: ['./final-feedback.component.sass'],
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FinalFeedbackComponent) }]
 })
-export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent implements OnInit  {
+export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent {
   params = TemplateParams;
   contentData = data;
 
