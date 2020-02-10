@@ -103,12 +103,17 @@ import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 import { CheckboxSelectorComponent } from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
+import {BuyerPersonasService} from '../common/services/buyer-personas.service';
+import {PreRequisiteModulesComponent} from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
+import {ModuleResultComponent} from './riverside-step-template/templates/module-result/module-result.component';
+import {BuyerPersonasSelectorComponent} from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
+import {MatCheckboxModule} from '@angular/material';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], { useHash: true }),
+    RouterModule.forRoot([], {useHash: true}),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -131,7 +136,8 @@ import { CheckboxSelectorComponent } from './riverside-step-template/templates/c
     ReactiveFormsModule,
     ImageCropperModule,
     HotTableModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatCheckboxModule
   ],
   declarations: [
     ModuleViewerRootComponent,
