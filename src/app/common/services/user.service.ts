@@ -41,6 +41,8 @@ export class UserService {
 
   isSessionPopupOpen = false;
 
+  isSessionExpired = false;
+
   constructor(private httpClient: HttpClient, private router: Router, private modalService: NgbModal ) {}
 
   setMeFromData(data: any) {
@@ -78,6 +80,7 @@ export class UserService {
       tap(res => {
         if (res) {
           this.getAccount().subscribe(account => this.setMeFromData(account));
+          this.isSessionPopupOpen = false;
           this.startCheckingSessionTime();
         }
       })
@@ -119,6 +122,7 @@ export class UserService {
       modalRef.result.then( ( result: boolean ) => {
         if ( !result ) {
           this.intervalSubscriptionId.unsubscribe();
+          this.isSessionExpired = true;
           this.signout().subscribe( s => this.router.navigate(['login']) );
         } else {
           this.isSessionPopupOpen = false;
@@ -126,7 +130,6 @@ export class UserService {
               switchMap(account => interval(this.checkSessionTimeLeftInterval))
           ).subscribe( id => {
             this.checkTimeLeft();
-            return id;
           } );
         }
       } );
@@ -134,18 +137,24 @@ export class UserService {
     } else {
       this.intervalSubscriptionId.unsubscribe();
     }
-
   }
 
   checkTimeLeft() {
-    return this.httpClient.get(this.accountSessionRemainingTimeUrl).subscribe( (response: { timeleft: number } ) => {
-      const timeLeft = +response.timeleft;
-      if ( timeLeft && timeLeft <= this.sessionSecondsTimeLeft ) {
-        const minutes = timeLeft / 60;
-        const seconds = timeLeft % 60;
-        this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
-      }
-    });
+    return this.httpClient.get(this.accountSessionRemainingTimeUrl).subscribe(
+        (response: { timeleft: number } ) => {
+                if ( response ) {
+                  const timeLeft = +response.timeleft;
+                  if ( timeLeft && timeLeft <= this.sessionSecondsTimeLeft ) {
+                    const minutes = timeLeft / 60;
+                    const seconds = timeLeft % 60;
+                    this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
+                  }
+                }
+        },
+        (error) => {
+          this.router.navigate(['login']);
+        }
+    );
   }
 
 }
