@@ -17,6 +17,7 @@ export class LoginComponent implements OnInit {
   submitted: Subscription;
   returnUrl: string;
   isInvalid = false;
+  isSessionExpired = false;
 
   fields = ['username', 'password'];
 
@@ -30,6 +31,11 @@ export class LoginComponent implements OnInit {
       // if (this.authenticationService.currentUserValue) {
       //     this.router.navigate(['/']);
       // }
+    this.route.queryParams.subscribe( (params) => {
+      if ( params.session_expire ) {
+        this.isSessionExpired = true;
+      }
+    } );
   }
 
   ngOnInit() {
