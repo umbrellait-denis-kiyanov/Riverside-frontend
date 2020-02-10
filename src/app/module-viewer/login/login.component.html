@@ -15,11 +15,10 @@
         <div *ngIf="f.password.errors.required">Password is required</div>
       </div>
     </div>
-
     <div class="alert alert-danger" *ngIf="isInvalid">
       Wrong username or password
     </div>
-    <div class="alert alert-danger" *ngIf="userService.isSessionExpired">
+    <div class="alert alert-danger" *ngIf="isSessionExpired">
       Your session has expired, please sign in again.
     </div>
     <div class="form-group">

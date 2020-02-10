@@ -33,15 +33,13 @@ export class UserService {
 
   legacyBaseUrl = environment.apiRoot;
 
-  sessionSecondsTimeLeft =  120;
+  sessionSecondsTimeLeft =  1200;
 
-  checkSessionTimeLeftInterval =  60000;
+  checkSessionTimeLeftInterval =  6000;
 
   intervalSubscriptionId: Subscription;
 
   isSessionPopupOpen = false;
-
-  isSessionExpired = false;
 
   constructor(private httpClient: HttpClient, private router: Router, private modalService: NgbModal ) {}
 
@@ -122,8 +120,7 @@ export class UserService {
       modalRef.result.then( ( result: boolean ) => {
         if ( !result ) {
           this.intervalSubscriptionId.unsubscribe();
-          this.isSessionExpired = true;
-          this.signout().subscribe( s => this.router.navigate(['login']) );
+          this.signout().subscribe( s => this.router.navigate(['login'] , { queryParams: { session_expire: '1' } } ));
         } else {
           this.isSessionPopupOpen = false;
           this.intervalSubscriptionId = this.getAccount().pipe(
@@ -147,7 +144,7 @@ export class UserService {
                   if ( timeLeft && timeLeft <= this.sessionSecondsTimeLeft ) {
                     const minutes = timeLeft / 60;
                     const seconds = timeLeft % 60;
-                    this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
+                    this.showTimeLeftModal(new Date(1, 1, 1, 1, 0, 15));
                   }
                 }
         },
