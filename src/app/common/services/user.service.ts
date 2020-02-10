@@ -33,9 +33,9 @@ export class UserService {
 
   legacyBaseUrl = environment.apiRoot;
 
-  sessionSecondsTimeLeft =  1200;
+  sessionSecondsTimeLeft =  120;
 
-  checkSessionTimeLeftInterval =  6000;
+  checkSessionTimeLeftInterval =  60000;
 
   intervalSubscriptionId: Subscription;
 
@@ -144,7 +144,7 @@ export class UserService {
                   if ( timeLeft && timeLeft <= this.sessionSecondsTimeLeft ) {
                     const minutes = timeLeft / 60;
                     const seconds = timeLeft % 60;
-                    this.showTimeLeftModal(new Date(1, 1, 1, 1, 0, 15));
+                    this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
                   }
                 }
         },
