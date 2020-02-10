@@ -33,7 +33,7 @@ export class UserService {
 
   legacyBaseUrl = environment.apiRoot;
 
-  sessionSecondsTimeLeft =  120;
+  sessionSecondsTimeLeft =  1200;
 
   checkSessionTimeLeftInterval =  60000;
 
