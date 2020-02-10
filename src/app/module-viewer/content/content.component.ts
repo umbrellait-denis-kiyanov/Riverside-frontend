@@ -26,7 +26,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   templateComponentName: keyof typeof Templates;
   canModify = false;
   leftMenuExpanded = true;
-  styleClass = '';
+  styleClass: string = '';
 
   routeWatch: Subscription;
 
