@@ -2,7 +2,7 @@ import { Component, forwardRef, OnDestroy } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { PersonaStrategyTemplateData, TemplateParams } from '.';
 import { BuyerPersona } from '../../../../common/interfaces/buyer-persona.interface';
-import {Observable, Subscription} from 'rxjs';
+import { Observable } from 'rxjs';
 
 @Component({
   selector: 'app-persona-strategy',
@@ -66,28 +66,19 @@ export class PersonaStrategyComponent extends TemplateComponent implements OnDes
     this.inputState = Number(this.contentData.step_type_select.substr(0, 1));
     this.initStates();
 
-    this.buyerPersonasList$ = this.buyerPersonasService.getBuyerPersonas().pipe();
+    this.buyerPersonasList$ = this.buyerPersonasService.getBuyerPersonas();
   }
 
   initStates(): void {
-    switch (this.inputState) {
-      case 3:
-        this.inputPrefixes['1_key_issues'].count = this.getPrefixCount(this.inputPrefixes['1_key_issues'].name);
-        this.inputPrefixes['2_additional_questions'].count = this.getPrefixCount(this.inputPrefixes['2_additional_questions'].name);
-        this.inputPrefixes['3_message_flow'].count = this.getPrefixCount(this.inputPrefixes['3_message_flow'].name);
-        break;
-      case 2:
-        this.inputPrefixes['1_key_issues'].count = this.getPrefixCount(this.inputPrefixes['1_key_issues'].name);
-        this.inputPrefixes['2_additional_questions'].count = this.getPrefixCount(this.inputPrefixes['2_additional_questions'].name);
-        break;
-      case 1:
-        this.inputPrefixes['1_key_issues'].count = this.getPrefixCount(this.inputPrefixes['1_key_issues'].name);
-        break;
-    }
+   Object.values(this.inputPrefixes).forEach(el => el.count = this.getPrefixCount(el.name));
   }
 
   getPrefixCount(prefix: string): number[] {
-    return this.makeIterable(+Object.keys(this.inputs).filter(el => el.includes(prefix)).slice(-1).pop().split('_').slice(-2).shift());
+    const prefixCount = Object.keys(this.inputs).filter(el => el.includes(prefix)).slice(-1).pop();
+    if (!prefixCount) {
+      return [];
+    }
+    return this.makeIterable(+prefixCount.split('_').slice(-2).shift());
   }
 
   makeIterable(number: number): number[] {

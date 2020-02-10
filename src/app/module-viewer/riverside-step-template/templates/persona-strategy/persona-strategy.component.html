@@ -14,7 +14,7 @@
         </div>
       </div>
     </div>
-    <div *ngFor="let input of getPrefixCount(inputPrefixes['1_key_issues'].name);"
+    <div *ngFor="let input of inputPrefixes['1_key_issues'].count;"
          class="col-sm-5 person-strategy-key-issue-item">
       <ice
           [idx]="item + 1"
@@ -26,7 +26,7 @@
     </div>
     <div *ngIf="inputState > 1" class="col-sm-12">
       <h5 class="text-center">QUESTIONS/ASSERTIONS</h5>
-      <div *ngFor="let input of getPrefixCount(inputPrefixes['2_additional_questions'].name);"
+      <div *ngFor="let input of inputPrefixes['2_additional_questions'].count;"
            class="row person-strategy-additional-questions">
         <div class="col-sm-2"></div>
         <div class="col-sm-10 row person-strategy-additional-questions-row">
@@ -52,7 +52,7 @@
           buying stage does not apply to a certain persona, simply type “N/A” into the box.)
         </p>
       </div>
-      <div *ngFor="let input of getPrefixCount(inputPrefixes['3_message_flow'].name);"
+      <div *ngFor="let input of inputPrefixes['3_message_flow'].count"
            class="row person-strategy-relevant-messaging">
         <div class="col-sm-2"></div>
         <div class="col-sm-2">
