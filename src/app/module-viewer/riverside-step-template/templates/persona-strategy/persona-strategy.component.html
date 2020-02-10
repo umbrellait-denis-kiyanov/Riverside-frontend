@@ -1,10 +1,10 @@
-<div *ngIf="buyerPersonasList$?.length && inputState > 0">
+<div *ngIf="(buyerPersonasList$ | async) as buyerPersonas">
   <div class="row">
     <div class="col-sm-2"></div>
     <h5 class="text-center col-sm-5">KEY RATIONAL ISSUES</h5>
     <h5 class="text-center col-sm-5">KEY EMOTIONAL ISSUES</h5>
   </div>
-  <div *ngFor="let buyerPersona of buyerPersonasList$; index as item" class="row person-strategy-key-issue">
+  <div *ngFor="let buyerPersona of buyerPersonas; index as item" class="row person-strategy-key-issue">
     <div class="col-sm-2">
       <div class="buyer-personas-item">
         <img [src]="buyerPersona.picture" width="100px" height="100px">

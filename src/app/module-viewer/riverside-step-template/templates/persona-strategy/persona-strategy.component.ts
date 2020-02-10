@@ -2,7 +2,7 @@ import { Component, forwardRef, OnDestroy } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { PersonaStrategyTemplateData, TemplateParams } from '.';
 import { BuyerPersona } from '../../../../common/interfaces/buyer-persona.interface';
-import { Subscription } from 'rxjs';
+import {Observable, Subscription} from 'rxjs';
 
 @Component({
   selector: 'app-persona-strategy',
@@ -14,10 +14,9 @@ export class PersonaStrategyComponent extends TemplateComponent implements OnDes
   params: string = TemplateParams;
   contentData: PersonaStrategyTemplateData['template_params_json'];
 
-  private buyerPersonaSubscription: Subscription;
   prefix: string = 'persona_strategy_';
   inputState: number;
-  buyerPersonasList$: BuyerPersona[];
+  buyerPersonasList$: Observable<BuyerPersona[]>;
 
   inputPrefixes: object = {
     '1_key_issues': {
@@ -67,7 +66,7 @@ export class PersonaStrategyComponent extends TemplateComponent implements OnDes
     this.inputState = Number(this.contentData.step_type_select.substr(0, 1));
     this.initStates();
 
-    this.buyerPersonaSubscription = this.buyerPersonasService.getBuyerPersonas().subscribe(el => this.buyerPersonasList$ = el);
+    this.buyerPersonasList$ = this.buyerPersonasService.getBuyerPersonas().pipe();
   }
 
   initStates(): void {
@@ -105,11 +104,5 @@ export class PersonaStrategyComponent extends TemplateComponent implements OnDes
 
   hasInputs(): boolean {
     return true;
-  }
-
-  ngOnDestroy(): void {
-    if (this.buyerPersonaSubscription) {
-      this.buyerPersonaSubscription.unsubscribe();
-    }
   }
 }
