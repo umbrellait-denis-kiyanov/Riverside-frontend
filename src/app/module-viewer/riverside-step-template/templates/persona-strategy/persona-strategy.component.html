@@ -65,7 +65,8 @@
       <div *ngFor="let input of inputPrefixes['3_message_flow'].count"
            class="row person-strategy-relevant-messaging">
         <div class="col-sm-2"></div>
-        <div class="col-sm-2">
+        <div class="col-sm-2" style="position: relative">
+          <div class="arrow"></div>
           <div class="person-strategy-relevant-messaging-left-block">
             <p class="text-center font-weight-bold">{{ relevantMessaging[input - 1].title }}</p>
             <p class="text-center">{{ relevantMessaging[input - 1].description }}</p>
