@@ -45,7 +45,8 @@
             "styles": [
               "node_modules/bootstrap/dist/css/bootstrap.min.css",
               "src/styles.sass",
-              "src/assets/styles/ice.css"
+              "src/assets/styles/ice.css",
+              "node_modules/ngx-toastr/toastr.css"
             ],
             "scripts": [
               "src/assets/scripts/mictest.js",
