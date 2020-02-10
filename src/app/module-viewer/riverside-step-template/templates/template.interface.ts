@@ -35,5 +35,5 @@ export interface TemplateContentDataBase {
     description: string;
     title: string;
     inputs?: string;
-  }
+  };
 }

@@ -1,9 +1,26 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { AssessmentType, AssessmentGroup, AssessmentOrgGroup, AssessmentSession, PendingSessions } from 'src/app/common/interfaces/assessment.interface';
+import {
+  AssessmentType,
+  AssessmentGroup,
+  AssessmentOrgGroup,
+  AssessmentSession,
+  PendingSessions
+} from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { filter, take, distinctUntilChanged, switchMap, map, shareReplay, takeWhile, tap, skip, debounceTime, withLatestFrom } from 'rxjs/operators';
+import {
+  filter,
+  take,
+  distinctUntilChanged,
+  switchMap,
+  map,
+  shareReplay,
+  takeWhile,
+  tap,
+  skip,
+  debounceTime
+} from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';
 import { HttpResponse } from '@angular/common/http';
@@ -17,10 +34,10 @@ import { CanModifyPipe } from '../../../common/pipes/canModify.pipe';
 export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   constructor(private router: Router,
-              private route: ActivatedRoute,
-              public asmService: AssessmentService,
-              public navService: ModuleNavService,
-              private canModifyPipe: CanModifyPipe) { }
+    private route: ActivatedRoute,
+    public asmService: AssessmentService,
+    public navService: ModuleNavService,
+    private canModifyPipe: CanModifyPipe) { }
 
   types$: Observable<AssessmentType[]>;
 
@@ -88,10 +105,10 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
       map(([type, org]) => type.id.toString() + '-' + org),
       distinctUntilChanged(),
       switchMap(g => this.navService.activeAssessmentSessionId$.pipe(
-          filter(s => !!s),
-          distinctUntilChanged(),
-          debounceTime(500),
-          skip(1)
+        filter(s => !!s),
+        distinctUntilChanged(),
+        debounceTime(500),
+        skip(1)
       ))
     ).subscribe(id => this.asmService.groupsUpdated$.next(Date.now()));
 
@@ -108,7 +125,8 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
       switchMap(_ => combineLatest(this.activeGroup$, this.activeType$, this.orgGroups$).pipe(take(1)))
     )
       .subscribe(([active, type, orgGroups]) => {
-        const next = type.groups.find(g => (Number(g.position) > Number(active.position)) && (!orgGroups[g.id] || !orgGroups[g.id][this.finishFlag]));
+        const next = type.groups.find(g => (Number(g.position) > Number(active.position)) &&
+          (!orgGroups[g.id] || !orgGroups[g.id][this.finishFlag]));
 
         if (next) {
           this.setGroup(next);

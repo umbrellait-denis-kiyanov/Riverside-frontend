@@ -2,9 +2,8 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { Module, Organization, ModuleCategory } from 'src/app/common/interfaces/module.interface';
 import { ModuleScores } from 'src/app/common/interfaces/assessment.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
-import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { Observable, BehaviorSubject, Subscription, combineLatest } from 'rxjs';
 import { map, shareReplay, tap } from 'rxjs/operators';
-import { combineLatest } from 'rxjs';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Sort } from '@angular/material/sort';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
@@ -19,11 +18,11 @@ import { CanModifyPipe } from 'src/app/common/pipes/canModify.pipe';
 export class DashboardComponent implements OnInit, OnDestroy {
 
   constructor(private moduleService: ModuleService,
-              private asmService: AssessmentService,
-              private route: ActivatedRoute,
-              private router: Router,
-              private canModifyPipe: CanModifyPipe
-            ) { }
+    private asmService: AssessmentService,
+    private route: ActivatedRoute,
+    private router: Router,
+    private canModifyPipe: CanModifyPipe
+  ) { }
 
   modulesRequest$: Observable<HttpResponse<ModuleCategory[]>>;
   modules$: Observable<ModuleCategory[]>;
@@ -37,7 +36,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   view = 'list';
 
-  listSortOrder$ = new BehaviorSubject<Sort>({active: 'due_date', direction: 'asc'});
+  listSortOrder$ = new BehaviorSubject<Sort>({ active: 'due_date', direction: 'asc' });
 
   organizationSubscription: Subscription;
 
@@ -48,7 +47,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
     const id = this.route.snapshot.params.orgId;
     this.organizationSubscription = this.organizations$.subscribe(organizations =>
-        this.setOrganization(id ? organizations.find(org => org.id.toString() === id) : organizations[0]));
+      this.setOrganization(id ? organizations.find(org => org.id.toString() === id) : organizations[0]));
 
     if (window.history.state && window.history.state.section) {
       this.view = window.history.state.section;

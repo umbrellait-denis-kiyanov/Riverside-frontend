@@ -21,10 +21,10 @@ function replaceSUMRangesWithAdditions(valuesWithFormulas: TableData) {
         const colFrom = from.charCodeAt(0);
         const colRange = Array(to.charCodeAt(0) - colFrom + 1).fill(0).map((_, i) => String.fromCharCode(colFrom + i));
 
-        const range = colRange.reduce((refs, col) => refs.concat(rowRange.map(row => col + row)), []);
+        const range = colRange.reduce((refs, col) => refs.concat(rowRange.map(r => col + r)), []);
 
         cell = cell.split(sum).join(range.join('+'));
-      })
+      });
     }
 
     return cell;
@@ -96,7 +96,7 @@ FormulaPlugin.prototype = Object.create(Handsontable.plugins.BasePlugin.prototyp
 // Enable plugin for all instances
 FormulaPlugin.prototype.isEnabled = () => true;
 
-FormulaPlugin.prototype.enablePlugin = function() {
+FormulaPlugin.prototype.enablePlugin = function () {
   let values: TableData;
 
   this.addHook('beforeRender', (isForced: boolean, skipRender: object) => {
@@ -109,7 +109,7 @@ FormulaPlugin.prototype.enablePlugin = function() {
   );
 
   this.addHook('beforeValueRender',
-    (value: any, cellProperties: {row: number, col: number, numericFormat: HotNumericFormat}) => {
+    (value: any, cellProperties: { row: number, col: number, numericFormat: HotNumericFormat }) => {
       if (value[0] !== '=') {
         return value;
       }

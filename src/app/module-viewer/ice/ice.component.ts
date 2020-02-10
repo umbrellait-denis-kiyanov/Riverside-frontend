@@ -25,6 +25,7 @@ import {
   PreventTypeDeletedRangePlugin,
   IceCopyPastePluginFixed
 } from './plugins';
+import IceInputPlugin from './plugins/ice-input-plugin';
 
 export type TextRange = Range & {
   moveStart: (unit, offset: number) => void;
@@ -34,15 +35,15 @@ export interface IceEditorTracker {
   element: HTMLElement;
   env: {
     document: Document;
-  },
+  };
   acceptAll: () => void;
   getUserStyle: (id: string) => string;
-  getCurrentRange: () => TextRange,
+  getCurrentRange: () => TextRange;
   _insertNode: (node: Node, range: Range) => void;
   selection: {
     addRange: (range: TextRange) => void,
     createRange: () => TextRange
-  },
+  };
   hasCleanPaste: boolean;
   disableDragDrop: boolean;
 }
@@ -56,10 +57,10 @@ export class Comments {
   index: number = null;
 }
 
-type IcePluginConfig = {
-  name: string,
-  settings: {[key: string]: string}
-};
+interface IcePluginConfig {
+  name: string;
+  settings: { [key: string]: string };
+}
 
 @Component({
   selector: 'ice',
@@ -68,7 +69,7 @@ type IcePluginConfig = {
 })
 export class IceComponent implements OnInit, OnDestroy {
   @Input() box: number;
-  @Input('disabled') disabledCustomCondition: boolean;
+  @Input() disabled: boolean;
   @Input() placeholder: string = '';
 
   // pass input as string identifier or as instance
@@ -93,7 +94,7 @@ export class IceComponent implements OnInit, OnDestroy {
   isInitialized = false;
 
   user: User;
-  disabled: boolean;
+  isDisabled: boolean;
 
   initialContent: string;
 
@@ -105,23 +106,23 @@ export class IceComponent implements OnInit, OnDestroy {
     private iceService: IceService,
     private dialogService: E3ConfirmationDialogService,
     private template: TemplateComponent
-  ) {}
+  ) { }
 
   ngOnInit() {
-    new FixSpacesPlugin();
-    new PreventTypeDeletedRangePlugin();
-    new UndoTrackPlugin();
+    this.loadPlugin(FixSpacesPlugin);
+    this.loadPlugin(PreventTypeDeletedRangePlugin);
+    this.loadPlugin(UndoTrackPlugin);
     IceCopyPastePluginFixed();
 
     if (this.numeric) {
       this.single = true;
-      new NumericInputPlugin();
+      this.loadPlugin(NumericInputPlugin);
     }
 
     if (this.single) {
-      new DisableNewlinesPlugin();
+      this.loadPlugin(DisableNewlinesPlugin);
     } else {
-      new InitListPlugin();
+      this.loadPlugin(InitListPlugin);
     }
 
     if (this.input) {
@@ -136,7 +137,7 @@ export class IceComponent implements OnInit, OnDestroy {
     this.data.error = this.data.error || new BehaviorSubject(null);
 
     this.user = this.template.me;
-    this.disabled = this.template.disabled || this.disabledCustomCondition;
+    this.isDisabled = this.template.disabled || this.disabled;
 
     if (!this.changed.observers.length) {
       this.changed.subscribe((event) => this.template.contentChanged(event));
@@ -208,7 +209,7 @@ export class IceComponent implements OnInit, OnDestroy {
           element: text,
           handleEvents: true,
           currentUser: this.user,
-          plugins: plugins,
+          plugins,
           changeTypes: {
             insertType: {
               tag: 'div',
@@ -240,7 +241,7 @@ export class IceComponent implements OnInit, OnDestroy {
       this.el.nativeElement.style.width = w;
       this.el.nativeElement.style.maxWidth = w;
 
-      if (this.disabled) {
+      if (this.isDisabled) {
         this.tracker.element.contentEditable = 'false';
       }
       this.tracker.element.blur();
@@ -261,6 +262,10 @@ export class IceComponent implements OnInit, OnDestroy {
     if (this.onApproveSub) {
       this.onApproveSub.unsubscribe();
     }
+  }
+
+  loadPlugin(pluginClass: typeof IceInputPlugin) {
+    return new pluginClass();
   }
 
   removeSelection(selection: string) {
@@ -321,7 +326,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
   @HostListener('click', ['$event'])
   onClick() {
-    if (this.iceService.shouldShowWarning && !this.disabled) {
+    if (this.iceService.shouldShowWarning && !this.isDisabled) {
       this.dialogService.open({
         content: this.iceService.warningText,
         onCancel: () => {
@@ -355,6 +360,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
   @HostListener('keyup', ['$event'])
   onKeyEvent(e: KeyboardEvent) {
+    // tslint:disable-next-line
     if ((e.which < 48 && e.which !== 32 && e.which !== 8) || e.which > 90) {
       return false;
     }
@@ -375,8 +381,8 @@ export class IceComponent implements OnInit, OnDestroy {
     this.data.content =
       (selections && selections.length
         ? '<p class="matrix-options">' +
-          (selections || []).map(sel => '<span>' + sel + '</span>').join('') +
-          '</p>'
+        (selections || []).map(sel => '<span>' + sel + '</span>').join('') +
+        '</p>'
         : '') + element.innerHTML.replace(/&nbsp;/g, ' ');
 
     this.dataChanged.emit(this.data);

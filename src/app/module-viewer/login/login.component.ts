@@ -38,7 +38,7 @@ export class LoginComponent implements OnInit {
         password: ['', Validators.required]
     });
 
-    this.returnUrl = this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
+    this.returnUrl = this.route.snapshot.queryParams.returnUrl || '/dashboard';
   }
 
   // convenience getter for easy access to form fields

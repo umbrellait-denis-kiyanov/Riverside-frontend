@@ -15,16 +15,16 @@ interface MenuItemType {
   label?: string;
   link?: string;
   'mat-icon'?: string;
-  linkFn?(nav: ModuleNavService): Observable<string>;
-  labelFn?(nav: ModuleNavService): Observable<string>;
-  render?(user: BehaviorSubject<User>): Observable<string>;
-  restrict?(params: Partial<RestrictOptions>): boolean;
   modalComponent?: typeof RequestFeedbackComponent;
   counter?: number;
   labelObservable?: Observable<string>;
   linkObservable?: Observable<string>;
   renderObservable?: Observable<string>;
   restrictObservable?: Observable<boolean>;
+  linkFn?(nav: ModuleNavService): Observable<string>;
+  labelFn?(nav: ModuleNavService): Observable<string>;
+  render?(user: BehaviorSubject<User>): Observable<string>;
+  restrict?(params: Partial<RestrictOptions>): boolean;
 }
 
 type MenusInterface = MenuItemType[];
@@ -60,7 +60,7 @@ const hardCodePictures = (user: User) => {
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
     case 'dhaynes@riversidecompany.com':
-       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg'
+       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg';
     default:
       return null;
   }

@@ -28,5 +28,5 @@ const bootstrap = () => platformBrowserDynamic().bootstrapModule(ModuleViewerMod
 // if (environment.hmr) {
 //   hmrBootstrap(module, bootstrap);
 // } else {
-  bootstrap().catch(err => console.error(err));
+bootstrap().catch(err => console.error(err));
 // }

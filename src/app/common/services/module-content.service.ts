@@ -13,16 +13,17 @@ export class ModuleContentService {
   constructor(private httpClient: HttpClient) { }
 
   load(moduleId: number, stepId: number, org_id: number): Observable<ModuleContent> {
-    return this.httpClient.get(`${this.baseUrl}/${moduleId}/org/${org_id}/step/${stepId}`, {observe: 'response'})
+    return this.httpClient.get(`${this.baseUrl}/${moduleId}/org/${org_id}/step/${stepId}`, { observe: 'response' })
       .pipe(map((fullResponse: HttpResponse<any>) => {
         const res = fullResponse.body;
         let object;
         if (res.content) {
-          object = Object.assign(res.content, {
+          object = {
+            ...res.content,
+            can_modify: Boolean(fullResponse.headers.get('X-Can-Modify')),
             template_params_json: res.template_params_json,
             template_component: res.template_component,
-            can_modify: Boolean(fullResponse.headers.get('X-Can-Modify'))
-          });
+          };
         } else {
           object = {
             module_id: moduleId,
@@ -32,6 +33,6 @@ export class ModuleContentService {
 
         return ModuleContent.fromObject(object);
       }
-    ));
+      ));
   }
 }

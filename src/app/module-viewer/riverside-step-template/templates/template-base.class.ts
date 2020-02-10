@@ -1,11 +1,10 @@
 import { TemplateContentData } from './template-data.class';
-import { OnInit, ElementRef, Component, OnDestroy } from '@angular/core';
+import { OnInit, ElementRef, Component, OnDestroy, Injector } from '@angular/core';
 import { TemplateComponentInterface } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
 import { ModuleContentService } from 'src/app/common/services/module-content.service';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
-import { Injector } from '@angular/core';
 import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { BehaviorSubject, Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
@@ -19,7 +18,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
   data: TemplateContentData;
   hideChanges$: Observable<boolean>;
-  inputs: {[key: string]: TemplateInput};
+  inputs: { [key: string]: TemplateInput };
   disabled: boolean;
   me: User;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
@@ -30,12 +29,12 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   public prefix = '';
 
   constructor(
-      protected el: ElementRef,
-      protected moduleContentService: ModuleContentService,
-      protected moduleService: ModuleService,
-      protected userService: UserService,
-      protected injectorObj: Injector
-    ) {}
+    protected el: ElementRef,
+    protected moduleContentService: ModuleContentService,
+    protected moduleService: ModuleService,
+    protected userService: UserService,
+    protected injectorObj: Injector
+  ) { }
 
   abstract getDescription(): string;
 
@@ -50,9 +49,9 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
     this.activePersonas = Object.values(this.inputs).filter(i => i).map(input => {
       return input.element_key &&
-             input.element_key.match(/^persona_[0-9]+$/) &&
-             input.content && input.content !== '<p><br></p>' ?
-          input.element_key : null;
+        input.element_key.match(/^persona_[0-9]+$/) &&
+        input.content && input.content !== '<p><br></p>' ?
+        input.element_key : null;
     }).filter(i => i);
 
     Object.keys(this.inputs).map(key => this.decorateInput(this.inputs[key]));
@@ -61,7 +60,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   protected initAction() {
-    this.action = this.userService.me.permissions.riversideProvideFeedback ? 'approve': 'mark_as_done';
+    this.action = this.userService.me.permissions.riversideProvideFeedback ? 'approve' : 'mark_as_done';
   }
 
   ngOnDestroy() {
@@ -77,7 +76,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     return true;
   }
 
-  protected init() {}
+  protected init() { }
 
   hasInputs() {
     return true;

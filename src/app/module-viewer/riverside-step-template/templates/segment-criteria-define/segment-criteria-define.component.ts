@@ -4,7 +4,7 @@ import { SegmentCriteria, SegmentCriteriaDefineTemplateData, TemplateParams } fr
 import { IcpInputComponent } from './icp-input/icp-input.component';
 import { Validate } from 'src/app/common/validator.class';
 
-const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
+const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
 
 @Component({
   selector: 'app-segment-criteria-define',
@@ -25,7 +25,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   step: number;
 
-  criterias: {[key: number]: SegmentCriteria[]};
+  criterias: { [key: number]: SegmentCriteria[] };
 
   public prefix = 'segment_criteria_define_';
 
@@ -33,17 +33,17 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   grades: number[] = [];
 
-  gradeSections: {prefix: string, title: string, grades: number[]}[];
+  gradeSections: { prefix: string, title: string, grades: number[] }[];
 
   gradeLevels = [
-    {grade: 'A', i: 1, level: 88},
-    {grade: 'B', i: 2, level: 75},
-    {grade: 'C', i: 3, level: 65},
-    {grade: 'D', i: 4, level: 55}
+    { grade: 'A', i: 1, level: 88 },
+    { grade: 'B', i: 2, level: 75 },
+    { grade: 'C', i: 3, level: 65 },
+    { grade: 'D', i: 4, level: 55 }
   ];
   lastGradeLevel = this.gradeLevels[this.gradeLevels.length - 1];
 
-  userGradeLevels: {[key: string]: string} = {};
+  userGradeLevels: { [key: string]: string } = {};
 
   getDescription() {
     return 'Ideal Customer Profiles';
@@ -64,7 +64,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
     // grade customers
     if (7 === this.step) {
-      this.gradePrefix = this.prefix + this.contentData.inputs.split(',').map(s => s.trim()).find(s => s.substr(-5) === '_name').slice(0, -5);
+      this.gradePrefix = this.prefix +
+        this.contentData.inputs.split(',').map(s => s.trim()).find(s => s.substr(-5) === '_name').slice(0, -5);
       this.grades = Array.from(Array(this.contentData.number_of_inputs + 1).keys()).slice(1);
       this.userGradeLevels = this.getUserGradeLevels();
     }
@@ -80,11 +81,11 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
           }
         }
 
-        return {prefix, title, grades};
+        return { prefix, title, grades };
       };
 
       this.gradeSections = [getSection('grade_customers', 'Existing Customers'),
-                            getSection('grade_new_customers', 'New Customers')];
+      getSection('grade_new_customers', 'New Customers')];
 
       this.userGradeLevels = this.getUserGradeLevels();
     }
@@ -101,8 +102,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   getEmptyCriteria() {
-    const emptyDef = JSON.stringify({content: '', comments_json: ''});
-    return {name: JSON.parse(emptyDef), description: JSON.parse(emptyDef), weight: 0};
+    const emptyDef = JSON.stringify({ content: '', comments_json: '' });
+    return { name: JSON.parse(emptyDef), description: JSON.parse(emptyDef), weight: 0 };
   }
 
   initCriterias() {

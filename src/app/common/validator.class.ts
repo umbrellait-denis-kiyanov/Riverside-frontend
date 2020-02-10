@@ -1,5 +1,5 @@
 export class Validation {
-    constructor(private func: (value: any, params?: any) => boolean, public errorMessage?: string, private params?: any){}
+    constructor(private func: (value: any, params?: any) => boolean, public errorMessage?: string, private params?: any) {}
 
     isValid(value) {
         return this.func(value, this.params);

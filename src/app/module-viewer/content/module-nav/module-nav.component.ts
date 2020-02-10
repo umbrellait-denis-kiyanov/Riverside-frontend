@@ -62,12 +62,13 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
     this.prepareButtonTexts();
   }
 
-  prepareButtonTexts(){
+  prepareButtonTexts() {
     this.actionButtonText = this.getActionButtonText();
     this.subactionButtonText = this.getActionButtonText('is_subaction_done', this.subaction);
   }
+
   prepareActionFlag(doneKey: string, action: actions) {
-    const {data: {is_checked, is_approved, waiting_for_feedback, feedback_received}} = this.step;
+    const { data: { is_checked, is_approved, waiting_for_feedback, feedback_received } } = this.step;
     switch (action) {
       case 'feedback':
       case 'final_feedback':
@@ -109,15 +110,16 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
       return;
     }
 
-    this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
-      .subscribe(_ => {
-        if (newState) {
-          this.navService.nextStep();
-        }
+    this[isSubaction ? 'submittingSubaction' : 'submitting'] =
+      this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
+        .subscribe(_ => {
+          if (newState) {
+            this.navService.nextStep();
+          }
 
-        this.moduleService.moduleChanged$.next(true);
-        this[key] = newState;
-      });
+          this.moduleService.moduleChanged$.next(true);
+          this[key] = newState;
+        });
   }
 
   markAsApproved(isSubaction: boolean = false, state: boolean = null) {
@@ -125,19 +127,20 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
     const newState = state !== null ? state : !this[key];
     const step = this.step.data;
 
-    this[isSubaction ? 'submittingSubaction' : 'submitting'] = this.moduleService.markAsApproved(step.module_id, step.org_id, step.step_id, newState, isSubaction)
-      .subscribe((response: number[]) => {
-        if (newState) {
-          this.iceService.onApprove.emit();
+    this[isSubaction ? 'submittingSubaction' : 'submitting'] =
+      this.moduleService.markAsApproved(step.module_id, step.org_id, step.step_id, newState, isSubaction)
+        .subscribe((response: number[]) => {
+          if (newState) {
+            this.iceService.onApprove.emit();
 
-          if (!step.requires_feedback) {
-            this.navService.nextStep();
+            if (!step.requires_feedback) {
+              this.navService.nextStep();
+            }
           }
-        }
 
-        this.moduleService.moduleChanged$.next(true);
-        this[key] = newState;
-      });
+          this.moduleService.moduleChanged$.next(true);
+          this[key] = newState;
+        });
   }
 
   buttonClicked(action?: actions, isSubaction: boolean = false) {
@@ -151,8 +154,8 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
         this.feedbackClicked();
         break;
       case 'approve':
-          this.markAsApproved(isSubaction);
-          break;
+        this.markAsApproved(isSubaction);
+        break;
       default:
         this.markAsDone(isSubaction);
     }

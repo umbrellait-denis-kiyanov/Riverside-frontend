@@ -6,14 +6,14 @@ import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interf
 import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, share, take, map, withLatestFrom, skip } from 'rxjs/operators';
 import { AssessmentService } from './assessment.service';
 
-export class ResourceFromStorage<T extends {toString: () => string}> {
+export class ResourceFromStorage<T extends { toString: () => string }> {
   private _current: T;
   private storageKey: string;
   private defaultObservable: Observable<T>;
   private type: 'json' | 'string' | 'number';
-  public onChange =  new BehaviorSubject<T>(null);
+  public onChange = new BehaviorSubject<T>(null);
 
-  constructor(storageKey: string,  defaultObservable: Observable<T> = null, type: 'json' | 'string' | 'number' = 'json') {
+  constructor(storageKey: string, defaultObservable: Observable<T> = null, type: 'json' | 'string' | 'number' = 'json') {
     this.storageKey = storageKey;
     this.type = type;
     this.onChange.next(this.current);
@@ -87,63 +87,63 @@ export class ModuleNavService {
   private moveStep$ = new BehaviorSubject<number>(null);
 
   lastOrganization = new ResourceFromStorage<number>('last_organization_id',
-                        this.moduleService.getDefaultOrganization().pipe(map(org => org.id)),
-                        'number');
+    this.moduleService.getDefaultOrganization().pipe(map(org => org.id)),
+    'number');
 
   organization$ = this.lastOrganization.onChange.pipe(
-      filter(org => !!org),
-      distinctUntilChanged()
-    );
+    filter(org => !!org),
+    distinctUntilChanged()
+  );
 
   module = new ResourceFromStorage<number>('last_module_id',
-              this.moduleService.getDefaultModule().pipe(map(mod => mod.id)),
-              'number');
+    this.moduleService.getDefaultModule().pipe(map(mod => mod.id)),
+    'number');
 
   module$ = this.module.onChange.pipe(
-      filter(m => !!m),
-      distinctUntilChanged()
-    );
+    filter(m => !!m),
+    distinctUntilChanged()
+  );
 
   moduleData$ = combineLatest(this.organization$,
-                              this.module$,
-                              this.moduleService.moduleChanged$
-                             )
-                .pipe(
-                  switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId)),
-                  map(moduleData => {
-                    const sortedSteps = moduleData.steps.reduce((steps, step) => {
-                      steps[step.id] = step;
+    this.module$,
+    this.moduleService.moduleChanged$
+  )
+    .pipe(
+      switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId)),
+      map(moduleData => {
+        const sortedSteps = moduleData.steps.reduce((steps, step) => {
+          steps[step.id] = step;
 
-                      return steps;
-                    }, {});
+          return steps;
+        }, {});
 
-                    const isLocked = moduleData.steps.reduce((locked, step) => {
-                      const pendingSteps = step.linked_ids.filter(
-                        id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved
-                      ).map(id => sortedSteps[id].description);
+        const isLocked = moduleData.steps.reduce((locked, step) => {
+          const pendingSteps = step.linked_ids.filter(
+            id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved
+          ).map(id => sortedSteps[id].description);
 
-                      locked[step.id] = pendingSteps.length ? pendingSteps : false;
+          locked[step.id] = pendingSteps.length ? pendingSteps : false;
 
-                      return locked;
-                    }, {});
+          return locked;
+        }, {});
 
-                    moduleData.steps.forEach(step => step.isLocked = isLocked[step.id]);
+        moduleData.steps.forEach(step => step.isLocked = isLocked[step.id]);
 
-                    return moduleData;
-                  }),
-                  share()
-                );
+        return moduleData;
+      }),
+      share()
+    );
 
   moduleDataReplay$ = this.moduleData$.pipe(shareReplay(1));
 
   step = new ResourceFromStorage<number>('last_step_id',
-            this.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id)),
-            'number');
+    this.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id)),
+    'number');
 
   step$ = this.step.onChange.pipe(
-      filter(m => !!m),
-      distinctUntilChanged()
-    );
+    filter(m => !!m),
+    distinctUntilChanged()
+  );
 
   get assessmentType$() {
     if (!this.activeAssessmentType$) {
@@ -193,7 +193,7 @@ export class ModuleNavService {
       } while ((index !== module.steps.length - 1) && (step.is_section_break || step.isLocked || !index));
 
       if (step.is_section_break) {
-        step = module.steps.find(step => !step.is_section_break && !step.isLocked);
+        step = module.steps.find(findStep => !findStep.is_section_break && !findStep.isLocked);
       }
 
       if (!step.isLocked) {

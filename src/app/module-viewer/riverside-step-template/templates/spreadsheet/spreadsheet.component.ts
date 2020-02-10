@@ -11,12 +11,13 @@ import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
 import { FormulaPlugin } from './formulaPlugin';
 
 // remove after upgrading to TypeScript 3.5.1+
-type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
+type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } &
+{ [x: string]: never, [x: number]: never })[keyof T]>;
 
 // remove in case Handsontable is updated to 7+ (commercial version)
 type HandsontableCellChange = [number, string | number, any, any, any][];
 
-export type HotNumericFormat = {
+export interface HotNumericFormat {
   pattern: {
     trimMantissa?: boolean,
     thousandSeparated: boolean,
@@ -25,11 +26,11 @@ export type HotNumericFormat = {
     mantissa?: number
   },
   culture?: string
-};
+}
 
 type HotCell = (Omit<Handsontable.GridSettings, 'numericFormat'> &
-		    { validatorName: string } &
-		    { numericFormat: HotNumericFormat });
+{ validatorName: string } &
+{ numericFormat: HotNumericFormat });
 
 class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
@@ -132,7 +133,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           data.data = [];
         }
 
-        this.cellSettings = data.data.map((row) => row.map(() => ({editable: false, className: '', renderer: ''})));
+        this.cellSettings = data.data.map((row) => row.map(() => ({ editable: false, className: '', renderer: '' })));
 
         this.types = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => {
           if (null === cell) {
@@ -145,17 +146,17 @@ export class SpreadsheetComponent extends TemplateComponent {
             cell = (parseFloat(cell) / 100).toString();
             cellType = 'percent';
           } else
-          if (cell.match(/^\$[ ]{0,}[\.,0-9]+$/)) {
-            cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
-            cellType = 'currency';
-          } else
-          if (cell.match(/^[\.,0-9]+$/)) {
-            cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
-            cellType = 'numeric';
-          } else
-          if (cell.substr(0, 1) === '=') {
-            cellType = 'numeric';
-          }
+            if (cell.match(/^\$[ ]{0,}[\.,0-9]+$/)) {
+              cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
+              cellType = 'currency';
+            } else
+              if (cell.match(/^[\.,0-9]+$/)) {
+                cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
+                cellType = 'numeric';
+              } else
+                if (cell.substr(0, 1) === '=') {
+                  cellType = 'numeric';
+                }
 
           data.data[rowIndex][cellIndex] = cell;
 
@@ -164,10 +165,10 @@ export class SpreadsheetComponent extends TemplateComponent {
 
         this.rounding = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => 2));
 
-        const types = {p: 'percent', 'c': 'currency', 'n': 'numeric'};
+        const types = { p: 'percent', c: 'currency', n: 'numeric' };
         data.types.forEach((row, rowIndex) =>
           row.forEach((type, cellIndex) => {
-            if (type.length == 2) {
+            if (type.length === 2) {
               this.types[rowIndex][cellIndex] = types[type[0]];
               this.rounding[rowIndex][cellIndex] = Number(type[1]);
             }
@@ -215,7 +216,7 @@ export class SpreadsheetComponent extends TemplateComponent {
         metaConfig('formatting', (cell, classNames) => cell.className += ' ' + classNames);
         metaConfig('renderer', (cell, renderer) => cell.renderer = renderer);
         metaConfig('requireValue', (cell, value) => cell.validator = (cellValue, cb) => {
-          cb(value == cellValue || (Math.abs(Number(value) - Number(cellValue)) < 0.0001));
+          cb(value === cellValue || (Math.abs(Number(value) - Number(cellValue)) < 0.0001));
         });
 
         this.sheet = data;
@@ -231,11 +232,12 @@ export class SpreadsheetComponent extends TemplateComponent {
           cells: this.formatCell.bind(this),
           afterRender: (() => {
             this.isRendered = true;
-            setTimeout(_ => this.hotInstance.validateCells(_ => {}));
+            setTimeout(() => this.hotInstance.validateCells(() => { }));
           }).bind(this),
           beforeChange: this.beforeChange.bind(this),
           afterChange: this.afterChange.bind(this),
           beforeKeyDown: ((event: KeyboardEvent) => {
+            // tslint:disable-next-line
             if (46 === event.keyCode || 8 === event.keyCode) {
               event.stopImmediatePropagation();
               (event.target as HTMLInputElement).value = '0';
@@ -249,14 +251,14 @@ export class SpreadsheetComponent extends TemplateComponent {
             return data.meta.colWidths[col] * ((this.widthContainer.nativeElement.clientWidth + 20) / totalWidth);
           }).bind(this),
           mergeCells: this.sheet.meta.mergeCells
-                        .filter(cell => this.getRealRow(cell.row) !== null)
-                        .map(cell => {
-                          cell.row = this.getRealRow(cell.row);
-                          return cell;
-                        })
+            .filter(cell => this.getRealRow(cell.row) !== null)
+            .map(cell => {
+              cell.row = this.getRealRow(cell.row);
+              return cell;
+            })
         };
       }
-    ));
+      ));
   }
 
   getDescription() {
@@ -272,7 +274,7 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   private formatCell(row: number, column: number) {
-    const cell = {} as HotCell;
+    const cell: Partial<HotCell> = {};
 
     const settings = this.cellSettings[row][column];
 
@@ -294,7 +296,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           pattern: {
             thousandSeparated: true,
             optionalMantissa: true,
-            output: "currency"
+            output: 'currency'
           },
           culture: 'en-US'
         };
@@ -304,7 +306,7 @@ export class SpreadsheetComponent extends TemplateComponent {
         cell.numericFormat = {
           pattern: {
             trimMantissa: true,
-            output: "percent",
+            output: 'percent',
             thousandSeparated: true,
           }
         };
@@ -388,7 +390,7 @@ export class SpreadsheetComponent extends TemplateComponent {
       changes = context;
     }
 
-    if (!changes.filter(change => change[2] != change[3]).length) {
+    if (!changes.filter(change => change[2] !== change[3]).length) {
       return;
     }
 
@@ -437,7 +439,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   // cell renderer
   private formulaError(instance, td, row, col, prop, value, cellProperties) {
-    if (value && value.substr && value.substr(0, 1) == '#') {
+    if (value && value.substr && value.substr(0, 1) === '#') {
       arguments[5] = 0;
       td.className += 'dontValidate';
     }

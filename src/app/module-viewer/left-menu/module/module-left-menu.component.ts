@@ -77,7 +77,7 @@ export class LeftMenuComponent implements OnInit {
     this.navService.lastOrganization.current = organization.id;
 
     this.navService.step$.pipe(take(1)).subscribe(step => {
-      this.router.navigate(['org', organization.id, 'module', module.id, 'step', step])
+      this.router.navigate(['org', organization.id, 'module', module.id, 'step', step]);
     }
     );
   }

@@ -48,10 +48,10 @@ export class UserService {
     return this.httpClient.post<boolean>(`${this.legacyBaseUrl}/signin/`, credentials).pipe(
       tap(res => {
         if (res) {
-          this.getAccount().subscribe(account => this.setMeFromData(account))
+          this.getAccount().subscribe(account => this.setMeFromData(account));
         }
       })
-    )
+    );
   }
 
   signout(): Observable<AccountProfileStatus> {

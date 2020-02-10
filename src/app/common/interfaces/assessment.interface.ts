@@ -50,16 +50,14 @@ export interface AssessmentOrgGroup {
     position?: number;
 }
 
-export interface ModuleScores
-{
+export interface ModuleScores {
     [key: number]: {
         [key: string]: number
-    }
+    };
 }
 
-export interface PendingSessions
-{
+export interface PendingSessions {
     [org_id: number]: {
         [type_id: number]: boolean
-    }
+    };
 }

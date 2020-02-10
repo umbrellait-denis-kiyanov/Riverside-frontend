@@ -41,12 +41,12 @@ export interface TemplateInput {
   getValue: () => string;
 }
 
-export type InputComment = {
-  content: string,
-  user: User,
-  time: number,
-  formattedTime: string
-};
+export interface InputComment {
+  content: string;
+  user: User;
+  time: number;
+  formattedTime: string;
+}
 
 export interface Organization {
   id: number;
@@ -93,6 +93,6 @@ export interface SpreadsheetResource {
     requireValue: {[cells: string]: string},
     editable: string[],
     maxColumn: string
-  },
+  };
   types: string[][];
 }

@@ -44,7 +44,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     private navService: ModuleNavService,
     private iceService: IceService,
     private leftMenuService: LeftMenuService
-  ) {}
+  ) { }
 
   ngOnDestroy() {
     this.routeWatch.unsubscribe();
@@ -57,39 +57,47 @@ export class ContentComponent implements OnInit, OnDestroy {
       params => this.navService.step.current = Number(params.stepId)
     );
 
-    this.moduleContent$ = combineLatest(this.navService.organization$, this.navService.module$, this.navService.step$, this.moduleService.moduleChanged$)
-      .pipe(
-        switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
-          catchError((err: HttpErrorResponse) => {
-            if (err.error.code === 'MODULE_DISABLED') {
-              this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
-              return throwError(err);
-            } else {
-              return this.navService.moduleData$.pipe(take(1), switchMap(moduleData => {
-                const firstStep = (moduleData.steps.find(step => !step.is_section_break && this.navService.step.current === step.id) || moduleData.steps.find(step => !step.is_section_break)).id;
-                this.navService.goToStep(firstStep);
-                return this.moduleContentService.load(moduleData.id, firstStep, org);
-              }));
-            }
-          })
-        )),
-        tap(content => {
-          this.navService.moduleDataReplay$.pipe(
-            filter(module => module.status.org_id === this.navService.lastOrganization.current),
-            take(1)
-          ).subscribe(moduleData => {
-            if (!moduleData.status || !moduleData.status.is_activated || moduleData.status.org_id !== this.navService.lastOrganization.current) {
-              this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
-              return;
-            }
+    this.moduleContent$ = combineLatest(
+      this.navService.organization$,
+      this.navService.module$,
+      this.navService.step$,
+      this.moduleService.moduleChanged$
+    ).pipe(
+      switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
+        catchError((err: HttpErrorResponse) => {
+          if (err.error.code === 'MODULE_DISABLED') {
+            this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
+            return throwError(err);
+          } else {
+            return this.navService.moduleData$.pipe(take(1), switchMap(moduleData => {
+              const firstStep = (
+                moduleData.steps.find(s => !s.is_section_break && this.navService.step.current === s.id) ||
+                moduleData.steps.find(s => !s.is_section_break)
+              ).id;
+              this.navService.goToStep(firstStep);
+              return this.moduleContentService.load(moduleData.id, firstStep, org);
+            }));
+          }
+        })
+      )),
+      tap(content => {
+        this.navService.moduleDataReplay$.pipe(
+          filter(module => module.status.org_id === this.navService.lastOrganization.current),
+          take(1)
+        ).subscribe(moduleData => {
+          if (!moduleData.status || !moduleData.status.is_activated ||
+            moduleData.status.org_id !== this.navService.lastOrganization.current) {
+            this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
+            return;
+          }
 
-            if ((moduleData.steps.find(step => step.id === content.step_id) || {isLocked: true}).isLocked) {
-              this.navService.previousStep();
-            }
-          });
-        }),
-        tap(this.render.bind(this))
-      );
+          if ((moduleData.steps.find(step => step.id === content.step_id) || { isLocked: true }).isLocked) {
+            this.navService.previousStep();
+          }
+        });
+      }),
+      tap(this.render.bind(this))
+    );
 
     this.leftMenuExpanded$ = this.leftMenuService.onExpand;
   }

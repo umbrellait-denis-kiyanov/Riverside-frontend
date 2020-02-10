@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { Module, Step, TemplateInput, Template, Organization, ModuleStatus, SpreadsheetResource, ModuleCategory } from '../interfaces/module.interface';
+import { Module, Step, TemplateInput, Template, Organization, ModuleStatus, ModuleCategory } from '../interfaces/module.interface';
 import { HttpClient, HttpResponse } from '@angular/common/http';
 import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 import { shareReplay, switchMap, map, filter, debounceTime, distinctUntilChanged, share, take, tap } from 'rxjs/operators';
@@ -20,8 +20,8 @@ export class ModuleService {
 
   private modules: Observable<Module[]>;
 
-  inputDebounce: {[key: number]: Subject<TemplateInput>} = {};
-  inputObservable: {[key: number]: Observable<TemplateInput>} = {};
+  inputDebounce: { [key: number]: Subject<TemplateInput> } = {};
+  inputObservable: { [key: number]: Observable<TemplateInput> } = {};
 
   getModuleConfig(id: number): Observable<Module> {
     if (!Number(id)) {
@@ -78,12 +78,12 @@ export class ModuleService {
     return this.httpClient.post<null>(`${this.baseUrl}/${module.id}`, module);
   }
 
-  feedbackStarted(module: Partial<Module> & {orgId?: number}): Observable<null> {
+  feedbackStarted(module: Partial<Module> & { orgId?: number }): Observable<null> {
     return this.httpClient.post<null>(`${this.baseUrl}/${module.id}/feedback/start`, module);
   }
 
   getCategories(orgId: number): Observable<HttpResponse<ModuleCategory[]>> {
-    return this.httpClient.get<ModuleCategory[]>(`${this.baseUrl}/categories/org/${orgId}`, {observe: 'response'});
+    return this.httpClient.get<ModuleCategory[]>(`${this.baseUrl}/categories/org/${orgId}`, { observe: 'response' });
   }
 
   setStatus(module: Partial<Module>, isActivated: boolean, orgId: number): Observable<ModuleStatus> {
@@ -92,15 +92,15 @@ export class ModuleService {
   }
 
   setDueDate(module: Partial<Module>, date: string, orgId: number): Observable<ModuleStatus> {
-    return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/due-date`, {date});
+    return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/due-date`, { date });
   }
 
   saveNotes(module: Partial<Module>, orgId: number, notes: string): Observable<ModuleStatus> {
-    return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/notes`, {notes});
+    return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/notes`, { notes });
   }
 
   saveAssignedTo(module: Partial<Module>, orgId: number, assigned_to: string): Observable<ModuleStatus> {
-    return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/assign`, {assigned_to});
+    return this.httpClient.post<ModuleStatus>(`${this.baseUrl}/${module.id}/org/${orgId}/assign`, { assigned_to });
   }
 
   saveInput(input: TemplateInput): Observable<TemplateInput> {
@@ -164,10 +164,11 @@ export class ModuleService {
   }
 
   markAsDone(moduleId: number, orgId: number, stepId: number, is_checked: boolean = true): Observable<null> {
-    return this.httpClient.post<null>(this.baseUrl + '/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_checked});
+    return this.httpClient.post<null>(this.baseUrl + '/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', { is_checked });
   }
 
   markAsApproved(moduleId: number, orgId: number, stepId: number, is_approved: boolean, is_section: boolean): Observable<number[]> {
-    return this.httpClient.post<number[]>(this.baseUrl + '/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done', {is_approved, is_section, org_id: orgId});
+    return this.httpClient.post<number[]>(this.baseUrl + '/' + moduleId + '/org/' + orgId + '/step/' + stepId + '/done',
+      { is_approved, is_section, org_id: orgId });
   }
 }

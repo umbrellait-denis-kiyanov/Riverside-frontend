@@ -2,7 +2,13 @@ import { Component, OnInit, OnDestroy } from '@angular/core';
 import { HttpResponse } from '@angular/common/http';
 import { AssessmentService } from 'src/app/common/services/assessment.service';
 import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
-import { AssessmentGroup, AssessmentQuestion, AssessmentOrgGroup, AssessmentAnswer, AssessmentType } from 'src/app/common/interfaces/assessment.interface';
+import {
+  AssessmentGroup,
+  AssessmentQuestion,
+  AssessmentOrgGroup,
+  AssessmentAnswer,
+  AssessmentType
+} from 'src/app/common/interfaces/assessment.interface';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import { switchMap, filter, map, shareReplay, tap, takeWhile } from 'rxjs/operators';
 import { ToastrService } from 'ngx-toastr';
@@ -45,8 +51,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   isDestroyed = false;
 
   constructor(public asmService: AssessmentService,
-              public navService: ModuleNavService,
-              private toastr: ToastrService) { }
+    public navService: ModuleNavService,
+    private toastr: ToastrService) { }
 
   ngOnInit() {
 
@@ -62,12 +68,18 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       })
     );
 
-    this.resetSelectAllSub = combineLatest(this.activeGroup$, this.navService.assessmentType$, this.navService.organization$).subscribe(_ => {
-      this.resetSelectAll = true;
-      setTimeout(_ => this.resetSelectAll = false);
-    });
+    this.resetSelectAllSub = combineLatest(this.activeGroup$, this.navService.assessmentType$, this.navService.organization$)
+      .subscribe(() => {
+        this.resetSelectAll = true;
+        setTimeout(() => this.resetSelectAll = false);
+      });
 
-    this.answersRequest$ = combineLatest(this.activeGroup$, this.navService.assessmentType$, this.navService.organization$, this.answerUpdated$).pipe(
+    this.answersRequest$ = combineLatest(
+      this.activeGroup$,
+      this.navService.assessmentType$,
+      this.navService.organization$,
+      this.answerUpdated$
+    ).pipe(
       takeWhile(_ => !this.isDestroyed),
       switchMap(([group, type, orgId]) => this.asmService.getAnswers(group, type, orgId)),
       shareReplay(1),
@@ -119,7 +131,8 @@ export class AssessmentComponent implements OnInit, OnDestroy {
   }
 
   setImportance(g: AssessmentGroup, t: AssessmentType, importance) {
-    this.asmService.setImportance(g, t, this.navService.lastOrganization.current, importance).subscribe(_ => this.answerUpdated$.next(true));
+    this.asmService.setImportance(g, t, this.navService.lastOrganization.current, importance)
+      .subscribe(_ => this.answerUpdated$.next(true));
   }
 
   markAsDone(activeGroup: AssessmentGroup, t: AssessmentType, questions: AssessmentQuestion[], answers) {

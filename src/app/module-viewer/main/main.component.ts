@@ -33,16 +33,16 @@ export class MainComponent implements OnInit, OnDestroy {
 
   ngOnInit() {
     this.routeWatch = this.route.params.subscribe(
-        params => {
-          if (params.orgId) {
-            this.navService.lastOrganization.current = Number(params.orgId);
-          }
-
-          if (params.moduleId) {
-            this.navService.module.current = Number(params.moduleId);
-          }
+      params => {
+        if (params.orgId) {
+          this.navService.lastOrganization.current = Number(params.orgId);
         }
-      );
+
+        if (params.moduleId) {
+          this.navService.module.current = Number(params.moduleId);
+        }
+      }
+    );
 
     // determine the default step (first step of the module or the last visited one)
     this.stepWatch = combineLatest(this.navService.organization$, this.navService.module$, this.route.url).pipe(
@@ -55,7 +55,8 @@ export class MainComponent implements OnInit, OnDestroy {
 
         throw err;
       }),
-      map(mod => (mod.steps.find(step => !step.is_section_break && step.id === this.navService.step.current) || mod.steps.find(step => !step.is_section_break)).id),
+      map(mod => (mod.steps.find(step => !step.is_section_break && step.id === this.navService.step.current) ||
+        mod.steps.find(step => !step.is_section_break)).id),
       take(1)
     ).subscribe(stepId => {
       this.navService.goToStep(stepId);

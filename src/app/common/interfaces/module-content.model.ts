@@ -2,7 +2,9 @@ import BaseModel from './base.model';
 import { TemplateInput } from './module.interface';
 import { TemplateContentDataBase } from 'src/app/module-viewer/riverside-step-template/templates/template.interface';
 
-type ModuleContentJson = {inputs: {[key: string]: TemplateInput}};
+interface ModuleContentJson {
+  inputs: {[key: string]: TemplateInput};
+}
 
 class ModuleContent extends BaseModel {
   org_id: number = 0;

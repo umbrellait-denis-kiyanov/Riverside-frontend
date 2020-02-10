@@ -6,7 +6,7 @@ type Editor = HTMLElement & {
                 change$: BehaviorSubject<string>;
                 stack: string[];
                 stackIndex: number;
-              }
+              };
 
 // implement Undo/Redo functionality
 export class UndoTrackPlugin extends IceInputPlugin {

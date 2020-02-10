@@ -5,16 +5,18 @@ export class NumericInputPlugin extends IceInputPlugin {
     public addEventListeners(element: HTMLElement) {
         const observer = new MutationObserver(changes => {
             let node: Node;
+            // tslint:disable-next-line
             const walk = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
             const nodes: Node[] = [];
-            while (node = walk.nextNode()) {
+            while ((node = walk.nextNode()) !== null) {
                 nodes.push(node);
             }
 
             nodes
-                .filter(node => node.textContent.length !== 1 /* not 100% sure why it's necessary, but it prevents typing within a deleted block */
-                     && node.textContent.match(/[^0-9]/))
-                .forEach(node => node.textContent = node.textContent.split(/[^0-9]/).join(''));
+                .filter(n => n.textContent.length !== 1
+                    /* ^^ not 100% sure why it's necessary, but it prevents typing within a deleted block */
+                    && n.textContent.match(/[^0-9]/))
+                .forEach(n => n.textContent = n.textContent.split(/[^0-9]/).join(''));
 
             this.ice.getCurrentRange().collapse();
         });

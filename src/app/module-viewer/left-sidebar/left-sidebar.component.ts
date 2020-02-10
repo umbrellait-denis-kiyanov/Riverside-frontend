@@ -20,7 +20,7 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
   showMenu = false;
   expand: boolean;
 
-  routerLinkActiveUpdateWorkaround = {exact: false};
+  routerLinkActiveUpdateWorkaround = { exact: false };
   updateWorkaroundWatch: Subscription;
 
   constructor(
@@ -57,12 +57,13 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
 
       if (item.restrict) {
         item.restrictObservable = combineLatest(this.userService.meChanged, this.route.params).pipe(
-          map(([user]) => item.restrict({user, nav: this.navService}))
+          map(([user]) => item.restrict({ user, nav: this.navService }))
         );
       }
     });
 
-    // we have to force the reevaluation of routerLinkActive state, otherwise the module menu item is sometimes not highlighted automatically
+    // we have to force the reevaluation of routerLinkActive state,
+    // otherwise the module menu item is sometimes not highlighted automatically
     // https://github.com/angular/angular/issues/13865#issuecomment-308841643
     this.updateWorkaroundWatch = this.navService.moduleDataReplay$.subscribe(_ => {
       this.routerLinkActiveUpdateWorkaround = { exact: false };
@@ -87,7 +88,7 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
   }
 
   inboxLoad() {
-    this.inboxService.loadCounter().subscribe((res: {counter: number}) => {
+    this.inboxService.loadCounter().subscribe((res: { counter: number }) => {
       const menu = this.menus.find(m => m.label === 'INBOX');
       if (menu) {
         menu.counter = Number(res.counter);

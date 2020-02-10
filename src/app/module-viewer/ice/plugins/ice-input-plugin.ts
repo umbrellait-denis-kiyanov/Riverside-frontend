@@ -4,7 +4,7 @@ import { IceEditorTracker } from '../ice.component';
 
 // @todo - define plugin dependencies to make sure they are loaded in a correct order?
 
-export default abstract class IceInputPlugin {
+export default class IceInputPlugin {
 
     pluginID: string;
 
@@ -14,12 +14,14 @@ export default abstract class IceInputPlugin {
         const pluginID = this.constructor.name;
         const self = this;
 
-        (function() {
+        (function () {
             if (this._plugin[pluginID]) {
                 return;
             }
 
-            const InputPlugin = function(ice_instance: IceEditorTracker) {
+            const ice = this;
+
+            const InputPlugin = function (ice_instance: IceEditorTracker) {
                 this._ice = ice_instance;
 
                 self.ice = ice_instance;
@@ -50,11 +52,9 @@ export default abstract class IceInputPlugin {
                 }
             };
 
-            const ice = this;
-
             InputPlugin.prototype = {
 
-                keyDown: function(e) {
+                keyDown(e) {
                     if (e.which === 8 || e.which === 46 || (e.which >= 35 && e.which <= 40)) {
                         return true;
                     }
@@ -65,19 +65,20 @@ export default abstract class IceInputPlugin {
                     }
                 },
 
-                convertKey: function(e) {
+                convertKey(e) {
                     const range = this._ice.getCurrentRange();
 
                     if (range.collapsed) {
                         try {
-                            // Move the start back one character so we can enclose the range around the previous character to check if it is a dash
+                            // Move the start back one character so we can enclose the range
+                            // around the previous character to check if it is a dash
                             range.moveStart(ice.dom.CHARACTER_UNIT, -1);
                             // Get the parent block element for the start and end containers
                             const startBlock = ice.dom.getParents(range.startContainer, this._ice.blockEl)[0];
                             const endBlock = ice.dom.getParents(range.endContainer, this._ice.blockEl)[0];
                             // Make sure that the start and end containers aren't in different blocks, or that the start isn't in a delete.
                             if (startBlock === endBlock && !this._ice.getIceNode(range.startContainer, 'deleteType')) {
-                                let c = range.toHtml();
+                                const c = range.toHtml();
                                 if (self.matchInput(c)) {
                                     range.extractContents();
                                     range.collapse();
@@ -99,7 +100,7 @@ export default abstract class IceInputPlugin {
                                     return false;
                                 }
                             }
-                        } catch(e) {}
+                        } catch (e) { }
                         range.collapse();
                     }
 
@@ -166,7 +167,7 @@ export default abstract class IceInputPlugin {
                 newNode.innerHTML = node.innerHTML;
                 node.parentNode.replaceChild(newNode, node);
             });
-        } while (toReplace.length)
+        } while (toReplace.length);
 
         // now strip out the div's and only the Ice tracker elements remain in formatting
         return '<p>' + parser.body.innerHTML.trim().replace(/\<div class\="ice_replaced"\>|\<\/div\>/g, '') + '</p>';

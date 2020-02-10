@@ -1,9 +1,8 @@
 import { Pipe, PipeTransform } from '@angular/core';
 import * as moment from 'moment-timezone';
-import 'moment-timezone';
 
 @Pipe({
-  name: 'readabletime'
+    name: 'readabletime'
 })
 export class ReadableTimePipe implements PipeTransform {
     noYearLocalFormat: string;
@@ -15,7 +14,7 @@ export class ReadableTimePipe implements PipeTransform {
                 .longDateFormat('LL')
                 .replace(/[,\/-/.]*\s*Y+\s*/, '')
                 .trim()
-                .replace(/ \[de\]$/, '') // Spanish
+                .replace(/ \[de\]$/, ''); // Spanish
         }
 
         return this.noYearLocalFormat;

@@ -3,6 +3,39 @@ import { E3TableHeader, E3TableData, E3TableHeaderCol, E3TableDataRow, E3TableCe
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
+class SortBy {
+  set id(val: string) {
+    if (this._id === val) {
+      this.orderMult = this.orderMult * -1;
+    } else {
+      this.orderMult = 1;
+      this._id = val;
+    }
+
+    this.observable$.next(this._id);
+  }
+
+  get id() {
+    return this._id;
+  }
+  private _id: string;
+  private observable$ = new BehaviorSubject<string>(null);
+
+  orderMult = 1;
+
+  getObservable() {
+    return this.observable$;
+  }
+
+  sort(data: E3TableData) {
+    return data.sort((a, b) => {
+      const aString = a[this.id] ? a[this.id].toString() : '';
+      const bString = b[this.id] ? b[this.id].toString() : '';
+      return aString.localeCompare(bString.toString()) * this.orderMult;
+    });
+  }
+}
+
 @Component({
   selector: 'e3-table',
   templateUrl: './e3-table.component.html',
@@ -44,38 +77,5 @@ export class E3TableComponent implements OnInit {
 
   cellClicked(cell: E3TableCell, col: E3TableHeaderCol, row: E3TableDataRow, rowIndex: number, colIndex: number) {
     (cell.onClick || row.onClick || (_ => {}))(cell, col, row, rowIndex, colIndex);
-  }
-}
-
-class SortBy {
-  private _id: string;
-  private observable$ = new BehaviorSubject<string>(null);
-  set id(val: string) {
-    if (this._id === val) {
-      this.orderMult = this.orderMult * -1;
-    } else {
-      this.orderMult = 1;
-      this._id = val;
-    }
-
-    this.observable$.next(this._id);
-  }
-
-  get id() {
-    return this._id;
-  }
-
-  getObservable() {
-    return this.observable$;
-  }
-
-  orderMult = 1;
-
-  sort(data: E3TableData) {
-    return data.sort((a, b) => {
-      const aString = a[this.id] ? a[this.id].toString() : '';
-      const bString = b[this.id] ? b[this.id].toString() : '';
-      return aString.localeCompare(bString.toString()) * this.orderMult;
-    });
   }
 }

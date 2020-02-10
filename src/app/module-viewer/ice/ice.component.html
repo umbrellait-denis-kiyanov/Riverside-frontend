@@ -1,27 +1,24 @@
 <div (mouseleave)="!comment.adding && !menuComment && closeComment()" *ngIf="data">
-  <div *ngIf="data.selections$ | async as selections" class="matrix-selections" [class.allow-remove-selections]="allowRemoveSelections">
-    <span *ngFor="let selection of selections; last as isLast" class="matrix-selection"><span>{{ selection }}</span><span class="remove-selection" (click)="removeSelection(selection)"><mat-icon>delete</mat-icon></span><span *ngIf="!isLast">,&nbsp;</span> </span>
+  <div *ngIf="data.selections$ | async as selections" class="matrix-selections"
+    [class.allow-remove-selections]="allowRemoveSelections">
+    <span *ngFor="let selection of selections; last as isLast"
+      class="matrix-selection"><span>{{ selection }}</span><span class="remove-selection"
+        (click)="removeSelection(selection)">
+        <mat-icon>delete</mat-icon>
+      </span><span *ngIf="!isLast">,&nbsp;</span> </span>
   </div>
 
-  <div
-    class="textbody"
-    [attr.disabled]="disabled"
+  <div class="textbody" [attr.disabled]="isDisabled"
     [ngClass]="{'CT-hide': template.hideChanges$ | async, hasComment: comment.list?.length, showComment: comment.show}"
-    [class.has-error]="data.error | async"
-    [class.single-line]="single"
-    [innerHTML]="initialContent | safehtml"
-    (mouseenter)="onMouseEnter($event)"
-    (blur)="onBlur($event)"
-    (paste)="onChange()"
-    (cut)="onChange()"
-  ></div>
+    [class.has-error]="data.error | async" [class.single-line]="single" [innerHTML]="initialContent | safehtml"
+    (mouseenter)="onMouseEnter($event)" (blur)="onBlur($event)" (paste)="onChange()" (cut)="onChange()"></div>
   <error-msg [input]="data"></error-msg>
-  <div class="add-comment" *ngIf="!disabled">
+  <div class="add-comment" *ngIf="!isDisabled">
     <button mat-icon-button (click)="addComment($event)" id="addComment">
       <mat-icon>add_comment</mat-icon>
     </button>
   </div>
-  <div  class="has-comment" [hidden]="!comment.list?.length">
+  <div class="has-comment" [hidden]="!comment.list?.length">
     <button mat-icon-button id="hasComment">
       <mat-icon>comment</mat-icon>
     </button>
@@ -41,15 +38,10 @@
       <ice-user [user]="c.user" [time]="c.formattedTime" [tracker]="tracker"></ice-user>
       <div class="comment-content">
         <div>{{ c.content }}</div>
-        <button
-          *ngIf="user.id == c.user.id"
-          mat-icon-button
-          #menuTrigger="matMenuTrigger"
-          (click)="menuComment = c; menuIndex = i"
-          (menuClosed)="menuComment = null"
-          [matMenuTriggerFor]="menu">
-            <mat-icon>more_vert</mat-icon>
-          </button>
+        <button *ngIf="user.id == c.user.id" mat-icon-button #menuTrigger="matMenuTrigger"
+          (click)="menuComment = c; menuIndex = i" (menuClosed)="menuComment = null" [matMenuTriggerFor]="menu">
+          <mat-icon>more_vert</mat-icon>
+        </button>
       </div>
     </div>
     <mat-menu #menu="matMenu">

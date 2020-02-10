@@ -1,5 +1,8 @@
 {
-  "extends": "tslint:recommended",
+  "extends": [
+    "tslint:latest",
+    "tslint-config-prettier"
+  ],
   "rulesDirectory": [
     "codelyzer",
     "node_modules/tslint-lines-between-class-members"
@@ -70,7 +73,21 @@
     "component-class-suffix": true,
     "directive-class-suffix": true,
     "variable-name": false,
-    "no-unused-expression": [true, "allow-fast-null-checks"],
-    "lines-between-class-members":  [true, 1]
+    "no-unused-expression": [
+      true,
+      "allow-fast-null-checks"
+    ],
+    "lines-between-class-members": [
+      true,
+      1
+    ],
+    "no-implicit-dependencies": [
+      true,
+      [
+        "src",
+        "protractor"
+      ]
+    ],
+    "no-submodule-imports": false
   }
 }

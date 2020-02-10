@@ -10,7 +10,7 @@ export class CanModifyPipe implements PipeTransform {
         return false;
     }
 
-    switch((response.headers.get(header) || '').toLowerCase().trim()) {
+    switch ((response.headers.get(header) || '').toLowerCase().trim()) {
         case 'true': case 'yes': case '1': return true;
         case 'false': case 'no': case '0': case null: return false;
         default: return false;

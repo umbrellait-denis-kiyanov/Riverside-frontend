@@ -34,10 +34,10 @@ export class AssessmentFinishComponent implements OnInit {
   isFinishing: Subscription;
 
   constructor(public asmService: AssessmentService,
-              public navService: ModuleNavService,
-              public router: Router,
-              private toastr: ToastrService
-              ) { }
+    public navService: ModuleNavService,
+    public router: Router,
+    private toastr: ToastrService
+  ) { }
 
   ngOnInit() {
     const type$ = this.navService.assessmentType$;
@@ -62,17 +62,22 @@ export class AssessmentFinishComponent implements OnInit {
 
     combineLatest(this.groups$, this.orgGroups$, this.session$).pipe(take(1)).subscribe(([groups, orgGroups, session]) => {
       const series = groups.map((group, idx) => {
-        const value = Number((orgGroups[group.id] || {score: 0}).score);
-        return {value, name: (idx + 1), label: group.shortName, formattedValue: !orgGroups[group.id] || orgGroups[group.id].score === null ? 'N/A' : String(value)};
+        const val = Number((orgGroups[group.id] || { score: 0 }).score);
+        return {
+          value: val,
+          name: (idx + 1),
+          label: group.shortName,
+          formattedValue: !orgGroups[group.id] || orgGroups[group.id].score === null ? 'N/A' : String(val)
+        };
       });
 
       const value = Math.round(session.score * 10) / 10;
-      series.push({value, name: (series.length + 1), label: 'Average', formattedValue: String(value)});
+      series.push({ value, name: (series.length + 1), label: 'Average', formattedValue: String(value) });
 
       this.chart = [{
-          name: 'Assessment',
-          series
-        }
+        name: 'Assessment',
+        series
+      }
       ];
     });
   }
@@ -81,7 +86,7 @@ export class AssessmentFinishComponent implements OnInit {
     this.isFinishing = this.asmService.finishSession(session).subscribe(response => {
       if (response.is_approved) {
         this.router.navigate(['dashboard', this.navService.lastOrganization.current],
-            { state: { section: 'assessments', type: session.type_id } });
+          { state: { section: 'assessments', type: session.type_id } });
 
         this.toastr.success('Assessment has been recorded');
       } else {

@@ -33,11 +33,11 @@ export class InboxLeftMenuComponent implements OnInit {
 
   prepareData(messages: Message[]) {
     return messages.map((row) => {
-      const message = {} as E3TableDataRow;
+      const message: Partial<E3TableDataRow> = {};
       message.link = ['/inbox', String(row.id)];
       message.className = !row.read_on ? 'pending' : '';
       message.onClick = () => message.className = message.className.split('pending').join('');
-      message.cells = this.header.map(col => ({value: row[col.id]}));
+      message.cells = this.header.map(col => ({ value: row[col.id] }));
       return message;
     });
   }

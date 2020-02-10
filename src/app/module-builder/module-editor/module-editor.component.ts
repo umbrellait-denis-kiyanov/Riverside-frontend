@@ -66,13 +66,13 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
 
   onClickEditStepTemplate(sectionIndex: number, index: number) {
     const modalRef = this.modalService.open(StepTemplateEditorComponent,
-        { windowClass: 'step-template-editor-modal', backdrop: 'static' });
+      { windowClass: 'step-template-editor-modal', backdrop: 'static' });
     modalRef.componentInstance.step = this.sections[sectionIndex].steps[index];
   }
 
   onClickEditSectionTemplate(sectionIndex: number) {
     const modalRef = this.modalService.open(StepTemplateEditorComponent,
-        { windowClass: 'section-template-editor-modal', backdrop: 'static' });
+      { windowClass: 'section-template-editor-modal', backdrop: 'static' });
     modalRef.componentInstance.step = this.sections[sectionIndex].section;
   }
 
@@ -80,11 +80,8 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
     const modalRef = this.modalService.open(StepLinkEditorComponent,
       { windowClass: 'step-link-editor-modal', backdrop: 'static' });
 
-    if (index === undefined) {
-      modalRef.componentInstance.step = this.sections[sectionIndex].section;
-    } else {
-      modalRef.componentInstance.step = this.sections[sectionIndex].steps[index];
-    }
+    modalRef.componentInstance.step = (index === undefined) ?
+      this.sections[sectionIndex].section : this.sections[sectionIndex].steps[index];
 
     modalRef.componentInstance.module = this.moduleData;
   }
@@ -97,7 +94,7 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
 
   onClickRemoveSection(sectionIndex: number) {
     if (!confirm('Are you sure you want to remove this section? The following steps it contains will be removed as well: \n* ' +
-    this.sections[sectionIndex].steps.map(step => step.description).join('\n* '))) { return; }
+      this.sections[sectionIndex].steps.map(step => step.description).join('\n* '))) { return; }
     this.sections.splice(sectionIndex, 1);
   }
 
@@ -114,10 +111,10 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   onStepDrop(event: CdkDragDrop<string[]>) {
-      transferArrayItem(event.previousContainer.data,
-                        event.container.data,
-                        event.previousIndex,
-                        event.currentIndex);
+    transferArrayItem(event.previousContainer.data,
+      event.container.data,
+      event.previousIndex,
+      event.currentIndex);
   }
 
   getSortableListIDs(): string[] {
@@ -128,7 +125,7 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
     return moduleData.steps.
       reduce((sections, step) => {
         if (step.is_section_break) {
-          sections.push({section: step, steps: []});
+          sections.push({ section: step, steps: [] });
         } else {
           sections[sections.length - 1].steps.push(step);
         }
@@ -155,7 +152,9 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   sync(moduleId: number) {
-    if (prompt(`Data synchronization is a destructive action which will overwrite your current module and step configuration. Please make sure to export a data backup before proceeding. Are you sure you want to continue with the synchronization? Type "Yes" to confirm.`) !== 'Yes') {
+    if (prompt(`Data synchronization is a destructive action which will overwrite your current module and step configuration.
+        Please make sure to export a data backup before proceeding.
+        Are you sure you want to continue with the synchronization? Type "Yes" to confirm.`) !== 'Yes') {
       return;
     }
 

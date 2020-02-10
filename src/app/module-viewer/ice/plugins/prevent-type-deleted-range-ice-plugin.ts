@@ -13,8 +13,7 @@ export class PreventTypeDeletedRangePlugin extends IceInputPlugin {
 
     public addEventListeners(element: HTMLElement) {
         element.addEventListener('paste', e => {
-            if (!this.isCurrentRangeEditable())
-            {
+            if (!this.isCurrentRangeEditable()) {
                 this.createNewRange();
             }
         });
