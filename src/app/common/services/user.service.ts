@@ -147,7 +147,7 @@ export class UserService {
                   if ( timeLeft && timeLeft <= this.sessionSecondsTimeLeft ) {
                     const minutes = timeLeft / 60;
                     const seconds = timeLeft % 60;
-                    this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, 0));
+                    this.showTimeLeftModal(new Date(1, 1, 1, 1, minutes, seconds));
                   }
                 }
         },
