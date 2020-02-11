@@ -1,4 +1,13 @@
-import { Component, EventEmitter, Input, OnInit, Output, SimpleChanges, OnChanges, OnDestroy } from '@angular/core';
+import {
+  Component,
+  EventEmitter,
+  Input,
+  OnInit,
+  Output,
+  SimpleChanges,
+  OnChanges,
+  OnDestroy
+} from '@angular/core';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import Message from '../../inbox/message.model';
 import { IceService } from '../../ice/ice.service';
@@ -7,7 +16,13 @@ import { ModuleService } from 'src/app/common/services/module.service';
 import { TemplateContentData } from '../../riverside-step-template/templates/template-data.class';
 import { TemplateComponent } from '../../riverside-step-template/templates/template-base.class';
 
-type actions = 'mark_as_done' | 'feedback' | 'provide_feedback' | 'final_feedback' | 'provide_final_feedback' | 'approve';
+type actions =
+  | 'mark_as_done'
+  | 'feedback'
+  | 'provide_feedback'
+  | 'final_feedback'
+  | 'provide_final_feedback'
+  | 'approve';
 @Component({
   selector: 'module-nav',
   templateUrl: './module-nav.component.html',
@@ -38,13 +53,14 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
     private navService: ModuleNavService,
     private moduleService: ModuleService,
     private iceService: IceService,
-    private template: TemplateComponent,
-  ) { }
+    private template: TemplateComponent
+  ) {}
 
   ngOnInit() {
     this.prepareActionFlag('is_done', this.action);
     this.prepareButtonTexts();
-    this.subaction && this.prepareActionFlag('is_subaction_done', this.subaction);
+    this.subaction &&
+      this.prepareActionFlag('is_subaction_done', this.subaction);
 
     // todo - what does it do?
     this.unApproveSub && this.unApproveSub.unsubscribe();
@@ -64,11 +80,16 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
 
   prepareButtonTexts() {
     this.actionButtonText = this.getActionButtonText();
-    this.subactionButtonText = this.getActionButtonText('is_subaction_done', this.subaction);
+    this.subactionButtonText = this.getActionButtonText(
+      'is_subaction_done',
+      this.subaction
+    );
   }
 
   prepareActionFlag(doneKey: string, action: actions) {
-    const { data: { is_checked, is_approved, waiting_for_feedback, feedback_received } } = this.step;
+    const {
+      data: { is_checked, is_approved, waiting_for_feedback, feedback_received }
+    } = this.step;
     switch (action) {
       case 'feedback':
       case 'final_feedback':
@@ -99,51 +120,62 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
     this.is_done = true;
   }
 
-  markAsDone(isSubaction: boolean = false, state: boolean = null) {
+  markAsDone(isSubaction = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     const newState = state !== null ? state : !this[key];
     const step = this.step.data;
 
     if (newState && this.template && !this.template.validate()) {
       this.hasValidationError = true;
-      setTimeout(_ => this.hasValidationError = false, 5000);
+      setTimeout(_ => (this.hasValidationError = false), 5000);
+
       return;
     }
 
-    this[isSubaction ? 'submittingSubaction' : 'submitting'] =
-      this.moduleService.markAsDone(step.module_id, step.org_id, step.step_id, newState)
-        .subscribe(_ => {
-          if (newState) {
-            this.navService.nextStep();
-          }
+    this[
+      isSubaction ? 'submittingSubaction' : 'submitting'
+    ] = this.moduleService
+      .markAsDone(step.module_id, step.org_id, step.step_id, newState)
+      .subscribe(_ => {
+        if (newState) {
+          this.navService.nextStep();
+        }
 
-          this.moduleService.moduleChanged$.next(true);
-          this[key] = newState;
-        });
+        this.moduleService.moduleChanged$.next(true);
+        this[key] = newState;
+      });
   }
 
-  markAsApproved(isSubaction: boolean = false, state: boolean = null) {
+  markAsApproved(isSubaction = false, state: boolean = null) {
     const key = isSubaction ? 'is_subaction_done' : 'is_done';
     const newState = state !== null ? state : !this[key];
     const step = this.step.data;
 
-    this[isSubaction ? 'submittingSubaction' : 'submitting'] =
-      this.moduleService.markAsApproved(step.module_id, step.org_id, step.step_id, newState, isSubaction)
-        .subscribe((response: number[]) => {
-          if (newState) {
-            this.iceService.onApprove.emit();
+    this[
+      isSubaction ? 'submittingSubaction' : 'submitting'
+    ] = this.moduleService
+      .markAsApproved(
+        step.module_id,
+        step.org_id,
+        step.step_id,
+        newState,
+        isSubaction
+      )
+      .subscribe((response: number[]) => {
+        if (newState) {
+          this.iceService.onApprove.emit();
 
-            if (!step.requires_feedback) {
-              this.navService.nextStep();
-            }
+          if (!step.requires_feedback) {
+            this.navService.nextStep();
           }
+        }
 
-          this.moduleService.moduleChanged$.next(true);
-          this[key] = newState;
-        });
+        this.moduleService.moduleChanged$.next(true);
+        this[key] = newState;
+      });
   }
 
-  buttonClicked(action?: actions, isSubaction: boolean = false) {
+  buttonClicked(action?: actions, isSubaction = false) {
     action = action || this.action;
 
     switch (action) {
@@ -161,7 +193,7 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
     }
   }
 
-  getActionButtonText(doneKey: string = 'is_done', action?: actions) {
+  getActionButtonText(doneKey = 'is_done', action?: actions) {
     action = action || this.action;
 
     switch (action) {

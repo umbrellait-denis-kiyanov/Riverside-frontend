@@ -1,6 +1,19 @@
-import { Component, OnInit, Input, Renderer2, OnDestroy, OnChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Input,
+  Renderer2,
+  OnDestroy,
+  OnChanges
+} from '@angular/core';
 import { TemplateContentData } from '../templates/template-data.class';
-import { interval, Observable, Subscription, combineLatest, BehaviorSubject } from 'rxjs';
+import {
+  interval,
+  Observable,
+  Subscription,
+  combineLatest,
+  BehaviorSubject
+} from 'rxjs';
 import { tap } from 'rxjs/operators';
 import { ResourceFromStorage } from 'src/app/common/services/module-nav.service';
 
@@ -10,7 +23,6 @@ import { ResourceFromStorage } from 'src/app/common/services/module-nav.service'
   styleUrls: ['./template-heading.component.sass']
 })
 export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
-
   @Input() content: TemplateContentData;
 
   @Input() disabled: boolean;
@@ -31,7 +43,7 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
 
   uuid: string;
 
-  constructor(private renderer: Renderer2) { }
+  constructor(private renderer: Renderer2) {}
 
   ngOnInit() {
     if (!this.savedTimer.current) {
@@ -39,8 +51,10 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
     }
 
     this.timeInterval$ = interval(500).pipe(
-      tap((x) => {
-        this.time = (this.savedTimer.current[this.uuid] || 0) + ((Date.now() - this.timeStart) / 1000);
+      tap(x => {
+        this.time =
+          (this.savedTimer.current[this.uuid] || 0) +
+          (Date.now() - this.timeStart) / 1000;
 
         if (!(x % 10)) {
           this.saveTimer(this.uuid);
@@ -100,6 +114,9 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
 
   saveTimer(uuid) {
     this.timeStart = Date.now();
-    this.savedTimer.current = Object.assign(JSON.parse(JSON.stringify(this.savedTimer.current)), {[this.uuid]: Math.floor(this.time)});
+    this.savedTimer.current = Object.assign(
+      JSON.parse(JSON.stringify(this.savedTimer.current)),
+      { [this.uuid]: Math.floor(this.time) }
+    );
   }
 }

@@ -7,12 +7,17 @@ import { NamePersonasTemplateData, TemplateParams } from '.';
   selector: 'app-name_personas',
   templateUrl: './name_personas.component.html',
   styleUrls: ['./name_personas.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => NamePersonasTemplateComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => NamePersonasTemplateComponent)
+    }
+  ]
 })
 export class NamePersonasTemplateComponent extends TemplateComponent {
   params = TemplateParams;
   inputIds: {
-    personas: string[]
+    personas: string[];
   };
 
   contentData: NamePersonasTemplateData['template_params_json'];
@@ -27,9 +32,12 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.inputIds = {
-      personas: this.activePersonas.map(persona => persona.split('_').join('_name_'))
+      personas: this.activePersonas.map(persona =>
+        persona.split('_').join('_name_')
+      )
     };
 
-    this.contentData = this.data.data.template_params_json as NamePersonasTemplateData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as NamePersonasTemplateData['template_params_json'];
   }
 }

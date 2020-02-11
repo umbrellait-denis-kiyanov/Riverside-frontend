@@ -1,8 +1,16 @@
 import { Component, OnInit, OnDestroy } from '@angular/core';
-import { Module, Step, Section } from '../../common/interfaces/module.interface';
+import {
+  Module,
+  Step,
+  Section
+} from '../../common/interfaces/module.interface';
 import { ActivatedRoute } from '@angular/router';
 import { ModuleService } from '../../common/services/module.service';
-import { CdkDragDrop, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import {
+  CdkDragDrop,
+  moveItemInArray,
+  transferArrayItem
+} from '@angular/cdk/drag-drop';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { StepTemplateEditorComponent } from './step-template-editor/step-template-editor.component';
 import { StepLinkEditorComponent } from './step-link-editor/step-link-editor.component';
@@ -29,26 +37,31 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
     }
 
     this.moduleData.steps = this.generateStepsData();
+
     return this.lastSavedModule !== JSON.stringify(this.moduleData);
-  }
+  };
 
   constructor(
     private route: ActivatedRoute,
     private moduleService: ModuleService,
     private modalService: NgbModal,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.moduleSub = this.route.params.pipe(
-      switchMap(params => this.moduleService.getModuleConfig(Number(params.id))),
-      catchError(err => this.moduleService.getDefaultModule())
-    ).subscribe(moduleData => {
-      this.moduleData = moduleData;
-      this.sections = this.getSections(moduleData) || [];
-      this.ready = true;
-      this.setPristineState();
-    });
+    this.moduleSub = this.route.params
+      .pipe(
+        switchMap(params =>
+          this.moduleService.getModuleConfig(Number(params.id))
+        ),
+        catchError(err => this.moduleService.getDefaultModule())
+      )
+      .subscribe(moduleData => {
+        this.moduleData = moduleData;
+        this.sections = this.getSections(moduleData) || [];
+        this.ready = true;
+        this.setPristineState();
+      });
   }
 
   ngOnDestroy() {
@@ -60,28 +73,38 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   onClickRemoveStep(sectionIndex: number, index: number) {
-    if (!confirm('Are you sure you want to remove this step?')) { return; }
+    if (!confirm('Are you sure you want to remove this step?')) {
+      return;
+    }
     this.sections[sectionIndex].steps.splice(index, 1);
   }
 
   onClickEditStepTemplate(sectionIndex: number, index: number) {
-    const modalRef = this.modalService.open(StepTemplateEditorComponent,
-      { windowClass: 'step-template-editor-modal', backdrop: 'static' });
+    const modalRef = this.modalService.open(StepTemplateEditorComponent, {
+      windowClass: 'step-template-editor-modal',
+      backdrop: 'static'
+    });
     modalRef.componentInstance.step = this.sections[sectionIndex].steps[index];
   }
 
   onClickEditSectionTemplate(sectionIndex: number) {
-    const modalRef = this.modalService.open(StepTemplateEditorComponent,
-      { windowClass: 'section-template-editor-modal', backdrop: 'static' });
+    const modalRef = this.modalService.open(StepTemplateEditorComponent, {
+      windowClass: 'section-template-editor-modal',
+      backdrop: 'static'
+    });
     modalRef.componentInstance.step = this.sections[sectionIndex].section;
   }
 
   onClickLinkStep(sectionIndex: number, index: number) {
-    const modalRef = this.modalService.open(StepLinkEditorComponent,
-      { windowClass: 'step-link-editor-modal', backdrop: 'static' });
+    const modalRef = this.modalService.open(StepLinkEditorComponent, {
+      windowClass: 'step-link-editor-modal',
+      backdrop: 'static'
+    });
 
-    modalRef.componentInstance.step = (index === undefined) ?
-      this.sections[sectionIndex].section : this.sections[sectionIndex].steps[index];
+    modalRef.componentInstance.step =
+      index === undefined
+        ? this.sections[sectionIndex].section
+        : this.sections[sectionIndex].steps[index];
 
     modalRef.componentInstance.module = this.moduleData;
   }
@@ -93,17 +116,27 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   onClickRemoveSection(sectionIndex: number) {
-    if (!confirm('Are you sure you want to remove this section? The following steps it contains will be removed as well: \n* ' +
-      this.sections[sectionIndex].steps.map(step => step.description).join('\n* '))) { return; }
+    if (
+      !confirm(
+        'Are you sure you want to remove this section? The following steps it contains will be removed as well: \n* ' +
+          this.sections[sectionIndex].steps
+            .map(step => step.description)
+            .join('\n* ')
+      )
+    ) {
+      return;
+    }
     this.sections.splice(sectionIndex, 1);
   }
 
   onClickSave() {
     this.moduleData.steps = this.generateStepsData();
-    this.saving = this.moduleService.saveModule(this.moduleData).subscribe(_ => {
-      this.setPristineState();
-      this.toastr.success('Saved!');
-    });
+    this.saving = this.moduleService
+      .saveModule(this.moduleData)
+      .subscribe(_ => {
+        this.setPristineState();
+        this.toastr.success('Saved!');
+      });
   }
 
   onSectionDrop(event: CdkDragDrop<string[]>) {
@@ -111,10 +144,12 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   onStepDrop(event: CdkDragDrop<string[]>) {
-    transferArrayItem(event.previousContainer.data,
+    transferArrayItem(
+      event.previousContainer.data,
       event.container.data,
       event.previousIndex,
-      event.currentIndex);
+      event.currentIndex
+    );
   }
 
   getSortableListIDs(): string[] {
@@ -122,15 +157,15 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   getSections(moduleData: Module): Section[] {
-    return moduleData.steps.
-      reduce((sections, step) => {
-        if (step.is_section_break) {
-          sections.push({ section: step, steps: [] });
-        } else {
-          sections[sections.length - 1].steps.push(step);
-        }
-        return sections;
-      }, []);
+    return moduleData.steps.reduce((sections, step) => {
+      if (step.is_section_break) {
+        sections.push({ section: step, steps: [] });
+      } else {
+        sections[sections.length - 1].steps.push(step);
+      }
+
+      return sections;
+    }, []);
   }
 
   generateStepsData(): Step[] {
@@ -152,14 +187,19 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   sync(moduleId: number) {
-    if (prompt(`Data synchronization is a destructive action which will overwrite your current module and step configuration.
+    if (
+      prompt(`Data synchronization is a destructive action which will overwrite your current module and step configuration.
         Please make sure to export a data backup before proceeding.
-        Are you sure you want to continue with the synchronization? Type "Yes" to confirm.`) !== 'Yes') {
+        Are you sure you want to continue with the synchronization? Type "Yes" to confirm.`) !==
+      'Yes'
+    ) {
       return;
     }
 
-    this.moduleService.sync(moduleId).subscribe((res) => {
-      alert('Synchronization complete. The application will be reloaded to refresh your data.');
+    this.moduleService.sync(moduleId).subscribe(res => {
+      alert(
+        'Synchronization complete. The application will be reloaded to refresh your data.'
+      );
       window.location.reload();
     });
   }
@@ -176,4 +216,3 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
     };
   }
 }
-

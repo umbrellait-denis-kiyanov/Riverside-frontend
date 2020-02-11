@@ -5,21 +5,18 @@ import { TimedReviewService } from './timed-review.service';
 import { Observable, Observer } from 'rxjs';
 import { Status } from './status.enum';
 
-
-
 @Component({
   selector: 'app-timed-review',
   templateUrl: './timed-review.component.html',
   styleUrls: ['./timed-review.component.sass']
 })
 export class TimedReviewComponent implements OnInit {
-
   @Input() prompts: Array<any>;
   @Input() time_limit?: number;
   @Input() pageData: any;
   @Input() time_pause?: number;
   @Input() time_prepare?: number;
-  @Input() user: {fname: string, lname: string, id: string};
+  @Input() user: { fname: string; lname: string; id: string };
   @Output() finish: EventEmitter<any> = new EventEmitter();
 
   status: Status = Status.NOT_STARTED;
@@ -28,34 +25,37 @@ export class TimedReviewComponent implements OnInit {
   sourceData: Source;
   iframe: { url: string };
 
-  constructor(private http: HttpClient, private service: TimedReviewService) { }
+  constructor(private http: HttpClient, private service: TimedReviewService) {}
 
   async ngOnInit() {
     if (!this.user || !this.pageData || !this.prompts) {
       return;
     }
     this.sourceData = this.createSourceData();
-    this.createSource(this.sourceData)
-      .subscribe(sourceId => {
+    this.createSource(this.sourceData).subscribe(
+      sourceId => {
         this.createIframe(sourceId);
         console.log(sourceId);
       },
-        _ => {
-          this.status = Status.CREATE_SOURCE_ERROR;
-        });
+      _ => {
+        this.status = Status.CREATE_SOURCE_ERROR;
+      }
+    );
   }
 
   private createSource(sourceData: Source): Observable<string> {
     this.status = Status.CREATE_SOURCE_START;
+
     return Observable.create((observer: Observer<string>) => {
-      this.service.postSource(sourceData)
-        .subscribe(data => {
+      this.service.postSource(sourceData).subscribe(
+        data => {
           this.status = Status.CREATE_SOURCE_RESPONSE;
           this.sourceId = data.key;
           observer.next(data.key);
           observer.complete();
         },
-          _ => observer.error(_));
+        _ => observer.error(_)
+      );
     });
   }
 
@@ -84,6 +84,7 @@ export class TimedReviewComponent implements OnInit {
 
   private postName() {
     const today = new Date();
+
     return [
       this.user.fname,
       this.user.lname,
@@ -107,13 +108,14 @@ export class TimedReviewComponent implements OnInit {
     const { userid, classid, pageid } = this.sourceData;
     const sourceid = this.sourceId;
     this.status = Status.SUBMIT_START;
-    this.service.postSubmit({ userid, classid, pageid, sourceid })
-      .subscribe(_ => {
+    this.service.postSubmit({ userid, classid, pageid, sourceid }).subscribe(
+      _ => {
         this.status = Status.SUBMIT_RESPONSE;
         this.finish.emit();
+      },
+      _ => {
+        this.status = Status.SUBMIT_ERROR;
       }
-      , _ => { this.status = Status.SUBMIT_ERROR; }
-      );
+    );
   }
-
 }

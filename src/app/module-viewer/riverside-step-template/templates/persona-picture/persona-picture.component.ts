@@ -10,14 +10,18 @@ import { PersonaPictureListComponent } from './persona-picture-list/persona-pict
   templateUrl: './persona-picture.component.html',
   styleUrls: ['./persona-picture.component.sass'],
   preserveWhitespaces: true,
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PersonaPictureTemplateComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => PersonaPictureTemplateComponent)
+    }
+  ]
 })
-
 export class PersonaPictureTemplateComponent extends TemplateComponent {
   params = TemplateParams;
   inputIds = {
-    fromPreviousStep: [ ],
-    personas: [ ]
+    fromPreviousStep: [],
+    personas: []
   };
 
   contentData: PersonaPictureTemplateData['template_params_json'];
@@ -36,15 +40,23 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
     this.modalService = this.injectorObj.get(NgbModal);
 
     this.inputIds = {
-      fromPreviousStep: this.activePersonas.map(persona => ({title: persona, name: persona.split('_').join('_name_')})),
-      personas: this.activePersonas.map(persona => persona.split('_').join('_picture_'))
+      fromPreviousStep: this.activePersonas.map(persona => ({
+        title: persona,
+        name: persona.split('_').join('_name_')
+      })),
+      personas: this.activePersonas.map(persona =>
+        persona.split('_').join('_picture_')
+      )
     };
 
-    this.contentData = this.data.data.template_params_json as PersonaPictureTemplateData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as PersonaPictureTemplateData['template_params_json'];
   }
 
   openModal(id: string) {
-    const modalRef = this.modalService.open(PersonaPictureListComponent, {windowClass: 'picture-modal'});
+    const modalRef = this.modalService.open(PersonaPictureListComponent, {
+      windowClass: 'picture-modal'
+    });
     const input = this.getInput(id);
 
     modalRef.result.then((src: string) => {

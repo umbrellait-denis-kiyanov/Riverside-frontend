@@ -10,22 +10,22 @@ import { map } from 'rxjs/operators';
   styleUrls: ['./input-text.component.sass']
 })
 export class InputTextComponent implements OnChanges {
-
   @Input() inputText: TemplateInput | string;
   @Input() num: number;
   @Input() inline: boolean;
 
   text$: Observable<string>;
 
-  constructor(private template: TemplateComponent) { }
+  constructor(private template: TemplateComponent) {}
 
   isInput(obj: TemplateInput | string): obj is TemplateInput {
     return obj instanceof Object && obj.content !== undefined;
   }
 
   ngOnChanges() {
-    const input = this.isInput(this.inputText) ?
-      this.template.decorateInput(this.inputText) : this.template.getInput(this.inputText, this.num);
+    const input = this.isInput(this.inputText)
+      ? this.template.decorateInput(this.inputText)
+      : this.template.getInput(this.inputText, this.num);
 
     if (input) {
       this.text$ = input.observer.pipe(map(text => text.trim()));

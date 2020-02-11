@@ -13,7 +13,6 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./module-feedback.component.sass']
 })
 export class ModuleFeedbackComponent implements OnInit {
-
   action = 'feedback';
   subaction = '';
   message = '';
@@ -21,12 +20,13 @@ export class ModuleFeedbackComponent implements OnInit {
   submitting: Subscription;
   submittingSubaction: Subscription;
 
-  constructor(private template: TemplateComponent,
-              private navService: ModuleNavService,
-              private moduleService: ModuleService,
-              private userService: UserService,
-              private inboxService: InboxService
-    ) { }
+  constructor(
+    private template: TemplateComponent,
+    private navService: ModuleNavService,
+    private moduleService: ModuleService,
+    private userService: UserService,
+    private inboxService: InboxService
+  ) {}
 
   ngOnInit() {
     if (this.userService.me.permissions.riversideProvideFeedback) {

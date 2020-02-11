@@ -8,7 +8,6 @@ import { ModuleNavService } from 'src/app/common/services/module-nav.service';
   styleUrls: ['./module-link.component.sass']
 })
 export class ModuleLinkComponent implements OnInit {
-
   @Input()
   module: Module;
 
@@ -16,17 +15,17 @@ export class ModuleLinkComponent implements OnInit {
 
   orgId: number;
 
-  constructor(private moduleNavService: ModuleNavService
-              ) { }
+  constructor(private moduleNavService: ModuleNavService) {}
 
   ngOnInit() {
-    this.moduleNavService.organization$.subscribe(orgId => this.orgId = orgId);
+    this.moduleNavService.organization$.subscribe(
+      orgId => (this.orgId = orgId)
+    );
   }
 
   showUnderConstructionMessage(module: Module) {
     this.underConstruction = true;
 
-    setTimeout(() => this.underConstruction = false, 3000);
+    setTimeout(() => (this.underConstruction = false), 3000);
   }
-
 }

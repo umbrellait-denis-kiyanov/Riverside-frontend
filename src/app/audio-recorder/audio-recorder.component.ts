@@ -1,4 +1,11 @@
-import { Component, OnInit, Output, EventEmitter, ElementRef, ViewChild } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  Output,
+  EventEmitter,
+  ElementRef,
+  ViewChild
+} from '@angular/core';
 import { STATUS } from './status.enum';
 
 import { Recorder } from 'vmsg';
@@ -27,17 +34,15 @@ export class AudioRecorderComponent implements OnInit {
 
   baseUrl = environment.apiRoot + '/api/modules';
 
-  constructor(
-    private http: HttpClient
-
-  ) { }
+  constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.status = STATUS.TESTING;
     this.recorder = new Recorder({
       wasmURL: '/public/ngapp/node_modules/vmsg/vmsg.wasm'
     });
-    this.recorder.init()
+    this.recorder
+      .init()
       .then(() => {
         this.status = STATUS.READY;
       })
@@ -58,7 +63,6 @@ export class AudioRecorderComponent implements OnInit {
         this.blob = blob;
       });
     }
-
   }
 
   play() {
@@ -73,7 +77,9 @@ export class AudioRecorderComponent implements OnInit {
 
   blobToDataURL(blob: Blob, callback: (result: FileReader['result']) => void) {
     const a = new FileReader();
-    a.onload = (e: ProgressEvent) => { callback(a.result); };
+    a.onload = (e: ProgressEvent) => {
+      callback(a.result);
+    };
     a.readAsDataURL(blob);
   }
 
@@ -83,26 +89,34 @@ export class AudioRecorderComponent implements OnInit {
 
   upload() {
     this.status = STATUS.UPlOADING;
-    this.getPresignedUrl().then(({url, key}: {url: string, key: string}) => {
-      this.http.put(url, this.blob).toPromise().then(() => {
-        this.finish.emit(key);
-        this.status = STATUS.DONE;
-      }).catch(() => {
-        this.status = STATUS.ERROR;
-      });
-    });
+    this.getPresignedUrl().then(
+      ({ url, key }: { url: string; key: string }) => {
+        this.http
+          .put(url, this.blob)
+          .toPromise()
+          .then(() => {
+            this.finish.emit(key);
+            this.status = STATUS.DONE;
+          })
+          .catch(() => {
+            this.status = STATUS.ERROR;
+          });
+      }
+    );
   }
 
   getPresignedUrl() {
-
-    return this.http.get(this.baseUrl + '/0/feedback/presignedurl?ext=' + this.ext)
+    return this.http
+      .get(this.baseUrl + '/0/feedback/presignedurl?ext=' + this.ext)
       .toPromise();
   }
 
   showUI() {
-    return this.status !== STATUS.TESTING &&
-           this.status !== STATUS.TEST_ERROR &&
-           this.status !== STATUS.UPlOADING &&
-           this.status !== STATUS.DONE;
+    return (
+      this.status !== STATUS.TESTING &&
+      this.status !== STATUS.TEST_ERROR &&
+      this.status !== STATUS.UPlOADING &&
+      this.status !== STATUS.DONE
+    );
   }
 }

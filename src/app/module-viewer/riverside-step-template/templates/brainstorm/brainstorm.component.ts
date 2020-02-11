@@ -7,7 +7,12 @@ import { BrainstormTemplateData, TemplateParams } from '.';
   selector: 'app-brainstorm',
   templateUrl: './brainstorm.component.html',
   styleUrls: ['./brainstorm.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => BrainstormTemplateComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => BrainstormTemplateComponent)
+    }
+  ]
 })
 export class BrainstormTemplateComponent extends TemplateComponent {
   params = TemplateParams;
@@ -24,6 +29,7 @@ export class BrainstormTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
-    this.contentData = this.data.data.template_params_json as BrainstormTemplateData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as BrainstormTemplateData['template_params_json'];
   }
 }

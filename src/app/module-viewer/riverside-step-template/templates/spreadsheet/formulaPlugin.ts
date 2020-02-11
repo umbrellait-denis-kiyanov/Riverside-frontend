@@ -8,57 +8,76 @@ const parser = new HotFormula.Parser();
 type TableData = (string | number)[][];
 
 function replaceSUMRangesWithAdditions(valuesWithFormulas: TableData) {
-  return valuesWithFormulas.map(row => row.map((cell: string) => {
-    if (typeof cell === 'string') {
-      const matches = cell.match(/SUM\([A-Z][0-9]+\:[A-Z][0-9]+\)/g) || [];
-      matches.forEach(sum => {
-        const [from, to] = sum.slice(4, -1).split(':');
+  return valuesWithFormulas.map(row =>
+    row.map((cell: string) => {
+      if (typeof cell === 'string') {
+        const matches = cell.match(/SUM\([A-Z][0-9]+\:[A-Z][0-9]+\)/g) || [];
+        matches.forEach(sum => {
+          const [from, to] = sum.slice(4, -1).split(':');
 
-        const idxFrom = Number(from.substr(1));
-        const idxTo = Number(to.substr(1));
-        const rowRange = Array(idxTo - idxFrom + 1).fill(0).map((_, i) => String(idxFrom + i));
+          const idxFrom = Number(from.substr(1));
+          const idxTo = Number(to.substr(1));
+          const rowRange = Array(idxTo - idxFrom + 1)
+            .fill(0)
+            .map((_, i) => String(idxFrom + i));
 
-        const colFrom = from.charCodeAt(0);
-        const colRange = Array(to.charCodeAt(0) - colFrom + 1).fill(0).map((_, i) => String.fromCharCode(colFrom + i));
+          const colFrom = from.charCodeAt(0);
+          const colRange = Array(to.charCodeAt(0) - colFrom + 1)
+            .fill(0)
+            .map((_, i) => String.fromCharCode(colFrom + i));
 
-        const range = colRange.reduce((refs, col) => refs.concat(rowRange.map(r => col + r)), []);
+          const range = colRange.reduce(
+            (refs, col) => refs.concat(rowRange.map(r => col + r)),
+            []
+          );
 
-        cell = cell.split(sum).join(range.join('+'));
-      });
-    }
+          cell = cell.split(sum).join(range.join('+'));
+        });
+      }
 
-    return cell;
-  }));
+      return cell;
+    })
+  );
 }
 
 function applyBasicCalculations(valuesWithFormulas: TableData) {
   function getValue(cellAddress) {
-    return valuesWithFormulas[Number(cellAddress.substr(1)) - 1][cellAddress.charCodeAt(0) - 'A'.charCodeAt(0)];
+    return valuesWithFormulas[Number(cellAddress.substr(1)) - 1][
+      cellAddress.charCodeAt(0) - 'A'.charCodeAt(0)
+    ];
   }
 
-  return valuesWithFormulas.map(row => row.map(cell => {
-    if (typeof cell === 'string') {
-      if (cell[0] === '=') {
-        (cell.match(/[A-Z][0-9]+/g) || []).forEach(ref => {
-          const refVal = getValue(ref);
-          if (typeof refVal === 'number' || '' === refVal || null === refVal) {
-            cell = (cell as string).split(new RegExp(ref + '(?![0-9])', 'g')).join(String(Number(refVal)));
-          }
-        });
+  return valuesWithFormulas.map(row =>
+    row.map(cell => {
+      if (typeof cell === 'string') {
+        if (cell[0] === '=') {
+          (cell.match(/[A-Z][0-9]+/g) || []).forEach(ref => {
+            const refVal = getValue(ref);
+            if (
+              typeof refVal === 'number' ||
+              '' === refVal ||
+              null === refVal
+            ) {
+              cell = (cell as string)
+                .split(new RegExp(ref + '(?![0-9])', 'g'))
+                .join(String(Number(refVal)));
+            }
+          });
 
-        // calculate the result when all cell references have been replaced by numbers
-        if (!cell.match(/[A-Z][0-9]/)) {
-          cell = parser.parse(cell.substr(1)).result;
+          // calculate the result when all cell references have been replaced by numbers
+          if (!cell.match(/[A-Z][0-9]/)) {
+            cell = parser.parse(cell.substr(1)).result;
+          }
+        }
+
+        if (typeof cell === 'string' && !isNaN(parseFloat(cell))) {
+          cell = parseFloat(cell);
         }
       }
 
-      if (typeof cell === 'string' && !isNaN(parseFloat(cell))) {
-        cell = parseFloat(cell);
-      }
-    }
-
-    return cell;
-  }));
+      return cell;
+    })
+  );
 }
 
 function calculateValues(valuesWithFormulas) {
@@ -85,18 +104,21 @@ export function FormulaPlugin(hotInstance) {
 
 // Inherit the BasePlugin prototype.
 // @ts-ignore
-FormulaPlugin.prototype = Object.create(Handsontable.plugins.BasePlugin.prototype, {
-  constructor: {
-    writable: true,
-    configurable: true,
-    value: FormulaPlugin
-  },
-});
+FormulaPlugin.prototype = Object.create(
+  Handsontable.plugins.BasePlugin.prototype,
+  {
+    constructor: {
+      writable: true,
+      configurable: true,
+      value: FormulaPlugin
+    }
+  }
+);
 
 // Enable plugin for all instances
 FormulaPlugin.prototype.isEnabled = () => true;
 
-FormulaPlugin.prototype.enablePlugin = function () {
+FormulaPlugin.prototype.enablePlugin = function() {
   let values: TableData;
 
   this.addHook('beforeRender', (isForced: boolean, skipRender: object) => {
@@ -104,12 +126,22 @@ FormulaPlugin.prototype.enablePlugin = function () {
   });
 
   // returns a calculated value for validation (instead of formula)
-  this.addHook('beforeValidate',
-    (value: any, row: number, prop: string | number, source?: string) => values[row][prop]
+  this.addHook(
+    'beforeValidate',
+    (value: any, row: number, prop: string | number, source?: string) =>
+      values[row][prop]
   );
 
-  this.addHook('beforeValueRender',
-    (value: any, cellProperties: { row: number, col: number, numericFormat: HotNumericFormat }) => {
+  this.addHook(
+    'beforeValueRender',
+    (
+      value: any,
+      cellProperties: {
+        row: number;
+        col: number;
+        numericFormat: HotNumericFormat;
+      }
+    ) => {
       if (value[0] !== '=') {
         return value;
       }
@@ -121,7 +153,9 @@ FormulaPlugin.prototype.enablePlugin = function () {
       }
 
       if (cellProperties.numericFormat) {
-        return Numbro.default(Number(calculated)).format(cellProperties.numericFormat.pattern);
+        return Numbro.default(Number(calculated)).format(
+          cellProperties.numericFormat.pattern
+        );
       } else {
         return calculated;
       }

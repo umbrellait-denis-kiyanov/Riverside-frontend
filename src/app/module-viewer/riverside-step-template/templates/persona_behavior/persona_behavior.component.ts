@@ -8,13 +8,17 @@ import { PersonaBehaviorTemplateData, TemplateParams } from '.';
   templateUrl: './persona_behavior.component.html',
   styleUrls: ['./persona_behavior.component.sass'],
   preserveWhitespaces: true,
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PersonaBehaviorTemplateComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => PersonaBehaviorTemplateComponent)
+    }
+  ]
 })
-
 export class PersonaBehaviorTemplateComponent extends TemplateComponent {
   params = TemplateParams;
   inputIds: {
-    personas: string[]
+    personas: string[];
   };
 
   contentData: PersonaBehaviorTemplateData['template_params_json'];
@@ -28,12 +32,17 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
-    this.contentData = this.data.data.template_params_json as PersonaBehaviorTemplateData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as PersonaBehaviorTemplateData['template_params_json'];
 
-    const suffix = this.contentData.input_sufix ? '_' + this.contentData.input_sufix : '';
+    const suffix = this.contentData.input_sufix
+      ? '_' + this.contentData.input_sufix
+      : '';
 
     this.inputIds = {
-      personas: this.activePersonas.map(persona => persona.split('_').join('_behavior_') + suffix)
+      personas: this.activePersonas.map(
+        persona => persona.split('_').join('_behavior_') + suffix
+      )
     };
   }
 }

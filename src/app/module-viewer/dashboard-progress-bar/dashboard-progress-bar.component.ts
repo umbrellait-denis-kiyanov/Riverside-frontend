@@ -6,16 +6,13 @@ import { Component, OnInit, Input } from '@angular/core';
   styleUrls: ['./dashboard-progress-bar.component.sass']
 })
 export class DashboardProgressBarComponent implements OnInit {
-
   @Input()
   progress: number;
 
   @Input()
   hasColors = false;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

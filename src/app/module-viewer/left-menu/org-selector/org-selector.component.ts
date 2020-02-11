@@ -23,11 +23,13 @@ export class OrgSelectorComponent implements OnInit {
   constructor(
     private moduleService: ModuleService,
     private moduleNavService: ModuleNavService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
-    this.moduleNavService.organization$.pipe(take(1)).subscribe(orgId => this.organizationID = orgId);
+    this.moduleNavService.organization$
+      .pipe(take(1))
+      .subscribe(orgId => (this.organizationID = orgId));
 
     if (this.activeOrganizations) {
       this.active$ = this.activeOrganizations.pipe(
@@ -35,15 +37,17 @@ export class OrgSelectorComponent implements OnInit {
       );
     }
 
-    combineLatest(this.moduleNavService.organization$, this.organizations$).pipe(take(1)).subscribe(([orgId, organizations]) => {
-      this.currentOrg = organizations.find(
-        org => Number(org.id) === Number(orgId)
-      );
+    combineLatest(this.moduleNavService.organization$, this.organizations$)
+      .pipe(take(1))
+      .subscribe(([orgId, organizations]) => {
+        this.currentOrg = organizations.find(
+          org => Number(org.id) === Number(orgId)
+        );
 
-      this.setOrganization(
-        orgId && this.currentOrg ? this.currentOrg : organizations[0]
-      );
-    });
+        this.setOrganization(
+          orgId && this.currentOrg ? this.currentOrg : organizations[0]
+        );
+      });
   }
 
   setOrganization(organization: Organization) {

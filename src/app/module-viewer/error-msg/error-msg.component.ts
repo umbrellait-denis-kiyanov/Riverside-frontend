@@ -7,12 +7,9 @@ import { Observable } from 'rxjs';
   styleUrls: ['./error-msg.component.sass']
 })
 export class ErrorMsgComponent implements OnInit {
+  @Input() input: Partial<{ error: Observable<string> }>;
 
-  @Input() input: Partial<{error: Observable<string>}>;
+  constructor() {}
 
-  constructor() { }
-
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

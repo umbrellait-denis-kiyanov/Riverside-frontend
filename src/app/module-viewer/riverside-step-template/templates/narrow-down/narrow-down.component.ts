@@ -7,7 +7,12 @@ import { NarrowDownData, TemplateParams } from '.';
   selector: 'app-template2',
   templateUrl: './narrow-down.component.html',
   styleUrls: ['./narrow-down.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => NarrowDownComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => NarrowDownComponent)
+    }
+  ]
 })
 export class NarrowDownComponent extends TemplateComponent {
   params = TemplateParams;
@@ -19,7 +24,7 @@ export class NarrowDownComponent extends TemplateComponent {
       'persona_3',
       'persona_4',
       'persona_5',
-      'persona_6',
+      'persona_6'
     ]
   };
 
@@ -34,6 +39,7 @@ export class NarrowDownComponent extends TemplateComponent {
   }
 
   protected init() {
-    this.contentData = this.data.data.template_params_json as NarrowDownData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as NarrowDownData['template_params_json'];
   }
 }

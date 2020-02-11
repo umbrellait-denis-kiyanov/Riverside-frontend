@@ -1,8 +1,5 @@
 import { NgModule } from '@angular/core';
-import {
-  RouterModule,
-  Routes
-} from '@angular/router';
+import { RouterModule, Routes } from '@angular/router';
 import { MainComponent } from './main/main.component';
 import { ContentComponent } from './content/content.component';
 import { InboxComponent } from './inbox/inbox.component';
@@ -66,7 +63,7 @@ const routes: Routes = [
         path: '',
         component: InboxLeftMenuComponent,
         outlet: 'left-menu'
-      },
+      }
     ]
   },
   {
@@ -75,7 +72,8 @@ const routes: Routes = [
     children: [
       {
         path: '',
-        redirectTo: 'profile', pathMatch: 'full'
+        redirectTo: 'profile',
+        pathMatch: 'full'
       },
       {
         path: 'profile',
@@ -149,4 +147,4 @@ const routes: Routes = [
 
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

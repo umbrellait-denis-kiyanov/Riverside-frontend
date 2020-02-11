@@ -21,9 +21,7 @@ export class E3ConfirmationDialogService {
     component: E3ConfirmationDialogComponent
   };
 
-  constructor(
-    private modalService: NgbModal
-  ) { }
+  constructor(private modalService: NgbModal) {}
 
   open(options: OpenDialogOptions) {
     options = { ...this.defaults, ...options };

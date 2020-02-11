@@ -7,32 +7,39 @@ import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ModuleContentService {
-
   baseUrl = environment.apiRoot + '/api/modules';
 
-  constructor(private httpClient: HttpClient) { }
+  constructor(private httpClient: HttpClient) {}
 
-  load(moduleId: number, stepId: number, org_id: number): Observable<ModuleContent> {
-    return this.httpClient.get(`${this.baseUrl}/${moduleId}/org/${org_id}/step/${stepId}`, { observe: 'response' })
-      .pipe(map((fullResponse: HttpResponse<any>) => {
-        const res = fullResponse.body;
-        let object;
-        if (res.content) {
-          object = {
-            ...res.content,
-            can_modify: Boolean(fullResponse.headers.get('X-Can-Modify')),
-            template_params_json: res.template_params_json,
-            template_component: res.template_component,
-          };
-        } else {
-          object = {
-            module_id: moduleId,
-            step_id: stepId,
-          };
-        }
+  load(
+    moduleId: number,
+    stepId: number,
+    org_id: number
+  ): Observable<ModuleContent> {
+    return this.httpClient
+      .get(`${this.baseUrl}/${moduleId}/org/${org_id}/step/${stepId}`, {
+        observe: 'response'
+      })
+      .pipe(
+        map((fullResponse: HttpResponse<any>) => {
+          const res = fullResponse.body;
+          let object;
+          if (res.content) {
+            object = {
+              ...res.content,
+              can_modify: Boolean(fullResponse.headers.get('X-Can-Modify')),
+              template_params_json: res.template_params_json,
+              template_component: res.template_component
+            };
+          } else {
+            object = {
+              module_id: moduleId,
+              step_id: stepId
+            };
+          }
 
-        return ModuleContent.fromObject(object);
-      }
-      ));
+          return ModuleContent.fromObject(object);
+        })
+      );
   }
 }

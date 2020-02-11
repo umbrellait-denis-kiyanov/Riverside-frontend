@@ -1,12 +1,12 @@
 export interface RecorderMessageEvent {
   data: {
-    type: 'iframe_event',
+    type: 'iframe_event';
     data: {
-      type: 'DONE',
+      type: 'DONE';
       data: {
-        sourceId: string,
-        url: string
-      }
-    }
+        sourceId: string;
+        url: string;
+      };
+    };
   };
 }

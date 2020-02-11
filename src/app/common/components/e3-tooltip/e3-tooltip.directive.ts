@@ -1,4 +1,11 @@
-import { Directive, Input, ElementRef, HostListener, Renderer2, OnInit } from '@angular/core';
+import {
+  Directive,
+  Input,
+  ElementRef,
+  HostListener,
+  Renderer2,
+  OnInit
+} from '@angular/core';
 import { Router } from '@angular/router';
 
 @Directive({
@@ -6,8 +13,8 @@ import { Router } from '@angular/router';
 })
 export class E3TooltipDirective implements OnInit {
   @Input('e3-tooltip') tooltipTitle: string;
-  @Input() placement: string = 'top';
-  @Input() delay: string = '500';
+  @Input() placement = 'top';
+  @Input() delay = '500';
   tooltip: HTMLElement;
   offset = 10;
 
@@ -15,7 +22,7 @@ export class E3TooltipDirective implements OnInit {
     private el: ElementRef,
     private renderer: Renderer2,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.router.events.subscribe(event => {
@@ -24,15 +31,21 @@ export class E3TooltipDirective implements OnInit {
   }
 
   @HostListener('mouseenter') onMouseEnter() {
-    if (!this.tooltip && this.tooltipTitle) { this.show(); }
+    if (!this.tooltip && this.tooltipTitle) {
+      this.show();
+    }
   }
 
   @HostListener('mouseleave') onMouseLeave() {
-    if (this.tooltip) { this.hide(); }
+    if (this.tooltip) {
+      this.hide();
+    }
   }
 
   @HostListener('click') onClick() {
-    if (this.tooltip) { this.hide(); }
+    if (this.tooltip) {
+      this.hide();
+    }
   }
 
   show() {
@@ -64,10 +77,26 @@ export class E3TooltipDirective implements OnInit {
     this.renderer.addClass(this.tooltip, `ng-tooltip-${this.placement}`);
 
     // delay 설정
-    this.renderer.setStyle(this.tooltip, '-webkit-transition', `opacity ${this.delay}ms`);
-    this.renderer.setStyle(this.tooltip, '-moz-transition', `opacity ${this.delay}ms`);
-    this.renderer.setStyle(this.tooltip, '-o-transition', `opacity ${this.delay}ms`);
-    this.renderer.setStyle(this.tooltip, 'transition', `opacity ${this.delay}ms`);
+    this.renderer.setStyle(
+      this.tooltip,
+      '-webkit-transition',
+      `opacity ${this.delay}ms`
+    );
+    this.renderer.setStyle(
+      this.tooltip,
+      '-moz-transition',
+      `opacity ${this.delay}ms`
+    );
+    this.renderer.setStyle(
+      this.tooltip,
+      '-o-transition',
+      `opacity ${this.delay}ms`
+    );
+    this.renderer.setStyle(
+      this.tooltip,
+      'transition',
+      `opacity ${this.delay}ms`
+    );
   }
 
   setPosition() {
@@ -80,7 +109,11 @@ export class E3TooltipDirective implements OnInit {
     // window의 scroll top
     // getBoundingClientRect 메소드는 viewport에서의 상대적인 위치를 반환한다.
     // 스크롤이 발생한 경우, tooltip 요소의 top에 세로 스크롤 좌표값을 반영하여야 한다.
-    const scrollPos = window.pageYOffset || document.documentElement.scrollTop || document.body.scrollTop || 0;
+    const scrollPos =
+      window.pageYOffset ||
+      document.documentElement.scrollTop ||
+      document.body.scrollTop ||
+      0;
 
     let top: number;
     let left: number;

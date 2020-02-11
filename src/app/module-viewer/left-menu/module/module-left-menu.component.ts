@@ -1,5 +1,9 @@
 import { Component, OnInit, Input } from '@angular/core';
-import { Module, Step, Organization } from 'src/app/common/interfaces/module.interface';
+import {
+  Module,
+  Step,
+  Organization
+} from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import User from 'src/app/common/interfaces/user.model';
@@ -15,8 +19,7 @@ import { take, switchMap } from 'rxjs/operators';
   styleUrls: ['./module-left-menu.component.sass']
 })
 export class LeftMenuComponent implements OnInit {
-
-  @Input() width: number = 300;
+  @Input() width = 300;
 
   me: User;
 
@@ -32,7 +35,7 @@ export class LeftMenuComponent implements OnInit {
     private leftMenuService: LeftMenuService,
     private navService: ModuleNavService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.me = this.userService.me;
@@ -48,12 +51,20 @@ export class LeftMenuComponent implements OnInit {
   }
 
   canEdit() {
-    return this.me.permissions.riversideRequestFeedback || this.me.permissions.riversideProvideFeedback;
+    return (
+      this.me.permissions.riversideRequestFeedback ||
+      this.me.permissions.riversideProvideFeedback
+    );
   }
 
   // todo: rewrite as pipe or set property?
   isChecked(step: Step) {
-    return step.is_checked || step.is_approved || step.waiting_for_feedback || step.feedback_received;
+    return (
+      step.is_checked ||
+      step.is_approved ||
+      step.waiting_for_feedback ||
+      step.feedback_received
+    );
   }
 
   // todo: rewrite as pipe
@@ -63,9 +74,23 @@ export class LeftMenuComponent implements OnInit {
     }
 
     if (!step.isLocked) {
-      return ['/org', module.status.org_id, 'module', module.id, 'step', step.id];
+      return [
+        '/org',
+        module.status.org_id,
+        'module',
+        module.id,
+        'step',
+        step.id
+      ];
     } else {
-      return ['/org', module.status.org_id, 'module', module.id, 'step', this.navService.step.current];
+      return [
+        '/org',
+        module.status.org_id,
+        'module',
+        module.id,
+        'step',
+        this.navService.step.current
+      ];
     }
   }
 
@@ -77,20 +102,30 @@ export class LeftMenuComponent implements OnInit {
     this.navService.lastOrganization.current = organization.id;
 
     this.navService.step$.pipe(take(1)).subscribe(step => {
-      this.router.navigate(['org', organization.id, 'module', module.id, 'step', step]);
-    }
-    );
+      this.router.navigate([
+        'org',
+        organization.id,
+        'module',
+        module.id,
+        'step',
+        step
+      ]);
+    });
   }
 
   showLockMessage(step: Step) {
     if (!step.isLocked) {
       this.hideLockMessage();
+
       return;
     }
 
     clearTimeout(this.lockMessageClearTimeout);
     this.lockMessageStep$.next(step.id);
-    this.lockMessageClearTimeout = window.setTimeout(_ => this.lockMessageStep$.next(null), 5000);
+    this.lockMessageClearTimeout = window.setTimeout(
+      _ => this.lockMessageStep$.next(null),
+      5000
+    );
   }
 
   hideLockMessage() {

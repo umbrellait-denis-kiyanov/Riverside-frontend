@@ -6,11 +6,11 @@ import { Component, OnInit } from '@angular/core';
   styleUrls: ['./module-builder-root.component.sass']
 })
 export class ModuleBuilderRootComponent implements OnInit {
-
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
-    (document.querySelector('.loading-site-content') as HTMLElement).style.display = 'none';
+    (document.querySelector(
+      '.loading-site-content'
+    ) as HTMLElement).style.display = 'none';
   }
-
 }

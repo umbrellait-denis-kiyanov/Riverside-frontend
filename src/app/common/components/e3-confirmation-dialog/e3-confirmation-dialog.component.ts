@@ -8,17 +8,14 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./e3-confirmation-dialog.component.sass']
 })
 export class E3ConfirmationDialogComponent implements OnInit {
-  @Input() ok_text: string = 'Confirm';
-  @Input() cancel_text: string = 'Cancel';
+  @Input() ok_text = 'Confirm';
+  @Input() cancel_text = 'Cancel';
   @Input() content: string;
   @Input() title: string;
   @Input() type: DialogType;
-  @Input() noCancel: boolean = false;
+  @Input() noCancel = false;
 
-  constructor(
-    public modal: NgbActiveModal,
-  ) { }
+  constructor(public modal: NgbActiveModal) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 }

@@ -1,16 +1,16 @@
 export interface AccountProfile {
-    fname: string;
-    lname: string;
-    email: string;
+  fname: string;
+  lname: string;
+  email: string;
 }
 
 export interface UpdatePassword {
-    curPwd: string;
-    newPwd: string;
-    newPwd2: string;
+  curPwd: string;
+  newPwd: string;
+  newPwd2: string;
 }
 
 export interface PresignedProfilePictureUrl {
-    url: string;
-    key: string;
+  url: string;
+  key: string;
 }

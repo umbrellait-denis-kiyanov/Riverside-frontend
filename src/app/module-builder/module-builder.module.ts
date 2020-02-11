@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { HttpClientModule } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -17,7 +16,7 @@ import { StepTemplateEditorComponent } from './module-editor/step-template-edito
 import { StepLinkEditorComponent } from './module-editor/step-link-editor/step-link-editor.component';
 import { StepTemplateFieldComponent } from './module-editor/step-template-editor/step-template-field/step-template-field.component';
 import { CKEditorModule } from '@ckeditor/ckeditor5-angular';
-import { MatIconModule} from '@angular/material/icon';
+import { MatIconModule } from '@angular/material/icon';
 import { BuilderSelectOptionPipe } from './module-editor/builder-select-option.pipe';
 import { HotTableModule } from '@handsontable/angular';
 import { ToastrModule } from 'ngx-toastr';
@@ -26,7 +25,7 @@ import { ToastrModule } from 'ngx-toastr';
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], {useHash: true, enableTracing: true}),
+    RouterModule.forRoot([], { useHash: true, enableTracing: true }),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -46,7 +45,7 @@ import { ToastrModule } from 'ngx-toastr';
     StepTemplateEditorComponent,
     StepLinkEditorComponent,
     StepTemplateFieldComponent,
-    BuilderSelectOptionPipe,
+    BuilderSelectOptionPipe
   ],
   entryComponents: [
     ModuleBuilderRootComponent,
@@ -54,9 +53,7 @@ import { ToastrModule } from 'ngx-toastr';
     StepLinkEditorComponent,
     StepTemplateFieldComponent
   ],
-  providers: [
-    ModuleService,
-  ],
+  providers: [ModuleService],
   bootstrap: [ModuleBuilderRootComponent]
 })
-export class ModuleBuilderModule { }
+export class ModuleBuilderModule {}

@@ -7,7 +7,6 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./persona-picture-list.component.sass']
 })
 export class PersonaPictureListComponent implements OnInit {
-
   list = [
     'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic1.jpg',
     'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/pic2.jpg',
@@ -43,16 +42,13 @@ export class PersonaPictureListComponent implements OnInit {
     'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/picArchie.jpg',
     'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/picCharlie.jpg',
     'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/picLynn.jpg',
-    'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/picTed.jpg',
+    'https://riverside-seagage.s3-us-west-2.amazonaws.com/Buyer+Personas+images/picTed.jpg'
   ];
   selected: string;
 
-  constructor(
-    public modal: NgbActiveModal,
-  ) { }
+  constructor(public modal: NgbActiveModal) {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   select(item: string) {
     this.selected = item;
@@ -61,5 +57,4 @@ export class PersonaPictureListComponent implements OnInit {
   done() {
     this.modal.close(this.selected);
   }
-
 }

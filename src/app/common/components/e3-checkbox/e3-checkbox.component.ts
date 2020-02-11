@@ -10,13 +10,14 @@ export class E3CheckboxComponent implements OnInit {
   @Input() disabled: boolean;
   @Output() checkedChange = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
+  ngOnInit() {}
 
   check() {
-    if (this.disabled) { return; }
+    if (this.disabled) {
+      return;
+    }
 
     this.checked = !this.checked;
     this.checkedChange.emit(this.checked);

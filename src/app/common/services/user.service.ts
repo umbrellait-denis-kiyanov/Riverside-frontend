@@ -11,11 +11,10 @@ import { environment } from '../../../environments/environment';
 import { tap, switchMap, catchError } from 'rxjs/operators';
 import { Router } from '@angular/router';
 
-type AccountProfileStatus = AccountProfile & {status: string};
+type AccountProfileStatus = AccountProfile & { status: string };
 
 @Injectable()
 export class UserService {
-
   get me(): User {
     return this.meChanged.getValue();
   }
@@ -36,28 +35,33 @@ export class UserService {
   }
 
   getAccount(): Observable<AccountProfileStatus> {
-    return this.httpClient.get<AccountProfileStatus>(`${this.legacyBaseUrl}/user/me`).pipe(
-      catchError(err => {
-        this.router.navigate(['login']);
-        return of(null);
-      }
-    ));
+    return this.httpClient
+      .get<AccountProfileStatus>(`${this.legacyBaseUrl}/user/me`)
+      .pipe(
+        catchError(err => {
+          this.router.navigate(['login']);
+
+          return of(null);
+        })
+      );
   }
 
   signin(credentials: FormData): Observable<boolean> {
-    return this.httpClient.post<boolean>(`${this.legacyBaseUrl}/signin/`, credentials).pipe(
-      tap(res => {
-        if (res) {
-          this.getAccount().subscribe(account => this.setMeFromData(account));
-        }
-      })
-    );
+    return this.httpClient
+      .post<boolean>(`${this.legacyBaseUrl}/signin/`, credentials)
+      .pipe(
+        tap(res => {
+          if (res) {
+            this.getAccount().subscribe(account => this.setMeFromData(account));
+          }
+        })
+      );
   }
 
   signout(): Observable<AccountProfileStatus> {
-    return this.httpClient.get(`${this.legacyBaseUrl}/signout?legacy_no_redirect=true`).pipe(
-      switchMap(res => this.getAccount())
-    );
+    return this.httpClient
+      .get(`${this.legacyBaseUrl}/signout?legacy_no_redirect=true`)
+      .pipe(switchMap(res => this.getAccount()));
   }
 
   saveAccount(account: AccountProfile): Observable<null> {
@@ -74,8 +78,11 @@ export class UserService {
   presignedProfilePictureUpload(
     ext: string
   ): Observable<PresignedProfilePictureUrl> {
-    return this.httpClient.get<null>(`${this.accountBaseUrl}/me/upload-picture`, {
-      params: { ext }
-    });
+    return this.httpClient.get<null>(
+      `${this.accountBaseUrl}/me/upload-picture`,
+      {
+        params: { ext }
+      }
+    );
   }
 }

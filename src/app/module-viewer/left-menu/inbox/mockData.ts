@@ -5,7 +5,7 @@ const timePipe = new ReadableTimePipe();
 export const header = [
   {
     id: 'moduleName',
-    label: 'Module',
+    label: 'Module'
   },
   {
     id: 'orgName',

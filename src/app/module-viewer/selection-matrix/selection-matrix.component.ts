@@ -7,7 +7,6 @@ import { TemplateComponent } from '../riverside-step-template/templates/template
   styleUrls: ['./selection-matrix.component.sass']
 })
 export class SelectionMatrixComponent {
-
   @Input()
   question: string;
 
@@ -15,7 +14,7 @@ export class SelectionMatrixComponent {
   personas: string[];
 
   @Input()
-  options: Array<{option: string}>;
+  options: Array<{ option: string }>;
 
   @Input()
   horizontal = false;
@@ -26,9 +25,7 @@ export class SelectionMatrixComponent {
   @Input()
   disabled: boolean;
 
-  constructor(
-    private template: TemplateComponent
-  ) {}
+  constructor(private template: TemplateComponent) {}
 
   toggleSelection(personaIdx, option, $event) {
     if ($event.target.tagName === 'INPUT') {

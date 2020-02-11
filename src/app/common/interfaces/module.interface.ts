@@ -87,12 +87,17 @@ export interface Template {
 export interface SpreadsheetResource {
   data: string[][];
   meta: {
-    mergeCells: {col: number, row: number, colspan: number, rowspan: number}[],
-    colWidths: number[],
-    formatting: {[cells: string]: string},
-    requireValue: {[cells: string]: string},
-    editable: string[],
-    maxColumn: string
+    mergeCells: {
+      col: number;
+      row: number;
+      colspan: number;
+      rowspan: number;
+    }[];
+    colWidths: number[];
+    formatting: { [cells: string]: string };
+    requireValue: { [cells: string]: string };
+    editable: string[];
+    maxColumn: string;
   };
   types: string[][];
 }

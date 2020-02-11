@@ -5,10 +5,10 @@ export const data: FinalFeedbackTemplateData['template_params_json'] = {
   description: ``,
   instructions: ``,
   steps: [
-    {sufix: 'how_they_buy', title: 'How they buy'},
-    {sufix: 'how_they_pay', title: 'How they pay'},
-    {sufix: 'titles', title: 'Titles'},
-    {sufix: 'watering_holes', title: 'Watering holes'},
-    {sufix: 'buying_process', title: 'The Buying Process'},
+    { sufix: 'how_they_buy', title: 'How they buy' },
+    { sufix: 'how_they_pay', title: 'How they pay' },
+    { sufix: 'titles', title: 'Titles' },
+    { sufix: 'watering_holes', title: 'Watering holes' },
+    { sufix: 'buying_process', title: 'The Buying Process' }
   ]
 };

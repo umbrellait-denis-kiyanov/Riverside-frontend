@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { E3CheckboxComponent } from './components/e3-checkbox/e3-checkbox.component';
 import { BrowserModule } from '@angular/platform-browser';
@@ -32,16 +31,12 @@ const exports = [
     FormsModule,
     CommonModule,
     NgbModalModule,
-    MatButtonModule,
+    MatButtonModule
   ],
   declarations: exports,
-  entryComponents: [
-    E3ConfirmationDialogComponent
-  ],
-  providers: [
-    E3ConfirmationDialogService
-  ],
+  entryComponents: [E3ConfirmationDialogComponent],
+  providers: [E3ConfirmationDialogService],
   bootstrap: [],
   exports
 })
-export class E3CommonModule { }
+export class E3CommonModule {}

@@ -1,5 +1,12 @@
-import { Component, Input, EventEmitter, AfterViewInit, NgZone, OnDestroy, Output } from '@angular/core';
-
+import {
+  Component,
+  Input,
+  EventEmitter,
+  AfterViewInit,
+  NgZone,
+  OnDestroy,
+  Output
+} from '@angular/core';
 
 const EVENT_TYPE = 'iframe_event';
 const EVENTS = {
@@ -13,17 +20,21 @@ let alreadyBound = false;
   styleUrls: ['./timed-review-iframe.component.sass']
 })
 export class TimedReviewIframeComponent implements AfterViewInit, OnDestroy {
-
   @Input() iframe: { url: string };
   @Output() finish: EventEmitter<any> = new EventEmitter();
 
-  constructor(private zone: NgZone) { }
+  constructor(private zone: NgZone) {}
 
   ngAfterViewInit() {
-    !alreadyBound && this.zone.runOutsideAngular(() => {
-      window.addEventListener('message', this.handleMessage.bind(this), false);
-      alreadyBound = true;
-    });
+    !alreadyBound &&
+      this.zone.runOutsideAngular(() => {
+        window.addEventListener(
+          'message',
+          this.handleMessage.bind(this),
+          false
+        );
+        alreadyBound = true;
+      });
   }
 
   ngOnDestroy() {
@@ -32,7 +43,13 @@ export class TimedReviewIframeComponent implements AfterViewInit, OnDestroy {
   }
 
   handleMessage(event) {
-    if (event.origin !== window.location.origin || !event.data.type || event.data.type !== EVENT_TYPE) { return; }
+    if (
+      event.origin !== window.location.origin ||
+      !event.data.type ||
+      event.data.type !== EVENT_TYPE
+    ) {
+      return;
+    }
     if (event.data.event === EVENTS.END) {
       this.finish.emit(event.data.data);
     }

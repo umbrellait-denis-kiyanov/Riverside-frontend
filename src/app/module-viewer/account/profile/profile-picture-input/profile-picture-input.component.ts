@@ -3,7 +3,6 @@ import { FormControl } from '@angular/forms';
 import { UserService } from 'src/app/common/services/user.service';
 import User from 'src/app/common/interfaces/user.model';
 
-
 @Component({
   selector: 'profile-picture-input',
   templateUrl: './profile-picture-input.component.html',
@@ -16,9 +15,7 @@ export class ProfilePictureInputComponent implements OnInit {
   user: User;
   className = '';
 
-  constructor(
-    private userService: UserService
-  ) { }
+  constructor(private userService: UserService) {}
 
   ngOnInit() {
     this.user = this.userService.me;
@@ -29,8 +26,8 @@ export class ProfilePictureInputComponent implements OnInit {
   }
 
   onImageUploaded(src: string) {
-    this.fileUrl.setValue(src + '?v=' + ((new Date()).getTime() / 1000));
-    this.fileUrlChange.emit(this.fileUrl );
+    this.fileUrl.setValue(src + '?v=' + new Date().getTime() / 1000);
+    this.fileUrlChange.emit(this.fileUrl);
     this.isSelect = false;
   }
 }

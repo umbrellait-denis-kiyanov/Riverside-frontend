@@ -9,11 +9,11 @@ export class ReadableDatePipe implements PipeTransform {
     const d = moment(date);
 
     if (d.isSame(new Date(), 'day')) {
-        return 'Today';
+      return 'Today';
     } else if (d.isSame(new Date(), 'year')) {
-        return d.format('MMM D');
+      return d.format('MMM D');
     } else {
-        return d.format('MMM D, YYYY');
+      return d.format('MMM D, YYYY');
     }
   }
 }

@@ -14,7 +14,10 @@ import { skip } from 'rxjs/operators';
 import { IceService } from './ice.service';
 import { E3ConfirmationDialogService } from 'src/app/common/components/e3-confirmation-dialog/e3-confirmation-dialog.service';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
-import { TemplateInput, InputComment } from 'src/app/common/interfaces/module.interface';
+import {
+  TemplateInput,
+  InputComment
+} from 'src/app/common/interfaces/module.interface';
 import * as moment from 'moment';
 import {
   FixSpacesPlugin,
@@ -41,8 +44,8 @@ export interface IceEditorTracker {
   getCurrentRange: () => TextRange;
   _insertNode: (node: Node, range: Range) => void;
   selection: {
-    addRange: (range: TextRange) => void,
-    createRange: () => TextRange
+    addRange: (range: TextRange) => void;
+    createRange: () => TextRange;
   };
   hasCleanPaste: boolean;
   disableDragDrop: boolean;
@@ -70,7 +73,7 @@ interface IcePluginConfig {
 export class IceComponent implements OnInit, OnDestroy {
   @Input() box: number;
   @Input() disabled: boolean;
-  @Input() placeholder: string = '';
+  @Input() placeholder = '';
 
   // pass input as string identifier or as instance
   @Input() input?: string;
@@ -106,7 +109,7 @@ export class IceComponent implements OnInit, OnDestroy {
     private iceService: IceService,
     private dialogService: E3ConfirmationDialogService,
     private template: TemplateComponent
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.loadPlugin(FixSpacesPlugin);
@@ -131,6 +134,7 @@ export class IceComponent implements OnInit, OnDestroy {
 
     if (!this.data) {
       console.error('No input data found for ', this.input);
+
       return;
     }
 
@@ -140,14 +144,17 @@ export class IceComponent implements OnInit, OnDestroy {
     this.isDisabled = this.template.disabled || this.disabled;
 
     if (!this.changed.observers.length) {
-      this.changed.subscribe((event) => this.template.contentChanged(event));
+      this.changed.subscribe(event => this.template.contentChanged(event));
     }
 
     const el: HTMLDivElement = document.createElement('div');
     el.innerHTML = this.data.content;
 
     // Add missing root element (can happen because of a bug elsewhere)
-    if (el.innerHTML.length && el.innerHTML.substr(0, 2).toLowerCase() !== '<p') {
+    if (
+      el.innerHTML.length &&
+      el.innerHTML.substr(0, 2).toLowerCase() !== '<p'
+    ) {
       el.innerHTML = '<p>' + el.innerHTML + '</p>';
     }
 
@@ -234,6 +241,7 @@ export class IceComponent implements OnInit, OnDestroy {
       } catch (e) {
         console.error(e.message);
         text.contentEditable = 'false';
+
         return;
       }
 
@@ -371,6 +379,7 @@ export class IceComponent implements OnInit, OnDestroy {
   onBlur() {
     if (!this.isInitialized) {
       this.isInitialized = true;
+
       return;
     }
 
@@ -381,8 +390,8 @@ export class IceComponent implements OnInit, OnDestroy {
     this.data.content =
       (selections && selections.length
         ? '<p class="matrix-options">' +
-        (selections || []).map(sel => '<span>' + sel + '</span>').join('') +
-        '</p>'
+          (selections || []).map(sel => '<span>' + sel + '</span>').join('') +
+          '</p>'
         : '') + element.innerHTML.replace(/&nbsp;/g, ' ');
 
     this.dataChanged.emit(this.data);

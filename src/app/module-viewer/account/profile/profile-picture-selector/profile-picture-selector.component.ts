@@ -13,8 +13,8 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./profile-picture-selector.component.sass']
 })
 export class ProfilePictureSelectorComponent implements OnInit {
-  imageChangedEvent: string = '';
-  croppedImage: string = '';
+  imageChangedEvent = '';
+  croppedImage = '';
   @Output() imageUploaded = new EventEmitter();
 
   saving: Subscription = null;
@@ -36,12 +36,13 @@ export class ProfilePictureSelectorComponent implements OnInit {
   }
 
   dataURItoBlob(dataURI: string) {
-      const binary = atob(dataURI.split(',')[1]);
-      const array = [];
-      for (let i = 0; i < binary.length; i++) {
-          array.push(binary.charCodeAt(i));
-      }
-      return new Blob([new Uint8Array(array)], {type: 'image/jpeg'});
+    const binary = atob(dataURI.split(',')[1]);
+    const array = [];
+    for (let i = 0; i < binary.length; i++) {
+      array.push(binary.charCodeAt(i));
+    }
+
+    return new Blob([new Uint8Array(array)], { type: 'image/jpeg' });
   }
 
   upload() {
@@ -49,18 +50,26 @@ export class ProfilePictureSelectorComponent implements OnInit {
 
     this.userService.presignedProfilePictureUpload(type).subscribe(
       (res: PresignedProfilePictureUrl) => {
-        const {url, key} = res;
+        const { url, key } = res;
         const buffer = this.dataURItoBlob(this.croppedImage);
-        this.saving = this.http.put(url, buffer, {headers: {
-          'Content-Type': 'image/' + type,
-          'Content-Encoding': 'base64'
-        }}).pipe(first()).subscribe(() => {
-          this.imageUploaded.emit(key);
-        });
-      }
-      ,
-      (e) => {
-        if (e.error && e.error.failure && e.error.failure === 'INVALID_EXTENSION') {
+        this.saving = this.http
+          .put(url, buffer, {
+            headers: {
+              'Content-Type': 'image/' + type,
+              'Content-Encoding': 'base64'
+            }
+          })
+          .pipe(first())
+          .subscribe(() => {
+            this.imageUploaded.emit(key);
+          });
+      },
+      e => {
+        if (
+          e.error &&
+          e.error.failure &&
+          e.error.failure === 'INVALID_EXTENSION'
+        ) {
           this.toastr.error('Invalid file extension');
         } else {
           this.toastr.error('Could not upload picture');

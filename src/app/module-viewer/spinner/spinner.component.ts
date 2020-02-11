@@ -7,12 +7,9 @@ import { Subscription } from 'rxjs';
   styleUrls: ['./spinner.component.sass']
 })
 export class SpinnerComponent implements OnInit {
-
   @Input() sub: Subscription;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

@@ -235,4 +235,4 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
   ],
   bootstrap: [ModuleViewerRootComponent]
 })
-export class ModuleViewerModule { }
+export class ModuleViewerModule {}

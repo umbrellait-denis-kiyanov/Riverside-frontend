@@ -6,8 +6,7 @@ import { Component } from '@angular/core';
   styleUrls: ['./example_downgrade.component.sass']
 })
 export class ExampleDowngradeComponent {
-
-  counter: number = 0;
+  counter = 0;
 
   constructor() {
     console.log('const');
@@ -19,5 +18,4 @@ export class ExampleDowngradeComponent {
   start(): void {
     console.log('starting');
   }
-
 }

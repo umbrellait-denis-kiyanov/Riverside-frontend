@@ -6,9 +6,9 @@ export interface FinalFeedbackTemplateData extends TemplateContentDataBase {
     title: string;
     instructions: string;
     steps: Array<{
-      sufix: string,
+      sufix: string;
       title: string;
-    }>
+    }>;
   };
 }
 

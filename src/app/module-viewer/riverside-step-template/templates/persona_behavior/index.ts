@@ -11,9 +11,9 @@ export interface PersonaBehaviorTemplateData extends TemplateContentDataBase {
     behavior: string;
     formatAsList: boolean;
     selection_matrix: Array<{
-      question: string,
-      options: Array<{option: string}>
-    }>
+      question: string;
+      options: Array<{ option: string }>;
+    }>;
   };
 }
 

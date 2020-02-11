@@ -10,9 +10,7 @@ export class E3RequiredComponent implements OnInit {
   @Input() formGroup: FormGroup;
   @Input() controlName: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

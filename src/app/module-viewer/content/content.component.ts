@@ -44,7 +44,7 @@ export class ContentComponent implements OnInit, OnDestroy {
     private navService: ModuleNavService,
     private iceService: IceService,
     private leftMenuService: LeftMenuService
-  ) { }
+  ) {}
 
   ngOnDestroy() {
     this.routeWatch.unsubscribe();
@@ -53,9 +53,11 @@ export class ContentComponent implements OnInit, OnDestroy {
   ngOnInit() {
     this.me = this.userService.me;
 
-    this.routeWatch = this.route.params.pipe(filter(params => params.stepId)).subscribe(
-      params => this.navService.step.current = Number(params.stepId)
-    );
+    this.routeWatch = this.route.params
+      .pipe(filter(params => params.stepId))
+      .subscribe(
+        params => (this.navService.step.current = Number(params.stepId))
+      );
 
     this.moduleContent$ = combineLatest(
       this.navService.organization$,
@@ -63,38 +65,75 @@ export class ContentComponent implements OnInit, OnDestroy {
       this.navService.step$,
       this.moduleService.moduleChanged$
     ).pipe(
-      switchMap(([org, module, step]) => this.moduleContentService.load(module, step, org).pipe(
-        catchError((err: HttpErrorResponse) => {
-          if (err.error.code === 'MODULE_DISABLED') {
-            this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
-            return throwError(err);
-          } else {
-            return this.navService.moduleData$.pipe(take(1), switchMap(moduleData => {
-              const firstStep = (
-                moduleData.steps.find(s => !s.is_section_break && this.navService.step.current === s.id) ||
-                moduleData.steps.find(s => !s.is_section_break)
-              ).id;
-              this.navService.goToStep(firstStep);
-              return this.moduleContentService.load(moduleData.id, firstStep, org);
-            }));
-          }
-        })
-      )),
-      tap(content => {
-        this.navService.moduleDataReplay$.pipe(
-          filter(module => module.status.org_id === this.navService.lastOrganization.current),
-          take(1)
-        ).subscribe(moduleData => {
-          if (!moduleData.status || !moduleData.status.is_activated ||
-            moduleData.status.org_id !== this.navService.lastOrganization.current) {
-            this.router.navigate(['dashboard', this.navService.lastOrganization.current]);
-            return;
-          }
+      switchMap(([org, module, step]) =>
+        this.moduleContentService.load(module, step, org).pipe(
+          catchError((err: HttpErrorResponse) => {
+            if (err.error.code === 'MODULE_DISABLED') {
+              this.router.navigate([
+                'dashboard',
+                this.navService.lastOrganization.current
+              ]);
 
-          if ((moduleData.steps.find(step => step.id === content.step_id) || { isLocked: true }).isLocked) {
-            this.navService.previousStep();
-          }
-        });
+              return throwError(err);
+            } else {
+              return this.navService.moduleData$.pipe(
+                take(1),
+                switchMap(moduleData => {
+                  const firstStep = (
+                    moduleData.steps.find(
+                      s =>
+                        !s.is_section_break &&
+                        this.navService.step.current === s.id
+                    ) || moduleData.steps.find(s => !s.is_section_break)
+                  ).id;
+                  this.navService.goToStep(firstStep);
+
+                  return this.moduleContentService.load(
+                    moduleData.id,
+                    firstStep,
+                    org
+                  );
+                })
+              );
+            }
+          })
+        )
+      ),
+      tap(content => {
+        this.navService.moduleDataReplay$
+          .pipe(
+            filter(
+              module =>
+                module.status.org_id ===
+                this.navService.lastOrganization.current
+            ),
+            take(1)
+          )
+          .subscribe(moduleData => {
+            if (
+              !moduleData.status ||
+              !moduleData.status.is_activated ||
+              moduleData.status.org_id !==
+                this.navService.lastOrganization.current
+            ) {
+              this.router.navigate([
+                'dashboard',
+                this.navService.lastOrganization.current
+              ]);
+
+              return;
+            }
+
+            if (
+              (
+                moduleData.steps.find(step => step.id === content.step_id) || {
+                  isLocked: true
+                }
+              ).isLocked
+            ) {
+              this.navService.previousStep();
+            }
+          });
       }),
       tap(this.render.bind(this))
     );
@@ -104,17 +143,26 @@ export class ContentComponent implements OnInit, OnDestroy {
 
   render(moduleContent: ModuleContent) {
     const { feedback_requested, feedback_started, can_modify } = moduleContent;
-    const is_riverside_managing_director = this.me.permissions.riversideProvideFeedback;
+    const is_riverside_managing_director = this.me.permissions
+      .riversideProvideFeedback;
 
-    if (feedback_requested && !feedback_started && is_riverside_managing_director) {
-      this.moduleService.feedbackStarted({ id: moduleContent.module_id }).subscribe();
+    if (
+      feedback_requested &&
+      !feedback_started &&
+      is_riverside_managing_director
+    ) {
+      this.moduleService
+        .feedbackStarted({ id: moduleContent.module_id })
+        .subscribe();
     }
 
     this.canModify = can_modify;
 
-    this.iceService.shouldShowWarning = moduleContent.is_approved && !is_riverside_managing_director;
+    this.iceService.shouldShowWarning =
+      moduleContent.is_approved && !is_riverside_managing_director;
 
-    moduleContent.disabled = (!is_riverside_managing_director && feedback_started) || !can_modify;
+    moduleContent.disabled =
+      (!is_riverside_managing_director && feedback_started) || !can_modify;
 
     this.templateData = new TemplateContentData({
       data: moduleContent,

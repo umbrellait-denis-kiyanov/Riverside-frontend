@@ -8,7 +8,7 @@ import { ToastrService } from 'ngx-toastr';
 const ERROR_MESSAGES = {
   INVALID_PASSWORD: 'New password is invalid',
   PASSWORDS_DONT_MATCH: 'Passwords should match',
-  CURRENT_PASSWORD_INVALID: 'Current password is invalid',
+  CURRENT_PASSWORD_INVALID: 'Current password is invalid'
 };
 
 @Component({
@@ -31,31 +31,33 @@ export class ChangePasswordComponent implements OnInit {
     this.form = this.formBuilder.group({
       curPwd: ['', Validators.required],
       newPwd: ['', Validators.required],
-      newPwd2: ['', Validators.required],
+      newPwd2: ['', Validators.required]
     });
   }
 
   save() {
     if (this.form.valid) {
       this.error = '';
-      this.saving = this.userService.updatePassword(this.form.value).pipe(first()).subscribe(
-        () => {
-          this.toastr.success('Saved!');
-        },
-        (e) => {
-          this.error = ERROR_MESSAGES[e.error.failure];
+      this.saving = this.userService
+        .updatePassword(this.form.value)
+        .pipe(first())
+        .subscribe(
+          () => {
+            this.toastr.success('Saved!');
+          },
+          e => {
+            this.error = ERROR_MESSAGES[e.error.failure];
 
-          if (e.error.failure === 'PASSWORDS_DONT_MATCH') {
-            this.form.controls.newPwd2.setErrors({incorrect: true});
-            this.form.controls.newPwd.setErrors({incorrect: true});
-          }
+            if (e.error.failure === 'PASSWORDS_DONT_MATCH') {
+              this.form.controls.newPwd2.setErrors({ incorrect: true });
+              this.form.controls.newPwd.setErrors({ incorrect: true });
+            }
 
-          if (e.error.failure === 'CURRENT_PASSWORD_INVALID') {
-            this.form.controls.curPwd.setErrors({incorrect: true});
+            if (e.error.failure === 'CURRENT_PASSWORD_INVALID') {
+              this.form.controls.curPwd.setErrors({ incorrect: true });
+            }
           }
-        }
-      );
+        );
     }
   }
-
 }

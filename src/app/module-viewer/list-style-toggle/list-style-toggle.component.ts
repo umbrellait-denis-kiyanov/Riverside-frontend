@@ -6,7 +6,6 @@ import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
   styleUrls: ['./list-style-toggle.component.sass']
 })
 export class ListStyleToggleComponent implements OnInit {
-
   state: 'grid' | 'list';
 
   @Input()
@@ -21,9 +20,7 @@ export class ListStyleToggleComponent implements OnInit {
 
   @Output() activeChange = new EventEmitter();
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

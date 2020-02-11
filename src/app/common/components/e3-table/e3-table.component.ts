@@ -1,5 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
-import { E3TableHeader, E3TableData, E3TableHeaderCol, E3TableDataRow, E3TableCell } from '.';
+import {
+  E3TableHeader,
+  E3TableData,
+  E3TableHeaderCol,
+  E3TableDataRow,
+  E3TableCell
+} from '.';
 import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
 import { map } from 'rxjs/operators';
 
@@ -31,6 +37,7 @@ class SortBy {
     return data.sort((a, b) => {
       const aString = a[this.id] ? a[this.id].toString() : '';
       const bString = b[this.id] ? b[this.id].toString() : '';
+
       return aString.localeCompare(bString.toString()) * this.orderMult;
     });
   }
@@ -44,27 +51,30 @@ class SortBy {
 export class E3TableComponent implements OnInit {
   @Input() header: E3TableHeader;
   @Input() data: Observable<E3TableData>;
-  @Input() sortable: boolean = false;
+  @Input() sortable = false;
 
   sortBy = new SortBy();
 
   tableData$: Observable<E3TableData>;
 
   ngOnInit() {
-    this.tableData$ = combineLatest(this.data, this.sortBy.getObservable()).pipe(
+    this.tableData$ = combineLatest(
+      this.data,
+      this.sortBy.getObservable()
+    ).pipe(
       map(([data]) =>
-        (this.sortable ? this.sortBy.sort(data) : data)
-          .map(row => {
-            row.cells = row.cells.map((cell, index) => {
-              const headerCol = this.header[index];
-              cell.formattedValue = headerCol.transform ? headerCol.transform(cell.value) : cell.value;
+        (this.sortable ? this.sortBy.sort(data) : data).map(row => {
+          row.cells = row.cells.map((cell, index) => {
+            const headerCol = this.header[index];
+            cell.formattedValue = headerCol.transform
+              ? headerCol.transform(cell.value)
+              : cell.value;
 
-              return cell;
-            });
+            return cell;
+          });
 
-            return row;
-          }
-        )
+          return row;
+        })
       )
     );
   }
@@ -75,7 +85,19 @@ export class E3TableComponent implements OnInit {
     }
   }
 
-  cellClicked(cell: E3TableCell, col: E3TableHeaderCol, row: E3TableDataRow, rowIndex: number, colIndex: number) {
-    (cell.onClick || row.onClick || (_ => {}))(cell, col, row, rowIndex, colIndex);
+  cellClicked(
+    cell: E3TableCell,
+    col: E3TableHeaderCol,
+    row: E3TableDataRow,
+    rowIndex: number,
+    colIndex: number
+  ) {
+    (cell.onClick || row.onClick || (_ => {}))(
+      cell,
+      col,
+      row,
+      rowIndex,
+      colIndex
+    );
   }
 }

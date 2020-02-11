@@ -7,14 +7,20 @@ import { GenericTemplateData, TemplateParams } from '.';
   selector: 'app-generic',
   templateUrl: './generic.component.html',
   styleUrls: ['./generic.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => GenericTemplateComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => GenericTemplateComponent)
+    }
+  ]
 })
 export class GenericTemplateComponent extends TemplateComponent {
   params = TemplateParams;
   contentData: GenericTemplateData['template_params_json'];
 
   protected init() {
-    this.contentData = (this.data.data.template_params_json as GenericTemplateData['template_params_json']);
+    this.contentData = this.data.data
+      .template_params_json as GenericTemplateData['template_params_json'];
   }
 
   getDescription() {

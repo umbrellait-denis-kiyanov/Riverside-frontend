@@ -60,7 +60,7 @@ const hardCodePictures = (user: User) => {
     case 'jderosa@safebuilt.com':
       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/jderosa.jpg';
     case 'dhaynes@riversidecompany.com':
-       return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg';
+      return 'https://riverside-seagage.s3-us-west-2.amazonaws.com/HaynesDanWebsite.jpg';
     default:
       return null;
   }
@@ -74,13 +74,14 @@ export const menus: MenusInterface = [
           const src = usr.profile_picture || hardCodePictures(usr);
           if (src) {
             return `<img src=${src} style="width: 35px; height: 35px; border-radius: 35px">`;
-          } else { return `<div class="letter-image">${usr.abbreviation}</div>`; }
-
+          } else {
+            return `<div class="letter-image">${usr.abbreviation}</div>`;
+          }
         })
       );
     },
     label: 'ACCOUNT',
-    link: '/account',
+    link: '/account'
   },
   {
     'mat-icon': 'business_center',
@@ -92,22 +93,20 @@ export const menus: MenusInterface = [
     'mat-icon': 'dashboard',
     label: 'SALES EXCELLENCE TRANSFORMATIONAL ROADMAP',
     linkFn(nav: ModuleNavService) {
-      return nav.organization$.pipe(
-        map(org => `/dashboard/${org}`)
-      );
+      return nav.organization$.pipe(map(org => `/dashboard/${org}`));
     },
     restrict: ({ user }) => user.permissions.riversideSalesDashboard
   },
   {
     'mat-icon': 'view_module',
     labelFn: (nav: ModuleNavService) => {
-      return nav.moduleDataReplay$.pipe(
-        map(mod => mod.name.toUpperCase())
-      );
+      return nav.moduleDataReplay$.pipe(map(mod => mod.name.toUpperCase()));
     },
     linkFn(nav: ModuleNavService) {
       return nav.moduleDataReplay$.pipe(
-        map(orgModule => `/org/${orgModule.status.org_id}/module/${orgModule.id}`)
+        map(
+          orgModule => `/org/${orgModule.status.org_id}/module/${orgModule.id}`
+        )
       );
     }
   },
@@ -115,9 +114,7 @@ export const menus: MenusInterface = [
     'mat-icon': 'build',
     label: 'EDITOR',
     linkFn(nav: ModuleNavService) {
-      return nav.module$.pipe(
-        map(mod => `/builder/${mod}`)
-      );
+      return nav.module$.pipe(map(mod => `/builder/${mod}`));
     },
     restrict: ({ user }) => user.permissions.riversideModuleEditor
   },
@@ -134,15 +131,15 @@ export const menus: MenusInterface = [
     label: 'INBOX',
     link: '/inbox',
     counter: 0,
-    restrict: ({ user }) => user.permissions.riversideRequestFeedback || user.permissions.riversideProvideFeedback
+    restrict: ({ user }) =>
+      user.permissions.riversideRequestFeedback ||
+      user.permissions.riversideProvideFeedback
   },
   {
     'mat-icon': 'assessment',
     label: 'ASSESSMENT',
     linkFn(nav: ModuleNavService) {
-      return nav.organization$.pipe(
-        map(org => `/org/${org}/assessment`)
-      );
+      return nav.organization$.pipe(map(org => `/org/${org}/assessment`));
     },
     restrict: ({ user }) => true
   }

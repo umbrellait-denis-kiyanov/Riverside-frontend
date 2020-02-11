@@ -1,8 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Router, ActivatedRoute } from '@angular/router';
 
-
-
 interface Tab {
   display: string;
   key: string;
@@ -25,14 +23,9 @@ export class MainComponent implements OnInit {
 
   selectedTab: Tab = this.tabs[0];
 
-  constructor(
-    private router: Router,
-    private activatedRoute: ActivatedRoute
-  ) { }
+  constructor(private router: Router, private activatedRoute: ActivatedRoute) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   onClickTab(tabKey: string) {
     const tab = this.tabs.find(t => t.key === tabKey);

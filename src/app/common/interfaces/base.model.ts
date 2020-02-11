@@ -1,4 +1,3 @@
-
 export default class BaseModel {
   public static fromObject<T extends BaseModel>(data: object): T {
     const inst: T = new this() as T;
@@ -8,10 +7,11 @@ export default class BaseModel {
         inst[prop] = transf[prop] ? transf[prop](data[prop], data) : data[prop];
       }
     });
+
     return inst;
   }
 
-  protected transform(): {[key: string]: (val: any, data: any) => any} {
+  protected transform(): { [key: string]: (val: any, data: any) => any } {
     return {};
   }
 }

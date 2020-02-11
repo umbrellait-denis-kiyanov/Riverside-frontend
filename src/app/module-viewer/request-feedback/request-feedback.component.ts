@@ -14,7 +14,6 @@ import Message from '../inbox/message.model';
   styleUrls: ['./request-feedback.component.sass']
 })
 export class RequestFeedbackComponent implements OnInit {
-
   module$: Observable<Module>;
   assessmentSessionId: number;
   submitting: Subscription;
@@ -27,15 +26,17 @@ export class RequestFeedbackComponent implements OnInit {
     private navService: ModuleNavService,
     private inboxService: InboxService,
     private router: Router
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.module$ = this.navService.moduleDataReplay$;
     if (this.router.url.includes('/assessment')) {
       this.isAssessmentPage = true;
-      this.navService.activeAssessmentSessionId$.pipe(take(1)).subscribe(assessmentSessionId => {
-        this.assessmentSessionId = assessmentSessionId;
-      });
+      this.navService.activeAssessmentSessionId$
+        .pipe(take(1))
+        .subscribe(assessmentSessionId => {
+          this.assessmentSessionId = assessmentSessionId;
+        });
     }
   }
 

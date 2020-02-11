@@ -1,4 +1,12 @@
-import { Component, OnInit, EventEmitter, Output, Input, OnChanges, SimpleChanges } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  EventEmitter,
+  Output,
+  Input,
+  OnChanges,
+  SimpleChanges
+} from '@angular/core';
 import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
 import { MatTabChangeEvent } from '@angular/material/tabs';
 
@@ -14,14 +22,10 @@ export class FeedbackSourceComponent implements OnInit {
   @Output() submit = new EventEmitter<string>(false);
 
   public Editor = InlineEditor;
-  tabs = [
-    'text',
-    'video',
-    'audio'
-  ];
+  tabs = ['text', 'video', 'audio'];
   activeTabIndex = 0;
 
-  _message: string = '';
+  _message = '';
   get message() {
     return this._message;
   }
@@ -31,7 +35,7 @@ export class FeedbackSourceComponent implements OnInit {
     this.messageChanged.emit(msg);
   }
 
-  _currentTab: string = 'text';
+  _currentTab = 'text';
   get currentTab() {
     return this._currentTab;
   }
@@ -49,7 +53,7 @@ export class FeedbackSourceComponent implements OnInit {
     return this.tabs[this.activeTabIndex];
   }
 
-  constructor() { }
+  constructor() {}
 
   ngOnInit() {
     this.currentTabChanged.emit(this.activeTab);
@@ -74,5 +78,4 @@ export class FeedbackSourceComponent implements OnInit {
     this.currentTab = this.activeTab;
     this.currentTabChanged.emit(this.currentTab);
   }
-
 }

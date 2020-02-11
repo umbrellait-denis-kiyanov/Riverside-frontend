@@ -9,9 +9,7 @@ export class LetterImageComponent implements OnInit {
   @Input() letter: string;
   @Input() className: string;
 
-  constructor() { }
+  constructor() {}
 
-  ngOnInit() {
-  }
-
+  ngOnInit() {}
 }

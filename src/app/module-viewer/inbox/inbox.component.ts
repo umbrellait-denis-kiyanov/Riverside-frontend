@@ -13,8 +13,7 @@ import { ToastrService } from 'ngx-toastr';
   styleUrls: ['./inbox.component.sass']
 })
 export class InboxComponent implements OnInit {
-
-  feedbackMessage: string = '';
+  feedbackMessage = '';
   routerLink: string[];
   submitting: Subscription;
   canProvideFeedback = false;
@@ -27,7 +26,7 @@ export class InboxComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.canProvideFeedback = this.userService.me.permissions.riversideProvideFeedback;
@@ -41,6 +40,7 @@ export class InboxComponent implements OnInit {
     return this.inboxService.load(id).pipe(
       map(message => {
         this.markAsReadIfNeeded(message);
+
         return this.prepareData(message);
       })
     );
@@ -57,21 +57,31 @@ export class InboxComponent implements OnInit {
       message.message = `<p>No message was provided.</p>`;
     }
 
-    this.routerLink = ['/org', String(message.to_org_id || message.from_org_id), 'module', String(message.module_id)];
+    this.routerLink = [
+      '/org',
+      String(message.to_org_id || message.from_org_id),
+      'module',
+      String(message.module_id)
+    ];
     if (message.step_id) {
-      this.routerLink = this.routerLink.concat(['step', String(message.step_id)]);
+      this.routerLink = this.routerLink.concat([
+        'step',
+        String(message.step_id)
+      ]);
     }
 
     return message;
   }
 
   provideFeedback(message: Message, text: string) {
-    this.submitting = this.inboxService.save({
-      assessment_session_id: message.assessment_session_id,
-      to_org_id: message.from_org_id,
-      module_id: message.module_id || 0,
-      parent_id: message.id,
-      message: text
-    }).subscribe();
+    this.submitting = this.inboxService
+      .save({
+        assessment_session_id: message.assessment_session_id,
+        to_org_id: message.from_org_id,
+        module_id: message.module_id || 0,
+        parent_id: message.id,
+        message: text
+      })
+      .subscribe();
   }
 }

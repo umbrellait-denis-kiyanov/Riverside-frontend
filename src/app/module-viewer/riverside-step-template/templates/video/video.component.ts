@@ -6,7 +6,12 @@ import { VideoTemplateData, TemplateParams } from '.';
   selector: 'app-video',
   templateUrl: './video.component.html',
   styleUrls: ['./video.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => VideoComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => VideoComponent)
+    }
+  ]
 })
 export class VideoComponent extends TemplateComponent implements OnInit {
   params = TemplateParams;
@@ -29,7 +34,8 @@ export class VideoComponent extends TemplateComponent implements OnInit {
   }
 
   protected init() {
-    this.contentData = this.data.data.template_params_json as VideoTemplateData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as VideoTemplateData['template_params_json'];
 
     const url = this.contentData.videoUrl;
     if (url.indexOf('vimeo.com') > -1) {
@@ -38,7 +44,10 @@ export class VideoComponent extends TemplateComponent implements OnInit {
       if (url.indexOf('player.vimeo.com') > -1) {
         this.embedUrl = url;
       } else {
-        const [id, ] = url.split('.com/').pop().split('/');
+        const [id] = url
+          .split('.com/')
+          .pop()
+          .split('/');
         this.embedUrl = 'https://player.vimeo.com/video/' + id + '?portrait=0';
       }
     }

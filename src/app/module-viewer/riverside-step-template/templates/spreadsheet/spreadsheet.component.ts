@@ -3,7 +3,10 @@ import { TemplateComponent } from '../template-base.class';
 import { SpreadsheetTemplateData, TemplateParams } from '.';
 import * as Handsontable from 'handsontable';
 import { Subscription } from 'rxjs';
-import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/module.interface';
+import {
+  SpreadsheetResource,
+  TemplateInput
+} from 'src/app/common/interfaces/module.interface';
 import { tap } from 'rxjs/operators';
 import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
@@ -11,26 +14,29 @@ import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
 import { FormulaPlugin } from './formulaPlugin';
 
 // remove after upgrading to TypeScript 3.5.1+
-type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } &
-{ [x: string]: never, [x: number]: never })[keyof T]>;
+type Omit<T, K extends keyof T> = Pick<
+  T,
+  ({ [P in keyof T]: P } &
+    { [P in K]: never } & { [x: string]: never; [x: number]: never })[keyof T]
+>;
 
 // remove in case Handsontable is updated to 7+ (commercial version)
 type HandsontableCellChange = [number, string | number, any, any, any][];
 
 export interface HotNumericFormat {
   pattern: {
-    trimMantissa?: boolean,
-    thousandSeparated: boolean,
-    optionalMantissa?: boolean,
-    output?: string,
-    mantissa?: number
-  },
-  culture?: string
+    trimMantissa?: boolean;
+    thousandSeparated: boolean;
+    optionalMantissa?: boolean;
+    output?: string;
+    mantissa?: number;
+  };
+  culture?: string;
 }
 
-type HotCell = (Omit<Handsontable.GridSettings, 'numericFormat'> &
-{ validatorName: string } &
-{ numericFormat: HotNumericFormat });
+type HotCell = Omit<Handsontable.GridSettings, 'numericFormat'> & {
+  validatorName: string;
+} & { numericFormat: HotNumericFormat };
 
 class PercentageEditor extends Handsontable.editors.TextEditor {
   prepare(row, col, prop, td, originalValue, cellProperties) {
@@ -38,7 +44,7 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
   }
 
   getValue() {
-    return (parseFloat(this.TEXTAREA.value) / 100) || 0;
+    return parseFloat(this.TEXTAREA.value) / 100 || 0;
   }
 }
 
@@ -46,10 +52,14 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
   selector: 'app-spreadsheet',
   templateUrl: './spreadsheet.component.html',
   styleUrls: ['./spreadsheet.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => SpreadsheetComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => SpreadsheetComponent)
+    }
+  ]
 })
 export class SpreadsheetComponent extends TemplateComponent {
-
   params = TemplateParams;
 
   private spreadsheetService: SpreadsheetService;
@@ -69,7 +79,10 @@ export class SpreadsheetComponent extends TemplateComponent {
     editable: boolean;
     className: string;
     renderer: string;
-    validator?: (value: any, callback: (valid: boolean) => void) => void | RegExp
+    validator?: (
+      value: any,
+      callback: (valid: boolean) => void
+    ) => void | RegExp;
   }[][];
 
   isRendered = false;
@@ -84,32 +97,44 @@ export class SpreadsheetComponent extends TemplateComponent {
   init() {
     this.spreadsheetService = this.injectorObj.get(SpreadsheetService);
 
-    const contentData = this.data.data.template_params_json as SpreadsheetTemplateData['template_params_json'];
+    const contentData = this.data.data
+      .template_params_json as SpreadsheetTemplateData['template_params_json'];
 
     this.input = this.getInput('spreadsheet', 1);
 
     const visibleRowConfig = this.textContent(contentData.visibleRows);
-    this.visibleRows = visibleRowConfig ? visibleRowConfig.split(',').reduce((rows, intv) => {
-      const highLow = intv.split('-');
-      for (let idx = Number(highLow[0]) - 1; idx <= Number(highLow[highLow.length - 1]) - 1; idx++) {
-        rows.push(idx);
-      }
+    this.visibleRows = visibleRowConfig
+      ? visibleRowConfig.split(',').reduce((rows, intv) => {
+          const highLow = intv.split('-');
+          for (
+            let idx = Number(highLow[0]) - 1;
+            idx <= Number(highLow[highLow.length - 1]) - 1;
+            idx++
+          ) {
+            rows.push(idx);
+          }
 
-      return rows;
-    }, []) : [];
+          return rows;
+        }, [])
+      : [];
 
     this.contentData = contentData;
 
-    this.keepFormulas = this.visibleRows.length > 0 && !this.contentData.calculateFormulasOnServer;
+    this.keepFormulas =
+      this.visibleRows.length > 0 &&
+      !this.contentData.calculateFormulasOnServer;
 
     this.getSpreadsheetObservable().subscribe();
 
     this.previewRows = Array(this.visibleRows.length || 50).fill(undefined);
     this.previewCols = Array(14).fill(undefined);
 
-    this.injectorObj.get(LeftMenuService).onExpand.pipe(this.whileExists()).subscribe((state: boolean) => {
-      window.dispatchEvent(new Event('resize'));
-    });
+    this.injectorObj
+      .get(LeftMenuService)
+      .onExpand.pipe(this.whileExists())
+      .subscribe((state: boolean) => {
+        window.dispatchEvent(new Event('resize'));
+      });
 
     if (this.keepFormulas) {
       // @ts-ignore
@@ -122,143 +147,203 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   private getRealRow(fullIndex) {
-    const idx = this.visibleRows.length ? this.visibleRows.indexOf(fullIndex) : fullIndex;
+    const idx = this.visibleRows.length
+      ? this.visibleRows.indexOf(fullIndex)
+      : fullIndex;
+
     return idx > -1 ? idx : null;
   }
 
   private getSpreadsheetObservable() {
-    return this.spreadsheetService.getSpreadsheet(this.input, this.contentData.apiResource, this.visibleRows, this.keepFormulas).pipe(
-      tap(data => {
-        if (!(data.data instanceof Array)) {
-          data.data = [];
-        }
-
-        this.cellSettings = data.data.map((row) => row.map(() => ({ editable: false, className: '', renderer: '' })));
-
-        this.types = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => {
-          if (null === cell) {
-            return null;
+    return this.spreadsheetService
+      .getSpreadsheet(
+        this.input,
+        this.contentData.apiResource,
+        this.visibleRows,
+        this.keepFormulas
+      )
+      .pipe(
+        tap(data => {
+          if (!(data.data instanceof Array)) {
+            data.data = [];
           }
 
-          let cellType = null;
+          this.cellSettings = data.data.map(row =>
+            row.map(() => ({ editable: false, className: '', renderer: '' }))
+          );
 
-          if (cell.match(/^[\.0-9]+\%$/)) {
-            cell = (parseFloat(cell) / 100).toString();
-            cellType = 'percent';
-          } else
-            if (cell.match(/^\$[ ]{0,}[\.,0-9]+$/)) {
-              cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
-              cellType = 'currency';
-            } else
-              if (cell.match(/^[\.,0-9]+$/)) {
+          this.types = data.data.map((row, rowIndex) =>
+            row.map((cell, cellIndex) => {
+              if (null === cell) {
+                return null;
+              }
+
+              let cellType = null;
+
+              if (cell.match(/^[\.0-9]+\%$/)) {
+                cell = (parseFloat(cell) / 100).toString();
+                cellType = 'percent';
+              } else if (cell.match(/^\$[ ]{0,}[\.,0-9]+$/)) {
+                cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
+                cellType = 'currency';
+              } else if (cell.match(/^[\.,0-9]+$/)) {
                 cell = parseFloat(cell.split(/[^\.0-9]/).join('')).toString();
                 cellType = 'numeric';
-              } else
-                if (cell.substr(0, 1) === '=') {
-                  cellType = 'numeric';
-                }
-
-          data.data[rowIndex][cellIndex] = cell;
-
-          return cellType;
-        }));
-
-        this.rounding = data.data.map((row, rowIndex) => row.map((cell, cellIndex) => 2));
-
-        const types = { p: 'percent', c: 'currency', n: 'numeric' };
-        data.types.forEach((row, rowIndex) =>
-          row.forEach((type, cellIndex) => {
-            if (type.length === 2) {
-              this.types[rowIndex][cellIndex] = types[type[0]];
-              this.rounding[rowIndex][cellIndex] = Number(type[1]);
-            }
-          })
-        );
-
-        this.cellSettings = data.meta.editable.reduce((editable, range) => {
-          const row = this.getRealRow(parseInt(range, 10) - 1);
-
-          if (row === null) {
-            return editable;
-          }
-
-          const cellRange = range.split(/[0-9]/).join('').split('-');
-
-          for (let idx = cellRange[0].charCodeAt(0) - 65; idx <= cellRange[cellRange.length - 1].charCodeAt(0) - 65; idx++) {
-            editable[row][idx].editable = true;
-          }
-
-          return editable;
-        }, this.cellSettings);
-
-        const metaConfig = (field: string, callback) => {
-          this.cellSettings = Object.entries(data.meta[field]).reduce((settings, [range, value]) => {
-            if ('*' === range.substr(-1)) {
-              range = range.slice(0, -1) + 'A-' + data.meta.maxColumn;
-            }
-            const rowRange = range.match(/[\-0-9]+/)[0].split('-');
-            const colRange = range.split(/[0-9]/).join('').match(/[\-A-Z]+/)[0].split('-').filter(a => a);
-
-            for (let col = colRange[0].charCodeAt(0) - 65; col <= colRange[colRange.length - 1].charCodeAt(0) - 65; col++) {
-              for (let row = Number(rowRange[0]); row <= Number(rowRange[rowRange.length - 1]); row++) {
-                const realRow = this.getRealRow(row - 1);
-                if (realRow !== null) {
-                  callback(settings[realRow][col], value, realRow, col);
-                }
+              } else if (cell.substr(0, 1) === '=') {
+                cellType = 'numeric';
               }
-            }
 
-            return settings;
-          }, this.cellSettings);
-        };
+              data.data[rowIndex][cellIndex] = cell;
 
-        metaConfig('types', (cell, type, row, col) => this.types[row][col] = type);
-        metaConfig('formatting', (cell, classNames) => cell.className += ' ' + classNames);
-        metaConfig('renderer', (cell, renderer) => cell.renderer = renderer);
-        metaConfig('requireValue', (cell, value) => cell.validator = (cellValue, cb) => {
-          cb(value === cellValue || (Math.abs(Number(value) - Number(cellValue)) < 0.0001));
-        });
-
-        this.sheet = data;
-
-        const totalWidth = data.meta.colWidths.reduce((a, b) => a + b);
-
-        this.settings = {
-          autoRowSize: false,
-          autoColumnSize: false,
-          data: this.sheet.data,
-          rowHeaders: false,
-          colHeaders: false,
-          cells: this.formatCell.bind(this),
-          afterRender: (() => {
-            this.isRendered = true;
-            setTimeout(() => this.hotInstance.validateCells(() => { }));
-          }).bind(this),
-          beforeChange: this.beforeChange.bind(this),
-          afterChange: this.afterChange.bind(this),
-          beforeKeyDown: ((event: KeyboardEvent) => {
-            // tslint:disable-next-line
-            if (46 === event.keyCode || 8 === event.keyCode) {
-              event.stopImmediatePropagation();
-              (event.target as HTMLInputElement).value = '0';
-              const hot = this.hotInstance;
-              hot.getSelected().forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
-            }
-          }).bind(this),
-          invalidCellClassName: 'invalidCell',
-          rowHeights: () => this.widthContainer.nativeElement.clientWidth / 46,
-          colWidths: ((col) => {
-            return data.meta.colWidths[col] * ((this.widthContainer.nativeElement.clientWidth + 20) / totalWidth);
-          }).bind(this),
-          mergeCells: this.sheet.meta.mergeCells
-            .filter(cell => this.getRealRow(cell.row) !== null)
-            .map(cell => {
-              cell.row = this.getRealRow(cell.row);
-              return cell;
+              return cellType;
             })
-        };
-      }
-      ));
+          );
+
+          this.rounding = data.data.map((row, rowIndex) =>
+            row.map((cell, cellIndex) => 2)
+          );
+
+          const types = { p: 'percent', c: 'currency', n: 'numeric' };
+          data.types.forEach((row, rowIndex) =>
+            row.forEach((type, cellIndex) => {
+              if (type.length === 2) {
+                this.types[rowIndex][cellIndex] = types[type[0]];
+                this.rounding[rowIndex][cellIndex] = Number(type[1]);
+              }
+            })
+          );
+
+          this.cellSettings = data.meta.editable.reduce((editable, range) => {
+            const row = this.getRealRow(parseInt(range, 10) - 1);
+
+            if (row === null) {
+              return editable;
+            }
+
+            const cellRange = range
+              .split(/[0-9]/)
+              .join('')
+              .split('-');
+
+            for (
+              let idx = cellRange[0].charCodeAt(0) - 65;
+              idx <= cellRange[cellRange.length - 1].charCodeAt(0) - 65;
+              idx++
+            ) {
+              editable[row][idx].editable = true;
+            }
+
+            return editable;
+          }, this.cellSettings);
+
+          const metaConfig = (field: string, callback) => {
+            this.cellSettings = Object.entries(data.meta[field]).reduce(
+              (settings, [range, value]) => {
+                if ('*' === range.substr(-1)) {
+                  range = range.slice(0, -1) + 'A-' + data.meta.maxColumn;
+                }
+                const rowRange = range.match(/[\-0-9]+/)[0].split('-');
+                const colRange = range
+                  .split(/[0-9]/)
+                  .join('')
+                  .match(/[\-A-Z]+/)[0]
+                  .split('-')
+                  .filter(a => a);
+
+                for (
+                  let col = colRange[0].charCodeAt(0) - 65;
+                  col <= colRange[colRange.length - 1].charCodeAt(0) - 65;
+                  col++
+                ) {
+                  for (
+                    let row = Number(rowRange[0]);
+                    row <= Number(rowRange[rowRange.length - 1]);
+                    row++
+                  ) {
+                    const realRow = this.getRealRow(row - 1);
+                    if (realRow !== null) {
+                      callback(settings[realRow][col], value, realRow, col);
+                    }
+                  }
+                }
+
+                return settings;
+              },
+              this.cellSettings
+            );
+          };
+
+          metaConfig(
+            'types',
+            (cell, type, row, col) => (this.types[row][col] = type)
+          );
+          metaConfig(
+            'formatting',
+            (cell, classNames) => (cell.className += ' ' + classNames)
+          );
+          metaConfig(
+            'renderer',
+            (cell, renderer) => (cell.renderer = renderer)
+          );
+          metaConfig(
+            'requireValue',
+            (cell, value) =>
+              (cell.validator = (cellValue, cb) => {
+                cb(
+                  value === cellValue ||
+                    Math.abs(Number(value) - Number(cellValue)) < 0.0001
+                );
+              })
+          );
+
+          this.sheet = data;
+
+          const totalWidth = data.meta.colWidths.reduce((a, b) => a + b);
+
+          this.settings = {
+            autoRowSize: false,
+            autoColumnSize: false,
+            data: this.sheet.data,
+            rowHeaders: false,
+            colHeaders: false,
+            cells: this.formatCell.bind(this),
+            afterRender: (() => {
+              this.isRendered = true;
+              setTimeout(() => this.hotInstance.validateCells(() => {}));
+            }).bind(this),
+            beforeChange: this.beforeChange.bind(this),
+            afterChange: this.afterChange.bind(this),
+            beforeKeyDown: ((event: KeyboardEvent) => {
+              // tslint:disable-next-line
+              if (46 === event.keyCode || 8 === event.keyCode) {
+                event.stopImmediatePropagation();
+                (event.target as HTMLInputElement).value = '0';
+                const hot = this.hotInstance;
+                hot
+                  .getSelected()
+                  .forEach(sel => hot.setDataAtCell(sel[0], sel[1], 0));
+              }
+            }).bind(this),
+            invalidCellClassName: 'invalidCell',
+            rowHeights: () =>
+              this.widthContainer.nativeElement.clientWidth / 46,
+            colWidths: (col => {
+              return (
+                data.meta.colWidths[col] *
+                ((this.widthContainer.nativeElement.clientWidth + 20) /
+                  totalWidth)
+              );
+            }).bind(this),
+            mergeCells: this.sheet.meta.mergeCells
+              .filter(cell => this.getRealRow(cell.row) !== null)
+              .map(cell => {
+                cell.row = this.getRealRow(cell.row);
+
+                return cell;
+              })
+          };
+        })
+      );
   }
 
   getDescription() {
@@ -270,7 +355,9 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   validate() {
-    return !this.hot.container.nativeElement.querySelector('td.invalidCell:not(.dontValidate)');
+    return !this.hot.container.nativeElement.querySelector(
+      'td.invalidCell:not(.dontValidate)'
+    );
   }
 
   private formatCell(row: number, column: number) {
@@ -307,7 +394,7 @@ export class SpreadsheetComponent extends TemplateComponent {
           pattern: {
             trimMantissa: true,
             output: 'percent',
-            thousandSeparated: true,
+            thousandSeparated: true
           }
         };
 
@@ -319,7 +406,7 @@ export class SpreadsheetComponent extends TemplateComponent {
         cell.numericFormat = {
           pattern: {
             thousandSeparated: true,
-            optionalMantissa: true,
+            optionalMantissa: true
           }
         };
       }
@@ -346,7 +433,11 @@ export class SpreadsheetComponent extends TemplateComponent {
     return cell;
   }
 
-  private isEditChange(context, changes: HandsontableCellChange, source: string) {
+  private isEditChange(
+    context,
+    changes: HandsontableCellChange,
+    source: string
+  ) {
     // sometimes the context argument is not passed (HOT 6 only)
     if (!source) {
       source = (changes as unknown) as string;
@@ -355,7 +446,11 @@ export class SpreadsheetComponent extends TemplateComponent {
     return source === 'edit' || source === 'Autofill.fill';
   }
 
-  private beforeChange(context, changes: HandsontableCellChange, source: string) {
+  private beforeChange(
+    context,
+    changes: HandsontableCellChange,
+    source: string
+  ) {
     if (!this.isEditChange(context, changes, source)) {
       return;
     }
@@ -380,7 +475,11 @@ export class SpreadsheetComponent extends TemplateComponent {
     }
   }
 
-  private afterChange(context, changes: HandsontableCellChange, source: string) {
+  private afterChange(
+    context,
+    changes: HandsontableCellChange,
+    source: string
+  ) {
     if (!this.isEditChange(context, changes, source)) {
       return;
     }
@@ -449,8 +548,11 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   exportXls() {
     this.downloadProgress = true;
-    window.location.href = this.spreadsheetService.exportXlsUrl(this.input, this.contentData.apiResource);
+    window.location.href = this.spreadsheetService.exportXlsUrl(
+      this.input,
+      this.contentData.apiResource
+    );
 
-    setTimeout(_ => this.downloadProgress = false, 3000);
+    setTimeout(_ => (this.downloadProgress = false), 3000);
   }
 }

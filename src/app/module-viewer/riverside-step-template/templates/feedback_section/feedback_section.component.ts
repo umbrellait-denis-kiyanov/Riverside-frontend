@@ -8,7 +8,12 @@ import { TemplateParams } from '.';
   selector: 'app-feedback_section',
   templateUrl: './feedback_section.component.html',
   styleUrls: ['./feedback_section.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FeedbackSectionTemplateComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => FeedbackSectionTemplateComponent)
+    }
+  ]
 })
 export class FeedbackSectionTemplateComponent extends TemplateComponent {
   params = TemplateParams;
@@ -55,6 +60,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
         prefix: 'persona_behavior',
         sufix: step.sufix
       };
+
       return inputs;
     }, {});
   }
@@ -63,10 +69,12 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
     this.currentSection = sectionId;
   }
 
-  scrollTo(section: string ) {
+  scrollTo(section: string) {
     window.scrollBy({
-      top: document.querySelector('#' + section).getBoundingClientRect().top - 75,
-      left: 0, behavior: 'smooth'
+      top:
+        document.querySelector('#' + section).getBoundingClientRect().top - 75,
+      left: 0,
+      behavior: 'smooth'
     });
   }
 }

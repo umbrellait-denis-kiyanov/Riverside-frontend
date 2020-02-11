@@ -8,9 +8,15 @@ import { TemplateParams } from '.';
   selector: 'app-final-feedback',
   templateUrl: './final-feedback.component.html',
   styleUrls: ['./final-feedback.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FinalFeedbackComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => FinalFeedbackComponent)
+    }
+  ]
 })
-export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent implements OnInit  {
+export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent
+  implements OnInit {
   params = TemplateParams;
   contentData = data;
 
@@ -18,7 +24,8 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
     [
       {
         title: 'The Buying Process',
-        inputId: (index: number) => `persona_behavior_${index + 1}_buying_process`
+        inputId: (index: number) =>
+          `persona_behavior_${index + 1}_buying_process`
       }
     ],
     [
@@ -28,7 +35,8 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
       },
       {
         title: 'Common Objections',
-        inputId: (index: number) => `persona_behavior_${index + 1}_common_objections`
+        inputId: (index: number) =>
+          `persona_behavior_${index + 1}_common_objections`
       },
       {
         title: 'Goals',
@@ -50,7 +58,8 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent imp
       },
       {
         title: 'Trigger Events',
-        inputId: (index: number) => `persona_behavior_${index + 1}_trigger_events`
+        inputId: (index: number) =>
+          `persona_behavior_${index + 1}_trigger_events`
       }
     ]
   ];

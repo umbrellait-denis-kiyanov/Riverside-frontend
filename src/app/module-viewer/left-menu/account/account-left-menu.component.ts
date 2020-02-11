@@ -9,17 +9,14 @@ import { UserService } from 'src/app/common/services/user.service';
   styleUrls: ['./account-left-menu.component.sass']
 })
 export class AccountLeftMenuComponent implements OnInit {
-
-  @Input() width: number = 350;
+  @Input() width = 350;
 
   constructor(
     private leftMenuService: LeftMenuService,
     private userService: UserService
-  ) { }
+  ) {}
 
-  ngOnInit() {
-
-  }
+  ngOnInit() {}
 
   signout() {
     this.userService.signout().subscribe();

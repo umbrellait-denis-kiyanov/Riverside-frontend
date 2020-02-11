@@ -7,7 +7,12 @@ import { TemplateParams, AgeGenderTemplateData } from '.';
   selector: 'app-age-gender',
   templateUrl: './age-gender.component.html',
   styleUrls: ['./age-gender.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => AgeGenderComponent) }]
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => AgeGenderComponent)
+    }
+  ]
 })
 export class AgeGenderComponent extends TemplateComponent implements OnInit {
   params = TemplateParams;
@@ -30,7 +35,7 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
     },
     {
       id: 'education',
-      title: 'Typical education',
+      title: 'Typical education'
     }
   ];
 
@@ -43,7 +48,8 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
   }
 
   protected init() {
-    this.contentData = this.data.data.template_params_json as AgeGenderTemplateData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as AgeGenderTemplateData['template_params_json'];
     this.initIds();
   }
 
@@ -60,6 +66,10 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
   }
 
   traitInputs() {
-    return this.traits.reduce((traitInputs, trait) => traitInputs[trait.id] = { prefix: 'persona_' + trait.id }, {});
+    return this.traits.reduce(
+      (traitInputs, trait) =>
+        (traitInputs[trait.id] = { prefix: 'persona_' + trait.id }),
+      {}
+    );
   }
 }

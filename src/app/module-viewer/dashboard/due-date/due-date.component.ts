@@ -1,5 +1,8 @@
 import { Component, OnInit, Input, ViewChild } from '@angular/core';
-import { Module, Organization } from 'src/app/common/interfaces/module.interface';
+import {
+  Module,
+  Organization
+} from 'src/app/common/interfaces/module.interface';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
@@ -10,7 +13,6 @@ import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
   styleUrls: ['./due-date.component.sass']
 })
 export class DueDateComponent implements OnInit {
-
   @Input()
   module: Module;
 
@@ -21,17 +23,23 @@ export class DueDateComponent implements OnInit {
 
   minDate: NgbDateStruct;
 
-  constructor(private moduleService: ModuleService) { }
+  constructor(private moduleService: ModuleService) {}
 
   ngOnInit() {
     const today = new Date();
-    this.minDate = {year: today.getFullYear(), month: today.getMonth() + 1, day: today.getDate()};
+    this.minDate = {
+      year: today.getFullYear(),
+      month: today.getMonth() + 1,
+      day: today.getDate()
+    };
   }
 
   saveDueDate(module: Module) {
-    this.moduleService.setDueDate(module, module.status.due_date, this.organization.id).subscribe(newStatus => {
-      module.status = newStatus;
-    });
+    this.moduleService
+      .setDueDate(module, module.status.due_date, this.organization.id)
+      .subscribe(newStatus => {
+        module.status = newStatus;
+      });
   }
 
   toggle(e) {

@@ -11,7 +11,6 @@ import { Observable } from 'rxjs';
   styleUrls: ['./module-viewer-root.component.sass']
 })
 export class ModuleViewerRootComponent implements OnInit {
-
   me$: Observable<User>;
 
   me: User;
@@ -22,6 +21,7 @@ export class ModuleViewerRootComponent implements OnInit {
       map(user => {
         this.userService.setMeFromData(user);
         this.me = this.userService.me;
+
         return this.userService.me;
       })
     );
@@ -30,6 +30,4 @@ export class ModuleViewerRootComponent implements OnInit {
   ngOnInit() {
     // (document.querySelector('.loading-site-content') as HTMLElement).style.display = 'none';
   }
-
 }
-

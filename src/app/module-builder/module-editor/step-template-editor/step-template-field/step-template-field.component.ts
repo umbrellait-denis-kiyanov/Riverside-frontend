@@ -11,7 +11,6 @@ import { TemplateField } from '.';
   styleUrls: ['./step-template-field.component.sass']
 })
 export class StepTemplateFieldComponent implements OnInit {
-
   @Input() field: TemplateField;
   @Input() json: any; // @todo - a hot mess that somehow works
   @Input() change: EventEmitter<string> = new EventEmitter<string>();
@@ -26,7 +25,7 @@ export class StepTemplateFieldComponent implements OnInit {
 
   resourceValue$: Observable<string[]>;
 
-  constructor(private moduleService: ModuleService) { }
+  constructor(private moduleService: ModuleService) {}
 
   ngOnInit() {
     this.name = this.field[0];
@@ -37,8 +36,19 @@ export class StepTemplateFieldComponent implements OnInit {
       if (typeof this.json === 'object' && this.json !== null) {
         this.json = JSON.stringify(this.json);
         this.type = 'json';
-      } else if (['title', 'sufix', 'input_sufix', 'key', 'question', 'option', 'behavior', 'image'].includes(this.name) ||
-                  this.name.toLowerCase().indexOf('url') > -1) {
+      } else if (
+        [
+          'title',
+          'sufix',
+          'input_sufix',
+          'key',
+          'question',
+          'option',
+          'behavior',
+          'image'
+        ].includes(this.name) ||
+        this.name.toLowerCase().indexOf('url') > -1
+      ) {
         this.type = 'text-input';
       } else {
         this.json = this.json || '';
@@ -60,16 +70,20 @@ export class StepTemplateFieldComponent implements OnInit {
 
     if (this.name.substr(0, 11) === 'apiResource') {
       this.type = 'resource';
-      this.resourceValue$ = this.moduleService.getTemplateResources(0, 'spreadsheet');
+      this.resourceValue$ = this.moduleService.getTemplateResources(
+        0,
+        'spreadsheet'
+      );
     }
   }
 
   fieldTitle(fieldName: string) {
-    return fieldName.
-      split(/(?=[A-Z])/).join(' ').
-      split('_').
-      map(word => word[0].toUpperCase() + word.substr(1)).
-      join(' ');
+    return fieldName
+      .split(/(?=[A-Z])/)
+      .join(' ')
+      .split('_')
+      .map(word => word[0].toUpperCase() + word.substr(1))
+      .join(' ');
   }
 
   valueChange() {

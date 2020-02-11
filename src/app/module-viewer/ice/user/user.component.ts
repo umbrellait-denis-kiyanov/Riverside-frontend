@@ -15,7 +15,7 @@ export class UserComponent implements OnChanges {
   className: string;
   firstLetter: string;
 
-  constructor() { }
+  constructor() {}
 
   ngOnChanges() {
     this.className = 'b' + this.tracker.getUserStyle(this.user.id);

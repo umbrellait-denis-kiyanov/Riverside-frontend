@@ -1,19 +1,19 @@
 import BaseModel from './base.model';
 
 class User extends BaseModel {
-  name: string  = '';
-  fname: string = '';
-  lname: string = '';
-  email: string = '';
-  abbreviation: string = '';
-  id: string = '';
-  profile_picture: string = '';
+  name = '';
+  fname = '';
+  lname = '';
+  email = '';
+  abbreviation = '';
+  id = '';
+  profile_picture = '';
   permissions = {
     riversideRMCFDashboard: false,
     riversideSalesDashboard: false,
     riversideModuleEditor: false,
     riversideRequestFeedback: false,
-    riversideProvideFeedback: false,
+    riversideProvideFeedback: false
   };
 
   protected transform() {
@@ -23,9 +23,8 @@ class User extends BaseModel {
       },
       abbreviation: (val: any, data: User) => {
         return `${data.fname[0].toUpperCase()}${data.lname[0].toUpperCase()}`;
-      },
+      }
     };
   }
-
 }
 export default User;

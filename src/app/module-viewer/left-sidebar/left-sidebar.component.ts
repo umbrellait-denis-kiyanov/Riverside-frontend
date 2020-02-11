@@ -1,4 +1,10 @@
-import { Component, OnInit, ElementRef, Renderer2, OnDestroy } from '@angular/core';
+import {
+  Component,
+  OnInit,
+  ElementRef,
+  Renderer2,
+  OnDestroy
+} from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { menus } from './menus';
 import { LeftMenuService } from '../../common/services/left-menu.service';
@@ -32,12 +38,14 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
     private el: ElementRef,
     private renderer: Renderer2,
     private route: ActivatedRoute
-  ) { }
+  ) {}
 
   ngOnInit() {
-    this.leftMenuService.onExpand.subscribe((expand) => {
+    this.leftMenuService.onExpand.subscribe(expand => {
       this.showMenu = !expand;
-      expand ? this.renderer.addClass(this.el.nativeElement, 'expanded') : this.renderer.removeClass(this.el.nativeElement, 'expanded');
+      expand
+        ? this.renderer.addClass(this.el.nativeElement, 'expanded')
+        : this.renderer.removeClass(this.el.nativeElement, 'expanded');
     });
 
     this.initialLoad();
@@ -56,18 +64,21 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
       }
 
       if (item.restrict) {
-        item.restrictObservable = combineLatest(this.userService.meChanged, this.route.params).pipe(
-          map(([user]) => item.restrict({ user, nav: this.navService }))
-        );
+        item.restrictObservable = combineLatest(
+          this.userService.meChanged,
+          this.route.params
+        ).pipe(map(([user]) => item.restrict({ user, nav: this.navService })));
       }
     });
 
     // we have to force the reevaluation of routerLinkActive state,
     // otherwise the module menu item is sometimes not highlighted automatically
     // https://github.com/angular/angular/issues/13865#issuecomment-308841643
-    this.updateWorkaroundWatch = this.navService.moduleDataReplay$.subscribe(_ => {
-      this.routerLinkActiveUpdateWorkaround = { exact: false };
-    });
+    this.updateWorkaroundWatch = this.navService.moduleDataReplay$.subscribe(
+      _ => {
+        this.routerLinkActiveUpdateWorkaround = { exact: false };
+      }
+    );
   }
 
   ngOnDestroy() {

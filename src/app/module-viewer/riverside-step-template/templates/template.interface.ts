@@ -12,24 +12,23 @@ import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define';
 import { SpreadsheetTemplateData } from './spreadsheet';
 
 export type TemplateContentDataType =
-  AgeGenderTemplateData |
-  NarrowDownData |
-  GenericTemplateData |
-  BrainstormTemplateData |
-  NamePersonasTemplateData |
-  PersonaBehaviorTemplateData |
-  FeedbackSectionTemplateData |
-  QuestionImageTemplateData |
-  SpreadsheetTemplateData |
-  SegmentCriteriaDefineTemplateData
-  ;
+  | AgeGenderTemplateData
+  | NarrowDownData
+  | GenericTemplateData
+  | BrainstormTemplateData
+  | NamePersonasTemplateData
+  | PersonaBehaviorTemplateData
+  | FeedbackSectionTemplateData
+  | QuestionImageTemplateData
+  | SpreadsheetTemplateData
+  | SegmentCriteriaDefineTemplateData;
 
 export interface TemplateComponentInterface {
   data: TemplateContentData;
 }
 
 export interface TemplateContentDataBase {
-  inputs?: {[key: string]: TemplateInput};
+  inputs?: { [key: string]: TemplateInput };
   disabled?: boolean;
   template_params_json?: {
     description: string;

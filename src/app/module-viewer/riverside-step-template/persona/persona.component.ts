@@ -8,7 +8,7 @@ import { TemplateComponent } from '../templates/template-base.class';
 })
 export class PersonaComponent implements OnInit {
   @Input() persona: string;
-  @Input() size: number = 80;
+  @Input() size = 80;
 
   style: {};
 
@@ -16,9 +16,7 @@ export class PersonaComponent implements OnInit {
   title = '';
   picture = '';
 
-  constructor(
-    private template: TemplateComponent
-  ) {}
+  constructor(private template: TemplateComponent) {}
 
   ngOnInit() {
     const idx = this.persona.split('_').pop();
