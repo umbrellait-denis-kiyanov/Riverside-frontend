@@ -138,7 +138,6 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     InboxLeftMenuComponent,
     AccountLeftMenuComponent,
     ContentComponent,
-    LoadingComponent,
     FormatDatePipe,
     ReadableDatePipe,
     ReadableTimePipe,

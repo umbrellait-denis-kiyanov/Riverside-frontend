@@ -21,7 +21,7 @@ export class ModuleFeedbackComponent implements OnInit {
   submittingSubaction: Subscription;
 
   constructor(
-    private template: TemplateComponent,
+    public template: TemplateComponent,
     private navService: ModuleNavService,
     private moduleService: ModuleService,
     private userService: UserService,

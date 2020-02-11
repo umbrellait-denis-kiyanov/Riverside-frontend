@@ -30,6 +30,9 @@ export interface TemplateComponentInterface {
 export interface TemplateContentDataBase {
   inputs?: { [key: string]: TemplateInput };
   disabled?: boolean;
+  title?: string;
+  description?: string;
+  resource?: string;
   template_params_json?: {
     description: string;
     title: string;

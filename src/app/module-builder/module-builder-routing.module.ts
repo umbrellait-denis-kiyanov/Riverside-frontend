@@ -6,7 +6,8 @@ import { ModuleSelectorComponent } from './module-selector/module-selector.compo
 import { MainComponent } from '../module-viewer/main/main.component';
 
 @Injectable()
-class ConfirmDeactivateGuard implements CanDeactivate<ModuleEditorComponent> {
+export class ConfirmDeactivateGuard
+  implements CanDeactivate<ModuleEditorComponent> {
   canDeactivate(target: ModuleEditorComponent) {
     if (target.hasChanges && target.hasChanges()) {
       return window.confirm(

@@ -2,9 +2,9 @@ import { TemplateContentData } from './template-data.class';
 import {
   OnInit,
   ElementRef,
-  Component,
   OnDestroy,
-  Injector
+  Injector,
+  Component
 } from '@angular/core';
 import { TemplateComponentInterface } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';

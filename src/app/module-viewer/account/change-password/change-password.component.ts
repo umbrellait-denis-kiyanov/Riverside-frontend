@@ -20,6 +20,7 @@ export class ChangePasswordComponent implements OnInit {
   form: FormGroup;
   saving: Subscription = null;
   error: string;
+  showText: { [key: string]: boolean };
 
   constructor(
     private formBuilder: FormBuilder,

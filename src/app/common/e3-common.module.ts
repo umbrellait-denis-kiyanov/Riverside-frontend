@@ -14,6 +14,7 @@ import { SafehtmlPipe } from './pipes/safehtml.pipe';
 import { MatButtonModule } from '@angular/material/button';
 import { SafeurlPipe } from './pipes/safeurl.pipe';
 import { E3RequiredComponent } from './components/e3-required/e3-required.component';
+import { LoadingComponent } from './components/loading/loading.component';
 
 const exports = [
   E3CheckboxComponent,
@@ -23,7 +24,8 @@ const exports = [
   E3ConfirmationDialogComponent,
   E3RequiredComponent,
   SafehtmlPipe,
-  SafeurlPipe
+  SafeurlPipe,
+  LoadingComponent
 ];
 @NgModule({
   imports: [

@@ -5,25 +5,25 @@ import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { ExampleDowngradeComponent } from './example_downgrade/example_downgrade.component';
 import { TimedReviewComponent } from './video_recorder/timed-review/timed-review.component';
 import { TimedReviewIframeComponent } from './video_recorder/timed-review/timed-review-iframe/timed-review-iframe.component';
-import { SafeurlPipe } from './common/pipes/safeurl.pipe';
 import { LoadingComponent } from './common/components/loading/loading.component';
 import { E3CheckboxComponent } from './common/components/e3-checkbox/e3-checkbox.component';
+import { E3CommonModule } from './common/e3-common.module';
+import { ModuleViewerModule } from './module-viewer/module-viewer.module';
 
 @NgModule({
-  imports: [BrowserModule, BrowserAnimationsModule, HttpClientModule],
+  imports: [
+    BrowserModule,
+    BrowserAnimationsModule,
+    HttpClientModule,
+    E3CommonModule,
+    ModuleViewerModule
+  ],
   declarations: [
     ExampleDowngradeComponent,
     TimedReviewIframeComponent,
-    TimedReviewComponent,
-    SafeurlPipe,
-    LoadingComponent,
-    E3CheckboxComponent
+    TimedReviewComponent
   ],
-  entryComponents: [
-    LoadingComponent,
-    TimedReviewComponent,
-    TimedReviewIframeComponent
-  ],
+  entryComponents: [TimedReviewComponent, TimedReviewIframeComponent],
   bootstrap: [TimedReviewComponent]
 })
 export class TimedReviewModule {}

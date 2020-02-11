@@ -105,6 +105,7 @@ export function FormulaPlugin(hotInstance) {
 // Inherit the BasePlugin prototype.
 // @ts-ignore
 FormulaPlugin.prototype = Object.create(
+  // @ts-ignore
   Handsontable.plugins.BasePlugin.prototype,
   {
     constructor: {
