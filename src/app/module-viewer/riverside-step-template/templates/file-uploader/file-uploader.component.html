@@ -1,0 +1,35 @@
+<div class="container"  (drop)="onDrop($event)" (dragover)=" $event.preventDefault()">
+
+  <div class="row justify-content-center">
+
+    <input type="file" #customFile style="display: none" (change)="onFileChange()" >
+    <div class="col-10">
+      <div class="file-uploader-section" (click)="onFileSectionClick()">
+        <div class="d-flex" *ngIf="!isFileChosen">
+          <fa-icon *ngIf="contentData.step_select == 'Image'" [icon]="faFileImageIcon" size="3x" class="icon-file"></fa-icon>
+          <fa-icon *ngIf="contentData.step_select != 'Image'" [icon]="faFileExcelIcon" size="3x" class="icon-file"></fa-icon>
+          <div class="col-10">
+            <mat-icon class="d-block m-auto">arrow_upward</mat-icon>
+            <div class="m-auto text-center">Click to a choose a file or drag it here</div>
+          </div>
+        </div>
+        <div *ngIf="isFileChosen">
+
+          <div class="container">
+              <div class="row justify-content-center">
+                <div class="card" style="width: 25rem; margin: 2rem">
+                  <img class="card-img-top" [src]="imgURL" alt="Card image cap">
+                </div>
+              </div>
+          </div>
+
+          <div class="text-center">Uploaded: <span class="empty-link">{{fileName}}</span> ({{fileSize | number:'1.0-0'}} {{sizeSuffix}})</div>
+          <div (click)="removeFileToUpload($event)" class="text-center"><span class="empty-link">Upload another file instead</span></div>
+          <mat-icon (click)="removeFileToUpload($event)" class="close-file-uploader-button">close</mat-icon>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+

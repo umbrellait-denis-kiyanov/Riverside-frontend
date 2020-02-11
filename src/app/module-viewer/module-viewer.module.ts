@@ -101,12 +101,14 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
+import {FileUploaderComponent} from './riverside-step-template/templates/file-uploader/file-uploader.component';
+import {FontAwesomeModule} from '@fortawesome/angular-fontawesome';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], { useHash: true }),
+    RouterModule.forRoot([], {useHash: true}),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -129,7 +131,8 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ReactiveFormsModule,
     ImageCropperModule,
     HotTableModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    FontAwesomeModule,
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -197,7 +200,8 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ErrorMsgComponent,
     SpinnerComponent,
     SpreadsheetComponent,
-    LoginComponent
+    LoginComponent,
+    FileUploaderComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -216,7 +220,8 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     TemplateHeadingComponent,
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
-    VideoComponent
+    VideoComponent,
+    FileUploaderComponent
   ],
   providers: [
     AssessmentService,

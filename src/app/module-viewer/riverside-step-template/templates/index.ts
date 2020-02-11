@@ -11,6 +11,7 @@ import { QuestionImageComponent } from './question-image/question-image.componen
 import { SegmentCriteriaDefineComponent } from './segment-criteria-define/segment-criteria-define.component';
 import { VideoComponent } from './video/video.component';
 import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
+import {FileUploaderComponent} from './file-uploader/file-uploader.component';
 
 export const Templates = {
   narrow_down: NarrowDownComponent,
@@ -25,5 +26,6 @@ export const Templates = {
   age_gender: AgeGenderComponent,
   question_image: QuestionImageComponent,
   spreadsheet: SpreadsheetComponent,
-  video: VideoComponent
+  video: VideoComponent,
+  file_uploader: FileUploaderComponent
 };
