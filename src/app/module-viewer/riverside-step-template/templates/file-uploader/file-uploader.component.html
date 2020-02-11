@@ -15,7 +15,7 @@
         </div>
         <div *ngIf="isFileChosen">
 
-          <div class="container">
+          <div class="container" *ngIf="imgURL">
               <div class="row justify-content-center">
                 <div class="card" style="width: 25rem; margin: 2rem">
                   <img class="card-img-top" [src]="imgURL" alt="Card image cap">
@@ -23,13 +23,21 @@
               </div>
           </div>
 
-          <div class="text-center">Uploaded: <span class="empty-link">{{fileName}}</span> ({{fileSize | number:'1.0-0'}} {{sizeSuffix}})</div>
+          <div class="text-center">Uploaded: <span class="empty-link">{{fileName}}</span> ({{fileSize | number:'1.0-0'}} {{sizeSuffix}}) <mat-icon (click)="removeFileToUpload($event)" class="close-file-uploader-button">close</mat-icon></div>
           <div (click)="removeFileToUpload($event)" class="text-center"><span class="empty-link">Upload another file instead</span></div>
-          <mat-icon (click)="removeFileToUpload($event)" class="close-file-uploader-button">close</mat-icon>
+
         </div>
       </div>
     </div>
+
   </div>
+
+  <div class="row justify-content-center" style="margin-top: 5px">
+
+    <button [disabled]="!isFileChosen" color="accent" mat-button="" class="mat-button mat-accent mat-stroked-button" >
+      <span class="mat-button-wrapper"> Confirm </span>
+    </button>
+
+  </div>
+
 </div>
-
-
