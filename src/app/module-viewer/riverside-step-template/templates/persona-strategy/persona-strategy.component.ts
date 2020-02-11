@@ -78,9 +78,9 @@ export class PersonaStrategyComponent extends TemplateComponent implements OnDes
    const messagesInputs = this.getIterableQuestionsInputsCount();
    messagesInputs.forEach((inputIndex) => {
      messages.emptyQuestions.push(
-       !messages.count.every(messageIndex => {
+       messages.count.some(messageIndex => {
         const input = this.inputs[`${this.prefix}${messages.name}_${inputIndex}_${messageIndex}`];
-        return !(input && input.content);
+        return input && this.notEmpty(input.content);
       })
      );
    });
