@@ -11,7 +11,6 @@ import { QuestionImageComponent } from './question-image/question-image.componen
 import { SegmentCriteriaDefineComponent } from './segment-criteria-define/segment-criteria-define.component';
 import { VideoComponent } from './video/video.component';
 import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
-import {CheckboxSelectorComponent} from './checkbox-selector/checkbox-selector.component';
 
 export const Templates = {
   narrow_down: NarrowDownComponent,
@@ -26,6 +25,5 @@ export const Templates = {
   age_gender: AgeGenderComponent,
   question_image: QuestionImageComponent,
   spreadsheet: SpreadsheetComponent,
-  video: VideoComponent,
-  checkbox_selector: CheckboxSelectorComponent
+  video: VideoComponent
 };

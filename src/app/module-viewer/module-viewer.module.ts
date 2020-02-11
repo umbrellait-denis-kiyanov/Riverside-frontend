@@ -102,7 +102,6 @@ import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
-import { CheckboxSelectorComponent } from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
 
 @NgModule({
   imports: [
@@ -200,8 +199,7 @@ import { CheckboxSelectorComponent } from './riverside-step-template/templates/c
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
-    SessionExpirationModalComponent,
-    CheckboxSelectorComponent
+    SessionExpirationModalComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -221,8 +219,7 @@ import { CheckboxSelectorComponent } from './riverside-step-template/templates/c
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
-    SessionExpirationModalComponent,
-    CheckboxSelectorComponent
+    SessionExpirationModalComponent
   ],
   providers: [
     AssessmentService,
