@@ -26,15 +26,19 @@ td
     th
       vertical-align: middle
 
-  .campaign-line
+  .campaign-line-container
     position: absolute
-    width: 20px
-    height: 30px
-    left: 100%
-    top: calc(50% - 15px)
-    cursor: pointer
+    width: 72%
+    left: 28%
+    display: flex
+    align-items: center
 
-    &:hover
-      box-sizing: border-box
-      border: 1px solid #00529f
+    .campaign-line
+      position: relative
+      height: 30px
+      cursor: pointer
+
+      &:hover
+        box-sizing: border-box
+        border: 1px solid #00529f
 

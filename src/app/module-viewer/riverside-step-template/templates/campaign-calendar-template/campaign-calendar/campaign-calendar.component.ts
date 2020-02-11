@@ -1,7 +1,7 @@
 import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { ModalAddCampaignComponent } from './modal-add-campaign/modal-add-campaign.component';
-import { Campaign } from '../../../../../common/interfaces/campaign.interface';
+import { Campaign, CampaignGraph } from './index';
 import * as moment from 'moment';
 import { websafeColors } from './websafe-colors';
 import { CampaignDeletionConfirmationComponent } from './campaign-deletion-confirmation/campaign-deletion-confirmation';
@@ -13,12 +13,12 @@ import { CampaignDeletionConfirmationComponent } from './campaign-deletion-confi
 })
 export class CampaignCalendarComponent implements OnInit {
   @Input() readonly = false;
-  @Output() campaignsChange: EventEmitter<Campaign[]> = new EventEmitter<Campaign[]>();
+  @Output() campaignsChange = new EventEmitter<Campaign[]>();
   @Input() campaigns: Campaign[] = [];
   months: string[];
-  campaignGraphs: { [key: string]: Campaign[] } = {};
+  campaignGraphs: CampaignGraph;
   years: string[] = [];
-  colors: string[] = websafeColors.slice();
+  colors = websafeColors.slice();
 
   private readonly dateFormat = 'YYYY-MM-DD';
 
@@ -60,7 +60,7 @@ export class CampaignCalendarComponent implements OnInit {
     if (this.readonly) {
       return;
     }
-    const data = this.campaigns.find((item: Campaign) => item.id === campaign.id);
+    const data = this.campaigns.find(item => item.id === campaign.id);
     const modalRef = this.modalService.open(ModalAddCampaignComponent);
     modalRef.componentInstance.campaign = data;
     modalRef.componentInstance.isEdit = true;
@@ -71,59 +71,54 @@ export class CampaignCalendarComponent implements OnInit {
     return item.theme;
   }
 
-  getCampaignWidth(table: HTMLElement, tableLabel: HTMLElement, campaign: Campaign): number {
+  getCampaignWidthPercent(campaign: Campaign): number {
     const start = moment(campaign.startDate, this.dateFormat);
     const end = moment(campaign.endDate, this.dateFormat);
     const diff = end.diff(start, 'day') + 1;
-    const borderWidth = 1;
-    const monthsCellWidth = table.offsetWidth - 2 * borderWidth - tableLabel.offsetWidth;
-    return Math.round(diff * monthsCellWidth / this.getDaysInYear(start));
+    return diff * 100 / this.getDaysInYear(start);
   }
 
-  getCampaignOffset(table: HTMLElement, tableLabel: HTMLElement, campaign: Campaign): number {
+  getCampaignTopPercent(index: number, arrayLength: number): number {
+    return (index + 1) * (100 / (arrayLength + 1));
+  }
+
+  getCampaignOffsetPercent(campaign: Campaign): number {
     const start = moment(campaign.startDate, this.dateFormat);
     const offsetDays = start.dayOfYear() - 1;
-    const persentageOffset = offsetDays / this.getDaysInYear(start);
-    const borderWidth = 1;
-    const monthsCellWidth = table.offsetWidth - 2 * borderWidth - tableLabel.offsetWidth;
-    const offset = Math.round(monthsCellWidth * persentageOffset);
-    return tableLabel.offsetWidth + offset;
+    return offsetDays * 100 / this.getDaysInYear(start);
   }
 
-  private splitCampaignsByYear(campaigns: Campaign[]) {
-    campaigns.forEach((campaign: Campaign) => {
-      if (!campaign.startDate || !campaign.endDate) {
-        return;
-      }
-      const start = moment(campaign.startDate, this.dateFormat);
-      const end = moment(campaign.endDate, this.dateFormat);
-      if (!this.campaignGraphs.hasOwnProperty(start.year())) {
-        this.campaignGraphs[start.year()] = [];
-      }
-      if (start.year() !== end.year()) {
-        this.splitCampaignsByYear(this.splitCampaignByYear(campaign));
-      } else {
-        this.campaignGraphs[start.year()].push(campaign);
-      }
-    });
-  }
-
-  private splitCampaignByYear(campaign: Campaign): Campaign[] {
-    const lastDayOfFirstYear = moment(campaign.startDate, this.dateFormat).endOf('year');
-    return [
-      {
-        ...campaign,
-        endDate: lastDayOfFirstYear.format(this.dateFormat),
-      },
-      {
-        ...campaign,
-        startDate: lastDayOfFirstYear.add(1, 'day').format(this.dateFormat),
-      },
-    ];
+  private splitCampaignsByYear(campaigns: Campaign[]): CampaignGraph {
+    return [].concat.apply([], campaigns
+      .filter(campaign => campaign.startDate && campaign.endDate)
+      .map(campaign => {
+        let start = moment(campaign.startDate, this.dateFormat);
+        const end = moment(campaign.endDate, this.dateFormat);
+        const ranges = [];
+        while (start.year() !== end.year()) {
+          const lastDayOfYear = moment(start, this.dateFormat).endOf('year');
+          ranges.push([start.format(this.dateFormat), lastDayOfYear.format(this.dateFormat)]);
+          start = lastDayOfYear.add(1, 'day');
+        }
+        ranges.push([start.format(this.dateFormat), end.format(this.dateFormat)]);
+        return ranges.map(range => ({
+          ...campaign,
+          startDate: range[0],
+          endDate: range[1],
+        }));
+      }))
+      .reduce((acc, campaign) => {
+        const year = moment(campaign.startDate, this.dateFormat).year();
+        if (!acc.hasOwnProperty(year)) {
+          acc[year] = [];
+        }
+        acc[year].push(campaign);
+        return acc;
+      }, {});
   }
 
   private updateCampaigns() {
-    this.splitCampaignsByYear(this.campaigns);
+    this.campaignGraphs = this.splitCampaignsByYear(this.campaigns);
     this.years = Object.keys(this.campaignGraphs);
   }
 

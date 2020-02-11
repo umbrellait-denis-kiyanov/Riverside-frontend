@@ -1,7 +1,7 @@
 import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { CampaignCalendarTemplateData, TemplateParams } from '.';
-import { Campaign } from '../../../../common/interfaces/campaign.interface';
+import { Campaign } from './campaign-calendar';
 
 @Component({
   selector: 'app-campaign-calendar-template',

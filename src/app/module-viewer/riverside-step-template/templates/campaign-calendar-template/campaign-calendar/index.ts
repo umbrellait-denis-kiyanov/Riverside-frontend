@@ -9,3 +9,7 @@ export interface Campaign {
   assigned?: string;
   color?: string;
 }
+
+export interface CampaignGraph {
+  [key: string]: Campaign[];
+}
