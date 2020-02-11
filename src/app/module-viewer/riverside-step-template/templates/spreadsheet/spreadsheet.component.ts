@@ -1,6 +1,6 @@
 import { Component, forwardRef, ViewChild, ElementRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { SpreadsheetTemplateData, TemplateParams } from '.';
+import { SpreadsheetTemplateData } from '.';
 import * as Handsontable from 'handsontable';
 import { Subscription } from 'rxjs';
 import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/module.interface';
@@ -48,8 +48,6 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => SpreadsheetComponent) }]
 })
 export class SpreadsheetComponent extends TemplateComponent {
-
-  params = TemplateParams;
 
   private spreadsheetService: SpreadsheetService;
   private hotRegister = new HotTableRegisterer();

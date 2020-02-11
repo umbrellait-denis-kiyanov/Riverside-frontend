@@ -1,6 +1,6 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { VideoTemplateData, TemplateParams } from '.';
+import { VideoTemplateData } from '.';
 
 @Component({
   selector: 'app-video',
@@ -9,7 +9,6 @@ import { VideoTemplateData, TemplateParams } from '.';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => VideoComponent) }]
 })
 export class VideoComponent extends TemplateComponent implements OnInit {
-  params = TemplateParams;
   contentData: VideoTemplateData['template_params_json'];
 
   videoProvider: 'Vimeo' | 'Youtube';

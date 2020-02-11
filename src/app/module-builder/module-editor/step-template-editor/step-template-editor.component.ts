@@ -3,6 +3,7 @@ import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 import { Step, Template } from 'src/app/common/interfaces/module.interface';
 import { Templates } from '../../../module-viewer/riverside-step-template/templates';
 import { TemplateField } from './step-template-field';
+import { TemplateDefinitions } from './template-definitions';
 
 @Component({
   selector: 'app-step-template-editor',
@@ -38,10 +39,9 @@ export class StepTemplateEditorComponent implements OnInit {
         name: inst.getName(),
         description: inst.getDescription(),
         hasInputs: inst.hasInputs(),
-        params_json: inst.getBuilderParams()
+        params_json: TemplateDefinitions[name]
       };
     });
-
     this.onTemplateChange(this.stepEdit.template_component);
   }
 

@@ -6,8 +6,3 @@ export interface BrainstormTemplateData extends TemplateContentDataBase {
     title: string;
   };
 }
-
-export const TemplateParams = `{
-  description: string;
-  title: string;
-}`;
