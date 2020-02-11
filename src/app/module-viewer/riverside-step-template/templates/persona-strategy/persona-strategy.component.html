@@ -7,7 +7,7 @@
   <div *ngFor="let buyerPersona of buyerPersonas; index as item" class="row person-strategy-key-issue">
     <div class="col-sm-2">
       <div class="buyer-personas-item">
-        <img [src]="buyerPersona.picture" width="100px" height="100px">
+        <img [src]="buyerPersona.picture" class="buyer-personas-item-picture">
         <div class="person-strategy-key-issue-description">
           <h3>{{ buyerPersona.name }}</h3>
           <p>{{ buyerPersona.title }}</p>
@@ -46,7 +46,7 @@
                   [input]="inputPrefixes['2_additional_questions'].name + '_' + input"
                   [disabled]="inputState > 2"
                   class="col-sm-12"
-                  single
+                  single="true"
               ></ice>
             </div>
           </div>
