@@ -14,7 +14,7 @@ export class OrgSelectorComponent implements OnInit {
   organizations$: Observable<Organization[]>;
   currentOrg: Organization;
   organizationID: number;
-  active$: Observable<{[key: number]: boolean}>;
+  active$: Observable<{ [key: number]: boolean }>;
 
   @Output() changed = new EventEmitter<Organization>(true);
   @Input() warning = {};
@@ -23,15 +23,15 @@ export class OrgSelectorComponent implements OnInit {
   constructor(
     private moduleService: ModuleService,
     private moduleNavService: ModuleNavService
-  ) {}
+  ) { }
 
   ngOnInit() {
     this.organizations$ = this.moduleService.getOrganizations();
-    this.moduleNavService.organization$.pipe(take(1)).subscribe(orgId => this.organizationID);
+    this.moduleNavService.organization$.pipe(take(1)).subscribe(orgId => this.organizationID = orgId);
 
     if (this.activeOrganizations) {
       this.active$ = this.activeOrganizations.pipe(
-        map(orgs => orgs.reduce((all, org) => Object.assign(all, {[org.id]: true}), {}))
+        map(orgs => orgs.reduce((all, org) => ({ ...all, [org.id]: true }), {}))
       );
     }
 

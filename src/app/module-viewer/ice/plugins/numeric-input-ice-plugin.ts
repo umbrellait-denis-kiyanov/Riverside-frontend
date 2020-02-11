@@ -8,7 +8,8 @@ export class NumericInputPlugin extends IceInputPlugin {
             // tslint:disable-next-line
             const walk = document.createTreeWalker(element, NodeFilter.SHOW_TEXT, null, false);
             const nodes: Node[] = [];
-            while ((node = walk.nextNode()) !== null) {
+            // tslint:disable-next-line
+            while (node = walk.nextNode()) {
                 nodes.push(node);
             }
 

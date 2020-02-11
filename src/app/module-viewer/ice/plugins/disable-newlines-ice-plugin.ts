@@ -15,7 +15,7 @@ export class DisableNewlinesPlugin extends IceInputPlugin {
     }
 
     protected keyDown(e: KeyboardEvent) {
-        if (e.which === 13) {
+        if (e.key === 'Enter') {
             e.preventDefault();
             return false;
         }

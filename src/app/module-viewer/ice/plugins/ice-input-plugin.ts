@@ -12,6 +12,7 @@ export default class IceInputPlugin {
 
     constructor() {
         const pluginID = this.constructor.name;
+        // tslint:disable-next-line
         const self = this;
 
         (function () {
@@ -19,6 +20,7 @@ export default class IceInputPlugin {
                 return;
             }
 
+            // tslint:disable-next-line
             const ice = this;
 
             const InputPlugin = function (ice_instance: IceEditorTracker) {
