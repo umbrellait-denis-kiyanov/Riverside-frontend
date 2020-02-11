@@ -10,7 +10,7 @@ import { Observable } from 'rxjs';
   styleUrls: ['./persona-strategy.component.sass'],
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PersonaStrategyComponent) }]
 })
-export class PersonaStrategyComponent extends TemplateComponent implements OnDestroy{
+export class PersonaStrategyComponent extends TemplateComponent implements OnDestroy {
   params: string = TemplateParams;
   contentData: PersonaStrategyTemplateData['template_params_json'];
 
@@ -21,15 +21,18 @@ export class PersonaStrategyComponent extends TemplateComponent implements OnDes
   inputPrefixes: object = {
     '1_key_issues': {
       name: 'issues',
-      count: []
+      count: [],
+      emptyQuestions: []
     },
     '2_additional_questions': {
       name: 'questions',
-      count: []
+      count: [],
+      emptyQuestions: []
     },
     '3_message_flow': {
       name: 'message',
-      count: []
+      count: [],
+      emptyQuestions: []
     }
   };
 
@@ -64,21 +67,45 @@ export class PersonaStrategyComponent extends TemplateComponent implements OnDes
     // @ts-ignore - template_params_json.inputs property causes error with TypeScript 3.1
     this.contentData = (this.data.data.template_params_json as PersonaStrategyTemplateData['template_params_json']);
     this.inputState = Number(this.contentData.step_type_select.substr(0, 1));
-    this.initStates();
-
     this.buyerPersonasList$ = this.buyerPersonasService.getBuyerPersonas();
+
+    this.initStates();
   }
 
   initStates(): void {
-   Object.values(this.inputPrefixes).forEach(el => el.count = this.getPrefixCount(el.name));
+   Object.values(this.inputPrefixes).forEach(el => el.count = this.getIterablePrefixCount(el.name));
+   const messages = this.inputPrefixes['2_additional_questions'];
+   const messagesInputs = this.getIterableQuestionsInputsCount();
+   messagesInputs.forEach((inputIndex) => {
+     messages.emptyQuestions.push(
+       !messages.count.every(messageIndex => {
+        const input = this.inputs[`${this.prefix}${messages.name}_${inputIndex}_${messageIndex}`];
+        return !(input && input.content);
+      })
+     );
+   });
   }
 
-  getPrefixCount(prefix: string): number[] {
-    const prefixCount = Object.keys(this.inputs).filter(el => el.includes(prefix)).slice(-1).pop();
-    if (!prefixCount) {
+  getIterablePrefixCount(prefix: string): number[] {
+    const prefixName = this.getPrefixFullName(prefix);
+    if (!prefixName) {
       return [];
     }
-    return this.makeIterable(+prefixCount.split('_').slice(-2).shift());
+
+    return this.makeIterable(+prefixName.split('_').slice(-2).shift());
+  }
+
+  getIterableQuestionsInputsCount(): number[] {
+    const questionsInputName =  this.getPrefixFullName(this.inputPrefixes['2_additional_questions'].name);
+    if (!questionsInputName) {
+      return [];
+    }
+
+    return this.makeIterable(+questionsInputName.split('_').pop());
+  }
+
+  getPrefixFullName(prefix: string): string {
+    return Object.keys(this.inputs).filter(el => el.includes(prefix)).slice(-1).pop();
   }
 
   makeIterable(number: number): number[] {

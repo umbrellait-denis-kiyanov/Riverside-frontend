@@ -13,7 +13,7 @@ import { environment } from '../../../environments/environment';
 export class BuyerPersonasService {
 
   baseUrl = environment.apiRoot + '/api/modules';
-  private buyerPersonas$: Observable<BuyerPersona[]>
+  private buyerPersonas$: Observable<BuyerPersona[]>;
 
   constructor( private httpClient: HttpClient, private moduleNavService: ModuleNavService) {
     this.buyerPersonas$ = this.moduleNavService.organization$.pipe(switchMap(orgId =>
