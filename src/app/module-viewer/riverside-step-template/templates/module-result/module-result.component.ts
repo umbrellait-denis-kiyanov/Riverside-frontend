@@ -21,13 +21,21 @@ export class ModuleResultComponent extends TemplateComponent {
     this.contentData = this.data.data.template_params_json as ModuleResultTemplateData['template_params_json'];
 
     const moduleID = Number(this.contentData.module);
+    const moduleStepID = this.contentData.step_id ? this.contentData.step_id : undefined;
 
     this.moduleResultContent$ = this.navService.organization$.pipe(switchMap(orgId =>
-      this.moduleService.getOrgModule(moduleID, orgId).pipe(switchMap(module =>
-        this.moduleContentService.load(moduleID, module.steps[module.steps.length - 1].id, orgId).pipe(map(content =>
-          new TemplateContentData({data: content, me: this.me, canModify: false})
-        ))
-      ))
+      this.moduleService.getOrgModule(moduleID, orgId).pipe(
+        switchMap(module => {
+          const targetedStep = moduleStepID ? module.steps.find(step => moduleStepID === step.id) : undefined;
+          const currentStepID = targetedStep ? targetedStep.id : module.steps[module.steps.length - 1].id;
+
+          return this.moduleContentService.load(moduleID, currentStepID, orgId).pipe(
+            map(content => {
+              return new TemplateContentData({data: content, me: this.me, canModify: false});
+            })
+          );
+        })
+      )
     ));
   }
 

@@ -5,6 +5,7 @@ import { Observable, of } from 'rxjs';
 import { ModuleService } from '../../../../common/services/module.service';
 import { TemplateField } from '.';
 import { map } from 'rxjs/operators';
+import { fieldTypes } from '../../../constants/field-types';
 
 @Component({
   selector: 'app-step-template-field',
@@ -37,7 +38,7 @@ export class StepTemplateFieldComponent implements OnInit {
       if (typeof this.json === 'object' && this.json !== null) {
         this.json = JSON.stringify(this.json);
         this.type = 'json';
-      } else if (['title', 'sufix', 'input_sufix', 'key', 'question', 'option', 'behavior', 'image'].includes(this.name) ||
+      } else if (fieldTypes.includes(this.name) ||
                   this.name.toLowerCase().indexOf('url') > -1) {
         this.type = 'text-input';
       } else {
