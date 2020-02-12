@@ -101,6 +101,7 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
+import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
 
 @NgModule({
   imports: [
@@ -197,7 +198,8 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ErrorMsgComponent,
     SpinnerComponent,
     SpreadsheetComponent,
-    LoginComponent
+    LoginComponent,
+    RadioButtonComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -216,7 +218,8 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     TemplateHeadingComponent,
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
-    VideoComponent
+    VideoComponent,
+    RadioButtonComponent
   ],
   providers: [
     AssessmentService,
