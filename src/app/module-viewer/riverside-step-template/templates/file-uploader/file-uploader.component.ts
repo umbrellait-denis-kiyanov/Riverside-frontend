@@ -58,6 +58,7 @@ export class FileUploaderComponent extends TemplateComponent {
   }
 
   onFileSectionClick() {
+    this.fileInput.nativeElement.value = null;
     this.fileInput.nativeElement.click();
   }
 
@@ -90,7 +91,12 @@ export class FileUploaderComponent extends TemplateComponent {
       this.formatFileInfo(files[0]);
       this.prepareFileToUpload(files[0]);
     } else {
-      this.toastr.error('File format is incorrect');
+      if ( this.contentData.step_select === 'Image' ) {
+        this.toastr.error('File format is incorrect! Only images!');
+      } else {
+        this.toastr.error('File format is incorrect! Only csv spreadsheets!');
+      }
+
     }
   }
 
@@ -117,6 +123,7 @@ export class FileUploaderComponent extends TemplateComponent {
     const reader = new FileReader();
     this.isFileChosen = true;
     reader.readAsDataURL(file);
+
     reader.onload = () => {
       if ( this.contentData.step_select === 'Image' ) {
         this.imgURL = reader.result;

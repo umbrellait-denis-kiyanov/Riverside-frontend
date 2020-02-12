@@ -2,7 +2,7 @@
 
   <div class="row justify-content-center">
 
-    <input type="file" #customFile style="display: none" (change)="onFileChange()" >
+    <input type="file" #customFile style="display: none" (change)="onFileChange()" (cancel)="onFileChange()">
     <div class="col-10">
       <div class="file-uploader-section" (click)="onFileSectionClick()">
         <div class="d-flex" *ngIf="!isFileChosen">
