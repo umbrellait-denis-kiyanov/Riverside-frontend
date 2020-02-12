@@ -18,7 +18,7 @@
 
           </div>
           <div class="col-8">
-            <div *ngIf="contentData.show_descriptions" [innerHTML]="item.description"></div>
+            <div *ngIf="contentData.show_descriptions" [innerHTML]="item.description | safehtml"></div>
           </div>
           <hr class="col-12"/>
         </div>
