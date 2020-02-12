@@ -1,2 +1,10 @@
-<mat-radio-button *ngIf="module.status?.progress != 100" class="example-radio-button" [name]="module.id" (click)="toggleModuleStatus(module)" [checked]="module.status?.is_activated == 1"></mat-radio-button>
-<mat-icon *ngIf="module.status?.progress == 100" class="completed-check">check_circle</mat-icon>
+<mat-radio-button
+  *ngIf="module.status?.progress != 100"
+  class="example-radio-button"
+  [name]="module.id"
+  (click)="toggleModuleStatus(module)"
+  [checked]="module.status?.is_activated == 1"
+></mat-radio-button>
+<mat-icon *ngIf="module.status?.progress == 100" class="completed-check"
+  >check_circle</mat-icon
+>

@@ -1,17 +1,38 @@
-<div (mouseleave)="!comment.adding && !menuComment && closeComment()" *ngIf="data">
-  <div *ngIf="data.selections$ | async as selections" class="matrix-selections"
-    [class.allow-remove-selections]="allowRemoveSelections">
-    <span *ngFor="let selection of selections; last as isLast"
-      class="matrix-selection"><span>{{ selection }}</span><span class="remove-selection"
-        (click)="removeSelection(selection)">
-        <mat-icon>delete</mat-icon>
-      </span><span *ngIf="!isLast">,&nbsp;</span> </span>
+<div
+  (mouseleave)="!comment.adding && !menuComment && closeComment()"
+  *ngIf="data"
+>
+  <div
+    *ngIf="data.selections$ | async as selections"
+    class="matrix-selections"
+    [class.allow-remove-selections]="allowRemoveSelections"
+  >
+    <span
+      *ngFor="let selection of selections; last as isLast"
+      class="matrix-selection"
+      ><span>{{ selection }}</span
+      ><span class="remove-selection" (click)="removeSelection(selection)">
+        <mat-icon>delete</mat-icon> </span
+      ><span *ngIf="!isLast">,&nbsp;</span>
+    </span>
   </div>
 
-  <div class="textbody" [attr.disabled]="isDisabled"
-    [ngClass]="{'CT-hide': template.hideChanges$ | async, hasComment: comment.list?.length, showComment: comment.show}"
-    [class.has-error]="data.error | async" [class.single-line]="single" [innerHTML]="initialContent | safehtml"
-    (mouseenter)="onMouseEnter($event)" (blur)="onBlur($event)" (paste)="onChange()" (cut)="onChange()"></div>
+  <div
+    class="textbody"
+    [attr.disabled]="isDisabled"
+    [ngClass]="{
+      'CT-hide': template.hideChanges$ | async,
+      hasComment: comment.list?.length,
+      showComment: comment.show
+    }"
+    [class.has-error]="data.error | async"
+    [class.single-line]="single"
+    [innerHTML]="initialContent | safehtml"
+    (mouseenter)="onMouseEnter($event)"
+    (blur)="onBlur($event)"
+    (paste)="onChange()"
+    (cut)="onChange()"
+  ></div>
   <error-msg [input]="data"></error-msg>
   <div class="add-comment" *ngIf="!isDisabled">
     <button mat-icon-button (click)="addComment($event)" id="addComment">
@@ -26,20 +47,42 @@
 
   <div class="comment-wrapper" *ngIf="comment.adding">
     <ice-user [user]="user" [tracker]="tracker"></ice-user>
-    <textarea autofocus [(ngModel)]="comment.content" class="form-control" id="newComment"></textarea>
+    <textarea
+      autofocus
+      [(ngModel)]="comment.content"
+      class="form-control"
+      id="newComment"
+    ></textarea>
     <div class="btn-wrapper">
-      <button class="btn btn-sm btn-primary" (click)="saveComment()">Comment</button>
-      <button class="btn btn-sm btn-default" (click)="cancelComment()">Cancel</button>
+      <button class="btn btn-sm btn-primary" (click)="saveComment()">
+        Comment
+      </button>
+      <button class="btn btn-sm btn-default" (click)="cancelComment()">
+        Cancel
+      </button>
     </div>
   </div>
 
-  <div *ngIf="!comment.adding && comment.list?.length && comment.show" class="comment-wrapper comment-list">
-    <div *ngFor="let c of comment.list | reverse; let i=index">
-      <ice-user [user]="c.user" [time]="c.formattedTime" [tracker]="tracker"></ice-user>
+  <div
+    *ngIf="!comment.adding && comment.list?.length && comment.show"
+    class="comment-wrapper comment-list"
+  >
+    <div *ngFor="let c of comment.list | reverse; let i = index">
+      <ice-user
+        [user]="c.user"
+        [time]="c.formattedTime"
+        [tracker]="tracker"
+      ></ice-user>
       <div class="comment-content">
         <div>{{ c.content }}</div>
-        <button *ngIf="user.id == c.user.id" mat-icon-button #menuTrigger="matMenuTrigger"
-          (click)="menuComment = c; menuIndex = i" (menuClosed)="menuComment = null" [matMenuTriggerFor]="menu">
+        <button
+          *ngIf="user.id == c.user.id"
+          mat-icon-button
+          #menuTrigger="matMenuTrigger"
+          (click)="menuComment = c; menuIndex = i"
+          (menuClosed)="menuComment = null"
+          [matMenuTriggerFor]="menu"
+        >
           <mat-icon>more_vert</mat-icon>
         </button>
       </div>

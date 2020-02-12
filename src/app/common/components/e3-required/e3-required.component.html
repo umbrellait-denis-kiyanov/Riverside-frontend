@@ -1,5 +1,9 @@
 <div
-  *ngIf="formGroup.controls[controlName] && formGroup.controls[controlName].errors?.required && formGroup.controls[controlName].touched"
+  *ngIf="
+    formGroup.controls[controlName] &&
+    formGroup.controls[controlName].errors?.required &&
+    formGroup.controls[controlName].touched
+  "
 >
   *Required
 </div>

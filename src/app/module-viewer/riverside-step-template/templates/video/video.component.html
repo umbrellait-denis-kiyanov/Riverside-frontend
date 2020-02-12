@@ -1,5 +1,11 @@
 <div class="embed-container">
-  <iframe [src]="embedUrl | safeurl" width="100%" frameborder="0" allow="autoplay; fullscreen" allowfullscreen></iframe>
+  <iframe
+    [src]="embedUrl | safeurl"
+    width="100%"
+    frameborder="0"
+    allow="autoplay; fullscreen"
+    allowfullscreen
+  ></iframe>
 </div>
 
 <div *ngIf="contentData.content">

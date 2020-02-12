@@ -1,5 +1,4 @@
 <div class="content">
-
   <div *ngIf="status == STATUS.TESTING" class="message">
     Please wait while we are checking your microphone.
   </div>
@@ -17,21 +16,21 @@
   </div>
 
   <div *ngIf="status == STATUS.TEST_ERROR" class="message with-error">
-    {{errorMsg}}
+    {{ errorMsg }}
   </div>
 
   <div>
     <audio
       #audioOption
       [src]="audioSrc | safeurl"
-      [ngStyle]="{'visibility': status == STATUS.PLAYING?'visible':'hidden'}"
+      [ngStyle]="{
+        visibility: status == STATUS.PLAYING ? 'visible' : 'hidden'
+      }"
       controls
-    >
-    </audio>
+    ></audio>
   </div>
-  <div *ngIf="showUI() " class="audio-recorder-buttons">
+  <div *ngIf="showUI()" class="audio-recorder-buttons">
     <button
-
       class="btn-default btn "
       (click)="toggleRecording()"
       *ngIf="status == STATUS.READY"
@@ -63,14 +62,12 @@
       <fa-icon [icon]="redoIcon" class="text-red"></fa-icon> Redo
     </button>
 
-
     <button
-        class="btn-default btn "
-        *ngIf="status == STATUS.RECORDED || status == STATUS.PLAYING"
-        (click)="upload()"
-      >
-        <span class="fa fa-check text-green"></span> Submit
-      </button>
+      class="btn-default btn "
+      *ngIf="status == STATUS.RECORDED || status == STATUS.PLAYING"
+      (click)="upload()"
+    >
+      <span class="fa fa-check text-green"></span> Submit
+    </button>
   </div>
 </div>
-

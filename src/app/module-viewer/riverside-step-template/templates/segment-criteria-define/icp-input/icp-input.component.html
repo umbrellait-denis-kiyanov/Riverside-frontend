@@ -3,7 +3,7 @@
     <div class="col-sm-1 propensitity">
       Propensity to buy criteria
     </div>
-    <div class="col-sm-2" *ngFor="let criteria of criterias; index as i;">
+    <div class="col-sm-2" *ngFor="let criteria of criterias; index as i">
       <div class="input-circle">
         <div class="circle-container">
           <span *ngIf="mode != 'criteria'" [inputText]="criteria.name"></span>
@@ -18,11 +18,29 @@
       </div>
       <div class="input-circle grey-circle" *ngIf="mode != 'criteria'">
         <div class="circle-container">
-
           <ng-container *ngIf="mode == 'weight'">
             <div *ngIf="!review">
-              <input type="number" min="1" max="99" maxlength="2" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(true); template.resetError(criteria);" [disabled]="disabled" />
-              <input type="range" min="1" max="99" [(ngModel)]="criteria.weight" (ngModelChange)="syncCriteria(true); template.resetError(criteria);" *ngIf="!disabled" />
+              <input
+                type="number"
+                min="1"
+                max="99"
+                maxlength="2"
+                [(ngModel)]="criteria.weight"
+                (ngModelChange)="
+                  syncCriteria(true); template.resetError(criteria)
+                "
+                [disabled]="disabled"
+              />
+              <input
+                type="range"
+                min="1"
+                max="99"
+                [(ngModel)]="criteria.weight"
+                (ngModelChange)="
+                  syncCriteria(true); template.resetError(criteria)
+                "
+                *ngIf="!disabled"
+              />
               <error-msg [input]="criteria"></error-msg>
             </div>
 
@@ -33,29 +51,53 @@
 
           <ng-container *ngIf="mode == 'grade'">
             <div *ngIf="!review">
-              <input type="number" min="0" maxlength="2" [max]="criteria.weight" [(ngModel)]="selectedGrades[i]" (ngModelChange)="syncGrade()" [disabled]="disabled" />
-              <input type="range" min="0" [max]="criteria.weight" [(ngModel)]="selectedGrades[i]" (ngModelChange)="syncGrade()" *ngIf="!disabled" />
+              <input
+                type="number"
+                min="0"
+                maxlength="2"
+                [max]="criteria.weight"
+                [(ngModel)]="selectedGrades[i]"
+                (ngModelChange)="syncGrade()"
+                [disabled]="disabled"
+              />
+              <input
+                type="range"
+                min="0"
+                [max]="criteria.weight"
+                [(ngModel)]="selectedGrades[i]"
+                (ngModelChange)="syncGrade()"
+                *ngIf="!disabled"
+              />
             </div>
 
             <div *ngIf="review">
               {{ selectedGrades[i] }}
             </div>
           </ng-container>
-
         </div>
       </div>
 
       <div *ngIf="mode == 'criteria'">
-        <ice *ngIf="mode == 'criteria'"
+        <ice
+          *ngIf="mode == 'criteria'"
           (changed)="syncCriteria()"
           [(data)]="criteria.description"
           class="criteria-description"
         ></ice>
 
-        <a *ngIf="criterias.length > 3" (click)="removeCriteria(i)" class="add-rem">REMOVE criteria</a>
+        <a
+          *ngIf="criterias.length > 3"
+          (click)="removeCriteria(i)"
+          class="add-rem"
+          >REMOVE criteria</a
+        >
       </div>
 
-      <div *ngIf="mode != 'criteria'" class="criteria-description-container" [inputText]="criteria.description"></div>
+      <div
+        *ngIf="mode != 'criteria'"
+        class="criteria-description-container"
+        [inputText]="criteria.description"
+      ></div>
     </div>
 
     <ng-container *ngIf="mode == 'criteria'">
@@ -68,24 +110,41 @@
       <div class="col-sm-2 total-score">
         <ng-container>
           <div class="input-circle">
-            <div class="circle-container">
-              TOTAL<br />SCORE
-            </div>
+            <div class="circle-container">TOTAL<br />SCORE</div>
           </div>
-          <div class="input-circle grey-circle summary-score" [class.complete]="calcWeightSum === 100 && calcAllWeightsSelected">
+          <div
+            class="input-circle grey-circle summary-score"
+            [class.complete]="calcWeightSum === 100 && calcAllWeightsSelected"
+          >
             <div class="circle-container">
-              <span *ngIf="calcWeightSum !== 100">{{ calcWeightSum }}/100<br />POINTS</span>
+              <span *ngIf="calcWeightSum !== 100"
+                >{{ calcWeightSum }}/100<br />POINTS</span
+              >
               <span *ngIf="calcWeightSum === 100">100<br />POINTS</span>
             </div>
           </div>
 
           <ng-container *ngIf="!review">
-            <div *ngIf="calcAllWeightsSelected && (calcWeightSum !== 100)">
+            <div *ngIf="calcAllWeightsSelected && calcWeightSum !== 100">
               <strong>{{ calcWeightSum }}</strong> points selected.
             </div>
-            <div *ngIf="!calcAllWeightsSelected" class="alert alert-danger">Select a weight score for <strong>all criteria.</strong></div>
-            <div *ngIf="calcAllWeightsSelected && calcWeightSum < 100" class="alert alert-danger"><strong>Increase</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
-            <div *ngIf="calcAllWeightsSelected && calcWeightSum > 100" class="alert alert-danger"><strong>Decrease</strong> the weight for some criteria to arrive at exactly 100 total points.</div>
+            <div *ngIf="!calcAllWeightsSelected" class="alert alert-danger">
+              Select a weight score for <strong>all criteria.</strong>
+            </div>
+            <div
+              *ngIf="calcAllWeightsSelected && calcWeightSum < 100"
+              class="alert alert-danger"
+            >
+              <strong>Increase</strong> the weight for some criteria to arrive
+              at exactly 100 total points.
+            </div>
+            <div
+              *ngIf="calcAllWeightsSelected && calcWeightSum > 100"
+              class="alert alert-danger"
+            >
+              <strong>Decrease</strong> the weight for some criteria to arrive
+              at exactly 100 total points.
+            </div>
           </ng-container>
         </ng-container>
       </div>
@@ -98,16 +157,42 @@
             GRADE
           </div>
         </div>
-        <div class="input-circle grey-circle" [class.complete]="calcAllGradesSelected && calcGradeSum >= gradeLevels.B" [class.average]="calcAllGradesSelected && calcGradeSum >= gradeLevels.D && calcGradeSum < gradeLevels.B" [class.bad]="calcAllGradesSelected && calcGradeSum < gradeLevels.D">
+        <div
+          class="input-circle grey-circle"
+          [class.complete]="
+            calcAllGradesSelected && calcGradeSum >= gradeLevels.B
+          "
+          [class.average]="
+            calcAllGradesSelected &&
+            calcGradeSum >= gradeLevels.D &&
+            calcGradeSum < gradeLevels.B
+          "
+          [class.bad]="calcAllGradesSelected && calcGradeSum < gradeLevels.D"
+        >
           <div class="circle-container letter-score">
             <div *ngIf="!calcAllGradesSelected">
               ?
             </div>
             <div *ngIf="calcAllGradesSelected">
               <span *ngIf="calcGradeSum >= gradeLevels.A">A</span>
-              <span *ngIf="calcGradeSum >= gradeLevels.B && calcGradeSum < gradeLevels.A">B</span>
-              <span *ngIf="calcGradeSum >= gradeLevels.C && calcGradeSum < gradeLevels.B">C</span>
-              <span *ngIf="calcGradeSum >= gradeLevels.D && calcGradeSum < gradeLevels.C">D</span>
+              <span
+                *ngIf="
+                  calcGradeSum >= gradeLevels.B && calcGradeSum < gradeLevels.A
+                "
+                >B</span
+              >
+              <span
+                *ngIf="
+                  calcGradeSum >= gradeLevels.C && calcGradeSum < gradeLevels.B
+                "
+                >C</span
+              >
+              <span
+                *ngIf="
+                  calcGradeSum >= gradeLevels.D && calcGradeSum < gradeLevels.C
+                "
+                >D</span
+              >
               <span *ngIf="calcGradeSum < gradeLevels.D">F</span>
             </div>
           </div>

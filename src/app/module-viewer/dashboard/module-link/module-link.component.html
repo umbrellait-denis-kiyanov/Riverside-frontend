@@ -1,6 +1,20 @@
 <div class="module-name">
-  <a class="module-name-link" *ngIf="!module.underConstruction && module.status?.is_activated" [routerLink]="'/org/' +orgId + '/module/' + module.id">{{ module.name }}</a>
-  <a class="module-name-link" *ngIf="module.underConstruction && module.status?.is_activated" (click)="showUnderConstructionMessage(module)">{{ module.name }}</a>
-  <span class="module-name-link" *ngIf="!module.status?.is_activated">{{ module.name }}</span>
+  <a
+    class="module-name-link"
+    *ngIf="!module.underConstruction && module.status?.is_activated"
+    [routerLink]="'/org/' + orgId + '/module/' + module.id"
+    >{{ module.name }}</a
+  >
+  <a
+    class="module-name-link"
+    *ngIf="module.underConstruction && module.status?.is_activated"
+    (click)="showUnderConstructionMessage(module)"
+    >{{ module.name }}</a
+  >
+  <span class="module-name-link" *ngIf="!module.status?.is_activated">{{
+    module.name
+  }}</span>
 </div>
-<div class="under-construction" *ngIf="underConstruction">This module is under construction!</div>
+<div class="under-construction" *ngIf="underConstruction">
+  This module is under construction!
+</div>

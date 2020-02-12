@@ -6,7 +6,9 @@
       </th>
       <th *ngIf="step < 3" [class.inactive]="step > 1">
         <div>What industries do your customers belong to?</div>
-        <div class="example" *ngIf="step === 1">Healthcare, education, insurance, corporate, manufacturing, etc.</div>
+        <div class="example" *ngIf="step === 1">
+          Healthcare, education, insurance, corporate, manufacturing, etc.
+        </div>
       </th>
       <th *ngIf="step < 3" [class.inactive]="step > 1">
         What are their pain points?
@@ -17,7 +19,7 @@
     </tr>
   </thead>
   <tbody>
-    <tr *ngFor="let segment of activeSegments; index as i;">
+    <tr *ngFor="let segment of activeSegments; index as i">
       <td class="segment-label">
         <ice
           placeholder="Segment {{ segment }}"
@@ -82,14 +84,15 @@
       mode="criteria"
     ></app-icp-input>
 
-    <div>Where and how will you mine the necessary data to support your decision?</div>
+    <div>
+      Where and how will you mine the necessary data to support your decision?
+    </div>
     <ice
       class="ice-textarea"
       [disabled]="step > 3"
       input="where_mine"
       [idx]="segment"
     ></ice>
-
   </div>
 </div>
 
@@ -103,7 +106,6 @@
       mode="weight"
       [review]="step === 5"
     ></app-icp-input>
-
   </div>
 </div>
 
@@ -131,8 +133,16 @@
         </td>
       </tr>
       <tr>
-        <td>F &lt; {{lastGradeLevel.level}}</td>
-        <td>F &lt; <span class="calculated-grade-pct" inputText="grade_pct" num="4" inline="true"></span></td>
+        <td>F &lt; {{ lastGradeLevel.level }}</td>
+        <td>
+          F &lt;
+          <span
+            class="calculated-grade-pct"
+            inputText="grade_pct"
+            num="4"
+            inline="true"
+          ></span>
+        </td>
       </tr>
     </tbody>
   </table>
@@ -140,13 +150,19 @@
 
 <div *ngIf="step == 7">
   <ng-container *ngFor="let customerIndex of grades">
-    <h2 *ngIf="grades.length == 6 && customerIndex % 2">{{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers</h2>
+    <h2 *ngIf="grades.length == 6 && customerIndex % 2">
+      {{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers
+    </h2>
     <div class="grade-container row">
       <div class="col-sm-1 text-center">
         <h2>{{ customerIndex }}</h2>
       </div>
-      <div class="col-sm-11" *ngFor="let segmentSel of [inputs[gradePrefix + '_segment_' + customerIndex]]">
-
+      <div
+        class="col-sm-11"
+        *ngFor="
+          let segmentSel of [inputs[gradePrefix + '_segment_' + customerIndex]]
+        "
+      >
         <div class="row inputs-wrapper">
           <label class="col-sm-3">Customer Name:</label>
           <div class="col-sm-9">
@@ -162,7 +178,12 @@
         <div class="row inputs-wrapper">
           <label class="col-sm-3">Select a segment:</label>
           <div class="col-sm-9">
-            <select [(ngModel)]="segmentSel.content" (ngModelChange)="contentChanged(segmentSel); resetError(segmentSel);">
+            <select
+              [(ngModel)]="segmentSel.content"
+              (ngModelChange)="
+                contentChanged(segmentSel); resetError(segmentSel)
+              "
+            >
               <option *ngFor="let segment of activeSegments" [value]="segment">
                 <span inputText="name" [num]="segment"></span>
               </option>
@@ -172,7 +193,6 @@
         </div>
 
         <div class="segment-container">
-
           <app-icp-input
             [criterias]="criterias[segmentSel.content]"
             [inputPrefix]="gradePrefix"
@@ -180,7 +200,6 @@
             [gradeLevels]="userGradeLevels"
             mode="grade"
           ></app-icp-input>
-
         </div>
       </div>
     </div>
@@ -192,8 +211,16 @@
     <h2 *ngIf="section.grades.length != 6">{{ section.title }}</h2>
 
     <ng-container *ngFor="let customerIndex of section.grades">
-      <h2 *ngIf="section.grades.length == 6 && customerIndex % 2">{{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers</h2>
-      <div class="grade-container" *ngIf="inputs[prefix + section.prefix + '_segment_' + customerIndex].content as segIdx">
+      <h2 *ngIf="section.grades.length == 6 && customerIndex % 2">
+        {{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers
+      </h2>
+      <div
+        class="grade-container"
+        *ngIf="
+          inputs[prefix + section.prefix + '_segment_' + customerIndex]
+            .content as segIdx
+        "
+      >
         <h3 inputText="{{ section.prefix }}_name" [num]="customerIndex"></h3>
         <h5 inputText="name" [num]="segIdx"></h5>
 
@@ -206,7 +233,6 @@
             mode="grade"
             review="true"
           ></app-icp-input>
-
         </div>
       </div>
     </ng-container>

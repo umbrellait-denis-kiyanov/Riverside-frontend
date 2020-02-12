@@ -8,26 +8,21 @@
   >
     <span aria-hidden="true">&times;</span>
   </button>
-
 </div>
 
 <div class="modal-body">
-
-  <img *ngFor="let i of list" class="avatar"
+  <img
+    *ngFor="let i of list"
+    class="avatar"
     [src]="i | safeurl"
-   [ngClass]="{'selected': i == selected}" (click)="select(i)"  (dblclick)="select(i); done();">
-
+    [ngClass]="{ selected: i == selected }"
+    (click)="select(i)"
+    (dblclick)="select(i); done()"
+  />
 </div>
 
 <div class="modal-footer">
-  <button
-    mat-button
-    color="accent"
-    (click)="done()"
-  >Select</button>
+  <button mat-button color="accent" (click)="done()">Select</button>
 
-  <button
-    mat-button
-    (click)="modal.dismiss()"
-  >Cancel</button>
+  <button mat-button (click)="modal.dismiss()">Cancel</button>
 </div>
