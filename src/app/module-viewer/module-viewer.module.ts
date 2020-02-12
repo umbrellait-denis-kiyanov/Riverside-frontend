@@ -101,7 +101,6 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
-import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 import { CheckboxSelectorComponent } from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
 import {BuyerPersonasService} from '../common/services/buyer-personas.service';
 import {PreRequisiteModulesComponent} from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
@@ -206,7 +205,6 @@ import {MatCheckboxModule} from '@angular/material';
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
-    SessionExpirationModalComponent,
     CheckboxSelectorComponent,
     LoginComponent,
     BuyerPersonasSelectorComponent,
@@ -231,7 +229,6 @@ import {MatCheckboxModule} from '@angular/material';
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
-    SessionExpirationModalComponent,
     CheckboxSelectorComponent,
     VideoComponent,
     PreRequisiteModulesComponent,
