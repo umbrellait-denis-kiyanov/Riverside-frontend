@@ -25,5 +25,6 @@ export const Templates = {
   age_gender: AgeGenderComponent,
   question_image: QuestionImageComponent,
   spreadsheet: SpreadsheetComponent,
-  video: VideoComponent
+  video: VideoComponent,
+  test: TestComponent
 };

@@ -9,7 +9,8 @@
         "$default": {
           "$source": "argv",
           "index": 0
-        }
+        },
+        "x-prompt": "What's the name of template?"
       },
       "path": {
         "type": "string",
@@ -26,23 +27,16 @@
       },      
       "module":  {
         "type": "string",
-        "description": "The declaring module.",
-        "alias": "m"
-      },
-      "export": {
-        "type": "boolean",
-        "default": false,
-        "description": "Export component from module?"
+        "description": "The declaring module."
       },
       "hasInput": {
         "type": "boolean",
         "default": false,
         "description": "Implement a user input",
-        "alias": "i",
         "x-prompt": "Has the template a user input?"
       }
     },
   "required": [
     "name", "hasInput"
   ]
-  }
+}

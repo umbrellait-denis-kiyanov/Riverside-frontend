@@ -12,7 +12,7 @@
     "e2e": "ng e2e",
     "sync:dev": "cd dist/front && rsync -arv . ubuntu@e3.codeda.com:/home/ubuntu/English3/front/dist/front",
     "deploy:dev": "ng build && npm run sync:dev",
-    "schm:build": "tsc -p tsconfig.schematics.json && cpx \"schematics/**/{collection.json,schema.json,package.json,files/**}\" node_modules/riverside-schematics",
+    "schm:build": "rm -rf node_modules/riverside-schematics && tsc -p tsconfig.schematics.json && cpx \"schematics/**/{collection.json,schema.json,package.json,files/**}\" node_modules/riverside-schematics",
     "schm:generate": "ng g riverside-schematics:template"
   },
   "private": true,
