@@ -33,6 +33,5 @@ export class RadioButtonComponent extends TemplateComponent {
   protected init() {
     this.contentData = this.data.data.template_params_json as RadiobuttonTemplateData['template_params_json'];
     this.items = this.contentData.options;
-    console.log(this.contentData);
   }
 }
