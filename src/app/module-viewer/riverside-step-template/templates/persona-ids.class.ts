@@ -41,7 +41,7 @@ export class PersonaInputs {
               const stepDef = previousSteps[stepKey];
               personaDefs[stepKey] = `${stepDef.prefix}_${persona.index}${stepDef.sufix ? '_' + stepDef.sufix : ''}`;
             });
-            this.fromPreviousSteps.push(personaDefs);
+            return personaDefs;
             })
           )
         );
@@ -52,9 +52,7 @@ prepareCurrentInputIds() {
     if (!stepPrefix) { return; }
     buyerPersonasList$
         .pipe(take(1))
-        .subscribe (personas => this.fromPreviousSteps.push(...personas.map(persona => {
-            this.personas.push(`${stepPrefix}_${persona.index}${stepSufix ? '_' + stepSufix : ''}`);
-        })
-        ));
+        .subscribe (personas => this.fromPreviousSteps.push(...personas.map(persona =>
+            `${stepPrefix}_${persona.index}${stepSufix ? '_' + stepSufix : ''}`)));
   }
 }
