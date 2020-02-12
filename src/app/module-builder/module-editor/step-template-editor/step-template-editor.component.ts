@@ -39,7 +39,7 @@ export class StepTemplateEditorComponent implements OnInit {
         name: inst.getName(),
         description: inst.getDescription(),
         hasInputs: inst.hasInputs(),
-        params_json: TemplateDefinitions[name]
+        params_json: TemplateDefinitions[id]
       };
     });
     this.onTemplateChange(this.stepEdit.template_component);

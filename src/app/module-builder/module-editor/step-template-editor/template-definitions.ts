@@ -1,4 +1,3 @@
-// tslint:disable-next-line:label-position
 export const TemplateDefinitions = {
     age_gender: `{
         description: string;
