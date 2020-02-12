@@ -52,7 +52,7 @@ prepareCurrentInputIds() {
     if (!stepPrefix) { return; }
     buyerPersonasList$
         .pipe(take(1))
-        .subscribe (personas => this.fromPreviousSteps.push(...personas.map(persona =>
+        .subscribe (personas => this.personas.push(...personas.map(persona =>
             `${stepPrefix}_${persona.index}${stepSufix ? '_' + stepSufix : ''}`)));
   }
 }
