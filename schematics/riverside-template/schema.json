@@ -1,0 +1,48 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "id": "RiversideTemplate",
+    "title": "Riverside-template Schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "$default": {
+          "$source": "argv",
+          "index": 0
+        }
+      },
+      "path": {
+        "type": "string",
+        "format": "path",
+        "description": "The path to create the component.",
+        "visible": false
+      },
+      "project": {
+        "type": "string",
+        "description": "The name of the project.",
+        "$default": {
+          "$source": "projectName"
+        }
+      },      
+      "module":  {
+        "type": "string",
+        "description": "The declaring module.",
+        "alias": "m"
+      },
+      "export": {
+        "type": "boolean",
+        "default": false,
+        "description": "Export component from module?"
+      },
+      "hasInput": {
+        "type": "boolean",
+        "default": false,
+        "description": "Implement a user input",
+        "alias": "i",
+        "x-prompt": "Has the template a user input?"
+      }
+    },
+  "required": [
+    "name", "hasInput"
+  ]
+  }

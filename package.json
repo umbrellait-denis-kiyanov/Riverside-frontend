@@ -11,7 +11,9 @@
     "lint": "ng lint",
     "e2e": "ng e2e",
     "sync:dev": "cd dist/front && rsync -arv . ubuntu@e3.codeda.com:/home/ubuntu/English3/front/dist/front",
-    "deploy:dev": "ng build && npm run sync:dev"
+    "deploy:dev": "ng build && npm run sync:dev",
+    "schm:build": "tsc -p tsconfig.schematics.json && cpx \"schematics/**/{collection.json,schema.json,package.json,files/**}\" node_modules/riverside-schematics",
+    "schm:generate": "ng g riverside-schematics:template"
   },
   "private": true,
   "dependencies": {
@@ -61,6 +63,8 @@
   },
   "devDependencies": {
     "@angular-devkit/build-angular": "~0.13.0",
+    "@angular-devkit/core": "~7.3.9",
+    "@angular-devkit/schematics": "~7.3.9",
     "@angular/cli": "~7.3.6",
     "@angular/compiler-cli": "~7.2.0",
     "@angular/language-service": "~7.2.0",
@@ -69,6 +73,7 @@
     "@types/jasminewd2": "~2.0.3",
     "@types/node": "~8.9.4",
     "codelyzer": "~4.5.0",
+    "cpx": "1.5.0",
     "jasmine-core": "~2.99.1",
     "jasmine-spec-reporter": "~4.2.1",
     "karma": "~4.0.0",
@@ -84,5 +89,6 @@
     "typescript": "~3.2.2",
     "webpack": "^4.30.0",
     "webpack-cli": "^3.3.0"
-  }
+  },
+  "schematics": "./dist/collection.json"
 }
