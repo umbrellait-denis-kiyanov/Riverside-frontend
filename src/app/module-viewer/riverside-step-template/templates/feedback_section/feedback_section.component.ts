@@ -27,7 +27,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.inputIds = new PersonaInputs({
-      activePersonas: this.activePersonas,
+      buyerPersonasList$: this.buyerPersonasList$,
       previousSteps: {
         title: {
           prefix: 'persona'

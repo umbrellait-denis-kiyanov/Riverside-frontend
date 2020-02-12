@@ -56,7 +56,7 @@ import { PersonaPictureListComponent } from './riverside-step-template/templates
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
 import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
 import { PersonaComponent } from './riverside-step-template/persona/persona.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';

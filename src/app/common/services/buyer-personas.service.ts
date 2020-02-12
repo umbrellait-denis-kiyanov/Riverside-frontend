@@ -4,6 +4,7 @@ import { Observable  } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
 import { HttpClient  } from '@angular/common/http';
 import { ModuleNavService } from "./module-nav.service";
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ import { ModuleNavService } from "./module-nav.service";
 
 export class BuyerPersonasService {
 
-  baseUrl = '/api/modules';
+  baseUrl = environment.apiRoot + '/api/modules';
   private buyerPersonas$: Observable<BuyerPersona[]>
 
   constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {

@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
 import { NamePersonasTemplateData, TemplateParams } from '.';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-name_personas',
@@ -26,9 +27,11 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
-    this.inputIds = {
-      personas: this.activePersonas.map(persona => persona.split('_').join('_name_'))
-    };
+    this.buyerPersonasList$.pipe(take(1)).subscribe(personas => {
+      this.inputIds = {
+        personas: personas.map(persona => `persona_name_${persona.index}`)
+      };
+    });
 
     this.contentData = this.data.data.template_params_json as NamePersonasTemplateData['template_params_json'];
   }

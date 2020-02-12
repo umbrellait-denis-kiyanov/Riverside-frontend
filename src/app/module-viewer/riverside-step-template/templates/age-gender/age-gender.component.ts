@@ -49,7 +49,7 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
 
   initIds() {
     this.inputIds = new PersonaInputs({
-      activePersonas: this.activePersonas,
+      buyerPersonasList$: this.buyerPersonasList$,
       previousSteps: {
         title: {
           prefix: 'persona'

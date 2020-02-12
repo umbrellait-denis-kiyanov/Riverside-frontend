@@ -1,22 +1,20 @@
 <div class="persona-behavior-wrapper">
   <div class="persona-row">
       <div class="persona-name-column"></div>
-
   </div>
   <div class="persona-row" *ngFor="let persona of inputIds.fromPreviousStep; let i=index">
-      <div class="persona-name-column CT-hide" *ngIf="notEmpty(inputs[persona.name].content) && notEmpty(inputs[persona.title].content)">
+      <div class="persona-name-column CT-hide" *ngIf="notEmpty(persona.name) && notEmpty(persona.title)">
         <div class="persona-picture" *ngIf="!inputs[inputIds.personas[i]].content" (click)="!disabled && openModal(inputIds.personas[i])" >
-          <button mat-icon-button ><mat-icon>add</mat-icon></button>
-
+          <button mat-icon-button>
+            <mat-icon>add</mat-icon>
+          </button>
         </div>
         <img class="persona-picture" (click)="!disabled && openModal(inputIds.personas[i])" [src]="inputs[inputIds.personas[i]].content | safeurl" *ngIf="inputs[inputIds.personas[i]].content">
         <div class="persona-name-title">
-          <div class="persona-name" >{{textContent(inputs[persona.name].content)}}</div>
-          <div class="persona-title">{{textContent(inputs[persona.title].content)}}</div>
-
+          <div class="persona-name" >{{ persona.name }}</div>
+          <div class="persona-title">{{ persona.title }}</div>
         </div>
       </div>
-
   </div>
 </div>
 

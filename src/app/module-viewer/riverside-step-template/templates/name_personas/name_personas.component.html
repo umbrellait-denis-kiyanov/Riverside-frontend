@@ -6,11 +6,11 @@
 </div>
 
 <div class="inputs-wrapper container-fluid">
-  <div *ngFor="let inputId of activePersonas; let idx = index" class="row">
+  <div *ngFor="let persona of buyerPersonasList$ | async; let idx = index" class="row">
     <div class="col-sm-6">
       <ice
         [disabled]="true"
-        [input]="inputId"
+        [input]="'persona_' + persona.index"
       ></ice>
     </div>
     <div class="col-sm-6">

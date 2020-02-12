@@ -1,3 +1,5 @@
+import { take } from 'rxjs/operators';
+
 interface PreviousStepInputs {
   [key: string]: {
     prefix: string;
@@ -7,7 +9,7 @@ interface PreviousStepInputs {
 
 export class PersonaInputs {
   static defaults = {
-    activePersonas: [],
+    buyerPersonasList$: null,
     stepPrefix: '',
     stepSufix: '',
     previousSteps: null
@@ -24,26 +26,34 @@ export class PersonaInputs {
   }
 
   preparePreviousInputIds() {
-    const {activePersonas, previousSteps} = this.options;
+    const {buyerPersonasList$, previousSteps} = this.options;
     if (!previousSteps) { return; }
     this.fromPreviousSteps = [];
-    activePersonas.forEach((persona: string) => {
-      const i = parseInt(persona.split('_').pop(), 10);
-      const personaDefs = {};
-      Object.keys(previousSteps).forEach(stepKey => {
-        const stepDef = previousSteps[stepKey];
-        personaDefs[stepKey] = `${stepDef.prefix}_${i}${stepDef.sufix ? '_' + stepDef.sufix : ''}`;
-      });
-      this.fromPreviousSteps.push(personaDefs);
-    });
+    buyerPersonasList$.pipe(take(1)).subscribe(personas =>
+      personas.forEach(persona => {
+        const i = persona.index;
+        const personaDefs = {};
+        Object.keys(previousSteps).forEach(stepKey => {
+          if (stepKey === 'title') {
+              personaDefs[stepKey] = persona;
+              return;
+          }
+          const stepDef = previousSteps[stepKey];
+          personaDefs[stepKey] = `${stepDef.prefix}_${i}${stepDef.sufix ? '_' + stepDef.sufix : ''}`;
+        });
+        this.fromPreviousSteps.push(personaDefs);
+      })
+    );
   }
 
-  prepareCurrentInputIds() {
-    const {activePersonas, stepPrefix, stepSufix} = this.options;
+prepareCurrentInputIds() {
+    const {buyerPersonasList$, stepPrefix, stepSufix} = this.options;
     if (!stepPrefix) { return; }
-    activePersonas.forEach((persona: string) => {
-      const i = parseInt(persona.split('_').pop(), 10);
-      this.personas.push(`${stepPrefix}_${i}${stepSufix ? '_' + stepSufix : ''}`);
-    });
+    buyerPersonasList$.pipe(take(1)).subscribe(personas =>
+        personas.forEach(persona => {
+        const i = persona.index;
+        this.personas.push(`${stepPrefix}_${i}${stepSufix ? '_' + stepSufix : ''}`);
+      })
+    );
   }
 }

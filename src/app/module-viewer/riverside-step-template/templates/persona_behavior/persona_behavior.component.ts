@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
 import { PersonaBehaviorTemplateData, TemplateParams } from '.';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-persona_behavior',
@@ -32,8 +33,10 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
 
     const suffix = this.contentData.input_sufix ? '_' + this.contentData.input_sufix : '';
 
-    this.inputIds = {
-      personas: this.activePersonas.map(persona => persona.split('_').join('_behavior_') + suffix)
-    };
+    this.buyerPersonasList$.pipe(take(1)).subscribe(buyerPersonas => {
+      this.inputIds = {
+        personas: buyerPersonas.map(persona => `persona_behavior_${persona.index}${suffix}`)
+      };
+    });
   }
 }

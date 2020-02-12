@@ -1,5 +1,6 @@
 import { Component, OnInit, Input } from '@angular/core';
 import { TemplateComponent } from '../templates/template-base.class';
+import { BuyerPersona } from '../../../common/interfaces/buyer-persona.interface';
 
 @Component({
   selector: 'riverside-persona',
@@ -7,7 +8,7 @@ import { TemplateComponent } from '../templates/template-base.class';
   styleUrls: ['./persona.component.sass']
 })
 export class PersonaComponent implements OnInit {
-  @Input() persona: string;
+  @Input() persona: BuyerPersona;
   @Input() size: number = 80;
 
   style: {};
@@ -21,12 +22,9 @@ export class PersonaComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    const idx = this.persona.split('_').pop();
-
-    const input = this.template.getInput.bind(this.template);
-    this.name = this.template.textContent(input('persona_name_' + idx).content);
-    this.picture = input('persona_picture_' + idx).content;
-    this.title = this.template.textContent(input(this.persona).content);
+    this.name = this.persona.name;
+    this.picture = this.persona.picture;
+    this.title = this.persona.title;
 
     if (this.size) {
       this.style = {
