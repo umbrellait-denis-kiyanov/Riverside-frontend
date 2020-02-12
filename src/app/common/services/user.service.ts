@@ -120,7 +120,12 @@ export class UserService {
       modalRef.result.then( ( result: boolean ) => {
         if ( !result ) {
           this.intervalSubscriptionId.unsubscribe();
-          this.signout().subscribe( s => this.router.navigate(['login'] , { queryParams: { session_expire: '1' } } ));
+          this.signout().subscribe(
+              s => this.router.navigate(['login'] , { queryParams: { session_expire: '1' } } ),
+              (error) => {
+                this.router.navigate(['login']);
+              }
+          );
         } else {
           this.isSessionPopupOpen = false;
           this.intervalSubscriptionId = this.getAccount().pipe(
