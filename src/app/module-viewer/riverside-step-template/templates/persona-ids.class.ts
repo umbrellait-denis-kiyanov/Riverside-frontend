@@ -29,31 +29,32 @@ export class PersonaInputs {
     const {buyerPersonasList$, previousSteps} = this.options;
     if (!previousSteps) { return; }
     this.fromPreviousSteps = [];
-    buyerPersonasList$.pipe(take(1)).subscribe(personas =>
-      personas.forEach(persona => {
-        const i = persona.index;
-        const personaDefs = {};
-        Object.keys(previousSteps).forEach(stepKey => {
-          if (stepKey === 'title') {
-              personaDefs[stepKey] = persona;
-              return;
-          }
-          const stepDef = previousSteps[stepKey];
-          personaDefs[stepKey] = `${stepDef.prefix}_${i}${stepDef.sufix ? '_' + stepDef.sufix : ''}`;
-        });
-        this.fromPreviousSteps.push(personaDefs);
-      })
-    );
+    buyerPersonasList$
+        .pipe(take(1))
+        .subscribe (personas => this.fromPreviousSteps.push(...personas.map(persona => {
+            const personaDefs = {};
+            Object.keys(previousSteps).forEach(stepKey => {
+              if (stepKey === 'title') {
+                  personaDefs[stepKey] = persona;
+                  return;
+              }
+              const stepDef = previousSteps[stepKey];
+              personaDefs[stepKey] = `${stepDef.prefix}_${persona.index}${stepDef.sufix ? '_' + stepDef.sufix : ''}`;
+            });
+            this.fromPreviousSteps.push(personaDefs);
+            })
+          )
+        );
   }
 
 prepareCurrentInputIds() {
     const {buyerPersonasList$, stepPrefix, stepSufix} = this.options;
     if (!stepPrefix) { return; }
-    buyerPersonasList$.pipe(take(1)).subscribe(personas =>
-        personas.forEach(persona => {
-        const i = persona.index;
-        this.personas.push(`${stepPrefix}_${i}${stepSufix ? '_' + stepSufix : ''}`);
-      })
-    );
+    buyerPersonasList$
+        .pipe(take(1))
+        .subscribe (personas => this.fromPreviousSteps.push(...personas.map(persona => {
+            this.personas.push(`${stepPrefix}_${persona.index}${stepSufix ? '_' + stepSufix : ''}`);
+        })
+        ));
   }
 }
