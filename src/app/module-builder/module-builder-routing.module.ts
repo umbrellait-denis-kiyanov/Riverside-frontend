@@ -6,8 +6,7 @@ import { ModuleSelectorComponent } from './module-selector/module-selector.compo
 import { MainComponent } from '../module-viewer/main/main.component';
 
 @Injectable()
-export class ConfirmDeactivateGuard
-  implements CanDeactivate<ModuleEditorComponent> {
+export class ConfirmExitGuard implements CanDeactivate<ModuleEditorComponent> {
   canDeactivate(target: ModuleEditorComponent) {
     if (target.hasChanges && target.hasChanges()) {
       return window.confirm(
@@ -22,7 +21,7 @@ export class ConfirmDeactivateGuard
 const routes: Routes = [
   {
     path: 'builder',
-    canDeactivate: [ConfirmDeactivateGuard],
+    canDeactivate: [ConfirmExitGuard],
     component: MainComponent,
     children: [
       {
@@ -31,7 +30,7 @@ const routes: Routes = [
         children: [
           {
             path: ':id',
-            canDeactivate: [ConfirmDeactivateGuard],
+            canDeactivate: [ConfirmExitGuard],
             component: ModuleEditorComponent
           }
         ]
@@ -41,9 +40,8 @@ const routes: Routes = [
 ];
 
 @NgModule({
-  // imports: [RouterModule.forRoot(routes, {useHash: true, enableTracing: true, urlUpdateStrategy: 'deferred'})],
   imports: [RouterModule.forChild(routes)],
-  providers: [ConfirmDeactivateGuard],
+  providers: [ConfirmExitGuard],
   exports: [RouterModule]
 })
 export class AppRoutingModule {}

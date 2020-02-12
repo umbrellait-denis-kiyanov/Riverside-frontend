@@ -64,7 +64,6 @@ example
 test
 temp_imports
 **/python/*.pyc
-.vscode
 .playground
 .git_old
 config/*
