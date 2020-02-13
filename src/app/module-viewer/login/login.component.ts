@@ -1,9 +1,8 @@
 import { Component, OnInit } from '@angular/core';
-import { Router, ActivatedRoute } from '@angular/router';
+import {Router, ActivatedRoute} from '@angular/router';
 import { FormBuilder, FormGroup, Validators } from '@angular/forms';
 import { UserService } from 'src/app/common/services/user.service';
 import { Subscription } from 'rxjs';
-import { catchError } from 'rxjs/operators';
 
 @Component({
   selector: 'app-login',
@@ -17,6 +16,7 @@ export class LoginComponent implements OnInit {
   submitted: Subscription;
   returnUrl: string;
   isInvalid = false;
+  isSessionExpired = false;
 
   fields = ['username', 'password'];
 
