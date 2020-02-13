@@ -17,10 +17,10 @@ import { RiversideStepTemplateComponent } from './riverside-step-template/rivers
 import { RTemplateDirective } from './riverside-step-template/riverside-step-template-host.directive';
 import { ModuleContentService } from '../common/services/module-content.service';
 import { LetterImageComponent } from './ice/letter-image/letter-image.component';
-import { MatMenuModule } from '@angular/material/menu';
-import { MatIconModule } from '@angular/material/icon';
-import { MatButtonModule } from '@angular/material/button';
-import { MatRadioModule } from '@angular/material/radio';
+import { MatMenuModule} from '@angular/material/menu';
+import { MatIconModule} from '@angular/material/icon';
+import { MatButtonModule} from '@angular/material/button';
+import { MatRadioModule} from '@angular/material/radio';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatSortModule } from '@angular/material/sort';
 import { UserComponent } from './ice/user/user.component';
@@ -112,12 +112,13 @@ import { PersonaNamePipe } from '../common/pipes/personaName.pipe';
 import {
   CampaignDeletionConfirmationComponent
 } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
+import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], {useHash: true}),
+    RouterModule.forRoot([], { useHash: true }),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -219,6 +220,7 @@ import {
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
     StringToDateStructPipe,
+    SessionExpirationModalComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -244,6 +246,7 @@ import {
     ModuleResultComponent,
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
+    SessionExpirationModalComponent
   ],
   providers: [
     AssessmentService,
@@ -263,5 +266,4 @@ import {
   ],
   bootstrap: [ModuleViewerRootComponent]
 })
-export class ModuleViewerModule {
-}
+export class ModuleViewerModule { }
