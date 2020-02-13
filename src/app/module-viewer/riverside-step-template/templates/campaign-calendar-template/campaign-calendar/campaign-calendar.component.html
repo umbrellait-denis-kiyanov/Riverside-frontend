@@ -1,0 +1,87 @@
+<div class="container mx-auto">
+  <button type="button"
+          class="btn btn-primary mt-4"
+          (click)="openModal()"
+          *ngIf="!readonly"
+  >
+    Add campaign
+  </button>
+
+  <table class="table table-hover mt-3">
+    <thead>
+      <tr>
+        <th scope="col" class="w-12" *ngIf="!readonly"></th>
+        <th scope="col" class="w-20">Theme</th>
+        <th scope="col" class="w-20">Persona</th>
+        <th scope="col" class="w-15">Messaging</th>
+        <th scope="col">Tactical Map</th>
+        <th scope="col" class="w-9">Start Date</th>
+        <th scope="col" class="w-9">End Date</th>
+        <th scope="col" class="w-10">Assigned</th>
+      </tr>
+    </thead>
+    <tbody>
+    <ng-container *ngFor="let campaign of campaigns; trackBy: trackByFn">
+      <tr (dblclick)="editCampaign(campaign)">
+        <td *ngIf="!readonly">
+            <i class="material-icons" (click)="editCampaign(campaign)">create</i>
+            <i class="material-icons ml-1" (click)="deleteCampaign(campaign)">delete</i>
+        </td>
+        <td class="d-flex align-items-center">
+          <div class="rounded-circle circle" [style.backgroundColor]="campaign.color || 'red'"></div>
+          <div class="ml-2 text-break">{{campaign.theme}}</div>
+        </td>
+        <td>{{campaign.persona | personaName | async}}</td>
+        <td>{{campaign.messaging}}</td>
+        <td>{{campaign.tacticalMap}}</td>
+        <td>{{campaign.startDate ? (campaign.startDate | readabledate) : ''}}</td>
+        <td>{{campaign.endDate ? (campaign.endDate | readabledate) : ''}}</td>
+        <td>{{campaign.assigned}}</td>
+      </tr>
+    </ng-container>
+    </tbody>
+  </table>
+
+    <ng-container *ngFor="let year of years">
+
+      <h5 class="mt-3">{{year}}</h5>
+      <table class="table table-bordered mt-2 position-relative">
+        <thead>
+        <tr>
+          <th scope="col" style="width: 28%">Campaign</th>
+          <th scope="col" *ngFor="let month of months" style="width: 6%">{{month}}</th>
+        </tr>
+        </thead>
+        <tbody>
+        <ng-container *ngFor="let campaign of campaignGraphs[year]; index as i; trackBy: trackByFn">
+          <div class="campaign-line-container"
+             [style.top]="getCampaignTopPercent(i, campaignGraphs[year].length)"
+             [style.height.%]="100 / (campaignGraphs[year].length + 1)"
+          >
+            <div
+              class="campaign-line"
+              placement="top"
+              tooltipClass="tooltip"
+              ngbTooltip="
+                {{campaign.startDate ? (campaign.startDate | readabledate) : ''}}
+                 to {{campaign.endDate ? (campaign.endDate | readabledate) : ''}}
+              "
+              (dblclick)="editCampaign(campaign)"
+              [style.backgroundColor]="campaign.color || 'red'"
+              [style.width.%]="getCampaignWidthPercent(campaign)"
+              [style.left.%]="getCampaignOffsetPercent(campaign)"
+            ></div>
+          </div>
+
+          <tr>
+              <th scope="row" class="position-relative text-break">
+                {{campaign.theme}}
+              </th>
+              <td *ngFor="let _ of months"></td>
+            </tr>
+        </ng-container>
+        </tbody>
+      </table>
+
+    </ng-container>
+</div>
