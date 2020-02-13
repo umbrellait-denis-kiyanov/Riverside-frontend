@@ -4,6 +4,7 @@ import { TemplateComponent } from '../template-base.class';
 import { switchMap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TemplateContentData } from '../template-data.class';
+import { TemplateOptions} from '../template.interface';
 
 @Component({
   selector: 'app-module-result',
@@ -22,16 +23,22 @@ export class ModuleResultComponent extends TemplateComponent {
 
     const moduleID = Number(this.contentData.module);
     const moduleStepID = this.contentData.step_id ? this.contentData.step_id : undefined;
+    let moduleOptions: TemplateOptions = { options: [] };
+
+    if (this.contentData.options) {
+        moduleOptions = { options: this.contentData.options };
+    }
 
     this.moduleResultContent$ = this.navService.organization$.pipe(switchMap(orgId =>
       this.moduleService.getOrgModule(moduleID, orgId).pipe(
         switchMap(module => {
-          const targetedStep = moduleStepID ? module.steps.find(step => moduleStepID === step.id) : undefined;
-          const currentStepID = targetedStep ? targetedStep.id : module.steps[module.steps.length - 1].id;
+          const targetedStep = module.steps.find(step => moduleStepID === step.id);
+          const moduleLastStepID = module.steps[module.steps.length - 1].id;
+          const currentStepID = targetedStep ? targetedStep.id : moduleLastStepID;
 
           return this.moduleContentService.load(moduleID, currentStepID, orgId).pipe(
             map(content => {
-              return new TemplateContentData({data: content, me: this.me, canModify: false});
+              return new TemplateContentData({data: Object.assign(content, moduleOptions), me: this.me, canModify: false});
             })
           );
         })
