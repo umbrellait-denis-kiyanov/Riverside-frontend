@@ -1,7 +1,6 @@
 import { TemplateContentDataBase } from '../template.interface';
 
 export interface SpreadsheetTemplateData extends TemplateContentDataBase {
-/* template-def-start */
   template_params_json: {
     description: string;
     apiResource: string;
@@ -10,5 +9,4 @@ export interface SpreadsheetTemplateData extends TemplateContentDataBase {
     requireFeedback: boolean;
     calculateFormulasOnServer: boolean;
   };
-/* template-def-end */
 }

@@ -1,7 +1,6 @@
 import { TemplateContentDataBase } from '../template.interface';
 
 export interface PersonaBehaviorTemplateData extends TemplateContentDataBase {
-/* template-def-start */
   template_params_json: {
     description: string;
     resource: string;
@@ -16,5 +15,4 @@ export interface PersonaBehaviorTemplateData extends TemplateContentDataBase {
       options: Array<{option: string}>
     }>
   };
-/* template-def-end */
 }

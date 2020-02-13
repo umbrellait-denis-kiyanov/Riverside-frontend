@@ -16,8 +16,6 @@ export class StepTemplateEditorComponent implements OnInit {
 
   stepEdit: Step;
 
-  TemplateParams = [];
-
   templates: Template[];
 
   templateFields: TemplateField[];

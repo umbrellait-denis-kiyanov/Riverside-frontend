@@ -161,9 +161,19 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     }
   }
 
-  getBuilderParams() {
+  setBuilderParams() {
     const indexStart = this.params.indexOf('template_params_json: ') + 'template_params_json: '.length;
-    const indexFinish = this.params.indexOf('/* template-def-end */') - 2;
-    return this.params.substring(indexStart, indexFinish).trim();
+    const closedBrace = this.params.indexOf('}', indexStart);
+    const countBraces = (this.params.substring(indexStart, closedBrace).match(/{/g) || []).length;
+    let lastBrace = closedBrace;
+    for (let i = 0; i < countBraces; i++) {
+      lastBrace = this.params.indexOf('}', lastBrace + 1);
+    }
+    this.params = this.params.substring(indexStart, lastBrace - 2);
+    return this.params;
+  }
+
+  getBuilderParams() {
+    return this.params.indexOf('{') === 0 ? this.params : this.setBuilderParams();
   }
 }

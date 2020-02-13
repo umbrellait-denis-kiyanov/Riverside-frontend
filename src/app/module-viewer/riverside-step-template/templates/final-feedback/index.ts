@@ -1,7 +1,6 @@
 import { TemplateContentDataBase } from '../template.interface';
 
 export interface FinalFeedbackTemplateData extends TemplateContentDataBase {
-/* template-def-start */
   template_params_json: {
     description: string;
     title: string;
@@ -11,5 +10,4 @@ export interface FinalFeedbackTemplateData extends TemplateContentDataBase {
       title: string;
     }>
   };
-/* template-def-end */
 }
