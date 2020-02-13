@@ -19,8 +19,11 @@
     "sourceMap": false,
     "strictNullChecks": true,
     "target": "es6",
-    "types": ["node"]
+    "types": ["node"],
+    "typeRoots": [
+      "node_modules/@types"
+    ]
   },
   "include": ["schematics/**/*"],
-  "exclude": ["schematics/**/files/**/*"]
+  "exclude": ["./node_modules/**", "schematics/**/files/**/*"]
 }

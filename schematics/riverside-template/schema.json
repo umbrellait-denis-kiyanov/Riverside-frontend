@@ -10,7 +10,12 @@
           "$source": "argv",
           "index": 0
         },
-        "x-prompt": "What's the name of template?"
+        "x-prompt": "What name would you like to use for the template?\n Name must start with a letter, and must contain only alphanumeric characters or dashes.\n"
+      },
+      "description":  {
+        "type": "string",
+        "description": "The description of template.",
+        "x-prompt": "What description would you like to use for the template?\n"
       },
       "path": {
         "type": "string",
@@ -31,12 +36,11 @@
       },
       "hasInput": {
         "type": "boolean",
-        "default": false,
         "description": "Implement a user input",
-        "x-prompt": "Has the template a user input?"
+        "x-prompt": "Does the template has user input?\n"
       }
     },
   "required": [
-    "name", "hasInput"
+    "name", "hasInput", "description"
   ]
 }

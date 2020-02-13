@@ -1,45 +1,59 @@
 import { chain, mergeWith } from '@angular-devkit/schematics';
-import { TemplateOptions } from './schema';
 import { apply, move, Rule, template, url, branchAndMerge, Tree, SchematicContext } from '@angular-devkit/schematics';
 import { strings } from '@angular-devkit/core';
-import { addDeclarationToNgModule } from '../utils/ng-module-utils';
-import { findModuleFromOptions } from '../schematics-angular-utils/find-module';
+import { findModuleFromOptions } from '@schematics/angular/utility/find-module';
+import { getWorkspace } from '@schematics/angular/utility/config';
+import { parseName } from '@schematics/angular/utility/parse-name';
 
-import { getWorkspace } from '../schematics-angular-utils/config';
-import { parseName } from '../utils/parse-name';
+import { TemplateOptions } from './schema';
+import { addElements } from '../utils/ng-module-utils';
+import { validateProjectName } from '@schematics/angular/utility/validation';
+
+const TEMPLATES_PATH = '/src/app/module-viewer/riverside-step-template/templates/';
+
 
 export default function(options: TemplateOptions): Rule {
 
-    return (host: Tree, context: SchematicContext) => {
+  validateProjectName(options.name);
 
-      const workspace = getWorkspace(host);
-      if (!options.project) {
-        options.project = Object.keys(workspace.projects)[0];
-      }
+  return (host: Tree, context: SchematicContext) => {
 
-      options.path = '/src/app/module-viewer/riverside-step-template/templates/';
+    const workspace = getWorkspace(host);
+    if (!options.project) {
+      options.project = Object.keys(workspace.projects)[0];
+    }
 
-      options.module = findModuleFromOptions(host, options);
+    options.path = TEMPLATES_PATH;
 
-      const parsedPath = parseName(options.path, options.name);
-      options.name = parsedPath.name;
-      options.path = parsedPath.path;
+    options.module = findModuleFromOptions(host, options);
 
-      const templateSource = apply(url('./files'), [
-        template({
-          ...strings,
-          ...options,
-        }),
-        move(parsedPath.path)
-      ]);
+    const parsedPath = parseName(options.path, options.name);
+    options.name = parsedPath.name;
+    options.path = parsedPath.path;
 
-      const rule = chain([
-        branchAndMerge(chain([
-          mergeWith(templateSource),
-          addDeclarationToNgModule(options),
-        ]))
-      ]);
+    const templateSource = apply(url('./files'), [
+      template({
+        ...strings,
+        ...options,
+        capitalizeAll,
+      }),
+      move(parsedPath.path)
+    ]);
 
-      return rule(host, context);
-    };
+    const rule = chain([
+      branchAndMerge(chain([
+        mergeWith(templateSource),
+        addElements(options),
+      ]))
+    ]);
+
+    return rule(host, context);
+  };
+}
+
+export function capitalizeAll(name: string) {
+  return name
+    .split('-')
+    .map(world => world.charAt(0).toUpperCase() + world.substr(1))
+    .join(' ');
 }

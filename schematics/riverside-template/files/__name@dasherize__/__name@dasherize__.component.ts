@@ -14,15 +14,15 @@ export class <%= classify(name) %>Component extends TemplateComponent {
     contentData: <%= classify(name) %>TemplateData['template_params_json'];
 
     getDescription() {
-        return 'Buyer <%= capitalize(name) %>';
+        return '<%= capitalize(description) %>';
     }
 
     getName() {
-        return '<%= capitalize(name) %>';
+        return '<%= capitalizeAll(name) %>';
     }
-    <% if (hasInput) { %>
+<% if (hasInput) { %>
     hasInput() {
         return true;
     }
-    <% } %>
+<% } %>
 }

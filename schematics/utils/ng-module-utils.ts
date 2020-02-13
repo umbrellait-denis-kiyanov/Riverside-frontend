@@ -1,19 +1,22 @@
-import { Rule, Tree, SchematicsException } from '@angular-devkit/schematics';
-import { AddToModuleContext } from './add-to-module-context';
 import * as ts from 'typescript';
+import { Rule, Tree, SchematicsException } from '@angular-devkit/schematics';
 import { strings } from '@angular-devkit/core';
-import { ModuleOptions, buildRelativePath } from '../schematics-angular-utils/find-module';
-import { addDeclarationToModule, addEntryToModule } from '../schematics-angular-utils/ast-utils';
-import { InsertChange } from '../schematics-angular-utils/change';
+import { ModuleOptions, buildRelativePath } from '@schematics/angular/utility/find-module';
+import { InsertChange } from '@schematics/angular/utility/change';
+import { addEntryComponentToModule, addDeclarationToModule, insertImport } from '@schematics/angular/utility/ast-utils';
 
-const { dasherize, classify } = strings;
+import { TemplateOptions } from '../riverside-template/schema';
+import { AddToModuleContext } from './add-to-module-context';
 
-const stringUtils = { dasherize, classify };
+const { dasherize, classify, underscore } = strings;
+const stringUtils = { dasherize, classify, underscore };
 
-export function addDeclarationToNgModule(options: ModuleOptions): Rule {
+let indexPath: string;
+
+export function addElements(options: ModuleOptions): Rule {
+  indexPath = `${options.path}/index.ts`;
   return (host: Tree) => {
-    addDeclaration(host, options);
-    addEntry(host, options);
+    addDeclarations(host, options);
     addIndex(host, options);
     return host;
   };
@@ -35,74 +38,53 @@ function createAddToModuleContext(host: Tree, options: ModuleOptions): AddToModu
   const sourceText = text.toString('utf-8');
   result.source = ts.createSourceFile(options.module, sourceText, ts.ScriptTarget.Latest, true);
 
-  const componentPath = `${options.path}/`
-      + stringUtils.dasherize(options.name) + '/'
-      + stringUtils.dasherize(options.name)
-      + '.component';
-
-  result.relativePath = buildRelativePath(options.module, componentPath);
+  result.relativePath = buildRelativePath(options.module, getComponentPath(options));
 
   result.classifiedName = stringUtils.classify(`${options.name}Component`);
 
   return result;
-
 }
 
 function createAddToIndexContext(host: Tree, options: ModuleOptions): AddToModuleContext {
 
   const result = new AddToModuleContext();
-  const path = options.path + '/index.ts';
 
-  const text = host.read(path);
+  const text = host.read(indexPath);
 
   if (text === null) {
-    throw new SchematicsException(`File ${path} does not exist!`);
+    throw new SchematicsException(`File ${indexPath} does not exist!`);
   }
 
   const sourceText = text.toString('utf-8');
 
-  result.source = ts.createSourceFile(path, sourceText, ts.ScriptTarget.Latest, true);
+  result.source = ts.createSourceFile(indexPath, sourceText, ts.ScriptTarget.Latest, true);
 
-  const componentPath = `${options.path}/`
-      + stringUtils.dasherize(options.name) + '/'
-      + stringUtils.dasherize(options.name)
-      + '.component';
-
-  result.relativePath = buildRelativePath(path, componentPath);
+  result.relativePath = buildRelativePath(indexPath, getComponentPath(options));
 
   result.classifiedName = stringUtils.classify(`${options.name}Component`);
 
   return result;
 }
 
-function addDeclaration(host: Tree, options: ModuleOptions) {
+function addDeclarations(host: Tree, options: ModuleOptions) {
 
   const context = createAddToModuleContext(host, options);
   const modulePath = options.module || '';
 
-  const declarationChanges = addDeclarationToModule(context.source,
-    modulePath,
+  const declarationChanges =
+    addDeclarationToModule(
+      context.source,
+      modulePath,
       context.classifiedName,
-      context.relativePath);
-
-  const declarationRecorder = host.beginUpdate(modulePath);
-  for (const change of declarationChanges) {
-    if (change instanceof InsertChange) {
-      declarationRecorder.insertLeft(change.pos, change.toAdd);
-    }
-  }
-  host.commitUpdate(declarationRecorder);
-}
-
-function addEntry(host: Tree, options: ModuleOptions) {
-
-  const context = createAddToModuleContext(host, options);
-  const modulePath = options.module || '';
-
-  const declarationChanges = addEntryToModule(context.source,
-    modulePath,
-    context.classifiedName,
-    context.relativePath);
+      context.relativePath
+    ).concat(
+      addEntryComponentToModule(
+        context.source,
+        modulePath,
+        context.classifiedName,
+        null as any as string
+      )
+    );
 
   const declarationRecorder = host.beginUpdate(modulePath);
   for (const change of declarationChanges) {
@@ -117,21 +99,38 @@ function addIndex(host: Tree, options: ModuleOptions) {
   const context = createAddToIndexContext(host, options);
   const statement = context.source.statements
     .filter(st => st.kind === ts.SyntaxKind.VariableStatement)[0];
+
+  const underscoreName = stringUtils.underscore(options.name);
+  const classifyName = `${stringUtils.classify(options.name)}Component`;
+
   // @ts-ignore
   const properties: ts.Node[] = statement.declarationList.declarations[0].initializer.properties;
   const declarationChanges = [
     new InsertChange(
-      options.path + '/index.ts',
+      indexPath,
       properties[properties.length - 1].end,
-      ',\n  test: TestComponent'
+      `,\n  ${underscoreName}: ${classifyName}`
+    ),
+    insertImport(
+      context.source,
+      indexPath,
+      classifyName,
+      buildRelativePath(indexPath, getComponentPath(options))
     )
   ];
 
-  const declarationRecorder = host.beginUpdate(options.path + '/index.ts');
+  const declarationRecorder = host.beginUpdate(indexPath);
   for (const change of declarationChanges) {
     if (change instanceof InsertChange) {
       declarationRecorder.insertLeft(change.pos, change.toAdd);
     }
   }
   host.commitUpdate(declarationRecorder);
+}
+
+function getComponentPath(options: TemplateOptions) {
+  return `${options.path}/`
+  + stringUtils.dasherize(options.name) + '/'
+  + stringUtils.dasherize(options.name)
+  + '.component';
 }
