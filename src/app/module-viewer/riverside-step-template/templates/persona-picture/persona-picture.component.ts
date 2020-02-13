@@ -41,12 +41,10 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
         this.notEmpty(input.content) ?
             input.element_key : null;
         }).filter(i => i);
-    console.log(personas)
     this.inputIds = {
       fromPreviousStep: personas.map(persona => ({title: persona, name: persona.split('_').join('_name_')})),
       personas: personas.map(persona => persona.split('_').join('_picture_'))
     };
-    console.log(this.inputIds)
 
     this.contentData = this.data.data.template_params_json as PersonaPictureTemplateData['template_params_json'];
   }
