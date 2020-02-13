@@ -2,6 +2,7 @@ import { Component, OnInit, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { data } from './exampleData';
 import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_section.component';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-final-feedback',
@@ -11,6 +12,7 @@ import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_s
 })
 export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent implements OnInit  {
   contentData = data;
+  params = txt;
 
   columnBoxes = [
     [

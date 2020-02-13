@@ -9,6 +9,7 @@ import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
 import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
 import { FormulaPlugin } from './formulaPlugin';
+import txt from '!!raw-loader!./index.ts';
 
 // remove after upgrading to TypeScript 3.5.1+
 type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
@@ -51,6 +52,7 @@ export class SpreadsheetComponent extends TemplateComponent {
 
   private spreadsheetService: SpreadsheetService;
   private hotRegister = new HotTableRegisterer();
+  params = txt;
 
   contentData: SpreadsheetTemplateData['template_params_json'];
   sheet: SpreadsheetResource;

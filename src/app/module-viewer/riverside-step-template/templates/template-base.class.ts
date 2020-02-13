@@ -27,6 +27,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   instanceExists = true;
 
   public prefix = '';
+  params = '';
 
   constructor(
       protected el: ElementRef,
@@ -158,5 +159,11 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     if (input.error) {
       input.error.next(null);
     }
+  }
+
+  getBuilderParams() {
+    const indexStart = this.params.indexOf('/* template-def-start */') + 27;
+    const indexFinish = this.params.indexOf('/* template-def-end */') - 2;
+    return this.params.substring(indexStart, indexFinish).trim();
   }
 }

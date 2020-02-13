@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { data } from './exampleData';
 import { PersonaInputs } from '../persona-ids.class';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-feedback_section',
@@ -13,6 +14,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
   inputIds: PersonaInputs;
 
   contentData = data;
+  params = txt;
   currentSection: string;
 
   getDescription() {

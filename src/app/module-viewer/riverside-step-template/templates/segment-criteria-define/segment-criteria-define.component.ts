@@ -3,6 +3,7 @@ import { TemplateComponent } from '../template-base.class';
 import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from '.';
 import { IcpInputComponent } from './icp-input/icp-input.component';
 import { Validate } from 'src/app/common/validator.class';
+import txt from '!!raw-loader!./index.ts';
 
 const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
 
@@ -17,6 +18,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   @ViewChildren(IcpInputComponent) icpInputs: QueryList<IcpInputComponent>;
 
   contentData: SegmentCriteriaDefineTemplateData['template_params_json'];
+  params = txt;
 
   allSegments = [1, 2, 3, 4, 5];
   activeSegments: number[] = [];

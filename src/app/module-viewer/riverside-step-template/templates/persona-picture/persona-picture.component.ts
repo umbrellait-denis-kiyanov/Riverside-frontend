@@ -4,6 +4,7 @@ import { TemplateComponent } from '../template-base.class';
 import { PersonaPictureTemplateData } from '.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-persona-picture',
@@ -18,6 +19,7 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
     fromPreviousStep: [ ],
     personas: [ ]
   };
+  params = txt;
 
   contentData: PersonaPictureTemplateData['template_params_json'];
 

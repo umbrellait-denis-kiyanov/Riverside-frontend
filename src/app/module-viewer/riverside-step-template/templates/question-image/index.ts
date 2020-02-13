@@ -1,6 +1,7 @@
 import { TemplateContentDataBase } from '../template.interface';
 
 export interface QuestionImageTemplateData extends TemplateContentDataBase {
+/* template-def-start */
   template_params_json: {
     description: string;
     instructions: string;
@@ -8,6 +9,7 @@ export interface QuestionImageTemplateData extends TemplateContentDataBase {
     title: string;
     questions: Array<{question: string}>
   };
+/* template-def-end */
 }
 
 export interface SegmentCriteria {

@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
 import { NamePersonasTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-name_personas',
@@ -13,6 +14,7 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
   inputIds: {
     personas: string[]
   };
+  params = txt;
 
   contentData: NamePersonasTemplateData['template_params_json'];
 

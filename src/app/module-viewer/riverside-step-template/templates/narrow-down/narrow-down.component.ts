@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
 import { NarrowDownData } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-template2',
@@ -21,6 +22,7 @@ export class NarrowDownComponent extends TemplateComponent {
       'persona_6',
     ]
   };
+  params = txt;
 
   contentData: NarrowDownData['template_params_json'];
 

@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
 import { BrainstormTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-brainstorm',
@@ -11,6 +12,7 @@ import { BrainstormTemplateData } from '.';
 })
 export class BrainstormTemplateComponent extends TemplateComponent {
   inputIds = ['brainstorm'];
+  params = txt;
 
   contentData: BrainstormTemplateData['template_params_json'];
 
