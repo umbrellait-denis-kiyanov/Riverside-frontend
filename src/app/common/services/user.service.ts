@@ -115,7 +115,7 @@ export class UserService {
 
   showTimeLeftModal(timer: Date) {
     if ( !this.isSessionPopupOpen ) {
-      const modalRef = this.modalService.open(SessionExpirationModalComponent);
+      const modalRef = this.modalService.open(SessionExpirationModalComponent, {centered: true});
       this.isSessionPopupOpen = true;
       modalRef.result.then( ( result: boolean ) => {
         if ( !result ) {
