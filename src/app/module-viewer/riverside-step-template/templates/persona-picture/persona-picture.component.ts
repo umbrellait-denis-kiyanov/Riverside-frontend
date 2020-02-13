@@ -4,7 +4,6 @@ import { TemplateComponent } from '../template-base.class';
 import { PersonaPictureTemplateData, TemplateParams } from '.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-persona-picture',
@@ -35,12 +34,19 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.modalService = this.injectorObj.get(NgbModal);
-    this.buyerPersonasList$.pipe(take(1)).subscribe(personas => {
-      this.inputIds = {
-        fromPreviousStep: personas.map(persona => ({title: persona.title, name: persona.name})),
-        personas: personas.map(persona => `persona_picture_${persona.index}`),
-      };
-    });
+    const personas = Object.values(this.inputs)
+        .filter(i => i)
+        .map(input => { return input.element_key &&
+        input.element_key.match(/^persona_[0-9]+$/) &&
+        this.notEmpty(input.content) ?
+            input.element_key : null;
+        }).filter(i => i);
+    console.log(personas)
+    this.inputIds = {
+      fromPreviousStep: personas.map(persona => ({title: persona, name: persona.split('_').join('_name_')})),
+      personas: personas.map(persona => persona.split('_').join('_picture_'))
+    };
+    console.log(this.inputIds)
 
     this.contentData = this.data.data.template_params_json as PersonaPictureTemplateData['template_params_json'];
   }

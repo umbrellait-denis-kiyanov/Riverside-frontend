@@ -2,7 +2,6 @@ import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
 import { NamePersonasTemplateData, TemplateParams } from '.';
-import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-name_personas',
@@ -27,11 +26,17 @@ export class NamePersonasTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
-    this.buyerPersonasList$.pipe(take(1)).subscribe(personas => {
-      this.inputIds = {
-        personas: personas.map(persona => `persona_name_${persona.index}`)
-      };
-    });
+    const personas = Object.values(this.inputs)
+        .filter(i => i)
+        .map(input => { return input.element_key &&
+          input.element_key.match(/^persona_[0-9]+$/) &&
+          this.notEmpty(input.content) ?
+          input.element_key : null;
+        }).filter(i => i);
+
+    this.inputIds = {
+      personas: personas.map(persona => persona.split('_').join('_name_'))
+    };
 
     this.contentData = this.data.data.template_params_json as NamePersonasTemplateData['template_params_json'];
   }

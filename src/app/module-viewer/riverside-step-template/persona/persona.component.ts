@@ -13,19 +13,11 @@ export class PersonaComponent implements OnInit {
 
   style: {};
 
-  name = '';
-  title = '';
-  picture = '';
-
   constructor(
     private template: TemplateComponent
   ) {}
 
   ngOnInit() {
-    this.name = this.persona.name;
-    this.picture = this.persona.picture;
-    this.title = this.persona.title;
-
     if (this.size) {
       this.style = {
         width: this.size + 'px',
