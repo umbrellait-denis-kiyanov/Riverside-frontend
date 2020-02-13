@@ -14,7 +14,6 @@ import { Validation, Validate } from 'src/app/common/validator.class';
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
 
-  protected abstract params: string;
   abstract contentData;
 
   data: TemplateContentData;
@@ -28,6 +27,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   instanceExists = true;
 
   public prefix = '';
+  params = '';
 
   constructor(
       protected el: ElementRef,
@@ -161,7 +161,19 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     }
   }
 
-  getBuilderParams() {
+  setBuilderParams() {
+    const indexStart = this.params.indexOf('template_params_json: ') + 'template_params_json: '.length;
+    const closedBrace = this.params.indexOf('}', indexStart);
+    const countBraces = (this.params.substring(indexStart, closedBrace).match(/{/g) || []).length;
+    let lastBrace = closedBrace;
+    for (let i = 0; i < countBraces; i++) {
+      lastBrace = this.params.indexOf('}', lastBrace + 1);
+    }
+    this.params = this.params.substring(indexStart, lastBrace - 2);
     return this.params;
+  }
+
+  getBuilderParams() {
+    return this.params.indexOf('{') === 0 ? this.params : this.setBuilderParams();
   }
 }

@@ -8,10 +8,3 @@ export interface VideoTemplateData extends TemplateContentDataBase {
     title: string;
   };
 }
-
-export const TemplateParams = `{
-  description: string;
-  videoUrl: string;
-  content: string;
-  title: string;
-}`;

@@ -1,7 +1,8 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { NamePersonasTemplateData, TemplateParams } from '.';
+import { NamePersonasTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-name_personas',
@@ -10,10 +11,10 @@ import { NamePersonasTemplateData, TemplateParams } from '.';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => NamePersonasTemplateComponent) }]
 })
 export class NamePersonasTemplateComponent extends TemplateComponent {
-  params = TemplateParams;
   inputIds: {
     personas: string[]
   };
+  params = txt;
 
   contentData: NamePersonasTemplateData['template_params_json'];
 
