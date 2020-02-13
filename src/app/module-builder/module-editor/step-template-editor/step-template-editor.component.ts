@@ -34,8 +34,6 @@ export class StepTemplateEditorComponent implements OnInit {
 
     this.templates = Object.keys(Templates).map(id => {
       const inst = new Templates[id]();
-      console.info(id);
-      console.info(inst.getBuilderParams());
       return {
         id,
         name: inst.getName(),

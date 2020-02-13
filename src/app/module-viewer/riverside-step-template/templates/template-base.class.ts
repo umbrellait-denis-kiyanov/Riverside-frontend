@@ -162,7 +162,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   getBuilderParams() {
-    const indexStart = this.params.indexOf('/* template-def-start */') + 27;
+    const indexStart = this.params.indexOf('template_params_json: ') + 'template_params_json: '.length;
     const indexFinish = this.params.indexOf('/* template-def-end */') - 2;
     return this.params.substring(indexStart, indexFinish).trim();
   }
