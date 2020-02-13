@@ -14,7 +14,7 @@ export class BuyerPersonasService {
 
   baseUrl = environment.apiRoot + '/api/modules';
   private buyerPersonas$: Observable<BuyerPersona[]>;
-  dataChanged$ = new BehaviorSubject(true);
+  private dataChanged$ = new BehaviorSubject(true);
 
   constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {
     this.buyerPersonas$ = combineLatest(this.dataChanged$)
