@@ -1,9 +1,10 @@
 import { Injectable } from '@angular/core';
-import { BuyerPersona } from "../interfaces/buyer-persona.interface";
-import { Observable  } from 'rxjs';
+import { BuyerPersona } from '../interfaces/buyer-persona.interface';
+import { Observable } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
-import { HttpClient  } from '@angular/common/http';
-import { ModuleNavService } from "./module-nav.service";
+import { HttpClient } from '@angular/common/http';
+import { ModuleNavService } from './module-nav.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
   providedIn: 'root'
@@ -11,16 +12,16 @@ import { ModuleNavService } from "./module-nav.service";
 
 export class BuyerPersonasService {
 
-  baseUrl = '/api/modules';
-  private buyerPersonas$: Observable<BuyerPersona[]>
+  baseUrl = `${environment.apiRoot}/api/modules`;
+  private buyerPersonas$: Observable<BuyerPersona[]>;
 
-  constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {
+  constructor(private httpClient: HttpClient, private moduleNavService: ModuleNavService) {
     this.buyerPersonas$ = this.moduleNavService.organization$.pipe(switchMap(orgId =>
       this.httpClient.get<BuyerPersona[]>(`${this.baseUrl}/org/${orgId}/buyer-personas`).pipe(shareReplay(1))
     ));
   }
 
-  getBuyerPersonas(){
+  getBuyerPersonas() {
     return this.buyerPersonas$;
   }
 }

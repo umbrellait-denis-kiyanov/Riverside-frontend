@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -56,7 +55,7 @@ import { PersonaPictureListComponent } from './riverside-step-template/templates
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
 import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
 import { PersonaComponent } from './riverside-step-template/persona/persona.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
@@ -105,6 +104,14 @@ import { BuyerPersonasSelectorComponent } from './riverside-step-template/person
 import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
 import { BuyerPersonasService } from '../common/services/buyer-personas.service';
+import { CampaignCalendarTemplateComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar-template.component';
+import { CampaignCalendarComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-calendar.component';
+import { ModalAddCampaignComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/modal-add-campaign/modal-add-campaign.component';
+import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pipe';
+import { PersonaNamePipe } from '../common/pipes/personaName.pipe';
+import {
+  CampaignDeletionConfirmationComponent
+} from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 
 @NgModule({
@@ -148,6 +155,7 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     ReadableDatePipe,
     ReadableTimePipe,
     CanModifyPipe,
+    PersonaNamePipe,
     ReversePipe,
     IceComponent,
     RiversideStepTemplateComponent,
@@ -206,6 +214,12 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
+    CampaignCalendarTemplateComponent,
+    CampaignCalendarComponent,
+    ModuleResultComponent,
+    ModalAddCampaignComponent,
+    CampaignDeletionConfirmationComponent,
+    StringToDateStructPipe,
     SessionExpirationModalComponent
   ],
   entryComponents: [
@@ -228,6 +242,10 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     VideoComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
+    CampaignCalendarTemplateComponent,
+    ModuleResultComponent,
+    ModalAddCampaignComponent,
+    CampaignDeletionConfirmationComponent,
     SessionExpirationModalComponent
   ],
   providers: [
