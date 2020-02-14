@@ -1,7 +1,7 @@
 import { Injectable } from '@angular/core';
 import { BuyerPersona } from "../interfaces/buyer-persona.interface";
 import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import { shareReplay, switchMap } from 'rxjs/operators';
+import {shareReplay, switchMap, take} from 'rxjs/operators';
 import { HttpClient  } from '@angular/common/http';
 import { ModuleNavService } from "./module-nav.service";
 import { environment } from '../../../environments/environment';
@@ -18,7 +18,10 @@ export class BuyerPersonasService {
 
   constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {
     this.buyerPersonas$ = combineLatest(this.dataChanged$)
-        .pipe(switchMap(_ => this.getBuyerPersonasData()));
+      .pipe(
+        switchMap(_ => this.getBuyerPersonasData()),
+        shareReplay(1)
+      );
   }
 
   reloadBuyerPersonas() {
@@ -26,7 +29,7 @@ export class BuyerPersonasService {
   }
 
   getBuyerPersonas() {
-    return this.buyerPersonas$.pipe(shareReplay(1));
+    return this.buyerPersonas$;
   }
 
   getBuyerPersonasData() {
