@@ -6,8 +6,3 @@ export interface <%= classify(name) %>TemplateData extends TemplateContentDataBa
     title: string;
   };
 }
-
-export const TemplateParams = `{
- description: string;
- title: string;
-}`;
