@@ -11,7 +11,6 @@ import { RouterModule } from '@angular/router';
 import { ModuleService } from '../common/services/module.service';
 import { LeftMenuComponent } from './left-menu/module/module-left-menu.component';
 import { ContentComponent } from './content/content.component';
-import { LoadingComponent } from '../common/components/loading/loading.component';
 import { UserService } from '../common/services/user.service';
 import { IceComponent } from './ice/ice.component';
 import { RiversideStepTemplateComponent } from './riverside-step-template/riverside-step-template.component';
@@ -103,7 +102,6 @@ import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
 import { TemplateComponent } from './riverside-step-template/templates/template-base.class';
 
-// @ts-ignore
 @NgModule({
   imports: [
     BrowserModule,
