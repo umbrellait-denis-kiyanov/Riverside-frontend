@@ -58,6 +58,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     Object.keys(this.inputs).map(key => this.decorateInput(this.inputs[key]));
     this.init();
     this.initAction();
+    this.setBuilderParams();
   }
 
   protected initAction() {
@@ -166,14 +167,14 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     const closedBrace = this.params.indexOf('}', indexStart);
     const countBraces = (this.params.substring(indexStart, closedBrace).match(/{/g) || []).length;
     let lastBrace = closedBrace;
-    for (let i = 0; i < countBraces; i++) {
+    for (let i = 0; i < countBraces - 1; i++) {
       lastBrace = this.params.indexOf('}', lastBrace + 1);
     }
-    this.params = this.params.substring(indexStart, lastBrace - 2);
+    this.params = this.params.substring(indexStart, lastBrace + 1);
     return this.params;
   }
 
   getBuilderParams() {
-    return this.params.indexOf('{') === 0 ? this.params : this.setBuilderParams();
+    return this.params;
   }
 }
