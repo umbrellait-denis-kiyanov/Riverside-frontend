@@ -102,6 +102,7 @@ import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
 import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
+import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 
 @NgModule({
   imports: [
@@ -199,7 +200,9 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
-    RadioButtonComponent
+    RadioButtonComponent,
+    LoginComponent,
+    SessionExpirationModalComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -219,7 +222,9 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
-    RadioButtonComponent
+    RadioButtonComponent,
+    VideoComponent,
+    SessionExpirationModalComponent
   ],
   providers: [
     AssessmentService,

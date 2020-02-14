@@ -14,8 +14,8 @@ import { Validation, Validate } from 'src/app/common/validator.class';
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
 
-  protected abstract params: string;
   abstract contentData;
+  abstract params: string;
 
   data: TemplateContentData;
   hideChanges$: Observable<boolean>;
@@ -28,7 +28,6 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   instanceExists = true;
 
   public prefix = '';
-
   constructor(
       protected el: ElementRef,
       protected moduleContentService: ModuleContentService,
@@ -162,6 +161,14 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   getBuilderParams() {
-    return this.params;
+    const indexStart = this.params.indexOf('template_params_json: ') + 'template_params_json: '.length;
+    const closedBrace = this.params.indexOf('}', indexStart);
+    const countBraces = (this.params.substring(indexStart, closedBrace).match(/{/g) || []).length;
+    let lastBrace = closedBrace;
+    for (let i = 0; i < countBraces - 1; i++) {
+      lastBrace = this.params.indexOf('}', lastBrace + 1);
+    }
+    return this.params.substring(indexStart, lastBrace + 1);
   }
+
 }
