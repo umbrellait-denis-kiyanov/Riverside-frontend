@@ -105,6 +105,7 @@ import { BuyerPersonasSelectorComponent } from './riverside-step-template/person
 import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
 import { BuyerPersonasService } from '../common/services/buyer-personas.service';
+import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 
 @NgModule({
   imports: [
@@ -204,7 +205,9 @@ import { BuyerPersonasService } from '../common/services/buyer-personas.service'
     LoginComponent,
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
-    ModuleResultComponent
+    ModuleResultComponent,
+    LoginComponent,
+    SessionExpirationModalComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -224,6 +227,7 @@ import { BuyerPersonasService } from '../common/services/buyer-personas.service'
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
+    SessionExpirationModalComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent
   ],

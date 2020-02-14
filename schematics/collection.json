@@ -1,0 +1,9 @@
+{
+    "schematics": {
+      "template": {
+        "factory": "./riverside-template",
+        "description": "Generates a riverside-template component",
+        "schema": "./riverside-template/schema.json"
+      }
+    }
+}
