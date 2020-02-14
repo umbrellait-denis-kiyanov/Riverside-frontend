@@ -11,6 +11,7 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { BuyerPersonasService } from '../../../common/services/buyer-personas.service';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
@@ -36,7 +37,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
       protected moduleService: ModuleService,
       protected navService: ModuleNavService,
       protected userService: UserService,
-      protected injectorObj: Injector
+      protected injectorObj: Injector,
+      protected buyerPersonasService: BuyerPersonasService
     ) {}
 
   abstract getDescription(): string;
