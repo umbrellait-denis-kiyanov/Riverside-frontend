@@ -2,7 +2,7 @@ import { Component, OnInit, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { data } from './exampleData';
 import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_section.component';
-import { TemplateParams } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-final-feedback',
@@ -11,8 +11,8 @@ import { TemplateParams } from '.';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FinalFeedbackComponent) }]
 })
 export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent {
-  params = TemplateParams;
   contentData = data;
+  params = txt;
 
   columnBoxes = [
     [

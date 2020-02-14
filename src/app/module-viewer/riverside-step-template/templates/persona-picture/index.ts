@@ -6,8 +6,3 @@ export interface PersonaPictureTemplateData extends TemplateContentDataBase {
     title: string;
   };
 }
-
-export const TemplateParams = `{
-  description: string;
-  title: string;
-}`;

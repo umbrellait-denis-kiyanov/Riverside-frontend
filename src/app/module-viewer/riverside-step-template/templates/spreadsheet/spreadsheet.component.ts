@@ -1,6 +1,6 @@
 import { Component, forwardRef, ViewChild, ElementRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { SpreadsheetTemplateData, TemplateParams } from '.';
+import { SpreadsheetTemplateData } from '.';
 import * as Handsontable from 'handsontable';
 import { Subscription, of } from 'rxjs';
 import { SpreadsheetResource, TemplateInput } from 'src/app/common/interfaces/module.interface';
@@ -9,6 +9,7 @@ import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
 import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
 import { FormulaPlugin } from './formulaPlugin';
+import txt from '!!raw-loader!./index.ts';
 
 // remove after upgrading to TypeScript 3.5.1+
 type Omit<T, K extends keyof T> = Pick<T, ({ [P in keyof T]: P } & { [P in K]: never } & { [x: string]: never, [x: number]: never })[keyof T]>;
@@ -49,10 +50,9 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
 })
 export class SpreadsheetComponent extends TemplateComponent {
 
-  params = TemplateParams;
-
   private spreadsheetService: SpreadsheetService;
   private hotRegister = new HotTableRegisterer();
+  params = txt;
 
   contentData: SpreadsheetTemplateData['template_params_json'];
   sheet: SpreadsheetResource;

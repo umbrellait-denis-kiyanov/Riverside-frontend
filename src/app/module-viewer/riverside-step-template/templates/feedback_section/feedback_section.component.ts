@@ -2,7 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { data } from './exampleData';
 import { PersonaInputs } from '../persona-ids.class';
-import { TemplateParams } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-feedback_section',
@@ -11,10 +11,10 @@ import { TemplateParams } from '.';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FeedbackSectionTemplateComponent) }]
 })
 export class FeedbackSectionTemplateComponent extends TemplateComponent {
-  params = TemplateParams;
   inputIds: PersonaInputs;
 
   contentData = data;
+  params = txt;
   currentSection: string;
 
   getDescription() {
