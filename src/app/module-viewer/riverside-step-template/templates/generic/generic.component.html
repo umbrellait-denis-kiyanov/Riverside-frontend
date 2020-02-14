@@ -1,5 +1,5 @@
-<div class="embed-container">
-  <img [src]="embedUrl | safeurl" *ngIf="embedUrl">
+<div class="embed-container"  *ngIf="embedUrl">
+  <img [src]="embedUrl | safeurl">
 </div>
 
 <div>
