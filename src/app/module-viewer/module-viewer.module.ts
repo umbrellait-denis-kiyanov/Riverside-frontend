@@ -61,7 +61,7 @@ import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
 import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { NgbDate, NgbModule, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbModule, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbStringAdapter } from './ngb-string-adapter';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
@@ -100,7 +100,6 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
-import { TemplateComponent } from './riverside-step-template/templates/template-base.class';
 
 @NgModule({
   imports: [
