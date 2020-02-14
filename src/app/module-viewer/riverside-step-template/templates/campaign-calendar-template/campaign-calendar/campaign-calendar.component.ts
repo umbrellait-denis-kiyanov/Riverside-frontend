@@ -5,6 +5,8 @@ import { Campaign, CampaignGraph } from './index';
 import * as moment from 'moment';
 import { websafeColors } from './websafe-colors';
 import { CampaignDeletionConfirmationComponent } from './campaign-deletion-confirmation/campaign-deletion-confirmation';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
 @Component({
   selector: 'campaign-calendar',
@@ -22,7 +24,10 @@ export class CampaignCalendarComponent implements OnInit {
 
   private readonly dateFormat = 'YYYY-MM-DD';
 
-  constructor(private modalService: NgbModal) {
+  constructor(
+    private modalService: NgbModal,
+    private sanitizer: DomSanitizer
+  ) {
   }
 
   ngOnInit() {
@@ -71,11 +76,21 @@ export class CampaignCalendarComponent implements OnInit {
     return item.theme;
   }
 
-  getCampaignWidthPercent(campaign: Campaign): number {
+  getMonthCellWidthPercent(month: string, year: string): number {
+    const daysInMonth = moment(month, '-MMM-').daysInMonth();
+    const daysInYear = this.getDaysInYear(moment(year));
+    const fullWidthOfMonthsPercent = 72;
+    return daysInMonth * fullWidthOfMonthsPercent / daysInYear;
+  }
+
+  getCampaignWidth(campaign: Campaign): SafeStyle {
     const start = moment(campaign.startDate, this.dateFormat);
     const end = moment(campaign.endDate, this.dateFormat);
-    const diff = end.diff(start, 'day') + 1;
-    return diff * 100 / this.getDaysInYear(start);
+    const diff = end.diff(start, 'day');
+    const borderWidth = 3;
+    return this.sanitizer.bypassSecurityTrustStyle(
+      `calc(${diff * 100 / this.getDaysInYear(start)}% + ${borderWidth}px)`
+    );
   }
 
   getCampaignTopPercent(index: number, arrayLength: number): number {

@@ -48,8 +48,11 @@
       <table class="table table-bordered mt-2 position-relative">
         <thead>
         <tr>
-          <th scope="col" style="width: 28%">Campaign</th>
-          <th scope="col" *ngFor="let month of months" style="width: 6%">{{month}}</th>
+          <th scope="col" class="label">Campaign</th>
+          <th scope="col"
+              *ngFor="let month of months"
+              [style.width.%]="getMonthCellWidthPercent(month, year)"
+          >{{month}}</th>
         </tr>
         </thead>
         <tbody>
@@ -68,7 +71,7 @@
               "
               (dblclick)="editCampaign(campaign)"
               [style.backgroundColor]="campaign.color || 'red'"
-              [style.width.%]="getCampaignWidthPercent(campaign)"
+              [style.width]="getCampaignWidth(campaign)"
               [style.left.%]="getCampaignOffsetPercent(campaign)"
             ></div>
           </div>
