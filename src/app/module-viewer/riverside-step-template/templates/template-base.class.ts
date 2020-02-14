@@ -4,7 +4,7 @@ import {
   ElementRef,
   OnDestroy,
   Injector,
-  Component
+  Injectable
 } from '@angular/core';
 import { TemplateComponentInterface } from './template.interface';
 import User from 'src/app/common/interfaces/user.model';
@@ -16,13 +16,11 @@ import { BehaviorSubject, Observable } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
 
-@Component({
-  template: ''
-})
-export class TemplateComponent
+@Injectable()
+export abstract class TemplateComponent
   implements TemplateComponentInterface, OnInit, OnDestroy {
-  protected params: string;
-  contentData;
+  protected abstract params: string;
+  abstract contentData;
 
   data: TemplateContentData;
   hideChanges$: Observable<boolean>;
@@ -44,13 +42,9 @@ export class TemplateComponent
     protected injectorObj: Injector
   ) {}
 
-  getDescription(): string {
-    throw new Error('Not implemented');
-  }
+  abstract getDescription(): string;
 
-  getName(): string {
-    throw new Error('Not implemented');
-  }
+  abstract getName(): string;
 
   ngOnInit() {
     this.hideChanges$ = this.data.onHideChanges;

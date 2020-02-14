@@ -196,8 +196,7 @@ import { TemplateComponent } from './riverside-step-template/templates/template-
     ErrorMsgComponent,
     SpinnerComponent,
     SpreadsheetComponent,
-    LoginComponent,
-    TemplateComponent
+    LoginComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
