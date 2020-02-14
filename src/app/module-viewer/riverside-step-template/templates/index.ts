@@ -13,6 +13,7 @@ import { VideoComponent } from './video/video.component';
 import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
 import { PreRequisiteModulesComponent } from './pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './module-result/module-result.component';
+import { ContentMapComponent } from './content-map/content-map.component';
 
 export const Templates = {
   narrow_down: NarrowDownComponent,
@@ -29,5 +30,6 @@ export const Templates = {
   pre_requisite_modules: PreRequisiteModulesComponent,
   question_image: QuestionImageComponent,
   spreadsheet: SpreadsheetComponent,
-  video: VideoComponent
+  video: VideoComponent,
+  content_map: ContentMapComponent
 };

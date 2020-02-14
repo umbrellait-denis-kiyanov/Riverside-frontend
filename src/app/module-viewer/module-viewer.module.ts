@@ -106,6 +106,7 @@ import { PreRequisiteModulesComponent } from './riverside-step-template/template
 import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
 import { BuyerPersonasService } from '../common/services/buyer-personas.service';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
+import { ContentMapComponent } from './riverside-step-template/templates/content-map/content-map.component';
 
 @NgModule({
   imports: [
@@ -207,7 +208,8 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     PreRequisiteModulesComponent,
     ModuleResultComponent,
     LoginComponent,
-    SessionExpirationModalComponent
+    SessionExpirationModalComponent,
+    ContentMapComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -229,7 +231,8 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     VideoComponent,
     SessionExpirationModalComponent,
     PreRequisiteModulesComponent,
-    ModuleResultComponent
+    ModuleResultComponent,
+    ContentMapComponent
   ],
   providers: [
     AssessmentService,

@@ -71,6 +71,13 @@ export class StepTemplateFieldComponent implements OnInit {
         map(resources => resources.map(resource => [resource, resource]))
       );
     }
+
+    if (this.name.substr(0, 7) === 'mapType') {
+      this.type = 'select';
+      this.selectValues$ = this.moduleService.getTemplateResources(0, 'spreadsheet').pipe(
+        map(resources => resources.map(resource => [resource, resource]))
+      );
+    }
   }
 
   fieldTitle(fieldName: string) {

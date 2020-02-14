@@ -1,6 +1,5 @@
 import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { BrainstormTemplateData, TemplateParams } from '.';
 import { of } from 'rxjs';
 import { Validate } from 'src/app/common/validator.class';
 
