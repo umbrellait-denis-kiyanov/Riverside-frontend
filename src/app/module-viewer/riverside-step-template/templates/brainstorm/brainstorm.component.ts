@@ -1,9 +1,9 @@
 import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { BrainstormTemplateData, TemplateParams } from '.';
-import { of } from 'rxjs';
+import { BrainstormTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
 import { Validate } from 'src/app/common/validator.class';
-
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-brainstorm',
@@ -12,7 +12,7 @@ import { Validate } from 'src/app/common/validator.class';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => BrainstormTemplateComponent) }]
 })
 export class BrainstormTemplateComponent extends TemplateComponent {
-  params = TemplateParams;
+  params = txt;
   contentData: BrainstormTemplateData['template_params_json'];
   inputIds: string[];
 

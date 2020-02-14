@@ -1,0 +1,46 @@
+{
+    "$schema": "http://json-schema.org/schema",
+    "id": "RiversideTemplate",
+    "title": "Riverside-template Schema",
+    "type": "object",
+    "properties": {
+      "name": {
+        "type": "string",
+        "$default": {
+          "$source": "argv",
+          "index": 0
+        },
+        "x-prompt": "What name would you like to use for the template?\n Name must start with a letter, and must contain only alphanumeric characters or dashes.\n"
+      },
+      "description":  {
+        "type": "string",
+        "description": "The description of template.",
+        "x-prompt": "What description would you like to use for the template?\n"
+      },
+      "path": {
+        "type": "string",
+        "format": "path",
+        "description": "The path to create the component.",
+        "visible": false
+      },
+      "project": {
+        "type": "string",
+        "description": "The name of the project.",
+        "$default": {
+          "$source": "projectName"
+        }
+      },      
+      "module":  {
+        "type": "string",
+        "description": "The declaring module."
+      },
+      "hasInput": {
+        "type": "boolean",
+        "description": "Implement a user input",
+        "x-prompt": "Does the template has user input?\n"
+      }
+    },
+  "required": [
+    "name", "hasInput", "description"
+  ]
+}
