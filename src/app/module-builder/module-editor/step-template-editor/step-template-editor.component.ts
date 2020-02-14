@@ -32,7 +32,6 @@ export class StepTemplateEditorComponent implements OnInit {
 
     this.templates = Object.keys(Templates).map(id => {
       const inst = new Templates[id]();
-
       return {
         id,
         name: inst.getName(),
@@ -41,7 +40,6 @@ export class StepTemplateEditorComponent implements OnInit {
         params_json: inst.getBuilderParams()
       };
     });
-
     this.onTemplateChange(this.stepEdit.template_component);
   }
 
