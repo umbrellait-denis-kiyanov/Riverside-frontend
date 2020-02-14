@@ -7,9 +7,3 @@ export interface GenericTemplateData extends TemplateContentDataBase {
     title: string;
   };
 }
-
-export const TemplateParams = `{
-  description: string;
-  content: string;
-  title: string;
-}`;

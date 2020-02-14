@@ -14,10 +14,12 @@ import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
 import { PreRequisiteModulesComponent } from './pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './module-result/module-result.component';
 import { PersonaStrategyComponent } from './persona-strategy/persona-strategy.component';
+import { CampaignCalendarTemplateComponent } from './campaign-calendar-template/campaign-calendar-template.component';
 
 export const Templates = {
   narrow_down: NarrowDownComponent,
   brainstorm: BrainstormTemplateComponent,
+  campaign_calendar: CampaignCalendarTemplateComponent,
   generic: GenericTemplateComponent,
   name_personas: NamePersonasTemplateComponent,
   persona_behavior: PersonaBehaviorTemplateComponent,

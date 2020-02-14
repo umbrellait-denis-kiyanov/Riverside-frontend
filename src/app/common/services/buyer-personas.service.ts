@@ -1,6 +1,6 @@
 import { Injectable } from '@angular/core';
 import { BuyerPersona } from '../interfaces/buyer-persona.interface';
-import { Observable  } from 'rxjs';
+import { Observable } from 'rxjs';
 import { shareReplay, switchMap } from 'rxjs/operators';
 import { HttpClient  } from '@angular/common/http';
 import { ModuleNavService } from './module-nav.service';
