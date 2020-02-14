@@ -1,3 +1,7 @@
+<div class="embed-container">
+  <img [src]="embedUrl | safeurl" *ngIf="embedUrl">
+</div>
+
 <div>
   <div [innerHtml]="contentData.content | safehtml"></div>
 </div>
