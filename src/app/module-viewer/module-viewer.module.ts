@@ -101,7 +101,9 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
+import { TemplateComponent } from './riverside-step-template/templates/template-base.class';
 
+// @ts-ignore
 @NgModule({
   imports: [
     BrowserModule,
@@ -196,7 +198,8 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ErrorMsgComponent,
     SpinnerComponent,
     SpreadsheetComponent,
-    LoginComponent
+    LoginComponent,
+    TemplateComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
