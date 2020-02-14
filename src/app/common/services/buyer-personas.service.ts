@@ -21,7 +21,11 @@ export class BuyerPersonasService {
         .pipe(switchMap(_ => this.getBuyerPersonasData()));
   }
 
-  getBuyerPersonas(){
+  reloadBuyerPersonas() {
+    this.dataChanged$.next(true);
+  }
+
+  getBuyerPersonas() {
     return this.buyerPersonas$.pipe(shareReplay(1));
   }
 

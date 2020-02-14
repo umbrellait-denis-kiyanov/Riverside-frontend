@@ -2,6 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
 import { NamePersonasTemplateData, TemplateParams } from '.';
+import BuyerPersonasConfigTemplateComponent from '../buyer-personas-config-template-component';
 
 @Component({
   selector: 'app-name_personas',
@@ -9,7 +10,7 @@ import { NamePersonasTemplateData, TemplateParams } from '.';
   styleUrls: ['./name_personas.component.sass'],
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => NamePersonasTemplateComponent) }]
 })
-export class NamePersonasTemplateComponent extends TemplateComponent {
+export class NamePersonasTemplateComponent extends BuyerPersonasConfigTemplateComponent {
   params = TemplateParams;
   inputIds: {
     personas: string[]

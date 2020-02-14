@@ -4,6 +4,7 @@ import { TemplateComponent } from '../template-base.class';
 import { PersonaPictureTemplateData, TemplateParams } from '.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
+import BuyerPersonasConfigTemplateComponent from '../buyer-personas-config-template-component';
 
 @Component({
   selector: 'app-persona-picture',
@@ -13,7 +14,7 @@ import { PersonaPictureListComponent } from './persona-picture-list/persona-pict
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => PersonaPictureTemplateComponent) }]
 })
 
-export class PersonaPictureTemplateComponent extends TemplateComponent {
+export class PersonaPictureTemplateComponent extends BuyerPersonasConfigTemplateComponent {
   params = TemplateParams;
   inputIds = {
     fromPreviousStep: [ ],
