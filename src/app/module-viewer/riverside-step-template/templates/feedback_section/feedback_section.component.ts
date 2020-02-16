@@ -50,9 +50,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
       }
     });
 
-    this.isNavCarousel = this.contentOptions && this.contentOptions.some(option => {
-      return option.nav && option.nav === 'slides';
-    });
+    this.isNavCarousel = this.contentOptions && this.contentOptions.nav && this.contentOptions.nav === 'slides';
   }
 
   behaviorInputs() {
