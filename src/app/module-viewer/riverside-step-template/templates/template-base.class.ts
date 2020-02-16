@@ -28,7 +28,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   action: string;
   instanceExists = true;
   isEmbedded = false;
-  contentOptions: { [key: string]: string }[];
+  contentOptions;
 
   public prefix = '';
 
@@ -51,11 +51,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     this.inputs = this.data.data.inputs;
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
-    this.contentOptions = this.data.data.options.map(option => {
-      const obj = {};
-      obj[option.key] = option.value;
-      return obj;
-    });
+    this.contentOptions = this.data.data.options;
 
     this.activePersonas = Object.values(this.inputs).filter(i => i).map(input => {
       return input.element_key &&

@@ -4,7 +4,6 @@ import { TemplateComponent } from '../template-base.class';
 import { switchMap, map } from 'rxjs/operators';
 import { Observable } from 'rxjs';
 import { TemplateContentData } from '../template-data.class';
-import { TemplateOptions} from '../template.interface';
 
 @Component({
   selector: 'app-module-result',
@@ -23,10 +22,12 @@ export class ModuleResultComponent extends TemplateComponent {
 
     const moduleID = Number(this.contentData.module);
     const moduleStepID = this.contentData.step_id ? this.contentData.step_id : undefined;
-    let moduleOptions: TemplateOptions = { options: [] };
+    const moduleOptions = {};
 
     if (this.contentData.options) {
-        moduleOptions = { options: this.contentData.options };
+      this.contentData.options.map(option => {
+        Object.assign(moduleOptions, { [option.key]: option.value });
+      });
     }
 
     this.moduleResultContent$ = this.navService.organization$.pipe(switchMap(orgId =>
@@ -38,7 +39,8 @@ export class ModuleResultComponent extends TemplateComponent {
 
           return this.moduleContentService.load(moduleID, currentStepID, orgId).pipe(
             map(content => {
-              return new TemplateContentData({data: Object.assign(content, moduleOptions), me: this.me, canModify: false});
+              Object.assign(content.options, moduleOptions);
+              return new TemplateContentData({data: content, me: this.me, canModify: false});
             })
           );
         })

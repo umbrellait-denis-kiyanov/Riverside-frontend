@@ -17,6 +17,6 @@ export const TemplateParams = `{
   content: string;
   title: string;
   module: Module;
-  step_id?: number;
-  options?: Array<{key: string, value: string}>
+  step_id: number;
+  options: Array<{key: string, value: string}>
 }`;

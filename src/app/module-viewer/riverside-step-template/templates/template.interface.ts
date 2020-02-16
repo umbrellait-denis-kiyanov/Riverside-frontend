@@ -43,11 +43,7 @@ export interface TemplateContentDataBase {
   }
 }
 
-export interface TemplateOptions {
-  options: Array<TemplateOption>;
-}
-
 export interface TemplateOption {
-  key: string;
-  value: string;
+  key?: string;
+  value?: string;
 }
