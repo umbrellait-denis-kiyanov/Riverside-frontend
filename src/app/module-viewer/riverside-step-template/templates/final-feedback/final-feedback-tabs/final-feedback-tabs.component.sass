@@ -1,0 +1,85 @@
+@import "src/app/module-viewer/riverside-step-template/templates/feedback_section/feedback_section.component.sass"
+
+.tabsbar
+  display: flex
+  border-bottom: 1px solid #ccc
+  position: sticky
+  top: 0
+  background: white
+  z-index: 10
+  margin-top: 40px
+  .tabitem
+    margin: 2px
+    padding: 8px
+    background: #f3f4f4
+    cursor: pointer
+    \::ng-deep .persona-name-column
+      width: auto
+    &.active
+      border-bottom: 3px solid
+      background: #cecbcb
+      \::ng-deep .persona-title
+        color: black
+
+.persona-content
+  display: flex
+  flex-wrap: wrap
+  margin: 10px 0
+  padding: 40px 0px
+  border-bottom: 1px solid #ccc
+  min-height: 650px
+
+  .column
+    width: 33%
+    min-width: 350px
+    flex-shrink: 0
+    flex-direction: column
+    display: flex
+
+    .behavior
+      flex-grow: 1
+      display: flex
+      flex-direction: column
+      margin-bottom: 10px
+
+      ice
+        flex-grow: 1
+      \::ng-deep
+        .textbody
+          height: 100%
+          border: none
+          &:focus
+            border: 2px solid #ccc
+    \::ng-deep
+      riverside-persona
+        width: 100%
+        margin-top: -35px
+        .persona-name-column
+          width: 100%
+          .persona-name-title
+            font-size: 45px
+            text-transform: uppercase
+            .persona-name
+              font-size: 1em
+            .persona-title
+              font-size: 0.5em
+
+.behavior-title
+  text-transform: uppercase
+  font-size: 20px
+
+.previous-behavior
+  display: flex
+
+  .behavior-subtitle
+    text-transform: uppercase
+    font-size: 15px
+    width: 150px
+    flex-shrink: 0
+
+
+
+.no-margin-bottom
+  \::ng-deep
+    p
+      margin-bottom: 0

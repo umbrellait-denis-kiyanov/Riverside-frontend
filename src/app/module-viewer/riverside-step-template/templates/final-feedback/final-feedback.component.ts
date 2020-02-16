@@ -13,7 +13,6 @@ import { TemplateParams } from '.';
 export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent {
   params = TemplateParams;
   contentData = data;
-  isNavCarousel = this.contentOptions.nav && this.contentOptions.nav === 'carousel';
 
   columnBoxes = [
     [
