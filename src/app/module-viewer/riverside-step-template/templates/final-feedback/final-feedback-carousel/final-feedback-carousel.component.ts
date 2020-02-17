@@ -22,4 +22,8 @@ export class FinalFeedbackCarouselComponent extends FinalFeedbackComponent {
     touchDrag: false,
     pullDrag: false,
   };
+
+  onSlideChange() {
+    window.scrollTo(0, 0);
+  }
 }
