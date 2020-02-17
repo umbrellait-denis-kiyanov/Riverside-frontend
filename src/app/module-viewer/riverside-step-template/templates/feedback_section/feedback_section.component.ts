@@ -17,6 +17,8 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
   params = txt;
   currentSection: string;
 
+  isNavCarousel: boolean = false;
+
   getDescription() {
     return '';
   }
@@ -47,6 +49,8 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
         ...this.behaviorInputs()
       }
     });
+
+    this.isNavCarousel = this.contentOptions && this.contentOptions.nav && this.contentOptions.nav === 'slides';
   }
 
   behaviorInputs() {

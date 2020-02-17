@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -114,6 +113,9 @@ import {
   CampaignDeletionConfirmationComponent
 } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
+import { FinalFeedbackTabsComponent } from './riverside-step-template/templates/final-feedback/final-feedback-tabs/final-feedback-tabs.component';
+import { FinalFeedbackCarouselComponent } from './riverside-step-template/templates/final-feedback/final-feedback-carousel/final-feedback-carousel.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
 
 @NgModule({
@@ -143,7 +145,8 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     ReactiveFormsModule,
     ImageCropperModule,
     HotTableModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    CarouselModule,
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -222,8 +225,10 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
     StringToDateStructPipe,
-    RadioButtonComponent,
-    SessionExpirationModalComponent
+    SessionExpirationModalComponent,
+    FinalFeedbackTabsComponent,
+    FinalFeedbackCarouselComponent,
+    RadioButtonComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
