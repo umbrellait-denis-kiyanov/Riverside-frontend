@@ -102,12 +102,15 @@ import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
+import {BuyerPersonasSelectorComponent} from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
+import {CheckboxSelectorComponent} from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
+import {MatCheckboxModule} from '@angular/material';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], { useHash: true }),
+    RouterModule.forRoot([], {useHash: true}),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -130,7 +133,8 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     ReactiveFormsModule,
     ImageCropperModule,
     HotTableModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatCheckboxModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -199,7 +203,9 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
-    SessionExpirationModalComponent
+    SessionExpirationModalComponent,
+    BuyerPersonasSelectorComponent,
+    CheckboxSelectorComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -219,7 +225,9 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
-    SessionExpirationModalComponent
+    SessionExpirationModalComponent,
+    BuyerPersonasSelectorComponent,
+    CheckboxSelectorComponent
   ],
   providers: [
     AssessmentService,
