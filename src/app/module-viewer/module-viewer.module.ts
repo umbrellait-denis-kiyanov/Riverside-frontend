@@ -101,6 +101,7 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
+import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 
 @NgModule({
@@ -199,6 +200,8 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
+    RadioButtonComponent,
+    LoginComponent,
     SessionExpirationModalComponent
   ],
   entryComponents: [
@@ -218,6 +221,8 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     TemplateHeadingComponent,
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
+    VideoComponent,
+    RadioButtonComponent,
     VideoComponent,
     SessionExpirationModalComponent
   ],
