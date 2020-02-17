@@ -38,19 +38,13 @@ export class RadioButtonComponent extends TemplateComponent {
   protected init() {
     this.contentData = this.data.data.template_params_json as RadiobuttonTemplateData['template_params_json'];
     this.items = this.contentData.options;
-    this.input = this.getRadioInput();
-    if ( this.input ) {
-      this.userChoice = Number(this.input.getValue());
-    }
+    this.input = this.getInput(this.contentData.input_sufix , null , this.prefix);
+    this.userChoice = Number(this.input.getValue());
+
   }
 
   onRadioChange() {
     this.input.content = String(this.userChoice);
     this.contentChanged(this.input);
   }
-
-  getRadioInput(): TemplateInput {
-    return this.getInput(this.contentData.input_sufix , null , this.prefix);
-  }
-
 }
