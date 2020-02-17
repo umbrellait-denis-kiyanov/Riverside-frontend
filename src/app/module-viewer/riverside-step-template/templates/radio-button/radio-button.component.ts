@@ -2,6 +2,7 @@ import {Component, forwardRef, OnInit} from '@angular/core';
 import {TemplateComponent} from '../template-base.class';
 import txt from '!!raw-loader!./index.ts';
 import {RadiobuttonTemplateData , Item} from '.';
+import {TemplateInput} from '../../../../common/interfaces/module.interface';
 
 @Component({
   selector: 'app-radio-button',
@@ -16,6 +17,7 @@ export class RadioButtonComponent extends TemplateComponent {
   params = txt;
   contentData: RadiobuttonTemplateData['template_params_json'];
   userChoice = 0;
+  input: TemplateInput;
 
   getDescription() {
     return 'Radio button';
@@ -36,15 +38,19 @@ export class RadioButtonComponent extends TemplateComponent {
   protected init() {
     this.contentData = this.data.data.template_params_json as RadiobuttonTemplateData['template_params_json'];
     this.items = this.contentData.options;
-    const input = this.getInput(this.contentData.input_sufix , null , this.prefix);
-    if ( input ) {
-      this.userChoice = Number(input.getValue());
+    this.input = this.getRadioInput();
+    if ( this.input ) {
+      this.userChoice = Number(this.input.getValue());
     }
   }
 
   onRadioChange() {
-    const input = this.getInput(this.contentData.input_sufix , null , this.prefix);
-    input.content = String(this.userChoice);
-    this.contentChanged(input);
+    this.input.content = String(this.userChoice);
+    this.contentChanged(this.input);
   }
+
+  getRadioInput(): TemplateInput {
+    return this.getInput(this.contentData.input_sufix , null , this.prefix);
+  }
+
 }
