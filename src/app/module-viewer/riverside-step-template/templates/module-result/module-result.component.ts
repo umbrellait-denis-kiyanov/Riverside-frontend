@@ -23,13 +23,9 @@ export class ModuleResultComponent extends TemplateComponent {
 
     const moduleID = Number(this.contentData.module);
     const moduleStepID = this.contentData.step_id ? this.contentData.step_id : undefined;
-    let moduleOptions: TemplateOption;
-
-    if (this.contentData.options) {
-      moduleOptions = this.contentData.options.reduce((accumulator, option) => {
-          return { ...accumulator, [option.key]: option.value };
-        }, {});
-    }
+    const moduleOptions: TemplateOption = (this.contentData.options || []).reduce((accumulator, option) => {
+      return { ...accumulator, [option.key]: option.value };
+    }, {});
 
     this.moduleResultContent$ = this.navService.organization$.pipe(switchMap(orgId =>
       this.moduleService.getOrgModule(moduleID, orgId).pipe(

@@ -89,32 +89,33 @@
     p
       margin-bottom: 0
 
-\:host /deep/
-  .owl-theme
-    .owl-nav.disabled+.owl-dots
-      margin-top: 20px
+\:host
+  \::ng-deep
+    .owl-theme
+      .owl-nav.disabled+.owl-dots
+        margin-top: 20px
 
-    .owl-dots
-      .owl-dot
-        span
-          width: 26px
-          height: 26px
-          border: 1px solid #434343
-          border-radius: 13px
-          background-color: transparent
-
-        &.active
+      .owl-dots
+        .owl-dot
           span
-            padding: 3px
-            background-color: #434343
-            background-clip: content-box
+            width: 26px
+            height: 26px
+            border: 1px solid #434343
+            border-radius: 13px
+            background-color: transparent
 
-  .owl-carousel
-    .owl-stage
-      display: flex
+          &.active
+            span
+              padding: 3px
+              background-color: #434343
+              background-clip: content-box
 
-    .owl-item
-      padding-bottom: 10px
+    .owl-carousel
+      .owl-stage
+        display: flex
 
-    .owl-item .persona-content
-      height: 100%
+      .owl-item
+        padding-bottom: 10px
+
+      .owl-item .persona-content
+        height: 100%
