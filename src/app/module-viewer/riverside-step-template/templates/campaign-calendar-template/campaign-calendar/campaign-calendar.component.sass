@@ -23,13 +23,17 @@ td
 .table
   thead
     background-color: rgba(0,0,0,.05)
+
+    .label
+      width: 28%
+
     th
       vertical-align: middle
 
   .campaign-line-container
     position: absolute
-    width: 72%
-    left: 28%
+    width: calc(72% - 1px)
+    left: calc(28% + 1px)
     display: flex
     align-items: center
 

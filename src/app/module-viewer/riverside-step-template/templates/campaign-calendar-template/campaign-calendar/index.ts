@@ -1,3 +1,5 @@
+import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
+
 export interface Campaign {
   id: string;
   theme: string;
@@ -8,6 +10,8 @@ export interface Campaign {
   endDate?: string;
   assigned?: string;
   color?: string;
+  offset?: SafeStyle;
+  width?: SafeStyle;
 }
 
 export interface CampaignGraph {
