@@ -14,6 +14,7 @@ import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
 import { PreRequisiteModulesComponent } from './pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './module-result/module-result.component';
 import { CampaignCalendarTemplateComponent } from './campaign-calendar-template/campaign-calendar-template.component';
+import {RadioButtonComponent} from './radio-button/radio-button.component';
 
 export const Templates = {
   narrow_down: NarrowDownComponent,
@@ -31,5 +32,6 @@ export const Templates = {
   pre_requisite_modules: PreRequisiteModulesComponent,
   question_image: QuestionImageComponent,
   spreadsheet: SpreadsheetComponent,
-  video: VideoComponent
+  video: VideoComponent,
+  radio_button: RadioButtonComponent
 };

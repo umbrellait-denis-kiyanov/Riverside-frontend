@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -113,6 +114,7 @@ import {
   CampaignDeletionConfirmationComponent
 } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
+import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
 
 @NgModule({
   imports: [
@@ -220,6 +222,7 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
     StringToDateStructPipe,
+    RadioButtonComponent,
     SessionExpirationModalComponent
   ],
   entryComponents: [
@@ -240,6 +243,7 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
+    RadioButtonComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
     CampaignCalendarTemplateComponent,
