@@ -6,5 +6,6 @@ export interface ContentMapTemplateData extends TemplateContentDataBase {
     typeOfMap_select: '1_simple_map' | '2_buyer_personas';
     title: string;
     inputs: string;
+    number_of_inputs: number;
   };
 }

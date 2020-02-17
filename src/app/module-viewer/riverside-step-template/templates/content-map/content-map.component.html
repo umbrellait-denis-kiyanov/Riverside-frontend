@@ -1,0 +1,53 @@
+<ng-container *ngIf="typeIsSimple(); then simple; else persons"></ng-container>
+<ng-template #simple>
+    <table class="simple-table">
+        <thead>
+        <tr>
+            <th scope="col"></th>
+            <th class="scope-col" scope="col" *ngFor="let item of contentMap['1_simple_map']">{{item.description}}</th>
+        </tr>
+        </thead>
+        <tbody>
+            <tr>
+                <th class="scope-row" scope="row">1</th>
+                <td>Mark</td>
+                <td>Otto</td>
+                <td>@mdo</td>
+            </tr>
+        </tbody>
+    </table>
+</ng-template>
+<ng-template #persons>
+    <div *ngIf="(buyerPersonasList$ | async) as buyerPersonas">
+        <table class="personas-table">
+            <thead>
+            <tr>
+                <th scope="col"></th>
+                <th class="scope-col" scope="col" *ngFor="let item of contentMap['2_buyer_personas']">{{item.description}}</th>
+            </tr>
+            </thead>
+            <tbody>
+                <tr *ngFor="let buyerPersona of buyerPersonas; index as item">
+                    <th class="scope-row" scope="row">
+                        <div class="col-sm-2">
+                            <div class="buyer-personas-item">
+                                <img [src]="buyerPersona.picture" class="buyer-personas-item-picture">
+                                <div class="person-strategy-key-issue-description">
+                                    <h3>{{ buyerPersona.name }}</h3>
+                                    <p>{{ buyerPersona.title }}</p>
+                                </div>
+                            </div>
+                        </div>
+                    </th>
+                    <td>Mark</td>
+                    <td>Otto</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                    <td>@mdo</td>
+                </tr>
+            </tbody>
+        </table>
+    </div>
+</ng-template>
+
