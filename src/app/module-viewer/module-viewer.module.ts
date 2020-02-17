@@ -116,6 +116,7 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
 import { FinalFeedbackTabsComponent } from './riverside-step-template/templates/final-feedback/final-feedback-tabs/final-feedback-tabs.component';
 import { FinalFeedbackCarouselComponent } from './riverside-step-template/templates/final-feedback/final-feedback-carousel/final-feedback-carousel.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
+import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
 
 @NgModule({
   imports: [
@@ -227,6 +228,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     SessionExpirationModalComponent,
     FinalFeedbackTabsComponent,
     FinalFeedbackCarouselComponent,
+    RadioButtonComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -246,6 +248,7 @@ import { CarouselModule } from 'ngx-owl-carousel-o';
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
+    RadioButtonComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
     CampaignCalendarTemplateComponent,
