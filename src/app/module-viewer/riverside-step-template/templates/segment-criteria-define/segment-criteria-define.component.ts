@@ -4,6 +4,7 @@ import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from '.';
 import { IcpInputComponent } from './icp-input/icp-input.component';
 import { Validate } from 'src/app/common/validator.class';
 import txt from '!!raw-loader!./index.ts';
+import {of} from 'rxjs';
 
 const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
 
@@ -186,24 +187,24 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   validate() {
     if (this.step === 1) {
-      return this.validateBrainstorm();
+      return of(this.validateBrainstorm());
     } else if (this.step === 2) {
-      return this.validateBrainstorm(['brainstorm']);
+      return of(this.validateBrainstorm(['brainstorm']));
     } else if (this.step === 3) {
-      return this.validateCriteria(['where_mine']);
+      return of(this.validateCriteria(['where_mine']));
     } else if (this.step === 4) {
-      return this.validateCriteria();
+      return of(this.validateCriteria());
     } else if (this.step === 5) {
-      return true;
+      return of(true);
     } else if (this.step === 6) {
-      return this.validateGradeLevels();
+      return of(this.validateGradeLevels());
     } else if (this.step === 7) {
-      return this.validateGradeCustomers();
+      return of(this.validateGradeCustomers());
     } else if (this.step === 8) {
-      return true;
+      return of(true);
     }
 
-    return false;
+    return of(false);
   }
 
   private validateBrainstorm(fields = ['name', 'industries', 'pain_points']) {
