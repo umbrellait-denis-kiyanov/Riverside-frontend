@@ -14,8 +14,12 @@ export class GenericTemplateComponent extends TemplateComponent {
   contentData: GenericTemplateData['template_params_json'];
   params = txt;
 
+  embedUrl: string;
+
   protected init() {
     this.contentData = (this.data.data.template_params_json as GenericTemplateData['template_params_json']);
+
+    this.embedUrl = this.contentData.imageUrl;
   }
 
   getDescription() {
