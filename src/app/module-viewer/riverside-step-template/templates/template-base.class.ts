@@ -28,7 +28,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   action: string;
   instanceExists = true;
   isEmbedded = false;
-  contentOptions;
+  contentOptions: { [key: string]: string };
 
   public prefix = '';
 
