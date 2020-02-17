@@ -78,9 +78,10 @@
 >
   <riverside-persona
     *ngFor="let persona of inputIds.fromPreviousSteps; let i=index"
+    [class.active]="sliderIndex == i"
     id="{{ 'nav_' + persona.title + '_wrapper' }}"
     [persona]="persona.title"
     [size]="60"
-    (click)="owlCarousel.to(persona.title + '_wrapper')"
+    (click)="owlCarousel.to(persona.title + '_wrapper'); sliderIndex = i;"
   ></riverside-persona>
 </div>

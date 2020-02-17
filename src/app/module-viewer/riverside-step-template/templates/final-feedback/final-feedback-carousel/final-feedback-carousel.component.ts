@@ -15,6 +15,8 @@ export class FinalFeedbackCarouselComponent extends FinalFeedbackComponent {
   @Input() inputs;
   @Input() data;
 
+  sliderIndex = 0;
+
   customOptions: OwlOptions = {
     navSpeed: 700,
     items: 1,
