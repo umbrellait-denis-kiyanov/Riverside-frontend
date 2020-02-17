@@ -1,15 +1,15 @@
-<div class="container">
+<div class="container" [ngClass]="{'title-only': contentData.step_select != 'TitleDescriptionAndImage'}">
   <div class="row justify-content-center">
     <div class="col-12">
       <mat-radio-group [(ngModel)]="userChoice" (change)="onRadioChange()">
-        <mat-radio-button [ngClass]="{'container text-center': contentData.step_select == 'TitleOnly' || contentData.step_select == 'TitleAndDescription'}" *ngFor="let item of items; let i = index" [value]="i+1" [checked]="i+1 == userChoice" >
+        <mat-radio-button [ngClass]="{'container': contentData.step_select == 'TitleOnly' || contentData.step_select == 'TitleAndDescription'}" *ngFor="let item of items; let i = index" [value]="i+1" [checked]="i+1 == userChoice" >
           <div class="container">
             <div class="row flush-p justify-content-center" *ngIf="contentData.step_select == 'TitleDescriptionAndImage'" >
               <div class="col-4">
-
-                <b>{{item.title}}</b>
-                <div [innerHTML]="item.description | safehtml"></div>
-
+                <div class="text-before-image">
+                  <b>{{item.title}}</b>
+                  <div [innerHTML]="item.description | safehtml"></div>
+                </div>
               </div>
               <div class="col-8">
                 <img class="my-image" [src]="item.image" alt="404"/>
