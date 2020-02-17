@@ -17,7 +17,7 @@ export class RadioButtonComponent extends TemplateComponent {
   prefix = 'radio_button_';
   params = txt;
   contentData: RadiobuttonTemplateData['template_params_json'];
-  userChoice: Item;
+  userChoice = 0;
 
   getDescription() {
     return 'Radio button';
@@ -38,18 +38,24 @@ export class RadioButtonComponent extends TemplateComponent {
   protected init() {
     this.contentData = this.data.data.template_params_json as RadiobuttonTemplateData['template_params_json'];
     this.items = this.contentData.options;
-    console.log(this.inputs);
-    console.log(this.contentData);
+    for (const input in this.inputs) {
+      if ( +this.inputs[input].content ) {
+        this.userChoice = +this.inputs[input].content;
+        break;
+      }
+    }
   }
 
   onRadioChange($event: MatRadioChange) {
-    const input = this.getInput(this.userChoice.id.toString() , null , this.prefix);
-    input.content = JSON.stringify(this.userChoice);
-  }
-
-  approved() {
-    const input = this.getInput(this.userChoice.id.toString() , null , this.prefix);
+    const input = this.getInput(this.userChoice.toString() , null , this.prefix);
+    this.flushRadioContent();
     input.content = JSON.stringify(this.userChoice);
     this.contentChanged(input);
+  }
+
+  flushRadioContent() {
+    for ( const currentInput in this.inputs ) {
+      this.inputs[currentInput].content = null;
+    }
   }
 }

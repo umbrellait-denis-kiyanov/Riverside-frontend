@@ -2,7 +2,7 @@
   <div class="row justify-content-center">
     <div class="col-12">
       <mat-radio-group [(ngModel)]="userChoice" (change)="onRadioChange($event)">
-        <mat-radio-button [ngClass]="{'container text-center': contentData.step_select == 'TitleOnly'}" *ngFor="let item of items; let i = index" [value]="item">
+        <mat-radio-button [ngClass]="{'container text-center': contentData.step_select == 'TitleOnly' || contentData.step_select == 'TitleAndDescription'}" *ngFor="let item of items; let i = index" [value]="i+1" [checked]="i+1 == userChoice" >
           <div class="container">
             <div class="row flush-p justify-content-center" *ngIf="contentData.step_select == 'TitleDescriptionAndImage'" >
               <div class="col-4">
@@ -15,17 +15,15 @@
                 <img style="width: 30rem" [src]="item.image" alt="404"/>
               </div>
             </div>
-            <div class="row flush-p" *ngIf="contentData.step_select == 'Title_only'" >
+            <div class="row flush-p" *ngIf="contentData.step_select == 'TitleOnly'" >
               <div class="col-12">
                 <b>{{item.title}}</b>
               </div>
             </div>
-            <div class="row flush-p justify-content-center" *ngIf="contentData.step_select == 'TitleAndDescription'" >
+            <div class="row flush-p" *ngIf="contentData.step_select == 'TitleAndDescription'" >
               <div class="col-12">
-
                 <b>{{item.title}}</b>
-                <div [innerHTML]="item.description | safehtml"></div>
-
+                <span [innerHTML]="item.description | safehtml"></span>
               </div>
             </div>
           </div>
@@ -33,7 +31,7 @@
       </mat-radio-group>
     </div>
   </div>
-  <module-nav (click)="approved()" *ngIf="!disabled && validate()" [step]="data" [action]="action"></module-nav>
+  <module-nav *ngIf="!disabled && validate()" [step]="data" [action]="action"></module-nav>
 </div>
 
 
