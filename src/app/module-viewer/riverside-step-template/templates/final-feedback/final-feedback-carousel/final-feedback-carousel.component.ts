@@ -21,6 +21,5 @@ export class FinalFeedbackCarouselComponent extends FinalFeedbackComponent {
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
-    autoHeight: true,
   };
 }
