@@ -11,6 +11,7 @@ export class Item {
 export interface CheckboxSelectorTemplateData extends TemplateContentDataBase {
     template_params_json: {
         title: string;
+        input_sufix: string;
         align_right: boolean;
         show_descriptions: boolean;
         description: string;
