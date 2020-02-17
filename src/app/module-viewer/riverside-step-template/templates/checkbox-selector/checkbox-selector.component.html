@@ -2,13 +2,13 @@
 
   <div class="row">
     <div class="col-12">
-        <div *ngFor="let item of items" class="row">
+        <div *ngFor="let item of items; let i = index" class="row">
           <div class="col-4">
 
             <div class="row">
 
               <div class="col-2">
-                <mat-checkbox *ngIf="!disabled" [(ngModel)]="item.checked" ></mat-checkbox>
+                <mat-checkbox *ngIf="!disabled" (change)="onChecked($event)" [id]="(i+1).toString()" [(ngModel)]="item.checked"></mat-checkbox>
                 <mat-icon *ngIf="disabled && item.checked">check</mat-icon>
               </div>
 

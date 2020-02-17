@@ -5,6 +5,7 @@ import {Item} from '.';
 import { CheckboxSelectorTemplateData } from '.';
 import {Observable, of} from 'rxjs';
 import {Validate} from 'src/app/common/validator.class';
+import {MatCheckboxChange} from '@angular/material';
 
 @Component({
   selector: 'app-checkbox-selector',
@@ -16,6 +17,7 @@ export class CheckboxSelectorComponent extends TemplateComponent {
 
   items: Item[];
   checkedItemsAmount = 0;
+  prefix = 'checkbox_';
 
   contentData: CheckboxSelectorTemplateData['template_params_json'];
   params = txt;
@@ -57,7 +59,24 @@ export class CheckboxSelectorComponent extends TemplateComponent {
 
     this.contentData = this.data.data.template_params_json as CheckboxSelectorTemplateData['template_params_json'];
     this.items = this.contentData.options;
+    let index = 0;
+
+    for ( const input in this.inputs ) {
+      this.items[index++].checked = this.inputs[input].content === '1';
+    }
 
   }
 
+  onChecked($event: MatCheckboxChange) {
+
+    const inputRadio = this.getInput( `${$event.source.id}_${this.contentData.input_sufix}`);
+    if ( $event.checked ) {
+      inputRadio.content = '1';
+      this.checkedItemsAmount++;
+    } else {
+      inputRadio.content = '0';
+      this.checkedItemsAmount--;
+    }
+    this.contentChanged(inputRadio);
+  }
 }
