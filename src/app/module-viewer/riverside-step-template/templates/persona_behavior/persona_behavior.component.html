@@ -18,10 +18,10 @@
 
 <div class="persona-behavior-wrapper" *ngFor="let matrix of contentData.selection_matrix">
   <app-selection-matrix
-    *ngIf="activePersonas.length"
+    *ngIf="buyerPersonasList$ | async"
     [disabled]="disabled"
     [question]="matrix.question"
-    [personas]="activePersonas"
+    [personas]="buyerPersonasList$ | async"
     [options]="matrix.options"
     [horizontal]="true"
     [inputIds]="inputIds"
@@ -41,10 +41,10 @@
       {{contentData.behavior}}
     </div>
   </div>
-  <div class="persona-row" *ngFor="let persona of activePersonas; let i=index">
+  <div class="persona-row" *ngFor="let persona of buyerPersonasList$ | async; let i=index">
     <riverside-persona [persona]="persona"></riverside-persona>
     <div class="persona-behavior-column">
-      <ice [input]="inputIds.personas[i]"></ice>
+      <ice *ngIf="inputIds" [input]="inputIds.personas[i]"></ice>
     </div>
   </div>
 </div>
