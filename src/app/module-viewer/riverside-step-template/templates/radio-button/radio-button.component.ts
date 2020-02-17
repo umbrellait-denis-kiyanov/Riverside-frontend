@@ -31,8 +31,8 @@ export class RadioButtonComponent extends TemplateComponent {
     return true;
   }
 
-  validateUserInput(): Observable<boolean> {
-    return of(this.userChoice && this.contentData.require_selection);
+  validate(): boolean {
+    return this.userChoice && this.contentData.require_selection;
   }
 
   protected init() {

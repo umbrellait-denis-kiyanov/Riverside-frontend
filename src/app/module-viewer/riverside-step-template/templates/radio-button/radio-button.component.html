@@ -31,7 +31,7 @@
       </mat-radio-group>
     </div>
   </div>
-  <module-nav *ngIf="!disabled && ( validateUserInput() | async)" [step]="data" [action]="action"></module-nav>
+  <module-nav *ngIf="!disabled && validate()" [step]="data" [action]="action"></module-nav>
 </div>
 
 
