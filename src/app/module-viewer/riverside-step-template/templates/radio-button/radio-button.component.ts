@@ -46,9 +46,7 @@ export class RadioButtonComponent extends TemplateComponent {
 
   onRadioChange() {
     const input = this.getInput(this.contentData.input_sufix , null , this.prefix);
-    if ( input ) {
-      input.content = JSON.stringify(this.userChoice);
-      this.contentChanged(input);
-    }
+    input.content = JSON.stringify(this.userChoice);
+    this.contentChanged(input);
   }
 }
