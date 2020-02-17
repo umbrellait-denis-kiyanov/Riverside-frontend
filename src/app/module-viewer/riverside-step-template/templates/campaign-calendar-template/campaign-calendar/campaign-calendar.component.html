@@ -44,23 +44,20 @@
 
     <ng-container *ngFor="let year of years">
 
-      <h5 class="mt-3">{{year}}</h5>
-      <table class="table table-bordered mt-2 position-relative">
+      <h5 class="mt-3">{{year.name}}</h5>
+      <table class="table table-bordered mt-2 position-relative overflow-hidden">
         <thead>
         <tr>
           <th scope="col" class="label">Campaign</th>
           <th scope="col"
-              *ngFor="let month of months"
-              [style.width.%]="getMonthCellWidthPercent(month, year)"
-          >{{month}}</th>
+              *ngFor="let month of year.months"
+              [style.width.%]="month.width"
+          >{{month.name}}</th>
         </tr>
         </thead>
         <tbody>
-        <ng-container *ngFor="let campaign of campaignGraphs[year]; index as i; trackBy: trackByFn">
-          <div class="campaign-line-container"
-             [style.top]="getCampaignTopPercent(i, campaignGraphs[year].length)"
-             [style.height.%]="100 / (campaignGraphs[year].length + 1)"
-          >
+        <ng-container *ngFor="let campaign of campaignGraphs[year.name]; trackBy: trackByFn">
+          <div class="campaign-line-container" [style.height.%]="100 / (campaignGraphs[year.name].length + 1)">
             <div
               class="campaign-line"
               placement="top"
@@ -71,8 +68,8 @@
               "
               (dblclick)="editCampaign(campaign)"
               [style.backgroundColor]="campaign.color || 'red'"
-              [style.width]="getCampaignWidth(campaign)"
-              [style.left.%]="getCampaignOffsetPercent(campaign)"
+              [style.width]="campaign.width"
+              [style.left]="campaign.offset"
             ></div>
           </div>
 

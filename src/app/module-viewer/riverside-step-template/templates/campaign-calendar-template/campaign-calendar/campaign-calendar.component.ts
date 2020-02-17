@@ -8,6 +8,11 @@ import { CampaignDeletionConfirmationComponent } from './campaign-deletion-confi
 import { DomSanitizer } from '@angular/platform-browser';
 import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
+declare interface Month {
+  name: string;
+  width: number;
+}
+
 @Component({
   selector: 'campaign-calendar',
   templateUrl: './campaign-calendar.component.html',
@@ -17,9 +22,9 @@ export class CampaignCalendarComponent implements OnInit {
   @Input() readonly = false;
   @Output() campaignsChange = new EventEmitter<Campaign[]>();
   @Input() campaigns: Campaign[] = [];
-  months: string[];
+  months: Month[] = moment.monthsShort().map(month => ({name: month, width: 0}));
   campaignGraphs: CampaignGraph;
-  years: string[] = [];
+  years: Array<{name: string, months: Month[]}> = [];
   colors = websafeColors.slice();
 
   private readonly dateFormat = 'YYYY-MM-DD';
@@ -31,7 +36,6 @@ export class CampaignCalendarComponent implements OnInit {
   }
 
   ngOnInit() {
-    this.months = moment.monthsShort();
     this.colors = this.colors.filter(
       color => !this.campaigns.find(campaign => campaign.color === color)
     );
@@ -76,31 +80,30 @@ export class CampaignCalendarComponent implements OnInit {
     return item.theme;
   }
 
-  getMonthCellWidthPercent(month: string, year: string): number {
+  private getMonthCellWidthPercent(month: string, year: string): number {
     const daysInMonth = moment(month, '-MMM-').daysInMonth();
-    const daysInYear = this.getDaysInYear(moment(year));
+    const daysInYear = this.getDaysInYear(moment(year, 'YYYY'));
     const fullWidthOfMonthsPercent = 72;
     return daysInMonth * fullWidthOfMonthsPercent / daysInYear;
   }
 
-  getCampaignWidth(campaign: Campaign): SafeStyle {
+  private getCampaignWidth(campaign: Campaign): SafeStyle {
     const start = moment(campaign.startDate, this.dateFormat);
     const end = moment(campaign.endDate, this.dateFormat);
     const diff = end.diff(start, 'day');
-    const borderWidth = 3;
+    const borderWidth = start.toObject().months < 6 ? 3 : (start.toObject().months > 8 ? 1 : 2);
     return this.sanitizer.bypassSecurityTrustStyle(
       `calc(${diff * 100 / this.getDaysInYear(start)}% + ${borderWidth}px)`
     );
   }
 
-  getCampaignTopPercent(index: number, arrayLength: number): number {
-    return (index + 1) * (100 / (arrayLength + 1));
-  }
-
-  getCampaignOffsetPercent(campaign: Campaign): number {
+  private getCampaignOffset(campaign: Campaign): SafeStyle {
     const start = moment(campaign.startDate, this.dateFormat);
     const offsetDays = start.dayOfYear() - 1;
-    return offsetDays * 100 / this.getDaysInYear(start);
+    const borderWidth = start.toObject().months < 3 ? 0 : (start.toObject().months > 5 ? 2 : 1);
+    return this.sanitizer.bypassSecurityTrustStyle(
+      `calc(${offsetDays * 100 / this.getDaysInYear(start)}% + ${borderWidth}px)`
+    );
   }
 
   private splitCampaignsByYear(campaigns: Campaign[]): CampaignGraph {
@@ -122,6 +125,11 @@ export class CampaignCalendarComponent implements OnInit {
           endDate: range[1],
         }));
       }))
+      .map(campaign => {
+        campaign.offset = this.getCampaignOffset(campaign);
+        campaign.width = this.getCampaignWidth(campaign);
+        return campaign;
+      })
       .reduce((acc, campaign) => {
         const year = moment(campaign.startDate, this.dateFormat).year();
         if (!acc.hasOwnProperty(year)) {
@@ -134,7 +142,14 @@ export class CampaignCalendarComponent implements OnInit {
 
   private updateCampaigns() {
     this.campaignGraphs = this.splitCampaignsByYear(this.campaigns);
-    this.years = Object.keys(this.campaignGraphs);
+    this.years = Object.keys(this.campaignGraphs).map(year => {
+      return {
+        name: year,
+        months: this.months.map(
+          month => ({name: month.name, width: this.getMonthCellWidthPercent(month.name, year)})
+        )
+      };
+    });
   }
 
   private addCampaign(campaign: Campaign) {
