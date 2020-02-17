@@ -27,6 +27,7 @@ export class NamePersonasTemplateComponent extends BuyerPersonasConfigTemplateCo
   }
 
   protected init() {
+    super.init();
     const personas = Object.values(this.inputs)
         .filter(i => i)
         .map(input => { return input.element_key &&

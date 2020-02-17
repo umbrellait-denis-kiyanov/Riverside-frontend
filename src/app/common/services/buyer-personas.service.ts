@@ -17,11 +17,9 @@ export class BuyerPersonasService {
   private dataChanged$ = new BehaviorSubject(true);
 
   constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {
-    this.buyerPersonas$ = combineLatest(this.dataChanged$)
-      .pipe(
-        switchMap(_ => this.getBuyerPersonasData()),
-        shareReplay(1)
-      );
+    this.buyerPersonas$ = this.dataChanged$.pipe(
+        switchMap(_ => this.getBuyerPersonasData().pipe(shareReplay(1)))
+    );
   }
 
   reloadBuyerPersonas() {

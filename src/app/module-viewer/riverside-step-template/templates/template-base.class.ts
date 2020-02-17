@@ -27,6 +27,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   me: User;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
   buyerPersonasList$: Observable<BuyerPersona[]>;
+  contentChanged$ = new BehaviorSubject(true);
   action: string;
   instanceExists = true;
   isEmbedded = false;
@@ -88,6 +89,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
       this.moduleService.saveInput(data).subscribe();
       if (data.observer) {
         data.observer.next(data.getValue());
+        this.contentChanged$.next(true);
       }
     }
   }
