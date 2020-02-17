@@ -1,10 +1,11 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { PersonaPictureTemplateData, TemplateParams } from '.';
+import { PersonaPictureTemplateData } from '.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
 import BuyerPersonasConfigTemplateComponent from '../buyer-personas-config-template-component';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-persona-picture',
@@ -15,11 +16,11 @@ import BuyerPersonasConfigTemplateComponent from '../buyer-personas-config-templ
 })
 
 export class PersonaPictureTemplateComponent extends BuyerPersonasConfigTemplateComponent {
-  params = TemplateParams;
   inputIds = {
     fromPreviousStep: [ ],
     personas: [ ]
   };
+  params = txt;
 
   contentData: PersonaPictureTemplateData['template_params_json'];
 

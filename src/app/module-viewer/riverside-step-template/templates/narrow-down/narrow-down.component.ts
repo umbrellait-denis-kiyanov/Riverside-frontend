@@ -1,8 +1,9 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { NarrowDownData, TemplateParams } from '.';
 import BuyerPersonasConfigTemplateComponent from '../buyer-personas-config-template-component';
+import { NarrowDownData } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-template2',
@@ -11,7 +12,6 @@ import BuyerPersonasConfigTemplateComponent from '../buyer-personas-config-templ
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => NarrowDownComponent) }]
 })
 export class NarrowDownComponent extends BuyerPersonasConfigTemplateComponent {
-  params = TemplateParams;
   inputIds = {
     fromPreviousStep: ['brainstorm_personas'],
     personas: [
@@ -23,6 +23,7 @@ export class NarrowDownComponent extends BuyerPersonasConfigTemplateComponent {
       'persona_6',
     ]
   };
+  params = txt;
 
   contentData: NarrowDownData['template_params_json'];
 

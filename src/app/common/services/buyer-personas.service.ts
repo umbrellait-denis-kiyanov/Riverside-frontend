@@ -1,9 +1,9 @@
 import { Injectable } from '@angular/core';
-import { BuyerPersona } from "../interfaces/buyer-persona.interface";
-import { BehaviorSubject, combineLatest, Observable } from 'rxjs';
-import {shareReplay, switchMap, take} from 'rxjs/operators';
+import { BuyerPersona } from '../interfaces/buyer-persona.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
+import {shareReplay, switchMap } from 'rxjs/operators';
 import { HttpClient  } from '@angular/common/http';
-import { ModuleNavService } from "./module-nav.service";
+import { ModuleNavService } from './module-nav.service';
 import { environment } from '../../../environments/environment';
 
 @Injectable({

@@ -1,7 +1,8 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { PersonaBehaviorTemplateData, TemplateParams } from '.';
+import { PersonaBehaviorTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
 import { take } from 'rxjs/operators';
 
 @Component({
@@ -13,10 +14,10 @@ import { take } from 'rxjs/operators';
 })
 
 export class PersonaBehaviorTemplateComponent extends TemplateComponent {
-  params = TemplateParams;
   inputIds: {
     personas: string[]
   };
+  params = txt;
 
   contentData: PersonaBehaviorTemplateData['template_params_json'];
 

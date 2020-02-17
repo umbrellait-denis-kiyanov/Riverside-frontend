@@ -1,7 +1,8 @@
 import { Component, OnInit, forwardRef } from '@angular/core';
 import { PersonaInputs } from '../persona-ids.class';
 import { TemplateComponent } from '../template-base.class';
-import { TemplateParams, AgeGenderTemplateData } from '.';
+import { AgeGenderTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-age-gender',
@@ -10,9 +11,9 @@ import { TemplateParams, AgeGenderTemplateData } from '.';
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => AgeGenderComponent) }]
 })
 export class AgeGenderComponent extends TemplateComponent implements OnInit {
-  params = TemplateParams;
   inputIds: PersonaInputs;
   contentData: AgeGenderTemplateData['template_params_json'];
+  params = txt;
   traits = [
     {
       id: 'age',

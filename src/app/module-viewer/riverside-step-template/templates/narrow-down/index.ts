@@ -6,8 +6,3 @@ export interface NarrowDownData extends TemplateContentDataBase {
     title: string;
   };
 }
-
-export const TemplateParams = `{
-  description: string;
-  title: string;
-}`;
