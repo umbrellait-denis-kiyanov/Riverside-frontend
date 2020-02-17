@@ -21,6 +21,7 @@ export class FinalFeedbackCarouselComponent extends FinalFeedbackComponent {
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
+    dots: false,
   };
 
   onSlideChange() {

@@ -1,7 +1,7 @@
 .persona-content
   display: flex
   flex-wrap: wrap
-  margin: 0 10px 0 5px
+  margin: 0 15px 0 5px
   padding: 60px 20px 40px
   border: 1px solid #333
   min-height: 650px
@@ -115,7 +115,23 @@
         display: flex
 
       .owl-item
-        padding-bottom: 10px
+        padding-bottom: 15px
 
       .owl-item .persona-content
         height: 100%
+
+.personas-slider-nav
+  display: flex
+  justify-content: center
+  margin: 10px 0 30px
+
+  \::ng-deep
+    .persona-name-column
+      margin: 0 5px
+      width: auto
+
+      .persona-picture
+        margin-right: 0
+
+    .persona-name-title
+      display: none

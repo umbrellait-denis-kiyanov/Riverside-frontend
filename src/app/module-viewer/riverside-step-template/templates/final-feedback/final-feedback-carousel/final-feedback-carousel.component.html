@@ -1,6 +1,7 @@
 <owl-carousel-o
   [options]="customOptions"
   (change)="onSlideChange()"
+  #owlCarousel
 >
   <ng-template
     carouselSlide
@@ -72,3 +73,14 @@
     </div>
   </ng-template>
 </owl-carousel-o>
+<div
+  class="personas-slider-nav"
+>
+  <riverside-persona
+    *ngFor="let persona of inputIds.fromPreviousSteps; let i=index"
+    id="{{ 'nav_' + persona.title + '_wrapper' }}"
+    [persona]="persona.title"
+    [size]="60"
+    (click)="owlCarousel.to(persona.title + '_wrapper')"
+  ></riverside-persona>
+</div>
