@@ -1,7 +1,7 @@
 import {Component, forwardRef, Input} from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import {TemplateParams} from '.';
-import {Item} from './Item';
+import txt from '!!raw-loader!./index.ts';
+import {Item} from '.';
 import { CheckboxSelectorTemplateData } from '.';
 import {Observable, of} from 'rxjs';
 import {Validate} from 'src/app/common/validator.class';
@@ -18,7 +18,7 @@ export class CheckboxSelectorComponent extends TemplateComponent {
   checkedItemsAmount = 0;
 
   contentData: CheckboxSelectorTemplateData['template_params_json'];
-  params = TemplateParams;
+  params = txt;
 
   getDescription(): string {
     return 'Checkbox selector';

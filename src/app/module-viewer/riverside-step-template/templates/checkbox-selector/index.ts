@@ -1,5 +1,11 @@
 import { TemplateContentDataBase } from '../template.interface';
-import {Item} from './Item';
+
+export class Item {
+    id: number;
+    title: string;
+    description: string;
+    checked: boolean = false;
+}
 
 
 export interface CheckboxSelectorTemplateData extends TemplateContentDataBase {
@@ -10,15 +16,6 @@ export interface CheckboxSelectorTemplateData extends TemplateContentDataBase {
         description: string;
         minimum_of_required_selections: number;
         maximum_of_required_selections: number;
-        options: Array<Item>
+        options: Array<{title: string, id: number, description: string , checked: boolean}>
     };
 }
-
-export const TemplateParams = `{
-        title: string;
-        minimum_of_required_selections: number;
-        maximum_of_required_selections: number;
-        align_right: boolean;
-        show_descriptions: boolean;
-        options: Array<{title: string, id: number, description: string , checked: boolean}>
-}`;
