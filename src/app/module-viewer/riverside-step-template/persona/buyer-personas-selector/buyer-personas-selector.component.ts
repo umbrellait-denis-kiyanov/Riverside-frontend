@@ -16,6 +16,7 @@ export class BuyerPersonasSelectorComponent implements OnInit {
 
   @Input () readonly = false;
   @Input () selected : number[] = [];
+  @Input () alwaysOpen : false;
   @Output() onChange = new EventEmitter<void>();
   readOnlyTitles$: Observable<string>;
   buyerPersonasList$: Observable<BuyerPersona[]>
