@@ -5,9 +5,9 @@
         class="tabitem"
         [ngClass]="{'active': currentSection == persona.title + '_wrapper'}"
         (click)="scrollTo(persona.title + '_wrapper')"
-        *ngFor="let persona of inputIds.fromPreviousSteps"
+        *ngFor="let persona of buyerPersonasList$ | async"
       >
-        <riverside-persona [persona]="persona.title"></riverside-persona>
+        <riverside-persona [persona]="persona"></riverside-persona>
       </div>
   </div>
   <div

@@ -14,6 +14,7 @@ import { SpreadsheetComponent } from './spreadsheet/spreadsheet.component';
 import { CheckboxSelectorComponent } from './checkbox-selector/checkbox-selector.component';
 import { PreRequisiteModulesComponent } from './pre-requisite-modules/pre-requisite-modules.component';
 import { ModuleResultComponent } from './module-result/module-result.component';
+import { PersonaStrategyComponent } from './persona-strategy/persona-strategy.component';
 import { CampaignCalendarTemplateComponent } from './campaign-calendar-template/campaign-calendar-template.component';
 
 export const Templates = {
@@ -33,5 +34,6 @@ export const Templates = {
   question_image: QuestionImageComponent,
   spreadsheet: SpreadsheetComponent,
   video: VideoComponent,
-  checkbox: CheckboxSelectorComponent
+  checkbox: CheckboxSelectorComponent,
+  persona_strategy: PersonaStrategyComponent
 };

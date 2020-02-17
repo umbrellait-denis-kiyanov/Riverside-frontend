@@ -1,4 +1,3 @@
-
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -121,7 +120,7 @@ import {MatCheckboxModule} from '@angular/material';
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], {useHash: true}),
+    RouterModule.forRoot([], { useHash: true }),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -219,13 +218,16 @@ import {MatCheckboxModule} from '@angular/material';
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
+    PersonaStrategyComponent,
     CampaignCalendarTemplateComponent,
     CampaignCalendarComponent,
     ModuleResultComponent,
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
     StringToDateStructPipe,
-    CheckboxSelectorComponent
+    CheckboxSelectorComponent,
+    SessionExpirationModalComponent,
+    PersonaNamePipe
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -245,7 +247,6 @@ import {MatCheckboxModule} from '@angular/material';
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
-    SessionExpirationModalComponent,
     BuyerPersonasSelectorComponent,
     CheckboxSelectorComponent,
     PreRequisiteModulesComponent,
@@ -254,7 +255,8 @@ import {MatCheckboxModule} from '@angular/material';
     ModuleResultComponent,
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
-    SessionExpirationModalComponent
+    SessionExpirationModalComponent,
+    PersonaStrategyComponent
   ],
   providers: [
     AssessmentService,
@@ -269,9 +271,9 @@ import {MatCheckboxModule} from '@angular/material';
     CanModifyPipe,
     BuyerPersonasService,
     ReversePipe,
-    {provide: NgbDateAdapter, useClass: NgbStringAdapter},
-    {provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true}
+    { provide: NgbDateAdapter, useClass: NgbStringAdapter },
+    { provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true }
   ],
   bootstrap: [ModuleViewerRootComponent]
 })
-export class ModuleViewerModule { }
+export class ModuleViewerModule {}
