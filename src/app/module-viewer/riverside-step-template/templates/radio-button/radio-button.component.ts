@@ -3,7 +3,6 @@ import {TemplateComponent} from '../template-base.class';
 import txt from '!!raw-loader!./index.ts';
 import {RadiobuttonTemplateData} from '.';
 import {Item} from '.';
-import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-radio-button',
@@ -46,7 +45,7 @@ export class RadioButtonComponent extends TemplateComponent {
 
   onRadioChange() {
     const input = this.getInput(this.contentData.input_sufix , null , this.prefix);
-    input.content = JSON.stringify(this.userChoice);
+    input.content = String(this.userChoice);
     this.contentChanged(input);
   }
 }
