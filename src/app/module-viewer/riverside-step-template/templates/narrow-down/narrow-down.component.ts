@@ -35,6 +35,7 @@ export class NarrowDownComponent extends BuyerPersonasConfigTemplateComponent {
   }
 
   protected init() {
+    super.init();
     this.contentData = this.data.data.template_params_json as NarrowDownData['template_params_json'];
   }
 }

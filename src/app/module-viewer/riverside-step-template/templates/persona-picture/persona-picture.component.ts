@@ -34,6 +34,7 @@ export class PersonaPictureTemplateComponent extends BuyerPersonasConfigTemplate
   }
 
   protected init() {
+    super.init();
     this.modalService = this.injectorObj.get(NgbModal);
     const personas = Object.values(this.inputs)
         .filter(i => i)

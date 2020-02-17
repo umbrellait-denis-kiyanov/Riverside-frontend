@@ -18,7 +18,8 @@ export class BuyerPersonasService {
 
   constructor( private httpClient: HttpClient, private moduleNavService : ModuleNavService) {
     this.buyerPersonas$ = this.dataChanged$.pipe(
-        switchMap(_ => this.getBuyerPersonasData().pipe(shareReplay(1)))
+        switchMap(_ => this.getBuyerPersonasData()),
+        shareReplay(1)
     );
   }
 
