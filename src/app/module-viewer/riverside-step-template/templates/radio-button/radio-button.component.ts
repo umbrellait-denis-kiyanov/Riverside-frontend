@@ -1,8 +1,9 @@
-import {Component, forwardRef, OnInit} from '@angular/core';
+import {Component, forwardRef} from '@angular/core';
 import {TemplateComponent} from '../template-base.class';
 import txt from '!!raw-loader!./index.ts';
 import {RadiobuttonTemplateData , Item} from '.';
 import {TemplateInput} from '../../../../common/interfaces/module.interface';
+import { of } from 'rxjs';
 
 @Component({
   selector: 'app-radio-button',
@@ -31,8 +32,8 @@ export class RadioButtonComponent extends TemplateComponent {
     return true;
   }
 
-  validate(): boolean {
-    return this.userChoice && this.contentData.require_selection;
+  validate() {
+    return of(this.userChoice && this.contentData.require_selection);
   }
 
   protected init() {
