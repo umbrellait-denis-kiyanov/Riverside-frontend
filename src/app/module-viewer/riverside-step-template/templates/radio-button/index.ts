@@ -9,6 +9,7 @@ export class Item {
 
 export interface RadiobuttonTemplateData extends TemplateContentDataBase {
     template_params_json: {
+        input_sufix: string;
         title: string;
         description: string;
         require_selection: boolean;
