@@ -56,7 +56,7 @@ import { PersonaPictureListComponent } from './riverside-step-template/templates
 import { FinalFeedbackComponent } from './riverside-step-template/templates/final-feedback/final-feedback.component';
 import { QuestionImageComponent } from './riverside-step-template/templates/question-image/question-image.component';
 import { PersonaComponent } from './riverside-step-template/persona/persona.component';
-import {MatProgressBarModule} from '@angular/material/progress-bar';
+import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { AgeGenderComponent } from './riverside-step-template/templates/age-gender/age-gender.component';
 import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
@@ -101,6 +101,18 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
+import { BuyerPersonasSelectorComponent } from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
+import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
+import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
+import { BuyerPersonasService } from '../common/services/buyer-personas.service';
+import { CampaignCalendarTemplateComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar-template.component';
+import { CampaignCalendarComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-calendar.component';
+import { ModalAddCampaignComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/modal-add-campaign/modal-add-campaign.component';
+import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pipe';
+import { PersonaNamePipe } from '../common/pipes/personaName.pipe';
+import {
+  CampaignDeletionConfirmationComponent
+} from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 import {BuyerPersonasSelectorComponent} from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
 import {CheckboxSelectorComponent} from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
@@ -148,6 +160,7 @@ import {MatCheckboxModule} from '@angular/material';
     ReadableDatePipe,
     ReadableTimePipe,
     CanModifyPipe,
+    PersonaNamePipe,
     ReversePipe,
     IceComponent,
     RiversideStepTemplateComponent,
@@ -205,6 +218,15 @@ import {MatCheckboxModule} from '@angular/material';
     LoginComponent,
     SessionExpirationModalComponent,
     BuyerPersonasSelectorComponent,
+    PreRequisiteModulesComponent,
+    ModuleResultComponent,
+    CampaignCalendarTemplateComponent,
+    CampaignCalendarComponent,
+    ModuleResultComponent,
+    ModalAddCampaignComponent,
+    CampaignDeletionConfirmationComponent,
+    StringToDateStructPipe,
+    SessionExpirationModalComponent
     CheckboxSelectorComponent
   ],
   entryComponents: [
@@ -228,6 +250,13 @@ import {MatCheckboxModule} from '@angular/material';
     SessionExpirationModalComponent,
     BuyerPersonasSelectorComponent,
     CheckboxSelectorComponent
+    PreRequisiteModulesComponent,
+    ModuleResultComponent,
+    CampaignCalendarTemplateComponent,
+    ModuleResultComponent,
+    ModalAddCampaignComponent,
+    CampaignDeletionConfirmationComponent,
+    SessionExpirationModalComponent
   ],
   providers: [
     AssessmentService,
@@ -240,6 +269,7 @@ import {MatCheckboxModule} from '@angular/material';
     LeftMenuService,
     InboxService,
     CanModifyPipe,
+    BuyerPersonasService,
     ReversePipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true}

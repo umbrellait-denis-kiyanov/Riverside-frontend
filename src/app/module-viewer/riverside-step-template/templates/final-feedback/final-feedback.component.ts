@@ -10,7 +10,7 @@ import txt from '!!raw-loader!./index.ts';
   styleUrls: ['./final-feedback.component.sass'],
   providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FinalFeedbackComponent) }]
 })
-export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent implements OnInit  {
+export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent {
   contentData = data;
   params = txt;
 
