@@ -42,5 +42,10 @@ export interface TemplateContentDataBase {
     number_of_inputs?: number;
     title: string;
     inputs?: string;
-  }
+  };
+}
+
+export interface TemplateOption {
+  key?: string;
+  value?: string;
 }

@@ -28,6 +28,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   action: string;
   instanceExists = true;
   isEmbedded = false;
+  contentOptions: { [key: string]: string };
 
   public prefix = '';
   constructor(
@@ -49,6 +50,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     this.inputs = this.data.data.inputs;
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
+    this.contentOptions = this.data.data.options;
 
     this.activePersonas = Object.values(this.inputs).filter(i => i).map(input => {
       return input.element_key &&
@@ -63,7 +65,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   }
 
   protected initAction() {
-    this.action = this.userService.me.permissions.riversideProvideFeedback ? 'approve': 'mark_as_done';
+    this.action = this.userService.me.permissions.riversideProvideFeedback ? 'approve' : 'mark_as_done';
   }
 
   ngOnDestroy() {
