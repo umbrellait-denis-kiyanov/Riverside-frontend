@@ -1,7 +1,7 @@
 <div class="container">
   <div class="row justify-content-center">
     <div class="col-12">
-      <mat-radio-group [(ngModel)]="userChoice" (change)="onRadioChange($event)">
+      <mat-radio-group [(ngModel)]="userChoice" (change)="onRadioChange()">
         <mat-radio-button [ngClass]="{'container text-center': contentData.step_select == 'TitleOnly' || contentData.step_select == 'TitleAndDescription'}" *ngFor="let item of items; let i = index" [value]="i+1" [checked]="i+1 == userChoice" >
           <div class="container">
             <div class="row flush-p justify-content-center" *ngIf="contentData.step_select == 'TitleDescriptionAndImage'" >
@@ -31,7 +31,7 @@
       </mat-radio-group>
     </div>
   </div>
-  <module-nav *ngIf="!disabled && validate()" [step]="data" [action]="action"></module-nav>
+  <module-nav *ngIf="!disabled && ( validateUserInput() | async)" [step]="data" [action]="action"></module-nav>
 </div>
 
 

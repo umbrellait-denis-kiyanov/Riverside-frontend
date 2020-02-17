@@ -2,8 +2,8 @@ import {Component, forwardRef, OnInit} from '@angular/core';
 import {TemplateComponent} from '../template-base.class';
 import txt from '!!raw-loader!./index.ts';
 import {RadiobuttonTemplateData} from '.';
-import {Item} from './Item';
-import {MatRadioChange} from '@angular/material';
+import {Item} from '.';
+import {Observable, of} from 'rxjs';
 
 @Component({
   selector: 'app-radio-button',
@@ -31,31 +31,21 @@ export class RadioButtonComponent extends TemplateComponent {
     return true;
   }
 
-  validate(): boolean {
-    return this.userChoice && this.contentData.require_selection;
+  validateUserInput(): Observable<boolean> {
+    return of(this.userChoice && this.contentData.require_selection);
   }
 
   protected init() {
     this.contentData = this.data.data.template_params_json as RadiobuttonTemplateData['template_params_json'];
     this.items = this.contentData.options;
-    for (const input in this.inputs) {
-      if ( +this.inputs[input].content ) {
-        this.userChoice = +this.inputs[input].content;
-        break;
-      }
-    }
+    this.userChoice = +this.inputs[`${this.prefix}1`].content;
   }
 
-  onRadioChange($event: MatRadioChange) {
-    const input = this.getInput(this.userChoice.toString() , null , this.prefix);
-    this.flushRadioContent();
-    input.content = JSON.stringify(this.userChoice);
-    this.contentChanged(input);
-  }
-
-  flushRadioContent() {
-    for ( const currentInput in this.inputs ) {
-      this.inputs[currentInput].content = null;
+  onRadioChange() {
+    const input = this.getInput(`1` , null , this.prefix);
+    if ( input ) {
+      input.content = JSON.stringify(this.userChoice);
+      this.contentChanged(input);
     }
   }
 }
