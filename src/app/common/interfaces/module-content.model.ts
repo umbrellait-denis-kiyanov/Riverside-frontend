@@ -2,7 +2,6 @@ import BaseModel from './base.model';
 import { TemplateInput } from './module.interface';
 import {
   TemplateContentDataBase,
-  TemplateOption,
 } from 'src/app/module-viewer/riverside-step-template/templates/template.interface';
 
 type ModuleContentJson = {inputs: {[key: string]: TemplateInput}};
@@ -26,7 +25,7 @@ class ModuleContent extends BaseModel {
   is_checked: boolean = false;
   waiting_for_feedback: boolean = false;
   feedback_received: boolean = false;
-  options: Array<TemplateOption> = [];
+  options: { [key: string]: string } = {};
 
   protected transform() {
     return {
