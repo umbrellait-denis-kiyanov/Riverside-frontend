@@ -1,9 +1,9 @@
 import { Component, OnInit, forwardRef, QueryList, ViewChildren } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { SegmentCriteria, SegmentCriteriaDefineTemplateData, TemplateParams } from '.';
+import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from '.';
 import { IcpInputComponent } from './icp-input/icp-input.component';
 import { Validate } from 'src/app/common/validator.class';
-import { of } from 'rxjs';
+import txt from '!!raw-loader!./index.ts';
 
 const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
 
@@ -17,9 +17,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   @ViewChildren(IcpInputComponent) icpInputs: QueryList<IcpInputComponent>;
 
-  params = TemplateParams;
-
   contentData: SegmentCriteriaDefineTemplateData['template_params_json'];
+  params = txt;
 
   allSegments = [1, 2, 3, 4, 5];
   activeSegments: number[] = [];
@@ -186,27 +185,25 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   validate() {
-    let val = false;
-
     if (this.step === 1) {
-      val = this.validateBrainstorm();
+      return this.validateBrainstorm();
     } else if (this.step === 2) {
-      val = this.validateBrainstorm(['brainstorm']);
+      return this.validateBrainstorm(['brainstorm']);
     } else if (this.step === 3) {
-      val = this.validateCriteria(['where_mine']);
+      return this.validateCriteria(['where_mine']);
     } else if (this.step === 4) {
-      val = this.validateCriteria();
+      return this.validateCriteria();
     } else if (this.step === 5) {
-      val = true;
+      return true;
     } else if (this.step === 6) {
-      val = this.validateGradeLevels();
+      return this.validateGradeLevels();
     } else if (this.step === 7) {
-      val = this.validateGradeCustomers();
+      return this.validateGradeCustomers();
     } else if (this.step === 8) {
-      val = true;
+      return true;
     }
 
-    return of(val);
+    return false;
   }
 
   private validateBrainstorm(fields = ['name', 'industries', 'pain_points']) {

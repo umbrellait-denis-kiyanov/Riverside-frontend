@@ -101,18 +101,13 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
-import { CheckboxSelectorComponent } from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
-import {BuyerPersonasService} from '../common/services/buyer-personas.service';
-import {PreRequisiteModulesComponent} from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
-import {ModuleResultComponent} from './riverside-step-template/templates/module-result/module-result.component';
-import {BuyerPersonasSelectorComponent} from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
-import {MatCheckboxModule} from '@angular/material';
+import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 
 @NgModule({
   imports: [
     BrowserModule,
     FormsModule,
-    RouterModule.forRoot([], {useHash: true}),
+    RouterModule.forRoot([], { useHash: true }),
     BrowserAnimationsModule,
     HttpClientModule,
     RouterModule,
@@ -135,8 +130,7 @@ import {MatCheckboxModule} from '@angular/material';
     ReactiveFormsModule,
     ImageCropperModule,
     HotTableModule.forRoot(),
-    ToastrModule.forRoot(),
-    MatCheckboxModule
+    ToastrModule.forRoot()
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -205,11 +199,7 @@ import {MatCheckboxModule} from '@angular/material';
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
-    CheckboxSelectorComponent,
-    LoginComponent,
-    BuyerPersonasSelectorComponent,
-    PreRequisiteModulesComponent,
-    ModuleResultComponent
+    SessionExpirationModalComponent
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -229,10 +219,7 @@ import {MatCheckboxModule} from '@angular/material';
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
-    CheckboxSelectorComponent,
-    VideoComponent,
-    PreRequisiteModulesComponent,
-    ModuleResultComponent
+    SessionExpirationModalComponent
   ],
   providers: [
     AssessmentService,
@@ -245,7 +232,6 @@ import {MatCheckboxModule} from '@angular/material';
     LeftMenuService,
     InboxService,
     CanModifyPipe,
-    BuyerPersonasService,
     ReversePipe,
     {provide: NgbDateAdapter, useClass: NgbStringAdapter},
     {provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true}

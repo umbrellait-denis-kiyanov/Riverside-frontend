@@ -1,7 +1,8 @@
 import { Component, ViewChild, forwardRef, ElementRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { QuestionImageTemplateData, TemplateParams } from '.';
+import { QuestionImageTemplateData } from '.';
 import { DomSanitizer, SafeStyle, SafeResourceUrl } from '@angular/platform-browser';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-question-image',
@@ -11,8 +12,8 @@ import { DomSanitizer, SafeStyle, SafeResourceUrl } from '@angular/platform-brow
   preserveWhitespaces: true
 })
 export class QuestionImageComponent extends TemplateComponent {
-  params = TemplateParams;
   contentData: QuestionImageTemplateData['template_params_json'];
+  params = txt;
 
   pdf: SafeResourceUrl;
   image: SafeStyle;
