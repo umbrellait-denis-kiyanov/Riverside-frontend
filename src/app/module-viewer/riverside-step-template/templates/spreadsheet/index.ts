@@ -11,12 +11,3 @@ export interface SpreadsheetTemplateData extends TemplateContentDataBase {
     input_sufix: string;
   };
 }
-
-export const TemplateParams = `{
-  description: string;
-  apiResource: string;
-  visibleRows: string;
-  title: string;
-  requireFeedback: boolean;
-  calculateFormulasOnServer: boolean;
-}`;

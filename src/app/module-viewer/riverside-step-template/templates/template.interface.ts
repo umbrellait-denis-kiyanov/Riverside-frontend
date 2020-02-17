@@ -12,6 +12,7 @@ import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define';
 import { SpreadsheetTemplateData } from './spreadsheet';
 import { PreRequisiteModuleTemplateData } from './pre-requisite-modules';
 import { ModuleResultTemplateData } from './module-result';
+import { CampaignCalendarTemplateData } from './campaign-calendar-template';
 
 export type TemplateContentDataType =
   AgeGenderTemplateData |
@@ -25,7 +26,8 @@ export type TemplateContentDataType =
   SpreadsheetTemplateData |
   SegmentCriteriaDefineTemplateData |
   PreRequisiteModuleTemplateData |
-  ModuleResultTemplateData
+  ModuleResultTemplateData |
+  CampaignCalendarTemplateData
   ;
 
 export interface TemplateComponentInterface {
