@@ -1,8 +1,7 @@
 import {Component, forwardRef, OnInit} from '@angular/core';
 import {TemplateComponent} from '../template-base.class';
 import txt from '!!raw-loader!./index.ts';
-import {RadiobuttonTemplateData} from '.';
-import {Item} from '.';
+import {RadiobuttonTemplateData , Item} from '.';
 
 @Component({
   selector: 'app-radio-button',
@@ -37,9 +36,9 @@ export class RadioButtonComponent extends TemplateComponent {
   protected init() {
     this.contentData = this.data.data.template_params_json as RadiobuttonTemplateData['template_params_json'];
     this.items = this.contentData.options;
-    const radioButtonName = `${this.prefix}${this.contentData.input_sufix}`;
-    if ( this.inputs[radioButtonName] ) {
-      this.userChoice = Number(this.inputs[radioButtonName].content);
+    const input = this.getInput(this.contentData.input_sufix , null , this.prefix);
+    if ( input ) {
+      this.userChoice = Number(input.getValue());
     }
   }
 
