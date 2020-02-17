@@ -40,7 +40,7 @@ export class RadioButtonComponent extends TemplateComponent {
     this.items = this.contentData.options;
     const radioButtonName = `${this.prefix}${this.contentData.input_sufix}`;
     if ( this.inputs[radioButtonName] ) {
-      this.userChoice = +this.inputs[radioButtonName].content;
+      this.userChoice = Number(this.inputs[radioButtonName].content);
     }
   }
 
