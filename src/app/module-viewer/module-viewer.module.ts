@@ -114,7 +114,6 @@ import {
   CampaignDeletionConfirmationComponent
 } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
-import {BuyerPersonasSelectorComponent} from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
 import {CheckboxSelectorComponent} from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
 import {MatCheckboxModule} from '@angular/material';
 
@@ -226,7 +225,6 @@ import {MatCheckboxModule} from '@angular/material';
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
     StringToDateStructPipe,
-    SessionExpirationModalComponent
     CheckboxSelectorComponent
   ],
   entryComponents: [
@@ -249,7 +247,7 @@ import {MatCheckboxModule} from '@angular/material';
     VideoComponent,
     SessionExpirationModalComponent,
     BuyerPersonasSelectorComponent,
-    CheckboxSelectorComponent
+    CheckboxSelectorComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
     CampaignCalendarTemplateComponent,
