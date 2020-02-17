@@ -115,6 +115,7 @@ import {
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
 import {CheckboxSelectorComponent} from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
 import {MatCheckboxModule} from '@angular/material';
+import {PersonaStrategyComponent} from './riverside-step-template/templates/persona-strategy/persona-strategy.component';
 
 @NgModule({
   imports: [
