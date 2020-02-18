@@ -1,5 +1,5 @@
-import { TemplateContentDataBase } from "../template.interface";
-import { Module } from "src/app/common/interfaces/module.interface";
+import { TemplateContentDataBase } from '../template.interface';
+import { Module } from 'src/app/common/interfaces/module.interface';
 
 export interface PreRequisiteModuleTemplateData
   extends TemplateContentDataBase {

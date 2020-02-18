@@ -1,13 +1,13 @@
-import { Component, OnInit } from "@angular/core";
-import { Router, ActivatedRoute } from "@angular/router";
-import { FormBuilder, FormGroup, Validators } from "@angular/forms";
-import { UserService } from "src/app/common/services/user.service";
-import { Subscription } from "rxjs";
+import { Component, OnInit } from '@angular/core';
+import { Router, ActivatedRoute } from '@angular/router';
+import { FormBuilder, FormGroup, Validators } from '@angular/forms';
+import { UserService } from 'src/app/common/services/user.service';
+import { Subscription } from 'rxjs';
 
 @Component({
-  selector: "app-login",
-  templateUrl: "./login.component.html",
-  styleUrls: ["./login.component.sass"]
+  selector: 'app-login',
+  templateUrl: './login.component.html',
+  styleUrls: ['./login.component.sass']
 })
 export class LoginComponent implements OnInit {
   loginForm: FormGroup;
@@ -17,7 +17,7 @@ export class LoginComponent implements OnInit {
   isInvalid = false;
   isSessionExpired = false;
 
-  fields = ["username", "password"];
+  fields = ['username', 'password'];
 
   constructor(
     private formBuilder: FormBuilder,
@@ -33,12 +33,12 @@ export class LoginComponent implements OnInit {
 
   ngOnInit() {
     this.loginForm = this.formBuilder.group({
-      username: ["", Validators.required],
-      password: ["", Validators.required]
+      username: ['', Validators.required],
+      password: ['', Validators.required]
     });
 
     this.returnUrl =
-      this.route.snapshot.queryParams["returnUrl"] || "/dashboard";
+      this.route.snapshot.queryParams['returnUrl'] || '/dashboard';
   }
 
   // convenience getter for easy access to form fields
@@ -58,7 +58,7 @@ export class LoginComponent implements OnInit {
     this.fields.forEach(field =>
       form.append(field, this.loginForm.get(field).value)
     );
-    form.append("json", "true");
+    form.append('json', 'true');
 
     this.submitted = this.userService.signin(form).subscribe(
       res => {

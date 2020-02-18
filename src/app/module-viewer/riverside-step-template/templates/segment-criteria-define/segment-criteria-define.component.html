@@ -151,7 +151,7 @@
 <div *ngIf="step == 7">
   <ng-container *ngFor="let customerIndex of grades">
     <h2 *ngIf="grades.length == 6 && customerIndex % 2">
-      {{ ["Best", "Medium", "Worst"][(customerIndex - 1) / 2] }} Customers
+      {{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers
     </h2>
     <div class="grade-container row">
       <div class="col-sm-1 text-center">
@@ -212,7 +212,7 @@
 
     <ng-container *ngFor="let customerIndex of section.grades">
       <h2 *ngIf="section.grades.length == 6 && customerIndex % 2">
-        {{ ["Best", "Medium", "Worst"][(customerIndex - 1) / 2] }} Customers
+        {{ ['Best', 'Medium', 'Worst'][(customerIndex - 1) / 2] }} Customers
       </h2>
       <div
         class="grade-container"

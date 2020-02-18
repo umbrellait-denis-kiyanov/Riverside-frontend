@@ -1,14 +1,14 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { Source } from "./source.interface";
-import { HttpClient } from "@angular/common/http";
-import { TimedReviewService } from "./timed-review.service";
-import { Observable, Observer } from "rxjs";
-import { Status } from "./status.enum";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { Source } from './source.interface';
+import { HttpClient } from '@angular/common/http';
+import { TimedReviewService } from './timed-review.service';
+import { Observable, Observer } from 'rxjs';
+import { Status } from './status.enum';
 
 @Component({
-  selector: "app-timed-review",
-  templateUrl: "./timed-review.component.html",
-  styleUrls: ["./timed-review.component.sass"]
+  selector: 'app-timed-review',
+  templateUrl: './timed-review.component.html',
+  styleUrls: ['./timed-review.component.sass']
 })
 export class TimedReviewComponent implements OnInit {
   @Input() prompts: Array<any>;
@@ -90,7 +90,7 @@ export class TimedReviewComponent implements OnInit {
       today.getMonth(),
       today.getDate(),
       today.getMilliseconds()
-    ].join("_");
+    ].join('_');
   }
 
   private createIframe(sourceId: string): void {

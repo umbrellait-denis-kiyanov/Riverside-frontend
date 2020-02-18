@@ -8,10 +8,10 @@ import {
   Renderer2,
   OnInit,
   AfterViewInit
-} from "@angular/core";
+} from '@angular/core';
 
 @Directive({
-  selector: "[e3-scroll-spy]"
+  selector: '[e3-scroll-spy]'
 })
 export class E3ScrollSpyDirective implements AfterViewInit {
   @Input() public spiedClassNames = [];

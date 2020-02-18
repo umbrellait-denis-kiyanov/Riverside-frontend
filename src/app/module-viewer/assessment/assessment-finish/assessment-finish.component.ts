@@ -1,23 +1,23 @@
-import { Component, OnInit } from "@angular/core";
-import { HttpResponse } from "@angular/common/http";
-import { AssessmentService } from "src/app/common/services/assessment.service";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
+import { Component, OnInit } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { AssessmentService } from 'src/app/common/services/assessment.service';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import {
   AssessmentSession,
   AssessmentType,
   AssessmentGroup,
   AssessmentOrgGroup
-} from "src/app/common/interfaces/assessment.interface";
-import { Observable, combineLatest, Subscription } from "rxjs";
-import { switchMap, map, shareReplay, take } from "rxjs/operators";
-import { Router } from "@angular/router";
-import { AssessmentChartSeries } from "../../assessment-chart";
-import { ToastrService } from "ngx-toastr";
+} from 'src/app/common/interfaces/assessment.interface';
+import { Observable, combineLatest, Subscription } from 'rxjs';
+import { switchMap, map, shareReplay, take } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { AssessmentChartSeries } from '../../assessment-chart';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: "app-assessment-finish",
-  templateUrl: "./assessment-finish.component.html",
-  styleUrls: ["./assessment-finish.component.sass"]
+  selector: 'app-assessment-finish',
+  templateUrl: './assessment-finish.component.html',
+  styleUrls: ['./assessment-finish.component.sass']
 })
 export class AssessmentFinishComponent implements OnInit {
   session$: Observable<AssessmentSession>;
@@ -76,7 +76,7 @@ export class AssessmentFinishComponent implements OnInit {
             label: group.shortName,
             formattedValue:
               !orgGroups[group.id] || orgGroups[group.id].score === null
-                ? "N/A"
+                ? 'N/A'
                 : String(value)
           };
         });
@@ -85,13 +85,13 @@ export class AssessmentFinishComponent implements OnInit {
         series.push({
           value,
           name: series.length + 1,
-          label: "Average",
+          label: 'Average',
           formattedValue: String(value)
         });
 
         this.chart = [
           {
-            name: "Assessment",
+            name: 'Assessment',
             series
           }
         ];
@@ -104,14 +104,14 @@ export class AssessmentFinishComponent implements OnInit {
       .subscribe(response => {
         if (response.is_approved) {
           this.router.navigate(
-            ["dashboard", this.navService.lastOrganization.current],
-            { state: { section: "assessments", type: session.type_id } }
+            ['dashboard', this.navService.lastOrganization.current],
+            { state: { section: 'assessments', type: session.type_id } }
           );
 
-          this.toastr.success("Assessment has been recorded");
+          this.toastr.success('Assessment has been recorded');
         } else {
           this.isSubmittedForReview = true;
-          this.toastr.success("Assessment has been submitted for review");
+          this.toastr.success('Assessment has been submitted for review');
         }
       });
   }

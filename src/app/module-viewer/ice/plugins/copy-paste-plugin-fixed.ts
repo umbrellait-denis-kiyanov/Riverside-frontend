@@ -5,8 +5,8 @@ export function IceCopyPastePluginFixed() {
     const IceCopyPastePlugin = function(ice_instance) {
       this._ice = ice_instance;
       this._tmpNode = null;
-      this._tmpNodeTagName = "icepaste";
-      this._pasteId = "icepastediv";
+      this._tmpNodeTagName = 'icepaste';
+      this._pasteId = 'icepastediv';
       const self = this;
 
       // API
@@ -15,7 +15,7 @@ export function IceCopyPastePluginFixed() {
       // 'formattedClean' - paste will be MS Word cleaned, insert and
       //    delete tags will be removed keeping insert content in place,
       //    and tags not found in `preserve` will be stripped.
-      this.pasteType = "formattedClean";
+      this.pasteType = 'formattedClean';
 
       // Subset of tags that will not be stripped when pasteType
       // is set to 'formattedClean'. Parameter is of type string with
@@ -26,7 +26,7 @@ export function IceCopyPastePluginFixed() {
       // would have all attributes removed, `a` tags will have all but
       // `href` attributes removed, `i` tags will have all but `style`
       // and `title` attributes removed, and `span` tags will keep all attributes.
-      this.preserve = "p";
+      this.preserve = 'p';
 
       // Callback triggered before any paste cleaning happens
       this.beforePasteClean = function(body) {
@@ -40,9 +40,9 @@ export function IceCopyPastePluginFixed() {
 
       // Event Listener for copying
       const el = ice_instance.element;
-      el.addEventListener("copy", e => this.handleCopy(e));
-      el.addEventListener("paste", e => this.handlePaste(e));
-      el.addEventListener("cut", e => this.handleCut(e));
+      el.addEventListener('copy', e => this.handleCopy(e));
+      el.addEventListener('paste', e => this.handlePaste(e));
+      el.addEventListener('cut', e => this.handleCut(e));
     };
 
     IceCopyPastePlugin.prototype = {
@@ -50,7 +50,7 @@ export function IceCopyPastePluginFixed() {
         settings = settings || {};
         ice.dom.extend(this, settings);
 
-        this.preserve += "," + this._tmpNodeTagName;
+        this.preserve += ',' + this._tmpNodeTagName;
         this.setupPreserved();
       },
 
@@ -85,7 +85,7 @@ export function IceCopyPastePluginFixed() {
           )[0];
           if (!firstBlock) {
             firstBlock = ice.dom.create(
-              "<" + this._ice.blockEl + " ><br/></" + this._ice.blockEl + ">"
+              '<' + this._ice.blockEl + ' ><br/></' + this._ice.blockEl + '>'
             );
             this._ice.element.appendChild(firstBlock);
           }
@@ -99,16 +99,16 @@ export function IceCopyPastePluginFixed() {
         );
         range.insertNode(this._tmpNode);
 
-        const html = (e.originalEvent || e).clipboardData.getData("text/html");
+        const html = (e.originalEvent || e).clipboardData.getData('text/html');
         e.preventDefault();
         e.stopPropagation();
         e.stopImmediatePropagation();
 
         switch (this.pasteType) {
-          case "formatted":
+          case 'formatted':
             this.handlePasteValue(false, html);
             break;
-          case "formattedClean":
+          case 'formattedClean':
             this.handlePasteValue(true, html);
             break;
         }
@@ -177,12 +177,12 @@ export function IceCopyPastePluginFixed() {
             //  textnode <p>blocktext</p> <p>blocktext</p> moretext
             // In which case we wrap the leading or trailing text nodes in blocks.
             if (ice.dom.isBlockElement(fragment.firstChild)) {
-              if (fragment.firstChild.textContent !== "") {
+              if (fragment.firstChild.textContent !== '') {
                 innerBlock = null;
                 var insert = null;
                 if (this._ice.isTracking) {
-                  insert = this._ice.createIceNode("insertType");
-                  this._ice.addChange("insertType", [insert]);
+                  insert = this._ice.createIceNode('insertType');
+                  this._ice.addChange('insertType', [insert]);
                   newEl = doc.createElement(fragment.firstChild.tagName);
                   insert.innerHTML = fragment.firstChild.innerHTML;
                   newEl.appendChild(insert);
@@ -202,8 +202,8 @@ export function IceCopyPastePluginFixed() {
                 newEl = doc.createElement(this._ice.blockEl);
                 ice.dom.insertBefore(prevBlock, newEl);
                 if (this._ice.isTracking) {
-                  innerBlock = this._ice.createIceNode("insertType");
-                  this._ice.addChange("insertType", [innerBlock]);
+                  innerBlock = this._ice.createIceNode('insertType');
+                  this._ice.addChange('insertType', [innerBlock]);
                   newEl.appendChild(innerBlock);
                 } else {
                   innerBlock = newEl;
@@ -218,8 +218,8 @@ export function IceCopyPastePluginFixed() {
           }
         } else {
           if (this._ice.isTracking) {
-            newEl = this._ice.createIceNode("insertType", fragment);
-            this._ice.addChange("insertType", [newEl]);
+            newEl = this._ice.createIceNode('insertType', fragment);
+            this._ice.addChange('insertType', [newEl]);
             range.insertNode(newEl);
             lastEl = newEl;
           } else {
@@ -244,17 +244,17 @@ export function IceCopyPastePluginFixed() {
           ice.dom.remove(oldEl);
         }
 
-        var div = doc.createElement("div");
+        var div = doc.createElement('div');
         div.id = id;
-        div.setAttribute("contentEditable", true);
-        ice.dom.setStyle(div, "width", "1px");
-        ice.dom.setStyle(div, "height", "1px");
-        ice.dom.setStyle(div, "overflow", "hidden");
-        ice.dom.setStyle(div, "position", "fixed");
-        ice.dom.setStyle(div, "top", "10px");
-        ice.dom.setStyle(div, "left", "10px");
+        div.setAttribute('contentEditable', true);
+        ice.dom.setStyle(div, 'width', '1px');
+        ice.dom.setStyle(div, 'height', '1px');
+        ice.dom.setStyle(div, 'overflow', 'hidden');
+        ice.dom.setStyle(div, 'position', 'fixed');
+        ice.dom.setStyle(div, 'top', '10px');
+        ice.dom.setStyle(div, 'left', '10px');
 
-        div.appendChild(doc.createElement("br"));
+        div.appendChild(doc.createElement('br'));
         doc.body.appendChild(div);
         return div;
       },
@@ -267,12 +267,12 @@ export function IceCopyPastePluginFixed() {
           range = this._ice.getCurrentRange();
         if (range.collapsed) return; // If nothing is selected, there's nothing to mark deleted
 
-        this.cutElement = this.createDiv("icecut");
+        this.cutElement = this.createDiv('icecut');
         // Chrome strips out spaces between text nodes and elements node during cut
         this.cutElement.innerHTML = range
           .getHTMLContents()
-          .replace(/ </g, "&nbsp;<")
-          .replace(/> /g, ">&nbsp;");
+          .replace(/ </g, '&nbsp;<')
+          .replace(/> /g, '>&nbsp;');
 
         if (this._ice.isTracking) this._ice.deleteContents();
         else range.deleteContents();
@@ -314,18 +314,18 @@ export function IceCopyPastePluginFixed() {
       //   `_attributesMap` = ['p' => [], 'a' => ['href', 'class'], 'span' => ['*']]
       setupPreserved: function() {
         var self = this;
-        this._tags = "";
+        this._tags = '';
         this._attributesMap = [];
 
-        ice.dom.each(this.preserve.split(","), function(i, tagAttr) {
+        ice.dom.each(this.preserve.split(','), function(i, tagAttr) {
           // Extract the tag and attributes list
           tagAttr.match(/(\w+)(\[(.+)\])?/);
           var tag = RegExp.$1;
           var attr = RegExp.$3;
 
-          if (self._tags) self._tags += ",";
+          if (self._tags) self._tags += ',';
           self._tags += tag.toLowerCase();
-          self._attributesMap[tag] = attr.split("|");
+          self._attributesMap[tag] = attr.split('|');
         });
       },
 
@@ -333,7 +333,7 @@ export function IceCopyPastePluginFixed() {
       // their inner contents, and removes attributes from any tags that aren't mapped in `_attributesMap`.
       cleanPreserved: function(body) {
         var self = this;
-        var bodyel = this._ice.env.document.createElement("div");
+        var bodyel = this._ice.env.document.createElement('div');
         bodyel.innerHTML = body;
 
         // Strip out any tags not found in `this._tags`, replacing the tags with their inner contents.
@@ -341,14 +341,14 @@ export function IceCopyPastePluginFixed() {
 
         // Strip out any attributes from the allowed set of tags that don't match what is in the `_attributesMap`
         ice.dom.each(ice.dom.find(bodyel, this._tags), function(i, el) {
-          if (ice.dom.hasClass(el, "skip-clean")) {
+          if (ice.dom.hasClass(el, 'skip-clean')) {
             return true;
           }
           var tag = el.tagName.toLowerCase();
           var attrMatches = self._attributesMap[tag];
 
           // Kleene star - keep all of the attributes for this tag.
-          if (attrMatches[0] && attrMatches[0] === "*") return true;
+          if (attrMatches[0] && attrMatches[0] === '*') return true;
 
           // Remove any foreign attributes that do not match the map.
           if (el.hasAttributes()) {
@@ -365,20 +365,20 @@ export function IceCopyPastePluginFixed() {
 
       _cleanWordPaste: function(content) {
         // Meta and link tags.
-        content = content.replace(/<(meta|link)[^>]+>/g, "");
+        content = content.replace(/<(meta|link)[^>]+>/g, '');
 
         // Comments.
-        content = content.replace(/<!--(.|\s)*?-->/g, "");
+        content = content.replace(/<!--(.|\s)*?-->/g, '');
 
         // Remove style tags.
-        content = content.replace(/<style>[\s\S]*?<\/style>/g, "");
+        content = content.replace(/<style>[\s\S]*?<\/style>/g, '');
 
         // Remove span and o:p etc. tags.
         //content = content.replace(/<\/?span[^>]*>/gi, "");
-        content = content.replace(/<\/?\w+:[^>]*>/gi, "");
+        content = content.replace(/<\/?\w+:[^>]*>/gi, '');
 
         // Remove XML tags.
-        content = content.replace(/<\\?\?xml[^>]*>/gi, "");
+        content = content.replace(/<\\?\?xml[^>]*>/gi, '');
 
         // Generic cleanup.
         content = this._cleanPaste(content);
@@ -386,7 +386,7 @@ export function IceCopyPastePluginFixed() {
         // Remove class, lang and style attributes.
         content = content.replace(
           /<(\w[^>]*) (lang)=([^ |>]*)([^>]*)/gi,
-          "<$1$4"
+          '<$1$4'
         );
 
         return content;
@@ -394,10 +394,10 @@ export function IceCopyPastePluginFixed() {
 
       _cleanPaste: function(content) {
         // Some generic content cleanup. Change all b/i tags to strong/em.
-        content = content.replace(/<b(\s+|>)/g, "<strong$1");
-        content = content.replace(/<\/b(\s+|>)/g, "</strong$1");
-        content = content.replace(/<i(\s+|>)/g, "<em$1");
-        content = content.replace(/<\/i(\s+|>)/g, "</em$1");
+        content = content.replace(/<b(\s+|>)/g, '<strong$1');
+        content = content.replace(/<\/b(\s+|>)/g, '</strong$1');
+        content = content.replace(/<i(\s+|>)/g, '<em$1');
+        content = content.replace(/<\/i(\s+|>)/g, '</em$1');
         return content;
       },
 
@@ -419,7 +419,7 @@ export function IceCopyPastePluginFixed() {
           this._tmpNode = null;
           // Kill any empty change nodes.
           var ins = this._ice.env.document.getElementsByClassName(
-            this._ice.changeTypes["insertType"].alias
+            this._ice.changeTypes['insertType'].alias
           );
           for (var i = 0; i < ins.length; i++) {
             if (!ins[i].textContent) {

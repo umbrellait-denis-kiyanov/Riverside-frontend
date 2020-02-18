@@ -1,11 +1,11 @@
-import { Pipe, PipeTransform } from "@angular/core";
-import { Observable } from "rxjs";
-import { BuyerPersonasService } from "../services/buyer-personas.service";
-import { map, shareReplay } from "rxjs/operators";
-import { BuyerPersona } from "../interfaces/buyer-persona.interface";
+import { Pipe, PipeTransform } from '@angular/core';
+import { Observable } from 'rxjs';
+import { BuyerPersonasService } from '../services/buyer-personas.service';
+import { map, shareReplay } from 'rxjs/operators';
+import { BuyerPersona } from '../interfaces/buyer-persona.interface';
 
 @Pipe({
-  name: "personaName"
+  name: 'personaName'
 })
 export class PersonaNamePipe implements PipeTransform {
   private buyerPersonas$: Observable<BuyerPersona[]>;
@@ -22,7 +22,7 @@ export class PersonaNamePipe implements PipeTransform {
         buyerPersonas
           .filter(buyerPersona => personaIndexes.includes(buyerPersona.index))
           .map(buyerPersona => buyerPersona.name)
-          .join(", ")
+          .join(', ')
       )
     );
   }

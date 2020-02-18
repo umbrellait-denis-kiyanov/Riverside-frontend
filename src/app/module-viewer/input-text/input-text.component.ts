@@ -1,13 +1,13 @@
-import { Component, OnChanges, Input } from "@angular/core";
-import { TemplateInput } from "src/app/common/interfaces/module.interface";
-import { TemplateComponent } from "../riverside-step-template/templates/template-base.class";
-import { Observable } from "rxjs";
-import { map } from "rxjs/operators";
+import { Component, OnChanges, Input } from '@angular/core';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
+import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
+import { Observable } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-  selector: "[inputText]",
-  templateUrl: "./input-text.component.html",
-  styleUrls: ["./input-text.component.sass"]
+  selector: '[inputText]',
+  templateUrl: './input-text.component.html',
+  styleUrls: ['./input-text.component.sass']
 })
 export class InputTextComponent implements OnChanges {
   @Input() inputText: TemplateInput | string;

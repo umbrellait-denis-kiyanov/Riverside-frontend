@@ -1,12 +1,12 @@
-import IceInputPlugin from "./ice-input-plugin";
-import { BehaviorSubject } from "rxjs";
+import IceInputPlugin from './ice-input-plugin';
+import { BehaviorSubject } from 'rxjs';
 import {
   debounceTime,
   filter,
   skip,
   takeWhile,
   finalize
-} from "rxjs/operators";
+} from 'rxjs/operators';
 
 type Editor = HTMLElement & {
   change$: BehaviorSubject<string>;
@@ -17,7 +17,7 @@ type Editor = HTMLElement & {
 // implement Undo/Redo functionality
 export class UndoTrackPlugin extends IceInputPlugin {
   protected addEventListeners(editor: Editor) {
-    editor.change$ = new BehaviorSubject("");
+    editor.change$ = new BehaviorSubject('');
 
     editor.stack = [];
 
@@ -50,15 +50,15 @@ export class UndoTrackPlugin extends IceInputPlugin {
   }
 
   protected keyDown(e: KeyboardEvent) {
-    if (e.ctrlKey && (e.key === "z" || e.key === "y")) {
+    if (e.ctrlKey && (e.key === 'z' || e.key === 'y')) {
       const editor = e.target as Editor;
 
-      if (e.key === "z") {
+      if (e.key === 'z') {
         editor.stack[editor.stackIndex] = editor.innerHTML;
         editor.stackIndex = Math.max(0, editor.stackIndex - 1);
       }
 
-      if (e.key === "y") {
+      if (e.key === 'y') {
         editor.stackIndex = Math.min(
           editor.stack.length - 1,
           editor.stackIndex + 1

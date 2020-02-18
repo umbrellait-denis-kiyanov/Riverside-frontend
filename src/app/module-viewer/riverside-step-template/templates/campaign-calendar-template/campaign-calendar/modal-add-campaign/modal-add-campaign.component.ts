@@ -1,24 +1,24 @@
-import { Component, Input } from "@angular/core";
-import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { Campaign } from "../index";
+import { Component, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Campaign } from '../index';
 
 @Component({
-  selector: "app-modal-add-campaign",
-  templateUrl: "./modal-add-campaign.component.html",
-  styleUrls: ["./modal-add-campaign.component.sass"]
+  selector: 'app-modal-add-campaign',
+  templateUrl: './modal-add-campaign.component.html',
+  styleUrls: ['./modal-add-campaign.component.sass']
 })
 export class ModalAddCampaignComponent {
   @Input() isEdit: boolean = false;
   campaign: Campaign = {
-    id: "",
-    theme: "",
+    id: '',
+    theme: '',
     persona: [],
-    messaging: "",
-    tacticalMap: "",
-    startDate: "",
-    endDate: "",
-    assigned: "",
-    color: ""
+    messaging: '',
+    tacticalMap: '',
+    startDate: '',
+    endDate: '',
+    assigned: '',
+    color: ''
   };
   isValidationError = false;
 

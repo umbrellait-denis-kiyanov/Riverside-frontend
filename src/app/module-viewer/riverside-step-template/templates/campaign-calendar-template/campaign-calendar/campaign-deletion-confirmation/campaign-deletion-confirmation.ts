@@ -1,9 +1,9 @@
-import { Component } from "@angular/core";
-import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { Component } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: "campaign-deletion-confirmation",
-  templateUrl: "./campaign-deletion-confirmation.html"
+  selector: 'campaign-deletion-confirmation',
+  templateUrl: './campaign-deletion-confirmation.html'
 })
 export class CampaignDeletionConfirmationComponent {
   campaignName: string;

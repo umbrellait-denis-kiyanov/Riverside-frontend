@@ -1,23 +1,23 @@
-import { Component, OnInit } from "@angular/core";
-import { InboxService } from "./inbox.service";
-import { ActivatedRoute } from "@angular/router";
-import { UserService } from "src/app/common/services/user.service";
-import { map, switchMap, filter } from "rxjs/operators";
-import { Observable, Subscription } from "rxjs";
-import Message from "./message.model";
-import { ToastrService } from "ngx-toastr";
+import { Component, OnInit } from '@angular/core';
+import { InboxService } from './inbox.service';
+import { ActivatedRoute } from '@angular/router';
+import { UserService } from 'src/app/common/services/user.service';
+import { map, switchMap, filter } from 'rxjs/operators';
+import { Observable, Subscription } from 'rxjs';
+import Message from './message.model';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: "app-inbox",
-  templateUrl: "./inbox.component.html",
-  styleUrls: ["./inbox.component.sass"]
+  selector: 'app-inbox',
+  templateUrl: './inbox.component.html',
+  styleUrls: ['./inbox.component.sass']
 })
 export class InboxComponent implements OnInit {
-  feedbackMessage: string = "";
+  feedbackMessage: string = '';
   routerLink: string[];
   submitting: Subscription;
   canProvideFeedback = false;
-  currentTab = "text";
+  currentTab = 'text';
 
   message$: Observable<Message>;
 
@@ -57,14 +57,14 @@ export class InboxComponent implements OnInit {
     }
 
     this.routerLink = [
-      "/org",
+      '/org',
       String(message.to_org_id || message.from_org_id),
-      "module",
+      'module',
       String(message.module_id)
     ];
     if (message.step_id) {
       this.routerLink = this.routerLink.concat([
-        "step",
+        'step',
         String(message.step_id)
       ]);
     }

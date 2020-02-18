@@ -1,4 +1,4 @@
-import { take } from "rxjs/operators";
+import { take } from 'rxjs/operators';
 
 interface PreviousStepInputs {
   [key: string]: {
@@ -10,8 +10,8 @@ interface PreviousStepInputs {
 export class PersonaInputs {
   static defaults = {
     buyerPersonasList$: null,
-    stepPrefix: "",
-    stepSufix: "",
+    stepPrefix: '',
+    stepSufix: '',
     previousSteps: null
   };
 
@@ -39,13 +39,13 @@ export class PersonaInputs {
           personas.map(persona => {
             const personaDefs = {};
             Object.keys(previousSteps).forEach(stepKey => {
-              if (stepKey === "title") {
+              if (stepKey === 'title') {
                 personaDefs[stepKey] = persona;
                 return;
               }
               const stepDef = previousSteps[stepKey];
               personaDefs[stepKey] = `${stepDef.prefix}_${persona.index}${
-                stepDef.sufix ? "_" + stepDef.sufix : ""
+                stepDef.sufix ? '_' + stepDef.sufix : ''
               }`;
             });
             return personaDefs;
@@ -67,7 +67,7 @@ export class PersonaInputs {
             personas.map(
               persona =>
                 `${stepPrefix}_${persona.index}${
-                  stepSufix ? "_" + stepSufix : ""
+                  stepSufix ? '_' + stepSufix : ''
                 }`
             )
           ))

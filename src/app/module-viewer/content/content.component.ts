@@ -1,24 +1,24 @@
-import { Component, OnInit, ViewChild, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { ModuleService } from "src/app/common/services/module.service";
-import { UserService } from "src/app/common/services/user.service";
-import User from "src/app/common/interfaces/user.model";
-import { TemplateContentData } from "src/app/module-viewer/riverside-step-template/templates/template-data.class";
-import { RiversideStepTemplateComponent } from "src/app/module-viewer/riverside-step-template/riverside-step-template.component";
-import { ModuleContentService } from "src/app/common/services/module-content.service";
-import { switchMap, catchError, filter, tap, take } from "rxjs/operators";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
-import { combineLatest, Subscription, Observable, throwError } from "rxjs";
-import { Templates } from "../riverside-step-template/templates";
-import { IceService } from "../ice/ice.service";
-import ModuleContent from "src/app/common/interfaces/module-content.model";
-import { LeftMenuService } from "src/app/common/services/left-menu.service";
-import { HttpErrorResponse } from "@angular/common/http";
+import { Component, OnInit, ViewChild, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { ModuleService } from 'src/app/common/services/module.service';
+import { UserService } from 'src/app/common/services/user.service';
+import User from 'src/app/common/interfaces/user.model';
+import { TemplateContentData } from 'src/app/module-viewer/riverside-step-template/templates/template-data.class';
+import { RiversideStepTemplateComponent } from 'src/app/module-viewer/riverside-step-template/riverside-step-template.component';
+import { ModuleContentService } from 'src/app/common/services/module-content.service';
+import { switchMap, catchError, filter, tap, take } from 'rxjs/operators';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { combineLatest, Subscription, Observable, throwError } from 'rxjs';
+import { Templates } from '../riverside-step-template/templates';
+import { IceService } from '../ice/ice.service';
+import ModuleContent from 'src/app/common/interfaces/module-content.model';
+import { LeftMenuService } from 'src/app/common/services/left-menu.service';
+import { HttpErrorResponse } from '@angular/common/http';
 
 @Component({
-  selector: "app-content",
-  templateUrl: "./content.component.html",
-  styleUrls: ["./content.component.sass"]
+  selector: 'app-content',
+  templateUrl: './content.component.html',
+  styleUrls: ['./content.component.sass']
 })
 export class ContentComponent implements OnInit, OnDestroy {
   me: User;
@@ -26,7 +26,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   templateComponentName: keyof typeof Templates;
   canModify = false;
   leftMenuExpanded = true;
-  styles: string = "";
+  styles: string = '';
 
   routeWatch: Subscription;
 
@@ -69,9 +69,9 @@ export class ContentComponent implements OnInit, OnDestroy {
       switchMap(([org, module, step]) =>
         this.moduleContentService.load(module, step, org).pipe(
           catchError((err: HttpErrorResponse) => {
-            if (err.error.code === "MODULE_DISABLED") {
+            if (err.error.code === 'MODULE_DISABLED') {
               this.router.navigate([
-                "dashboard",
+                'dashboard',
                 this.navService.lastOrganization.current
               ]);
               return throwError(err);
@@ -116,7 +116,7 @@ export class ContentComponent implements OnInit, OnDestroy {
                 this.navService.lastOrganization.current
             ) {
               this.router.navigate([
-                "dashboard",
+                'dashboard',
                 this.navService.lastOrganization.current
               ]);
               return;

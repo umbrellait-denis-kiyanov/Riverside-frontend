@@ -5,19 +5,19 @@ import {
   Output,
   EventEmitter,
   ElementRef
-} from "@angular/core";
-import { BuyerPersonasService } from "../../../../common/services/buyer-personas.service";
-import { BuyerPersona } from "../../../../common/interfaces/buyer-persona.interface";
-import { Observable, combineLatest, of, observable, concat } from "rxjs";
-import { map, startWith } from "rxjs/operators";
+} from '@angular/core';
+import { BuyerPersonasService } from '../../../../common/services/buyer-personas.service';
+import { BuyerPersona } from '../../../../common/interfaces/buyer-persona.interface';
+import { Observable, combineLatest, of, observable, concat } from 'rxjs';
+import { map, startWith } from 'rxjs/operators';
 
 @Component({
   host: {
-    "(document:click)": "hideDropdown($event)"
+    '(document:click)': 'hideDropdown($event)'
   },
-  selector: "buyer-personas-selector",
-  templateUrl: "./buyer-personas-selector.component.html",
-  styleUrls: ["./buyer-personas-selector.component.sass"]
+  selector: 'buyer-personas-selector',
+  templateUrl: './buyer-personas-selector.component.html',
+  styleUrls: ['./buyer-personas-selector.component.sass']
 })
 export class BuyerPersonasSelectorComponent implements OnInit {
   @Input() readonly = false;
@@ -52,7 +52,7 @@ export class BuyerPersonasSelectorComponent implements OnInit {
           personas
             .filter(persona => this.selected.includes(persona.index))
             .map(persona => persona.name)
-            .join(", ") || "No personas selected"
+            .join(', ') || 'No personas selected'
       )
     );
   }

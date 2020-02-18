@@ -5,16 +5,16 @@ import {
   HostListener,
   Renderer2,
   OnInit
-} from "@angular/core";
-import { Router } from "@angular/router";
+} from '@angular/core';
+import { Router } from '@angular/router';
 
 @Directive({
-  selector: "[e3-tooltip]"
+  selector: '[e3-tooltip]'
 })
 export class E3TooltipDirective implements OnInit {
-  @Input("e3-tooltip") tooltipTitle: string;
-  @Input() placement: string = "top";
-  @Input() delay: string = "500";
+  @Input('e3-tooltip') tooltipTitle: string;
+  @Input() placement: string = 'top';
+  @Input() delay: string = '500';
   tooltip: HTMLElement;
   offset = 10;
 
@@ -30,19 +30,19 @@ export class E3TooltipDirective implements OnInit {
     });
   }
 
-  @HostListener("mouseenter") onMouseEnter() {
+  @HostListener('mouseenter') onMouseEnter() {
     if (!this.tooltip && this.tooltipTitle) {
       this.show();
     }
   }
 
-  @HostListener("mouseleave") onMouseLeave() {
+  @HostListener('mouseleave') onMouseLeave() {
     if (this.tooltip) {
       this.hide();
     }
   }
 
-  @HostListener("click") onClick() {
+  @HostListener('click') onClick() {
     if (this.tooltip) {
       this.hide();
     }
@@ -51,11 +51,11 @@ export class E3TooltipDirective implements OnInit {
   show() {
     this.create();
     this.setPosition();
-    this.renderer.addClass(this.tooltip, "ng-tooltip-show");
+    this.renderer.addClass(this.tooltip, 'ng-tooltip-show');
   }
 
   hide() {
-    this.renderer.removeClass(this.tooltip, "ng-tooltip-show");
+    this.renderer.removeClass(this.tooltip, 'ng-tooltip-show');
     window.setTimeout(() => {
       this.tooltip && this.renderer.removeChild(document.body, this.tooltip);
       this.tooltip = null;
@@ -63,7 +63,7 @@ export class E3TooltipDirective implements OnInit {
   }
 
   create() {
-    this.tooltip = this.renderer.createElement("span");
+    this.tooltip = this.renderer.createElement('span');
 
     this.renderer.appendChild(
       this.tooltip,
@@ -73,28 +73,28 @@ export class E3TooltipDirective implements OnInit {
     this.renderer.appendChild(document.body, this.tooltip);
     // this.renderer.appendChild(this.el.nativeElement, this.tooltip);
 
-    this.renderer.addClass(this.tooltip, "ng-tooltip");
+    this.renderer.addClass(this.tooltip, 'ng-tooltip');
     this.renderer.addClass(this.tooltip, `ng-tooltip-${this.placement}`);
 
     // delay 설정
     this.renderer.setStyle(
       this.tooltip,
-      "-webkit-transition",
+      '-webkit-transition',
       `opacity ${this.delay}ms`
     );
     this.renderer.setStyle(
       this.tooltip,
-      "-moz-transition",
+      '-moz-transition',
       `opacity ${this.delay}ms`
     );
     this.renderer.setStyle(
       this.tooltip,
-      "-o-transition",
+      '-o-transition',
       `opacity ${this.delay}ms`
     );
     this.renderer.setStyle(
       this.tooltip,
-      "transition",
+      'transition',
       `opacity ${this.delay}ms`
     );
   }
@@ -118,28 +118,28 @@ export class E3TooltipDirective implements OnInit {
     let top: number;
     let left: number;
 
-    if (this.placement === "top") {
+    if (this.placement === 'top') {
       top = hostPos.top - tooltipPos.height - this.offset;
       left = hostPos.left + (hostPos.width - tooltipPos.width) / 2;
     }
 
-    if (this.placement === "bottom") {
+    if (this.placement === 'bottom') {
       top = hostPos.bottom + this.offset;
       left = hostPos.left + (hostPos.width - tooltipPos.width) / 2;
     }
 
-    if (this.placement === "left") {
+    if (this.placement === 'left') {
       top = hostPos.top + (hostPos.height - tooltipPos.height) / 2;
       left = hostPos.left - tooltipPos.width - this.offset;
     }
 
-    if (this.placement === "right") {
+    if (this.placement === 'right') {
       top = hostPos.top + (hostPos.height - tooltipPos.height) / 2;
       left = hostPos.right + this.offset;
     }
 
-    this.renderer.setStyle(this.tooltip, "top", `${top + scrollPos}px`);
-    this.renderer.setStyle(this.tooltip, "left", `${left}px`);
-    this.renderer.setStyle(this.tooltip, "max-width", `200px`);
+    this.renderer.setStyle(this.tooltip, 'top', `${top + scrollPos}px`);
+    this.renderer.setStyle(this.tooltip, 'left', `${left}px`);
+    this.renderer.setStyle(this.tooltip, 'max-width', `200px`);
   }
 }

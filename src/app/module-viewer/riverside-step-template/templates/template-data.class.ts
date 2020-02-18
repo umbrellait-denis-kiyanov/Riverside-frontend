@@ -1,6 +1,6 @@
-import { BehaviorSubject } from "rxjs";
-import User from "src/app/common/interfaces/user.model";
-import ModuleContent from "src/app/common/interfaces/module-content.model";
+import { BehaviorSubject } from 'rxjs';
+import User from 'src/app/common/interfaces/user.model';
+import ModuleContent from 'src/app/common/interfaces/module-content.model';
 
 interface TemplateContentDataProps {
   data: ModuleContent;

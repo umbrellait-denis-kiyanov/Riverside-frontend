@@ -1,22 +1,22 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input } from '@angular/core';
 import {
   Module,
   Step,
   Organization
-} from "src/app/common/interfaces/module.interface";
-import { ModuleService } from "src/app/common/services/module.service";
-import { UserService } from "src/app/common/services/user.service";
-import User from "src/app/common/interfaces/user.model";
-import { LeftMenuService } from "src/app/common/services/left-menu.service";
-import { Router } from "@angular/router";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
-import { Observable, BehaviorSubject } from "rxjs";
-import { take, switchMap } from "rxjs/operators";
+} from 'src/app/common/interfaces/module.interface';
+import { ModuleService } from 'src/app/common/services/module.service';
+import { UserService } from 'src/app/common/services/user.service';
+import User from 'src/app/common/interfaces/user.model';
+import { LeftMenuService } from 'src/app/common/services/left-menu.service';
+import { Router } from '@angular/router';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { take, switchMap } from 'rxjs/operators';
 
 @Component({
-  selector: "module-left-menu",
-  templateUrl: "./module-left-menu.component.html",
-  styleUrls: ["./module-left-menu.component.sass"]
+  selector: 'module-left-menu',
+  templateUrl: './module-left-menu.component.html',
+  styleUrls: ['./module-left-menu.component.sass']
 })
 export class LeftMenuComponent implements OnInit {
   @Input() width: number = 300;
@@ -75,20 +75,20 @@ export class LeftMenuComponent implements OnInit {
 
     if (!step.isLocked) {
       return [
-        "/org",
+        '/org',
         module.status.org_id,
-        "module",
+        'module',
         module.id,
-        "step",
+        'step',
         step.id
       ];
     } else {
       return [
-        "/org",
+        '/org',
         module.status.org_id,
-        "module",
+        'module',
         module.id,
-        "step",
+        'step',
         this.navService.step.current
       ];
     }
@@ -103,11 +103,11 @@ export class LeftMenuComponent implements OnInit {
 
     this.navService.step$.pipe(take(1)).subscribe(step => {
       this.router.navigate([
-        "org",
+        'org',
         organization.id,
-        "module",
+        'module',
         module.id,
-        "step",
+        'step',
         step
       ]);
     });

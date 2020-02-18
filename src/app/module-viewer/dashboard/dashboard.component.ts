@@ -1,24 +1,24 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   Module,
   Organization,
   ModuleCategory
-} from "src/app/common/interfaces/module.interface";
-import { ModuleScores } from "src/app/common/interfaces/assessment.interface";
-import { ModuleService } from "src/app/common/services/module.service";
-import { Observable, BehaviorSubject, Subscription } from "rxjs";
-import { map, shareReplay, tap } from "rxjs/operators";
-import { combineLatest } from "rxjs";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Sort } from "@angular/material/sort";
-import { AssessmentService } from "src/app/common/services/assessment.service";
-import { HttpResponse } from "@angular/common/http";
-import { CanModifyPipe } from "src/app/common/pipes/canModify.pipe";
+} from 'src/app/common/interfaces/module.interface';
+import { ModuleScores } from 'src/app/common/interfaces/assessment.interface';
+import { ModuleService } from 'src/app/common/services/module.service';
+import { Observable, BehaviorSubject, Subscription } from 'rxjs';
+import { map, shareReplay, tap } from 'rxjs/operators';
+import { combineLatest } from 'rxjs';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Sort } from '@angular/material/sort';
+import { AssessmentService } from 'src/app/common/services/assessment.service';
+import { HttpResponse } from '@angular/common/http';
+import { CanModifyPipe } from 'src/app/common/pipes/canModify.pipe';
 
 @Component({
-  selector: "app-dashboard",
-  templateUrl: "./dashboard.component.html",
-  styleUrls: ["./dashboard.component.sass"]
+  selector: 'app-dashboard',
+  templateUrl: './dashboard.component.html',
+  styleUrls: ['./dashboard.component.sass']
 })
 export class DashboardComponent implements OnInit, OnDestroy {
   constructor(
@@ -39,11 +39,11 @@ export class DashboardComponent implements OnInit, OnDestroy {
 
   organization: Organization;
 
-  view = "list";
+  view = 'list';
 
   listSortOrder$ = new BehaviorSubject<Sort>({
-    active: "due_date",
-    direction: "asc"
+    active: 'due_date',
+    direction: 'asc'
   });
 
   organizationSubscription: Subscription;
@@ -76,7 +76,7 @@ export class DashboardComponent implements OnInit, OnDestroy {
     this.organization = organization;
 
     if (Number(this.route.snapshot.params.orgId) !== Number(organization.id)) {
-      this.router.navigate(["dashboard", organization.id]);
+      this.router.navigate(['dashboard', organization.id]);
     }
 
     this.modulesRequest$ = this.moduleService
@@ -122,15 +122,15 @@ export class DashboardComponent implements OnInit, OnDestroy {
           });
 
         return items.sort((a, b) => {
-          const direction = listSortOrder.direction === "asc" ? 1 : -1;
+          const direction = listSortOrder.direction === 'asc' ? 1 : -1;
           let field = listSortOrder.active;
-          if ("progress_status" === field) {
-            field = "progress";
+          if ('progress_status' === field) {
+            field = 'progress';
           }
 
           let aValue;
           let bValue;
-          if (field.substring(0, 10) === "assessment") {
+          if (field.substring(0, 10) === 'assessment') {
             const type = field.substring(11);
             aValue = assessmentScores[a.id]
               ? assessmentScores[a.id][type]
@@ -140,20 +140,20 @@ export class DashboardComponent implements OnInit, OnDestroy {
               : null;
           } else {
             aValue =
-              "idx" === field ? a[field] : a.status ? a.status[field] : null;
+              'idx' === field ? a[field] : a.status ? a.status[field] : null;
             bValue =
-              "idx" === field ? b[field] : b.status ? b.status[field] : null;
+              'idx' === field ? b[field] : b.status ? b.status[field] : null;
           }
 
           // @todo - duplication with master-dashboard code
           let defLowValue =
             (isNaN(parseInt(aValue, 10)) && isNaN(parseInt(bValue, 10))) ||
-            "due_date" === field
-              ? "ZZZ"
+            'due_date' === field
+              ? 'ZZZ'
               : 9999;
-          let defHiValue = "" as string | number;
+          let defHiValue = '' as string | number;
 
-          if ("assessment" === field.substring(0, 10)) {
+          if ('assessment' === field.substring(0, 10)) {
             defLowValue = 9999 * direction;
             defHiValue = 9999 * direction;
           }

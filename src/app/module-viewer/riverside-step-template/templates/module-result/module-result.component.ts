@@ -1,14 +1,14 @@
-import { Component, forwardRef } from "@angular/core";
-import { ModuleResultTemplateData, TemplateParams } from ".";
-import { TemplateComponent } from "../template-base.class";
-import { switchMap, map } from "rxjs/operators";
-import { Observable } from "rxjs";
-import { TemplateContentData } from "../template-data.class";
+import { Component, forwardRef } from '@angular/core';
+import { ModuleResultTemplateData, TemplateParams } from '.';
+import { TemplateComponent } from '../template-base.class';
+import { switchMap, map } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { TemplateContentData } from '../template-data.class';
 
 @Component({
-  selector: "app-module-result",
-  templateUrl: "./module-result.component.html",
-  styleUrls: ["./module-result.component.sass"],
+  selector: 'app-module-result',
+  templateUrl: './module-result.component.html',
+  styleUrls: ['./module-result.component.sass'],
   providers: [
     {
       provide: TemplateComponent,
@@ -18,13 +18,13 @@ import { TemplateContentData } from "../template-data.class";
 })
 export class ModuleResultComponent extends TemplateComponent {
   params = TemplateParams;
-  contentData: ModuleResultTemplateData["template_params_json"];
+  contentData: ModuleResultTemplateData['template_params_json'];
 
   moduleResultContent$: Observable<TemplateContentData>;
 
   init() {
     this.contentData = this.data.data
-      .template_params_json as ModuleResultTemplateData["template_params_json"];
+      .template_params_json as ModuleResultTemplateData['template_params_json'];
 
     const moduleID = Number(this.contentData.module);
     const moduleStepID = this.contentData.step_id
@@ -69,11 +69,11 @@ export class ModuleResultComponent extends TemplateComponent {
   }
 
   getDescription() {
-    return "Show a summary / result from another module";
+    return 'Show a summary / result from another module';
   }
 
   getName() {
-    return "Previous Module Result";
+    return 'Previous Module Result';
   }
 
   hasInputs() {

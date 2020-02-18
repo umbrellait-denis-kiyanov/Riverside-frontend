@@ -1,18 +1,18 @@
-import { TemplateContentData } from "./template-data.class";
-import { AgeGenderTemplateData } from "./age-gender";
-import { NarrowDownData } from "./narrow-down";
-import { GenericTemplateData } from "./generic";
-import { BrainstormTemplateData } from "./brainstorm";
-import { NamePersonasTemplateData } from "./name_personas";
-import { PersonaBehaviorTemplateData } from "./persona_behavior";
-import { FeedbackSectionTemplateData } from "./feedback_section";
-import { QuestionImageTemplateData } from "./question-image";
-import { TemplateInput } from "src/app/common/interfaces/module.interface";
-import { SegmentCriteriaDefineTemplateData } from "./segment-criteria-define";
-import { SpreadsheetTemplateData } from "./spreadsheet";
-import { PreRequisiteModuleTemplateData } from "./pre-requisite-modules";
-import { ModuleResultTemplateData } from "./module-result";
-import { CampaignCalendarTemplateData } from "./campaign-calendar-template";
+import { TemplateContentData } from './template-data.class';
+import { AgeGenderTemplateData } from './age-gender';
+import { NarrowDownData } from './narrow-down';
+import { GenericTemplateData } from './generic';
+import { BrainstormTemplateData } from './brainstorm';
+import { NamePersonasTemplateData } from './name_personas';
+import { PersonaBehaviorTemplateData } from './persona_behavior';
+import { FeedbackSectionTemplateData } from './feedback_section';
+import { QuestionImageTemplateData } from './question-image';
+import { TemplateInput } from 'src/app/common/interfaces/module.interface';
+import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define';
+import { SpreadsheetTemplateData } from './spreadsheet';
+import { PreRequisiteModuleTemplateData } from './pre-requisite-modules';
+import { ModuleResultTemplateData } from './module-result';
+import { CampaignCalendarTemplateData } from './campaign-calendar-template';
 
 export type TemplateContentDataType =
   | AgeGenderTemplateData

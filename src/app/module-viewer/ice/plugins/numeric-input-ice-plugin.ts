@@ -1,4 +1,4 @@
-import IceInputPlugin from "./ice-input-plugin";
+import IceInputPlugin from './ice-input-plugin';
 
 // only allow numeric input
 export class NumericInputPlugin extends IceInputPlugin {
@@ -24,7 +24,7 @@ export class NumericInputPlugin extends IceInputPlugin {
             node.textContent.match(/[^0-9]/)
         )
         .forEach(
-          node => (node.textContent = node.textContent.split(/[^0-9]/).join(""))
+          node => (node.textContent = node.textContent.split(/[^0-9]/).join(''))
         );
 
       this.ice.getCurrentRange().collapse();

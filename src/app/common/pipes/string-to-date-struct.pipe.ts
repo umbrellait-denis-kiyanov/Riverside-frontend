@@ -1,8 +1,8 @@
-import { Pipe, PipeTransform } from "@angular/core";
-import { NgbDateAdapter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { Pipe, PipeTransform } from '@angular/core';
+import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 @Pipe({
-  name: "stringToDateStruct"
+  name: 'stringToDateStruct'
 })
 export class StringToDateStructPipe implements PipeTransform {
   constructor(private ngbDateAdapter: NgbDateAdapter<string>) {}

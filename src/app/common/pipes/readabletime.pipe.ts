@@ -1,9 +1,9 @@
-import { Pipe, PipeTransform } from "@angular/core";
-import * as moment from "moment-timezone";
-import "moment-timezone";
+import { Pipe, PipeTransform } from '@angular/core';
+import * as moment from 'moment-timezone';
+import 'moment-timezone';
 
 @Pipe({
-  name: "readabletime"
+  name: 'readabletime'
 })
 export class ReadableTimePipe implements PipeTransform {
   noYearLocalFormat: string;
@@ -12,10 +12,10 @@ export class ReadableTimePipe implements PipeTransform {
     if (!this.noYearLocalFormat) {
       this.noYearLocalFormat = moment
         .localeData()
-        .longDateFormat("LL")
-        .replace(/[,\/-/.]*\s*Y+\s*/, "")
+        .longDateFormat('LL')
+        .replace(/[,\/-/.]*\s*Y+\s*/, '')
         .trim()
-        .replace(/ \[de\]$/, ""); // Spanish
+        .replace(/ \[de\]$/, ''); // Spanish
     }
 
     return this.noYearLocalFormat;
@@ -30,12 +30,12 @@ export class ReadableTimePipe implements PipeTransform {
 
     if (forceFormat) {
       return d.format(forceFormat);
-    } else if (d.isSame(new Date(), "day")) {
-      return d.format("LT");
-    } else if (d.isSame(new Date(), "year")) {
+    } else if (d.isSame(new Date(), 'day')) {
+      return d.format('LT');
+    } else if (d.isSame(new Date(), 'year')) {
       return d.format(this.getNoYearLocaleFormat());
     } else {
-      return d.format("LL");
+      return d.format('LL');
     }
   }
 }

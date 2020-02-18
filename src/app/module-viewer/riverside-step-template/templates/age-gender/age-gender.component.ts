@@ -1,13 +1,13 @@
-import { Component, OnInit, forwardRef } from "@angular/core";
-import { PersonaInputs } from "../persona-ids.class";
-import { TemplateComponent } from "../template-base.class";
-import { AgeGenderTemplateData } from ".";
-import txt from "!!raw-loader!./index.ts";
+import { Component, OnInit, forwardRef } from '@angular/core';
+import { PersonaInputs } from '../persona-ids.class';
+import { TemplateComponent } from '../template-base.class';
+import { AgeGenderTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
-  selector: "app-age-gender",
-  templateUrl: "./age-gender.component.html",
-  styleUrls: ["./age-gender.component.sass"],
+  selector: 'app-age-gender',
+  templateUrl: './age-gender.component.html',
+  styleUrls: ['./age-gender.component.sass'],
   providers: [
     {
       provide: TemplateComponent,
@@ -17,40 +17,40 @@ import txt from "!!raw-loader!./index.ts";
 })
 export class AgeGenderComponent extends TemplateComponent implements OnInit {
   inputIds: PersonaInputs;
-  contentData: AgeGenderTemplateData["template_params_json"];
+  contentData: AgeGenderTemplateData['template_params_json'];
   params = txt;
   traits = [
     {
-      id: "age",
-      title: "Age"
+      id: 'age',
+      title: 'Age'
     },
     {
-      id: "perc_male",
-      title: "% Male",
+      id: 'perc_male',
+      title: '% Male',
       numeric: true
     },
     {
-      id: "perc_female",
-      title: "% Female",
+      id: 'perc_female',
+      title: '% Female',
       numeric: true
     },
     {
-      id: "education",
-      title: "Typical education"
+      id: 'education',
+      title: 'Typical education'
     }
   ];
 
   getDescription() {
-    return "";
+    return '';
   }
 
   getName() {
-    return "Age & Gender";
+    return 'Age & Gender';
   }
 
   protected init() {
     this.contentData = this.data.data
-      .template_params_json as AgeGenderTemplateData["template_params_json"];
+      .template_params_json as AgeGenderTemplateData['template_params_json'];
     this.initIds();
   }
 
@@ -59,7 +59,7 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
       buyerPersonasList$: this.buyerPersonasList$,
       previousSteps: {
         title: {
-          prefix: "persona"
+          prefix: 'persona'
         },
         ...this.traitInputs()
       }
@@ -69,7 +69,7 @@ export class AgeGenderComponent extends TemplateComponent implements OnInit {
   traitInputs() {
     return this.traits.reduce(
       (traitInputs, trait) =>
-        (traitInputs[trait.id] = { prefix: "persona_" + trait.id }),
+        (traitInputs[trait.id] = { prefix: 'persona_' + trait.id }),
       {}
     );
   }

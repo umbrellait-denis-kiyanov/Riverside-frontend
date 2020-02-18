@@ -1,4 +1,4 @@
-import IceInputPlugin from "./ice-input-plugin";
+import IceInputPlugin from './ice-input-plugin';
 
 // disallow typing or pasting in the middle of a range of deleted text
 // automatically start a new range after the deleted text instead
@@ -12,7 +12,7 @@ export class PreventTypeDeletedRangePlugin extends IceInputPlugin {
   }
 
   public addEventListeners(element: HTMLElement) {
-    element.addEventListener("paste", e => {
+    element.addEventListener('paste', e => {
       if (!this.isCurrentRangeEditable()) {
         this.createNewRange();
       }
@@ -24,7 +24,7 @@ export class PreventTypeDeletedRangePlugin extends IceInputPlugin {
 
     const delElement = range.commonAncestorContainer.parentElement;
     const newRange = this.ice.selection.createRange();
-    const placeholder = document.createElement("div");
+    const placeholder = document.createElement('div');
 
     // insert placeholder before or after deleted text depending on cursor position
     delElement.parentNode.insertBefore(
@@ -39,7 +39,7 @@ export class PreventTypeDeletedRangePlugin extends IceInputPlugin {
   private isCurrentRangeEditable() {
     const range = this.ice.getCurrentRange();
     return !range.startContainer.parentElement.className
-      .split(" ")
-      .includes("del");
+      .split(' ')
+      .includes('del');
   }
 }

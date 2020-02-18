@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, OnDestroy } from "@angular/core";
-import { interval, Subscription } from "rxjs";
-import { NgbActiveModal, NgbModalRef } from "@ng-bootstrap/ng-bootstrap";
+import { Component, OnInit, Input, OnDestroy } from '@angular/core';
+import { interval, Subscription } from 'rxjs';
+import { NgbActiveModal, NgbModalRef } from '@ng-bootstrap/ng-bootstrap';
 @Component({
-  selector: "app-session-expiration-modal",
-  templateUrl: "./session-expiration-modal.component.html",
-  styleUrls: ["./session-expiration-modal.component.sass"]
+  selector: 'app-session-expiration-modal',
+  templateUrl: './session-expiration-modal.component.html',
+  styleUrls: ['./session-expiration-modal.component.sass']
 })
 export class SessionExpirationModalComponent implements OnInit, OnDestroy {
   @Input() timer: Date;

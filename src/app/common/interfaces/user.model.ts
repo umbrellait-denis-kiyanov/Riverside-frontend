@@ -1,13 +1,13 @@
-import BaseModel from "./base.model";
+import BaseModel from './base.model';
 
 class User extends BaseModel {
-  name: string = "";
-  fname: string = "";
-  lname: string = "";
-  email: string = "";
-  abbreviation: string = "";
-  id: string = "";
-  profile_picture: string = "";
+  name: string = '';
+  fname: string = '';
+  lname: string = '';
+  email: string = '';
+  abbreviation: string = '';
+  id: string = '';
+  profile_picture: string = '';
   permissions = {
     riversideRMCFDashboard: false,
     riversideSalesDashboard: false,

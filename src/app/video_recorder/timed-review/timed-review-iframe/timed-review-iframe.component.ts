@@ -6,18 +6,18 @@ import {
   NgZone,
   OnDestroy,
   Output
-} from "@angular/core";
+} from '@angular/core';
 
-const EVENT_TYPE = "iframe_event";
+const EVENT_TYPE = 'iframe_event';
 const EVENTS = {
-  END: "end"
+  END: 'end'
 };
 let alreadyBound = false;
 
 @Component({
-  selector: "timed-review-iframe",
-  templateUrl: "./timed-review-iframe.component.html",
-  styleUrls: ["./timed-review-iframe.component.sass"]
+  selector: 'timed-review-iframe',
+  templateUrl: './timed-review-iframe.component.html',
+  styleUrls: ['./timed-review-iframe.component.sass']
 })
 export class TimedReviewIframeComponent implements AfterViewInit, OnDestroy {
   @Input() iframe: { url: string };
@@ -29,7 +29,7 @@ export class TimedReviewIframeComponent implements AfterViewInit, OnDestroy {
     !alreadyBound &&
       this.zone.runOutsideAngular(() => {
         window.addEventListener(
-          "message",
+          'message',
           this.handleMessage.bind(this),
           false
         );
@@ -38,7 +38,7 @@ export class TimedReviewIframeComponent implements AfterViewInit, OnDestroy {
   }
 
   ngOnDestroy() {
-    window.removeEventListener("message", this.handleMessage.bind(this), false);
+    window.removeEventListener('message', this.handleMessage.bind(this), false);
     alreadyBound = false;
   }
 

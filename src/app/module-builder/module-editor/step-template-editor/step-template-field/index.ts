@@ -1,13 +1,13 @@
 export type TemplateField = [
   string,
   (
-    | "json"
-    | "text-input"
-    | "string"
-    | "resource"
-    | "select"
-    | "number"
-    | "Module"
+    | 'json'
+    | 'text-input'
+    | 'string'
+    | 'resource'
+    | 'select'
+    | 'number'
+    | 'Module'
     | Array<string>
   )
 ];

@@ -1,15 +1,15 @@
-import { Component, Input, OnChanges } from "@angular/core";
-import { TemplateComponent } from "../../template-base.class";
-import { ModuleService } from "src/app/common/services/module.service";
-import { SegmentCriteria } from "..";
+import { Component, Input, OnChanges } from '@angular/core';
+import { TemplateComponent } from '../../template-base.class';
+import { ModuleService } from 'src/app/common/services/module.service';
+import { SegmentCriteria } from '..';
 
 @Component({
-  selector: "app-icp-input",
-  templateUrl: "./icp-input.component.html",
-  styleUrls: ["./icp-input.component.sass"]
+  selector: 'app-icp-input',
+  templateUrl: './icp-input.component.html',
+  styleUrls: ['./icp-input.component.sass']
 })
 export class IcpInputComponent implements OnChanges {
-  @Input() mode: "criteria" | "weight" | "grade";
+  @Input() mode: 'criteria' | 'weight' | 'grade';
   @Input() inputPrefix;
   @Input() criterias;
   @Input() inputIndex: number;
@@ -38,7 +38,7 @@ export class IcpInputComponent implements OnChanges {
   }
 
   initGrades() {
-    const inp = this.template.getInput(this.inputPrefix, this.inputIndex, "");
+    const inp = this.template.getInput(this.inputPrefix, this.inputIndex, '');
     this.selectedGrades = inp && inp.content ? JSON.parse(inp.content) : {};
 
     // in case the grade weight has been changed, make sure previously set values don't exceed the new threshold
@@ -61,7 +61,7 @@ export class IcpInputComponent implements OnChanges {
       const input = this.template.getInput(
         this.inputPrefix,
         this.inputIndex,
-        ""
+        ''
       );
 
       input.content = JSON.stringify(this.selectedGrades);
@@ -92,7 +92,7 @@ export class IcpInputComponent implements OnChanges {
   }
 
   getEmptyCriteria() {
-    const emptyDef = JSON.stringify({ content: "", comments_json: "" });
+    const emptyDef = JSON.stringify({ content: '', comments_json: '' });
     return {
       name: JSON.parse(emptyDef),
       description: JSON.parse(emptyDef),
@@ -124,7 +124,7 @@ export class IcpInputComponent implements OnChanges {
   }
 
   syncCriteria(validateWeight = false, onlyCalculate = false) {
-    const input = this.template.getInput("criteria", this.inputIndex);
+    const input = this.template.getInput('criteria', this.inputIndex);
 
     this.calcWeightSum = this.pointsSum(this.criterias);
     this.calcAllWeightsSelected = this.allWeightsSelected(this.criterias);
@@ -155,9 +155,9 @@ export class IcpInputComponent implements OnChanges {
   }
 
   validate() {
-    if ("criteria" === this.mode) {
+    if ('criteria' === this.mode) {
       return this.criterias.reduce((isValid, criteria) => {
-        ["name", "description"].forEach(field => {
+        ['name', 'description'].forEach(field => {
           this.template.decorateInput(criteria[field]);
           if (!this.template.validateInput(criteria[field])) {
             isValid = false;
@@ -165,14 +165,14 @@ export class IcpInputComponent implements OnChanges {
         });
         return isValid;
       }, true);
-    } else if ("weight" === this.mode) {
+    } else if ('weight' === this.mode) {
       return (
         this.criterias.reduce((isValid, criteria) => {
           this.template.decorateInput(criteria);
 
           if (criteria.weight <= 0) {
             isValid = false;
-            criteria.error.next("Select a weight for this criteria");
+            criteria.error.next('Select a weight for this criteria');
           } else {
             criteria.error.next(null);
           }
@@ -182,7 +182,7 @@ export class IcpInputComponent implements OnChanges {
         this.allWeightsSelected(this.criterias) &&
         this.pointsSum(this.criterias) === 100
       );
-    } else if ("grade" === this.mode) {
+    } else if ('grade' === this.mode) {
       return this.allGradesSelected();
     }
 

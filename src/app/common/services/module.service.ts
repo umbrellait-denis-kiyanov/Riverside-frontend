@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   Module,
   Step,
@@ -8,9 +8,9 @@ import {
   ModuleStatus,
   SpreadsheetResource,
   ModuleCategory
-} from "../interfaces/module.interface";
-import { HttpClient, HttpResponse } from "@angular/common/http";
-import { Observable, throwError, BehaviorSubject, Subject } from "rxjs";
+} from '../interfaces/module.interface';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable, throwError, BehaviorSubject, Subject } from 'rxjs';
 import {
   shareReplay,
   switchMap,
@@ -21,12 +21,12 @@ import {
   share,
   take,
   tap
-} from "rxjs/operators";
-import { environment } from "../../../environments/environment";
+} from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class ModuleService {
-  baseUrl = environment.apiRoot + "/api/modules";
+  baseUrl = environment.apiRoot + '/api/modules';
 
   organizations$: Observable<Organization[]>;
 
@@ -43,7 +43,7 @@ export class ModuleService {
 
   getModuleConfig(id: number): Observable<Module> {
     if (!Number(id)) {
-      throw throwError("Invalid ID");
+      throw throwError('Invalid ID');
     }
 
     if (!this.moduleCache[id]) {
@@ -117,7 +117,7 @@ export class ModuleService {
   getCategories(orgId: number): Observable<HttpResponse<ModuleCategory[]>> {
     return this.httpClient.get<ModuleCategory[]>(
       `${this.baseUrl}/categories/org/${orgId}`,
-      { observe: "response" }
+      { observe: 'response' }
     );
   }
 
@@ -129,7 +129,7 @@ export class ModuleService {
     return this.httpClient
       .post<ModuleStatus>(
         `${this.baseUrl}/${module.id}/org/${orgId}/` +
-          (isActivated ? "activate" : "deactivate"),
+          (isActivated ? 'activate' : 'deactivate'),
         {}
       )
       .pipe(tap(_ => this.moduleChanged$.next(true)));
@@ -170,7 +170,7 @@ export class ModuleService {
 
   saveInput(input: TemplateInput): Observable<TemplateInput> {
     if (!input) {
-      console.error("No input data provided");
+      console.error('No input data provided');
       return;
     }
 
@@ -254,13 +254,13 @@ export class ModuleService {
   ): Observable<null> {
     return this.httpClient.post<null>(
       this.baseUrl +
-        "/" +
+        '/' +
         moduleId +
-        "/org/" +
+        '/org/' +
         orgId +
-        "/step/" +
+        '/step/' +
         stepId +
-        "/done",
+        '/done',
       { is_checked }
     );
   }
@@ -274,13 +274,13 @@ export class ModuleService {
   ): Observable<number[]> {
     return this.httpClient.post<number[]>(
       this.baseUrl +
-        "/" +
+        '/' +
         moduleId +
-        "/org/" +
+        '/org/' +
         orgId +
-        "/step/" +
+        '/step/' +
         stepId +
-        "/done",
+        '/done',
       { is_approved, is_section, org_id: orgId }
     );
   }

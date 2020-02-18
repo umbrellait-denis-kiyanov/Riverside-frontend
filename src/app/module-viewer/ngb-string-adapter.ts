@@ -1,4 +1,4 @@
-import { NgbDateAdapter, NgbDateStruct } from "@ng-bootstrap/ng-bootstrap";
+import { NgbDateAdapter, NgbDateStruct } from '@ng-bootstrap/ng-bootstrap';
 
 export class NgbStringAdapter extends NgbDateAdapter<string> {
   fromModel(date: string): NgbDateStruct {
@@ -14,10 +14,10 @@ export class NgbStringAdapter extends NgbDateAdapter<string> {
   toModel(date: NgbDateStruct): string {
     return date
       ? date.year.toString() +
-          "-" +
-          ("0" + date.month.toString()).substr(-2) +
-          "-" +
-          ("0" + date.day.toString()).substr(-2)
+          '-' +
+          ('0' + date.month.toString()).substr(-2) +
+          '-' +
+          ('0' + date.day.toString()).substr(-2)
       : null;
   }
 }

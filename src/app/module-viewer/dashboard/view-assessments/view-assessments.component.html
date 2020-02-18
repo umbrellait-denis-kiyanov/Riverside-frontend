@@ -44,7 +44,7 @@
               >
                 <span>{{
                   session.groups[group.id]?.score === null
-                    ? "N/A"
+                    ? 'N/A'
                     : session.groups[group.id]?.score
                 }}</span>
               </td>
@@ -59,7 +59,7 @@
                 [style.color]="colors[i]"
                 *ngFor="let session of sessions; index as i"
               >
-                <span>{{ session.score | number: "1.1-1" }}</span>
+                <span>{{ session.score | number: '1.1-1' }}</span>
               </td>
             </tr>
           </tfoot>

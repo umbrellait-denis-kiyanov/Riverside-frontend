@@ -1,19 +1,19 @@
-import * as ts from "typescript";
-import { Rule, Tree, SchematicsException } from "@angular-devkit/schematics";
-import { strings } from "@angular-devkit/core";
+import * as ts from 'typescript';
+import { Rule, Tree, SchematicsException } from '@angular-devkit/schematics';
+import { strings } from '@angular-devkit/core';
 import {
   ModuleOptions,
   buildRelativePath
-} from "@schematics/angular/utility/find-module";
-import { InsertChange } from "@schematics/angular/utility/change";
+} from '@schematics/angular/utility/find-module';
+import { InsertChange } from '@schematics/angular/utility/change';
 import {
   addEntryComponentToModule,
   addDeclarationToModule,
   insertImport
-} from "@schematics/angular/utility/ast-utils";
+} from '@schematics/angular/utility/ast-utils';
 
-import { TemplateOptions } from "../riverside-template/schema";
-import { AddToModuleContext } from "./add-to-module-context";
+import { TemplateOptions } from '../riverside-template/schema';
+import { AddToModuleContext } from './add-to-module-context';
 
 const { dasherize, classify, underscore } = strings;
 const stringUtils = { dasherize, classify, underscore };
@@ -44,7 +44,7 @@ function createAddToModuleContext(
   if (text === null) {
     throw new SchematicsException(`File ${options.module} does not exist!`);
   }
-  const sourceText = text.toString("utf-8");
+  const sourceText = text.toString('utf-8');
   result.source = ts.createSourceFile(
     options.module,
     sourceText,
@@ -74,7 +74,7 @@ function createAddToIndexContext(
     throw new SchematicsException(`File ${indexPath} does not exist!`);
   }
 
-  const sourceText = text.toString("utf-8");
+  const sourceText = text.toString('utf-8');
 
   result.source = ts.createSourceFile(
     indexPath,
@@ -92,7 +92,7 @@ function createAddToIndexContext(
 
 function addDeclarations(host: Tree, options: ModuleOptions) {
   const context = createAddToModuleContext(host, options);
-  const modulePath = options.module || "";
+  const modulePath = options.module || '';
 
   const declarationChanges = addDeclarationToModule(
     context.source,
@@ -156,8 +156,8 @@ function getComponentPath(options: TemplateOptions) {
   return (
     `${options.path}/` +
     stringUtils.dasherize(options.name) +
-    "/" +
+    '/' +
     stringUtils.dasherize(options.name) +
-    ".component"
+    '.component'
   );
 }

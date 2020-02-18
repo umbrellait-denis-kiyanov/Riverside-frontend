@@ -5,16 +5,16 @@ import {
   ViewChild,
   Input,
   ComponentFactoryResolver
-} from "@angular/core";
-import { RTemplateDirective } from "./riverside-step-template-host.directive";
-import { Templates } from "./templates";
-import { TemplateContentData } from "./templates/template-data.class";
-import { TemplateComponent } from "./templates/template-base.class";
+} from '@angular/core';
+import { RTemplateDirective } from './riverside-step-template-host.directive';
+import { Templates } from './templates';
+import { TemplateContentData } from './templates/template-data.class';
+import { TemplateComponent } from './templates/template-base.class';
 
 @Component({
-  selector: "riverside-step-template",
-  templateUrl: "./riverside-step-template.component.html",
-  styleUrls: ["./riverside-step-template.component.sass"]
+  selector: 'riverside-step-template',
+  templateUrl: './riverside-step-template.component.html',
+  styleUrls: ['./riverside-step-template.component.sass']
 })
 export class RiversideStepTemplateComponent implements OnChanges {
   templates = Templates;

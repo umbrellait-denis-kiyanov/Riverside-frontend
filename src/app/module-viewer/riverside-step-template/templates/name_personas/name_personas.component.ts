@@ -1,14 +1,14 @@
-import { Component, forwardRef } from "@angular/core";
+import { Component, forwardRef } from '@angular/core';
 
-import { TemplateComponent } from "../template-base.class";
-import { NamePersonasTemplateData } from ".";
-import txt from "!!raw-loader!./index.ts";
-import BuyerPersonasConfigTemplateComponent from "../buyer-personas-config-template-component";
+import { TemplateComponent } from '../template-base.class';
+import { NamePersonasTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
+import BuyerPersonasConfigTemplateComponent from '../buyer-personas-config-template-component';
 
 @Component({
-  selector: "app-name_personas",
-  templateUrl: "./name_personas.component.html",
-  styleUrls: ["./name_personas.component.sass"],
+  selector: 'app-name_personas',
+  templateUrl: './name_personas.component.html',
+  styleUrls: ['./name_personas.component.sass'],
   providers: [
     {
       provide: TemplateComponent,
@@ -22,14 +22,14 @@ export class NamePersonasTemplateComponent extends BuyerPersonasConfigTemplateCo
   };
   params = txt;
 
-  contentData: NamePersonasTemplateData["template_params_json"];
+  contentData: NamePersonasTemplateData['template_params_json'];
 
   getDescription() {
-    return "";
+    return '';
   }
 
   getName() {
-    return "Name Personas";
+    return 'Name Personas';
   }
 
   protected init() {
@@ -46,10 +46,10 @@ export class NamePersonasTemplateComponent extends BuyerPersonasConfigTemplateCo
       .filter(i => i);
 
     this.inputIds = {
-      personas: personas.map(persona => persona.split("_").join("_name_"))
+      personas: personas.map(persona => persona.split('_').join('_name_'))
     };
 
     this.contentData = this.data.data
-      .template_params_json as NamePersonasTemplateData["template_params_json"];
+      .template_params_json as NamePersonasTemplateData['template_params_json'];
   }
 }

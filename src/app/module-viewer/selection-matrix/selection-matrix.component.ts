@@ -1,11 +1,11 @@
-import { Component, Input } from "@angular/core";
-import { TemplateComponent } from "../riverside-step-template/templates/template-base.class";
-import { BuyerPersona } from "../../common/interfaces/buyer-persona.interface";
+import { Component, Input } from '@angular/core';
+import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
+import { BuyerPersona } from '../../common/interfaces/buyer-persona.interface';
 
 @Component({
-  selector: "app-selection-matrix",
-  templateUrl: "./selection-matrix.component.html",
-  styleUrls: ["./selection-matrix.component.sass"]
+  selector: 'app-selection-matrix',
+  templateUrl: './selection-matrix.component.html',
+  styleUrls: ['./selection-matrix.component.sass']
 })
 export class SelectionMatrixComponent {
   @Input()
@@ -29,7 +29,7 @@ export class SelectionMatrixComponent {
   constructor(private template: TemplateComponent) {}
 
   toggleSelection(personaIdx, option, $event) {
-    if ($event.target.tagName === "INPUT") {
+    if ($event.target.tagName === 'INPUT') {
       return;
     }
 

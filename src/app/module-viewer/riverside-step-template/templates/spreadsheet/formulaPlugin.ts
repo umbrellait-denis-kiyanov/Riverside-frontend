@@ -1,7 +1,7 @@
-import * as Handsontable from "handsontable";
-import * as HotFormula from "hot-formula-parser";
-import * as Numbro from "numbro";
-import { HotNumericFormat } from "./spreadsheet.component";
+import * as Handsontable from 'handsontable';
+import * as HotFormula from 'hot-formula-parser';
+import * as Numbro from 'numbro';
+import { HotNumericFormat } from './spreadsheet.component';
 
 const parser = new HotFormula.Parser();
 
@@ -10,10 +10,10 @@ type TableData = (string | number)[][];
 function replaceSUMRangesWithAdditions(valuesWithFormulas: TableData) {
   return valuesWithFormulas.map(row =>
     row.map((cell: string) => {
-      if (typeof cell === "string") {
+      if (typeof cell === 'string') {
         const matches = cell.match(/SUM\([A-Z][0-9]+\:[A-Z][0-9]+\)/g) || [];
         matches.forEach(sum => {
-          const [from, to] = sum.slice(4, -1).split(":");
+          const [from, to] = sum.slice(4, -1).split(':');
 
           const idxFrom = Number(from.substr(1));
           const idxTo = Number(to.substr(1));
@@ -31,7 +31,7 @@ function replaceSUMRangesWithAdditions(valuesWithFormulas: TableData) {
             []
           );
 
-          cell = cell.split(sum).join(range.join("+"));
+          cell = cell.split(sum).join(range.join('+'));
         });
       }
 
@@ -43,23 +43,23 @@ function replaceSUMRangesWithAdditions(valuesWithFormulas: TableData) {
 function applyBasicCalculations(valuesWithFormulas: TableData) {
   function getValue(cellAddress) {
     return valuesWithFormulas[Number(cellAddress.substr(1)) - 1][
-      cellAddress.charCodeAt(0) - "A".charCodeAt(0)
+      cellAddress.charCodeAt(0) - 'A'.charCodeAt(0)
     ];
   }
 
   return valuesWithFormulas.map(row =>
     row.map(cell => {
-      if (typeof cell === "string") {
-        if (cell[0] === "=") {
+      if (typeof cell === 'string') {
+        if (cell[0] === '=') {
           (cell.match(/[A-Z][0-9]+/g) || []).forEach(ref => {
             const refVal = getValue(ref);
             if (
-              typeof refVal === "number" ||
-              "" === refVal ||
+              typeof refVal === 'number' ||
+              '' === refVal ||
               null === refVal
             ) {
               cell = (cell as string)
-                .split(new RegExp(ref + "(?![0-9])", "g"))
+                .split(new RegExp(ref + '(?![0-9])', 'g'))
                 .join(String(Number(refVal)));
             }
           });
@@ -70,7 +70,7 @@ function applyBasicCalculations(valuesWithFormulas: TableData) {
           }
         }
 
-        if (typeof cell === "string" && !isNaN(parseFloat(cell))) {
+        if (typeof cell === 'string' && !isNaN(parseFloat(cell))) {
           cell = parseFloat(cell);
         }
       }
@@ -85,7 +85,7 @@ function calculateValues(valuesWithFormulas) {
   let values = replaceSUMRangesWithAdditions(valuesWithFormulas) as TableData;
 
   // repeatedly apply cell calculations until all cell references have been replaced by calculated values
-  let previousResult = "";
+  let previousResult = '';
   while (JSON.stringify(values) !== previousResult) {
     previousResult = JSON.stringify(values);
     values = applyBasicCalculations(values);
@@ -121,19 +121,19 @@ FormulaPlugin.prototype.isEnabled = () => true;
 FormulaPlugin.prototype.enablePlugin = function() {
   let values: TableData;
 
-  this.addHook("beforeRender", (isForced: boolean, skipRender: object) => {
+  this.addHook('beforeRender', (isForced: boolean, skipRender: object) => {
     values = calculateValues(this.hot.getData());
   });
 
   // returns a calculated value for validation (instead of formula)
   this.addHook(
-    "beforeValidate",
+    'beforeValidate',
     (value: any, row: number, prop: string | number, source?: string) =>
       values[row][prop]
   );
 
   this.addHook(
-    "beforeValueRender",
+    'beforeValueRender',
     (
       value: any,
       cellProperties: {
@@ -142,13 +142,13 @@ FormulaPlugin.prototype.enablePlugin = function() {
         numericFormat: HotNumericFormat;
       }
     ) => {
-      if (!value || value[0] !== "=") {
+      if (!value || value[0] !== '=') {
         return value;
       }
 
       const calculated = values[cellProperties.row][cellProperties.col];
 
-      if (typeof calculated === "string") {
+      if (typeof calculated === 'string') {
         return calculated;
       }
 
@@ -167,4 +167,4 @@ FormulaPlugin.prototype.enablePlugin = function() {
 };
 
 // @ts-ignore
-Handsontable.plugins.registerPlugin("formulaPlugin", FormulaPlugin);
+Handsontable.plugins.registerPlugin('formulaPlugin', FormulaPlugin);

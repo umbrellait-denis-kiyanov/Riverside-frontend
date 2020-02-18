@@ -52,9 +52,7 @@
       <ng-template #review_pending>
         <div *ngIf="session.isApproved">
           This assessment has been approved.<br /><br />Please complete the
-          {{
-            activeType.name == "Marketing" ? "Sales" : "Marketing"
-          }}
+          {{ activeType.name == 'Marketing' ? 'Sales' : 'Marketing' }}
           assessment before retaking the {{ activeType.name }} assessment.
         </div>
         <div *ngIf="!session.isApproved">
@@ -92,7 +90,7 @@
         <td class="group-name">{{ group.shortName }}</td>
         <td class="score">
           {{
-            orgGroups[group.id]?.isNA ? "N/A" : orgGroups[group.id]?.score || 0
+            orgGroups[group.id]?.isNA ? 'N/A' : orgGroups[group.id]?.score || 0
           }}
         </td>
       </tr>

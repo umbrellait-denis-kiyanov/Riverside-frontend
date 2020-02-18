@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { ActivatedRoute, Router } from "@angular/router";
-import { Subscription, combineLatest } from "rxjs";
-import { Module } from "src/app/common/interfaces/module.interface";
-import { LeftMenuService } from "src/app/common/services/left-menu.service";
-import { map, filter, switchMap, take, catchError } from "rxjs/operators";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { ActivatedRoute, Router } from '@angular/router';
+import { Subscription, combineLatest } from 'rxjs';
+import { Module } from 'src/app/common/interfaces/module.interface';
+import { LeftMenuService } from 'src/app/common/services/left-menu.service';
+import { map, filter, switchMap, take, catchError } from 'rxjs/operators';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 @Component({
-  templateUrl: "./main.component.html",
-  styleUrls: ["./main.component.sass"]
+  templateUrl: './main.component.html',
+  styleUrls: ['./main.component.sass']
 })
 export class MainComponent implements OnInit, OnDestroy {
   ready = true;
@@ -49,15 +49,15 @@ export class MainComponent implements OnInit, OnDestroy {
     )
       .pipe(
         filter(
-          f => !this.route.children.find(route => route.outlet === "primary")
+          f => !this.route.children.find(route => route.outlet === 'primary')
         ),
         switchMap(([org, mod]) =>
           this.navService.getModuleService().getOrgModule(mod, org)
         ),
         catchError(err => {
-          if (err.error.code === "MODULE_DISABLED") {
+          if (err.error.code === 'MODULE_DISABLED') {
             this.router.navigate([
-              "dashboard",
+              'dashboard',
               this.navService.lastOrganization.current
             ]);
           }

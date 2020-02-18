@@ -1,16 +1,16 @@
-import { Component, OnInit, Input, ViewChild } from "@angular/core";
+import { Component, OnInit, Input, ViewChild } from '@angular/core';
 import {
   Module,
   Organization
-} from "src/app/common/interfaces/module.interface";
-import { ModuleService } from "src/app/common/services/module.service";
-import { NgbDateStruct, NgbInputDatepicker } from "@ng-bootstrap/ng-bootstrap";
+} from 'src/app/common/interfaces/module.interface';
+import { ModuleService } from 'src/app/common/services/module.service';
+import { NgbDateStruct, NgbInputDatepicker } from '@ng-bootstrap/ng-bootstrap';
 
 @Component({
-  selector: "app-due-date",
-  exportAs: "dueDate",
-  templateUrl: "./due-date.component.html",
-  styleUrls: ["./due-date.component.sass"]
+  selector: 'app-due-date',
+  exportAs: 'dueDate',
+  templateUrl: './due-date.component.html',
+  styleUrls: ['./due-date.component.sass']
 })
 export class DueDateComponent implements OnInit {
   @Input()
@@ -19,7 +19,7 @@ export class DueDateComponent implements OnInit {
   @Input()
   organization: Organization;
 
-  @ViewChild("d") ngbDatepicker: NgbInputDatepicker;
+  @ViewChild('d') ngbDatepicker: NgbInputDatepicker;
 
   minDate: NgbDateStruct;
 

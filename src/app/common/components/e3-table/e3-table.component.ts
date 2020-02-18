@@ -1,18 +1,18 @@
-import { Component, Input, OnInit } from "@angular/core";
+import { Component, Input, OnInit } from '@angular/core';
 import {
   E3TableHeader,
   E3TableData,
   E3TableHeaderCol,
   E3TableDataRow,
   E3TableCell
-} from ".";
-import { Observable, BehaviorSubject, combineLatest } from "rxjs";
-import { map } from "rxjs/operators";
+} from '.';
+import { Observable, BehaviorSubject, combineLatest } from 'rxjs';
+import { map } from 'rxjs/operators';
 
 @Component({
-  selector: "e3-table",
-  templateUrl: "./e3-table.component.html",
-  styleUrls: ["./e3-table.component.sass"]
+  selector: 'e3-table',
+  templateUrl: './e3-table.component.html',
+  styleUrls: ['./e3-table.component.sass']
 })
 export class E3TableComponent implements OnInit {
   @Input() header: E3TableHeader;
@@ -94,8 +94,8 @@ class SortBy {
 
   sort(data: E3TableData) {
     return data.sort((a, b) => {
-      const aString = a[this.id] ? a[this.id].toString() : "";
-      const bString = b[this.id] ? b[this.id].toString() : "";
+      const aString = a[this.id] ? a[this.id].toString() : '';
+      const bString = b[this.id] ? b[this.id].toString() : '';
       return aString.localeCompare(bString.toString()) * this.orderMult;
     });
   }

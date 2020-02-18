@@ -1,24 +1,24 @@
-import { Component, OnInit } from "@angular/core";
-import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { Module } from "../../common/interfaces/module.interface";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
-import { InboxService } from "../inbox/inbox.service";
-import { Observable, Subscription } from "rxjs";
-import { take } from "rxjs/operators";
-import { Router } from "@angular/router";
-import Message from "../inbox/message.model";
+import { Component, OnInit } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Module } from '../../common/interfaces/module.interface';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { InboxService } from '../inbox/inbox.service';
+import { Observable, Subscription } from 'rxjs';
+import { take } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import Message from '../inbox/message.model';
 
 @Component({
-  selector: "app-request-feedback",
-  templateUrl: "./request-feedback.component.html",
-  styleUrls: ["./request-feedback.component.sass"]
+  selector: 'app-request-feedback',
+  templateUrl: './request-feedback.component.html',
+  styleUrls: ['./request-feedback.component.sass']
 })
 export class RequestFeedbackComponent implements OnInit {
   module$: Observable<Module>;
   assessmentSessionId: number;
   submitting: Subscription;
-  message = "";
-  currentTab = "text";
+  message = '';
+  currentTab = 'text';
   isAssessmentPage = false;
 
   constructor(
@@ -30,7 +30,7 @@ export class RequestFeedbackComponent implements OnInit {
 
   ngOnInit() {
     this.module$ = this.navService.moduleDataReplay$;
-    if (this.router.url.includes("/assessment")) {
+    if (this.router.url.includes('/assessment')) {
       this.isAssessmentPage = true;
       this.navService.activeAssessmentSessionId$
         .pipe(take(1))

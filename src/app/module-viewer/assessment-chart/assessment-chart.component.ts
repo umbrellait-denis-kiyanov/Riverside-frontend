@@ -1,10 +1,10 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import { AssessmentChartSeries, AssessmentChartActiveEntries } from ".";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import { AssessmentChartSeries, AssessmentChartActiveEntries } from '.';
 
 @Component({
-  selector: "assessment-chart",
-  templateUrl: "./assessment-chart.component.html",
-  styleUrls: ["./assessment-chart.component.sass"]
+  selector: 'assessment-chart',
+  templateUrl: './assessment-chart.component.html',
+  styleUrls: ['./assessment-chart.component.sass']
 })
 export class AssessmentChartComponent implements OnInit {
   @Input() series: AssessmentChartSeries;
@@ -26,7 +26,7 @@ export class AssessmentChartComponent implements OnInit {
   fullLabels: { [key: number]: string } = {};
 
   colorScheme = {
-    domain: ["#999", "#58ad3f"]
+    domain: ['#999', '#58ad3f']
   };
 
   barCustomColors: { name: string; value: string }[] = [];
@@ -42,14 +42,14 @@ export class AssessmentChartComponent implements OnInit {
       this.labels[idx + 1] =
         group.label.length <= maxLen
           ? group.label
-          : group.label.substr(0, maxLen - 2) + "...";
+          : group.label.substr(0, maxLen - 2) + '...';
       this.fullLabels[idx + 1] = group.label;
 
       delete group.label;
 
       this.barCustomColors.push({
         name: (idx + 1).toString(),
-        value: group.value < 0 ? "#ff6666" : "#a9da9a"
+        value: group.value < 0 ? '#ff6666' : '#a9da9a'
       });
 
       this.xTicks = Array.from(
@@ -60,7 +60,7 @@ export class AssessmentChartComponent implements OnInit {
     });
 
     this.series.unshift({
-      name: "",
+      name: '',
       series: [
         { value: 0, name: -10 },
         { value: 0, name: this.series[0].series.length + 10 }
@@ -70,7 +70,7 @@ export class AssessmentChartComponent implements OnInit {
     this.seriesIndex = this.series.map(series => series.name);
 
     if (this.colors) {
-      this.colorScheme.domain = ["#999"].concat(this.colors);
+      this.colorScheme.domain = ['#999'].concat(this.colors);
     }
 
     this.colorScheme.domain = this.colorScheme.domain.slice(
@@ -78,7 +78,7 @@ export class AssessmentChartComponent implements OnInit {
       this.series.length
     );
 
-    this.xAxisTickFormatting = (idx: number) => this.labels[idx] || "";
+    this.xAxisTickFormatting = (idx: number) => this.labels[idx] || '';
 
     if (!this.activeEntries) {
       this.activeEntries = [];

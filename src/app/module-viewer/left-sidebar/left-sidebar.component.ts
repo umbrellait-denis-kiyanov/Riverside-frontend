@@ -4,22 +4,22 @@ import {
   ElementRef,
   Renderer2,
   OnDestroy
-} from "@angular/core";
-import { ActivatedRoute } from "@angular/router";
-import { menus } from "./menus";
-import { LeftMenuService } from "../../common/services/left-menu.service";
-import { UserService } from "../../common/services/user.service";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { InboxService } from "../inbox/inbox.service";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
-import { combineLatest, Subscription } from "rxjs";
-import { map } from "rxjs/operators";
-import { RequestFeedbackComponent } from "../request-feedback/request-feedback.component";
+} from '@angular/core';
+import { ActivatedRoute } from '@angular/router';
+import { menus } from './menus';
+import { LeftMenuService } from '../../common/services/left-menu.service';
+import { UserService } from '../../common/services/user.service';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { InboxService } from '../inbox/inbox.service';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { combineLatest, Subscription } from 'rxjs';
+import { map } from 'rxjs/operators';
+import { RequestFeedbackComponent } from '../request-feedback/request-feedback.component';
 
 @Component({
-  selector: "left-sidebar",
-  templateUrl: "./left-sidebar.component.html",
-  styleUrls: ["./left-sidebar.component.sass"]
+  selector: 'left-sidebar',
+  templateUrl: './left-sidebar.component.html',
+  styleUrls: ['./left-sidebar.component.sass']
 })
 export class LeftSidebarComponent implements OnInit, OnDestroy {
   menus = menus;
@@ -44,8 +44,8 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
     this.leftMenuService.onExpand.subscribe(expand => {
       this.showMenu = !expand;
       expand
-        ? this.renderer.addClass(this.el.nativeElement, "expanded")
-        : this.renderer.removeClass(this.el.nativeElement, "expanded");
+        ? this.renderer.addClass(this.el.nativeElement, 'expanded')
+        : this.renderer.removeClass(this.el.nativeElement, 'expanded');
     });
 
     this.initialLoad();
@@ -99,7 +99,7 @@ export class LeftSidebarComponent implements OnInit, OnDestroy {
 
   inboxLoad() {
     this.inboxService.loadCounter().subscribe((res: { counter: number }) => {
-      const menu = this.menus.find(m => m.label === "INBOX");
+      const menu = this.menus.find(m => m.label === 'INBOX');
       if (menu) {
         menu.counter = Number(res.counter);
       }

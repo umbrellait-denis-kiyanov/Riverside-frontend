@@ -1,12 +1,12 @@
-import { Component, EventEmitter, Input, OnInit, Output } from "@angular/core";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { ModalAddCampaignComponent } from "./modal-add-campaign/modal-add-campaign.component";
-import { Campaign, CampaignGraph } from "./index";
-import * as moment from "moment";
-import { websafeColors } from "./websafe-colors";
-import { CampaignDeletionConfirmationComponent } from "./campaign-deletion-confirmation/campaign-deletion-confirmation";
-import { DomSanitizer } from "@angular/platform-browser";
-import { SafeStyle } from "@angular/platform-browser/src/security/dom_sanitization_service";
+import { Component, EventEmitter, Input, OnInit, Output } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { ModalAddCampaignComponent } from './modal-add-campaign/modal-add-campaign.component';
+import { Campaign, CampaignGraph } from './index';
+import * as moment from 'moment';
+import { websafeColors } from './websafe-colors';
+import { CampaignDeletionConfirmationComponent } from './campaign-deletion-confirmation/campaign-deletion-confirmation';
+import { DomSanitizer } from '@angular/platform-browser';
+import { SafeStyle } from '@angular/platform-browser/src/security/dom_sanitization_service';
 
 declare interface Month {
   name: string;
@@ -14,9 +14,9 @@ declare interface Month {
 }
 
 @Component({
-  selector: "campaign-calendar",
-  templateUrl: "./campaign-calendar.component.html",
-  styleUrls: ["./campaign-calendar.component.sass"]
+  selector: 'campaign-calendar',
+  templateUrl: './campaign-calendar.component.html',
+  styleUrls: ['./campaign-calendar.component.sass']
 })
 export class CampaignCalendarComponent implements OnInit {
   @Input() readonly = false;
@@ -29,7 +29,7 @@ export class CampaignCalendarComponent implements OnInit {
   years: Array<{ name: string; months: Month[] }> = [];
   colors = websafeColors.slice();
 
-  private readonly dateFormat = "YYYY-MM-DD";
+  private readonly dateFormat = 'YYYY-MM-DD';
 
   constructor(
     private modalService: NgbModal,
@@ -82,8 +82,8 @@ export class CampaignCalendarComponent implements OnInit {
   }
 
   private getMonthCellWidthPercent(month: string, year: string): number {
-    const daysInMonth = moment(month, "-MMM-").daysInMonth();
-    const daysInYear = this.getDaysInYear(moment(year, "YYYY"));
+    const daysInMonth = moment(month, '-MMM-').daysInMonth();
+    const daysInYear = this.getDaysInYear(moment(year, 'YYYY'));
     const fullWidthOfMonthsPercent = 72;
     return (daysInMonth * fullWidthOfMonthsPercent) / daysInYear;
   }
@@ -91,7 +91,7 @@ export class CampaignCalendarComponent implements OnInit {
   private getCampaignWidth(campaign: Campaign): SafeStyle {
     const start = moment(campaign.startDate, this.dateFormat);
     const end = moment(campaign.endDate, this.dateFormat);
-    const diff = end.diff(start, "day");
+    const diff = end.diff(start, 'day');
     const borderWidth =
       start.toObject().months < 6 ? 3 : start.toObject().months > 8 ? 1 : 2;
     return this.sanitizer.bypassSecurityTrustStyle(
@@ -122,13 +122,13 @@ export class CampaignCalendarComponent implements OnInit {
             const ranges = [];
             while (start.year() !== end.year()) {
               const lastDayOfYear = moment(start, this.dateFormat).endOf(
-                "year"
+                'year'
               );
               ranges.push([
                 start.format(this.dateFormat),
                 lastDayOfYear.format(this.dateFormat)
               ]);
-              start = lastDayOfYear.add(1, "day");
+              start = lastDayOfYear.add(1, 'day');
             }
             ranges.push([
               start.format(this.dateFormat),

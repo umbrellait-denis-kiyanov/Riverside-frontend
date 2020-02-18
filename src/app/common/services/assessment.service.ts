@@ -1,4 +1,4 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   AssessmentGroup,
   AssessmentQuestion,
@@ -7,15 +7,15 @@ import {
   AssessmentSession,
   ModuleScores,
   PendingSessions
-} from "../interfaces/assessment.interface";
-import { HttpClient, HttpResponse } from "@angular/common/http";
-import { Observable, BehaviorSubject } from "rxjs";
-import { tap, shareReplay, map, take } from "rxjs/operators";
-import { environment } from "../../../environments/environment";
+} from '../interfaces/assessment.interface';
+import { HttpClient, HttpResponse } from '@angular/common/http';
+import { Observable, BehaviorSubject } from 'rxjs';
+import { tap, shareReplay, map, take } from 'rxjs/operators';
+import { environment } from '../../../environments/environment';
 
 @Injectable()
 export class AssessmentService {
-  baseUrl = environment.apiRoot + "/api/assessment";
+  baseUrl = environment.apiRoot + '/api/assessment';
 
   groupsUpdated$ = new BehaviorSubject<number>(0);
 
@@ -67,7 +67,7 @@ export class AssessmentService {
   ): Observable<HttpResponse<AssessmentSession>> {
     return this.httpClient.get<AssessmentSession>(
       `${this.baseUrl}/session/${type.id}/org/${orgID}`,
-      { observe: "response" }
+      { observe: 'response' }
     );
   }
 
@@ -108,7 +108,7 @@ export class AssessmentService {
     type: AssessmentType,
     orgID: number,
     answer: boolean,
-    what?: undefined | "answers" | "notes"
+    what?: undefined | 'answers' | 'notes'
   ): Observable<{}> {
     return this.httpClient
       .post(
@@ -150,7 +150,7 @@ export class AssessmentService {
   ): Observable<HttpResponse<AssessmentOrgGroup>> {
     return this.httpClient.get<AssessmentOrgGroup>(
       `${this.baseUrl}/answers/${group.id}/type/${type.id}/org/${orgID}`,
-      { observe: "response" }
+      { observe: 'response' }
     );
   }
 

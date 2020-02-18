@@ -1,14 +1,14 @@
-import { Component, forwardRef } from "@angular/core";
+import { Component, forwardRef } from '@angular/core';
 
-import { TemplateComponent } from "../template-base.class";
-import { PersonaBehaviorTemplateData } from ".";
-import txt from "!!raw-loader!./index.ts";
-import { take } from "rxjs/operators";
+import { TemplateComponent } from '../template-base.class';
+import { PersonaBehaviorTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
+import { take } from 'rxjs/operators';
 
 @Component({
-  selector: "app-persona_behavior",
-  templateUrl: "./persona_behavior.component.html",
-  styleUrls: ["./persona_behavior.component.sass"],
+  selector: 'app-persona_behavior',
+  templateUrl: './persona_behavior.component.html',
+  styleUrls: ['./persona_behavior.component.sass'],
   preserveWhitespaces: true,
   providers: [
     {
@@ -23,23 +23,23 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
   };
   params = txt;
 
-  contentData: PersonaBehaviorTemplateData["template_params_json"];
+  contentData: PersonaBehaviorTemplateData['template_params_json'];
 
   getDescription() {
-    return "";
+    return '';
   }
 
   getName() {
-    return "Persona Behavior";
+    return 'Persona Behavior';
   }
 
   protected init() {
     this.contentData = this.data.data
-      .template_params_json as PersonaBehaviorTemplateData["template_params_json"];
+      .template_params_json as PersonaBehaviorTemplateData['template_params_json'];
 
     const suffix = this.contentData.input_sufix
-      ? "_" + this.contentData.input_sufix
-      : "";
+      ? '_' + this.contentData.input_sufix
+      : '';
 
     this.buyerPersonasList$.pipe(take(1)).subscribe(buyerPersonas => {
       this.inputIds = {

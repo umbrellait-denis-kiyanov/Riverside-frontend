@@ -1,13 +1,13 @@
-import { Component, OnInit, forwardRef } from "@angular/core";
-import { TemplateComponent } from "../template-base.class";
-import { data } from "./exampleData";
-import { FeedbackSectionTemplateComponent } from "../feedback_section/feedback_section.component";
-import txt from "!!raw-loader!./index.ts";
+import { Component, OnInit, forwardRef } from '@angular/core';
+import { TemplateComponent } from '../template-base.class';
+import { data } from './exampleData';
+import { FeedbackSectionTemplateComponent } from '../feedback_section/feedback_section.component';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
-  selector: "app-final-feedback",
-  templateUrl: "./final-feedback.component.html",
-  styleUrls: ["./final-feedback.component.sass"],
+  selector: 'app-final-feedback',
+  templateUrl: './final-feedback.component.html',
+  styleUrls: ['./final-feedback.component.sass'],
   providers: [
     {
       provide: TemplateComponent,
@@ -22,41 +22,41 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent {
   columnBoxes = [
     [
       {
-        title: "The Buying Process",
+        title: 'The Buying Process',
         inputId: (index: number) =>
           `persona_behavior_${index + 1}_buying_process`
       }
     ],
     [
       {
-        title: "Challenges",
+        title: 'Challenges',
         inputId: (index: number) => `persona_behavior_${index + 1}_challenges`
       },
       {
-        title: "Common Objections",
+        title: 'Common Objections',
         inputId: (index: number) =>
           `persona_behavior_${index + 1}_common_objections`
       },
       {
-        title: "Goals",
+        title: 'Goals',
         inputId: (index: number) => `persona_behavior_${index + 1}_goals`
       }
     ],
     [
       {
-        title: "Priorities",
+        title: 'Priorities',
         inputId: (index: number) => `persona_behavior_${index + 1}_priorities`
       },
       {
-        title: "Means",
+        title: 'Means',
         inputId: (index: number) => `persona_behavior_${index + 1}_means`
       },
       {
-        title: "Metrics",
+        title: 'Metrics',
         inputId: (index: number) => `persona_behavior_${index + 1}_metrics`
       },
       {
-        title: "Trigger Events",
+        title: 'Trigger Events',
         inputId: (index: number) =>
           `persona_behavior_${index + 1}_trigger_events`
       }
@@ -64,10 +64,10 @@ export class FinalFeedbackComponent extends FeedbackSectionTemplateComponent {
   ];
 
   getDescription() {
-    return "";
+    return '';
   }
 
   getName() {
-    return "Final Feedback";
+    return 'Final Feedback';
   }
 }

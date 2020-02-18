@@ -4,28 +4,28 @@ import {
   forwardRef,
   QueryList,
   ViewChildren
-} from "@angular/core";
-import { TemplateComponent } from "../template-base.class";
-import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from ".";
-import { IcpInputComponent } from "./icp-input/icp-input.component";
-import { Validate } from "src/app/common/validator.class";
-import txt from "!!raw-loader!./index.ts";
-import { of } from "rxjs";
+} from '@angular/core';
+import { TemplateComponent } from '../template-base.class';
+import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from '.';
+import { IcpInputComponent } from './icp-input/icp-input.component';
+import { Validate } from 'src/app/common/validator.class';
+import txt from '!!raw-loader!./index.ts';
+import { of } from 'rxjs';
 
 const inputs = [
-  "on",
-  "name",
-  "industries",
-  "pain_points",
-  "brainstorm",
-  "where_mine",
-  "criteria"
+  'on',
+  'name',
+  'industries',
+  'pain_points',
+  'brainstorm',
+  'where_mine',
+  'criteria'
 ];
 
 @Component({
-  selector: "app-segment-criteria-define",
-  templateUrl: "./segment-criteria-define.component.html",
-  styleUrls: ["./segment-criteria-define.component.sass"],
+  selector: 'app-segment-criteria-define',
+  templateUrl: './segment-criteria-define.component.html',
+  styleUrls: ['./segment-criteria-define.component.sass'],
   providers: [
     {
       provide: TemplateComponent,
@@ -37,7 +37,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
   implements OnInit {
   @ViewChildren(IcpInputComponent) icpInputs: QueryList<IcpInputComponent>;
 
-  contentData: SegmentCriteriaDefineTemplateData["template_params_json"];
+  contentData: SegmentCriteriaDefineTemplateData['template_params_json'];
   params = txt;
 
   allSegments = [1, 2, 3, 4, 5];
@@ -47,36 +47,36 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
 
   criterias: { [key: number]: SegmentCriteria[] };
 
-  public prefix = "segment_criteria_define_";
+  public prefix = 'segment_criteria_define_';
 
-  gradePrefix = "";
+  gradePrefix = '';
 
   grades: number[] = [];
 
   gradeSections: { prefix: string; title: string; grades: number[] }[];
 
   gradeLevels = [
-    { grade: "A", i: 1, level: 88 },
-    { grade: "B", i: 2, level: 75 },
-    { grade: "C", i: 3, level: 65 },
-    { grade: "D", i: 4, level: 55 }
+    { grade: 'A', i: 1, level: 88 },
+    { grade: 'B', i: 2, level: 75 },
+    { grade: 'C', i: 3, level: 65 },
+    { grade: 'D', i: 4, level: 55 }
   ];
   lastGradeLevel = this.gradeLevels[this.gradeLevels.length - 1];
 
   userGradeLevels: { [key: string]: string } = {};
 
   getDescription() {
-    return "Ideal Customer Profiles";
+    return 'Ideal Customer Profiles';
   }
 
   getName() {
-    return "ICP: Segment-Criteria";
+    return 'ICP: Segment-Criteria';
   }
 
   protected init() {
     // @ts-ignore - template_params_json.inputs property causes error with TypeScript 3.1
     this.contentData = this.data.data
-      .template_params_json as SegmentCriteriaDefineTemplateData["template_params_json"];
+      .template_params_json as SegmentCriteriaDefineTemplateData['template_params_json'];
 
     this.initSegments();
     this.condenseSegments();
@@ -87,9 +87,9 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
       this.gradePrefix =
         this.prefix +
         this.contentData.inputs
-          .split(",")
+          .split(',')
           .map(s => s.trim())
-          .find(s => s.substr(-5) === "_name")
+          .find(s => s.substr(-5) === '_name')
           .slice(0, -5);
       this.grades = Array.from(
         Array(this.contentData.number_of_inputs + 1).keys()
@@ -112,8 +112,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
       };
 
       this.gradeSections = [
-        getSection("grade_customers", "Existing Customers"),
-        getSection("grade_new_customers", "New Customers")
+        getSection('grade_customers', 'Existing Customers'),
+        getSection('grade_new_customers', 'New Customers')
       ];
 
       this.userGradeLevels = this.getUserGradeLevels();
@@ -122,7 +122,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
 
   initSegments() {
     this.activeSegments = this.allSegments.filter(
-      num => this.getInput("on", num).content
+      num => this.getInput('on', num).content
     );
 
     if (!this.activeSegments.length) {
@@ -133,7 +133,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
   }
 
   getEmptyCriteria() {
-    const emptyDef = JSON.stringify({ content: "", comments_json: "" });
+    const emptyDef = JSON.stringify({ content: '', comments_json: '' });
     return {
       name: JSON.parse(emptyDef),
       description: JSON.parse(emptyDef),
@@ -147,7 +147,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
     };
 
     this.criterias = this.activeSegments.reduce((segments, num) => {
-      const segData = this.getInput("criteria", num);
+      const segData = this.getInput('criteria', num);
       segments[num] = segData.content
         ? JSON.parse(segData.content)
         : defaultSegments();
@@ -197,7 +197,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
       const num = this.activeSegments.length + 1;
       this.activeSegments.push(num);
 
-      const inp = this.getInput("on", num);
+      const inp = this.getInput('on', num);
       inp.content = num.toString();
 
       this.moduleService.saveInput(inp).subscribe();
@@ -209,7 +209,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
       return;
     }
 
-    const inp = this.getInput("on", this.activeSegments[idx]);
+    const inp = this.getInput('on', this.activeSegments[idx]);
     inp.content = null;
     this.moduleService.saveInput(inp).subscribe();
 
@@ -219,7 +219,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
 
   private getUserGradeLevels() {
     return this.gradeLevels.reduce((levels, entry) => {
-      levels[entry.grade] = this.getInput("grade_pct", entry.i).getValue();
+      levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue();
       return levels;
     }, {});
   }
@@ -230,9 +230,9 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
     if (this.step === 1) {
       val = this.validateBrainstorm();
     } else if (this.step === 2) {
-      val = this.validateBrainstorm(["brainstorm"]);
+      val = this.validateBrainstorm(['brainstorm']);
     } else if (this.step === 3) {
-      val = this.validateCriteria(["where_mine"]);
+      val = this.validateCriteria(['where_mine']);
     } else if (this.step === 4) {
       val = this.validateCriteria();
     } else if (this.step === 5) {
@@ -248,7 +248,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
     return of(val);
   }
 
-  private validateBrainstorm(fields = ["name", "industries", "pain_points"]) {
+  private validateBrainstorm(fields = ['name', 'industries', 'pain_points']) {
     return this.activeSegments.reduce(
       (isValid, segment) =>
         fields.reduce((isValidField, field) => {
@@ -283,19 +283,19 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
 
   private validateGradeLevels() {
     return this.gradeLevels.reduce((isValid, level) => {
-      const inp = this.getInput("grade_pct", level.i);
+      const inp = this.getInput('grade_pct', level.i);
 
       const max =
         level.i === 1
           ? 100
           : Math.min(
-              Number(this.getInput("grade_pct", level.i - 1).getValue()) - 1,
+              Number(this.getInput('grade_pct', level.i - 1).getValue()) - 1,
               100
             );
 
       if (
         !this.validateInput(inp, [
-          Validate.required("Please enter the grade level"),
+          Validate.required('Please enter the grade level'),
           Validate.number(),
           Validate.max(max),
           Validate.min(0)
@@ -310,14 +310,14 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
 
   private validateGradeCustomers() {
     return this.grades.reduce((isValid, segment, idx) => {
-      ["name", "segment"].forEach(field => {
+      ['name', 'segment'].forEach(field => {
         const validator =
-          "segment" === field
-            ? [Validate.required("Please select the customer segment")]
+          'segment' === field
+            ? [Validate.required('Please select the customer segment')]
             : undefined;
         if (
           !this.validateInput(
-            this.getInput(this.gradePrefix + "_" + field, segment),
+            this.getInput(this.gradePrefix + '_' + field, segment),
             validator
           )
         ) {

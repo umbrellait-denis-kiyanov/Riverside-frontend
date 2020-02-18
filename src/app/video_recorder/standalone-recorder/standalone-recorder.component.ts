@@ -6,20 +6,20 @@ import {
   EventEmitter,
   NgZone,
   Input
-} from "@angular/core";
-import { RecorderMessageEvent } from "./standalone-recorder.interface";
+} from '@angular/core';
+import { RecorderMessageEvent } from './standalone-recorder.interface';
 
 @Component({
-  selector: "standalone-recorder",
-  templateUrl: "./standalone-recorder.component.html",
-  styleUrls: ["./standalone-recorder.component.sass"]
+  selector: 'standalone-recorder',
+  templateUrl: './standalone-recorder.component.html',
+  styleUrls: ['./standalone-recorder.component.sass']
 })
 export class StandaloneRecorderComponent implements OnInit, OnDestroy {
   @Output() finish = new EventEmitter<string>(false);
-  @Input() width: string = "325";
-  @Input() height: string = "295";
+  @Input() width: string = '325';
+  @Input() height: string = '295';
 
-  private standalone_recorder_url = "/codedo_recorder/standalone-recorder";
+  private standalone_recorder_url = '/codedo_recorder/standalone-recorder';
   private alreadyBound = false;
   private sourceId: string;
 
@@ -31,7 +31,7 @@ export class StandaloneRecorderComponent implements OnInit, OnDestroy {
     if (!this.alreadyBound) {
       this.zone.runOutsideAngular(() => {
         window.addEventListener(
-          "message",
+          'message',
           this.handleMessage.bind(this),
           false
         );
@@ -44,7 +44,7 @@ export class StandaloneRecorderComponent implements OnInit, OnDestroy {
   ngOnDestroy() {
     this.zone.runOutsideAngular(() => {
       window.removeEventListener(
-        "message",
+        'message',
         this.handleMessage.bind(this),
         false
       );
@@ -56,8 +56,8 @@ export class StandaloneRecorderComponent implements OnInit, OnDestroy {
     this.sourceId = this.getRandomName();
     const recorder_url =
       this.standalone_recorder_url +
-      "/index.html" +
-      (this.sourceId ? "?sourceId=" + this.sourceId : "");
+      '/index.html' +
+      (this.sourceId ? '?sourceId=' + this.sourceId : '');
 
     return recorder_url;
   }
@@ -75,8 +75,8 @@ export class StandaloneRecorderComponent implements OnInit, OnDestroy {
 
   handleMessage(event: RecorderMessageEvent) {
     if (
-      event.data.type === "iframe_event" &&
-      event.data.data.type === "DONE" &&
+      event.data.type === 'iframe_event' &&
+      event.data.data.type === 'DONE' &&
       event.data.data.data.sourceId === this.sourceId
     ) {
       this.finish.emit(event.data.data.data.url);

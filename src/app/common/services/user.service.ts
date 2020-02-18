@@ -1,17 +1,17 @@
-import { Injectable } from "@angular/core";
-import User from "../interfaces/user.model";
+import { Injectable } from '@angular/core';
+import User from '../interfaces/user.model';
 import {
   AccountProfile,
   UpdatePassword,
   PresignedProfilePictureUrl
-} from "../interfaces/account.interface";
-import { Observable, BehaviorSubject, of, interval, Subscription } from "rxjs";
-import { HttpClient } from "@angular/common/http";
-import { environment } from "../../../environments/environment";
-import { tap, switchMap, catchError } from "rxjs/operators";
-import { Router } from "@angular/router";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { SessionExpirationModalComponent } from "../components/session-expiration-modal/session-expiration-modal.component";
+} from '../interfaces/account.interface';
+import { Observable, BehaviorSubject, of, interval, Subscription } from 'rxjs';
+import { HttpClient } from '@angular/common/http';
+import { environment } from '../../../environments/environment';
+import { tap, switchMap, catchError } from 'rxjs/operators';
+import { Router } from '@angular/router';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { SessionExpirationModalComponent } from '../components/session-expiration-modal/session-expiration-modal.component';
 
 type AccountProfileStatus = AccountProfile & { status: string };
 
@@ -26,9 +26,9 @@ export class UserService {
 
   meChanged: BehaviorSubject<User> = new BehaviorSubject(null);
 
-  accountBaseUrl = environment.apiRoot + "/api/account";
+  accountBaseUrl = environment.apiRoot + '/api/account';
 
-  accountSessionRemainingTimeUrl = environment.apiRoot + "/timeout";
+  accountSessionRemainingTimeUrl = environment.apiRoot + '/timeout';
 
   legacyBaseUrl = environment.apiRoot;
 
@@ -55,7 +55,7 @@ export class UserService {
       .get<AccountProfileStatus>(`${this.legacyBaseUrl}/user/me`)
       .pipe(
         catchError(err => {
-          this.router.navigate(["login"]);
+          this.router.navigate(['login']);
           return of(null);
         })
       );
@@ -137,11 +137,11 @@ export class UserService {
           this.intervalSubscriptionId.unsubscribe();
           this.signout().subscribe(
             s =>
-              this.router.navigate(["login"], {
-                queryParams: { session_expire: "1" }
+              this.router.navigate(['login'], {
+                queryParams: { session_expire: '1' }
               }),
             error => {
-              this.router.navigate(["login"]);
+              this.router.navigate(['login']);
             }
           );
         } else {
@@ -174,7 +174,7 @@ export class UserService {
         }
       },
       error => {
-        this.router.navigate(["login"]);
+        this.router.navigate(['login']);
       }
     );
   }

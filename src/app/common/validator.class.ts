@@ -26,7 +26,7 @@ export class Validate {
   public static min(value: number, errorMessage?: string) {
     return new Validation(
       validateMin,
-      errorMessage || "Please enter a value over " + value,
+      errorMessage || 'Please enter a value over ' + value,
       value
     );
   }
@@ -34,12 +34,12 @@ export class Validate {
   public static max(value: number, errorMessage?: string) {
     return new Validation(
       validateMax,
-      errorMessage || "Please enter a value under " + value,
+      errorMessage || 'Please enter a value under ' + value,
       value
     );
   }
 
-  public static number(errorMessage = "Please enter a valid number") {
+  public static number(errorMessage = 'Please enter a valid number') {
     return new Validation(validateNumber, errorMessage);
   }
 }

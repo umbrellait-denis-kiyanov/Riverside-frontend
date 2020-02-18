@@ -1,4 +1,4 @@
-import { Component, OnInit } from "@angular/core";
+import { Component, OnInit } from '@angular/core';
 
 import {
   Router,
@@ -9,13 +9,13 @@ import {
   Event,
   Params,
   RoutesRecognized
-} from "@angular/router";
-import { ModuleService } from "../../common/services/module.service";
+} from '@angular/router';
+import { ModuleService } from '../../common/services/module.service';
 
 @Component({
-  selector: "app-module-selector",
-  templateUrl: "./module-selector.component.html",
-  styleUrls: ["./module-selector.component.sass"]
+  selector: 'app-module-selector',
+  templateUrl: './module-selector.component.html',
+  styleUrls: ['./module-selector.component.sass']
 })
 export class ModuleSelectorComponent implements OnInit {
   public selectedModule: number;
@@ -29,7 +29,7 @@ export class ModuleSelectorComponent implements OnInit {
   ) {}
 
   ngOnInit() {
-    this.selectedModule = parseInt(this.router.url.split("/").pop(), 10);
+    this.selectedModule = parseInt(this.router.url.split('/').pop(), 10);
     this.navigateToModuleIfNeeded(this.selectedModule);
   }
 

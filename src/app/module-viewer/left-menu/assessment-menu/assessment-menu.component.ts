@@ -1,14 +1,14 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { AssessmentService } from "src/app/common/services/assessment.service";
-import { Observable, BehaviorSubject, combineLatest, Subscription } from "rxjs";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AssessmentService } from 'src/app/common/services/assessment.service';
+import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import {
   AssessmentType,
   AssessmentGroup,
   AssessmentOrgGroup,
   AssessmentSession,
   PendingSessions
-} from "src/app/common/interfaces/assessment.interface";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
+} from 'src/app/common/interfaces/assessment.interface';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import {
   filter,
   take,
@@ -21,16 +21,16 @@ import {
   skip,
   debounceTime,
   withLatestFrom
-} from "rxjs/operators";
-import { Organization } from "src/app/common/interfaces/module.interface";
-import { Router, ActivatedRoute } from "@angular/router";
-import { HttpResponse } from "@angular/common/http";
-import { CanModifyPipe } from "../../../common/pipes/canModify.pipe";
+} from 'rxjs/operators';
+import { Organization } from 'src/app/common/interfaces/module.interface';
+import { Router, ActivatedRoute } from '@angular/router';
+import { HttpResponse } from '@angular/common/http';
+import { CanModifyPipe } from '../../../common/pipes/canModify.pipe';
 
 @Component({
-  selector: "app-assessment-menu",
-  templateUrl: "./assessment-menu.component.html",
-  styleUrls: ["./assessment-menu.component.sass"]
+  selector: 'app-assessment-menu',
+  templateUrl: './assessment-menu.component.html',
+  styleUrls: ['./assessment-menu.component.sass']
 })
 export class AssessmentMenuComponent implements OnInit, OnDestroy {
   constructor(
@@ -68,7 +68,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
 
   isDestroyed = false;
 
-  finishFlag = "isDone";
+  finishFlag = 'isDone';
 
   ngOnInit() {
     this.types$ = this.asmService.getTypes();
@@ -110,8 +110,8 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
       tap(
         response =>
           (this.finishFlag = this.canModifyPipe.transform(response)
-            ? "isApproved"
-            : "isDone")
+            ? 'isApproved'
+            : 'isDone')
       ),
       shareReplay(1)
     );
@@ -121,7 +121,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
     // check if a session ID has changed while within the context of the same org and type
     this.activeSessionWatch = combineLatest(this.activeType$, this.orgObserver$)
       .pipe(
-        map(([type, org]) => type.id.toString() + "-" + org),
+        map(([type, org]) => type.id.toString() + '-' + org),
         distinctUntilChanged(),
         switchMap(g =>
           this.navService.activeAssessmentSessionId$.pipe(
@@ -166,7 +166,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
           this.finish(true);
         }
 
-        window.scrollTo({ top: 0, behavior: "smooth" });
+        window.scrollTo({ top: 0, behavior: 'smooth' });
       });
   }
 
@@ -192,9 +192,9 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
             this.finish();
           } else {
             this.router.navigate([
-              "org",
+              'org',
               this.navService.lastOrganization.current,
-              "assessment"
+              'assessment'
             ]);
             this.setGroup(unfinished || groups[0]);
           }
@@ -209,13 +209,13 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   setGroup(group: AssessmentGroup) {
     const current = this.navService.assessmentGroup$.value;
     this.router.navigate([
-      "org",
+      'org',
       this.navService.lastOrganization.current,
-      "assessment"
+      'assessment'
     ]);
     if (!current || group.id !== current.id) {
       this.navService.assessmentGroup$.next(group);
-      window.scrollTo({ top: 0, behavior: "smooth" });
+      window.scrollTo({ top: 0, behavior: 'smooth' });
     }
   }
 
@@ -230,7 +230,7 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
         ) {
           this.navService.assessmentGroup$.next(null);
 
-          this.router.navigate(["finish"], { relativeTo: this.route });
+          this.router.navigate(['finish'], { relativeTo: this.route });
           this.finishError$.next(false);
           waitUntilReady = false;
         } else if (!waitUntilReady) {
@@ -244,13 +244,13 @@ export class AssessmentMenuComponent implements OnInit, OnDestroy {
   setOrganization(organization: Organization) {
     this.navService.lastOrganization.current = organization.id;
 
-    this.router.navigate(["org", organization.id, "assessment"]);
+    this.router.navigate(['org', organization.id, 'assessment']);
   }
 
   viewPastAssessments() {
     this.router.navigate(
-      ["dashboard", this.navService.lastOrganization.current],
-      { state: { section: "assessments" } }
+      ['dashboard', this.navService.lastOrganization.current],
+      { state: { section: 'assessments' } }
     );
   }
 }

@@ -1,6 +1,6 @@
-import BaseModel from "./base.model";
-import { TemplateInput } from "./module.interface";
-import { TemplateContentDataBase } from "src/app/module-viewer/riverside-step-template/templates/template.interface";
+import BaseModel from './base.model';
+import { TemplateInput } from './module.interface';
+import { TemplateContentDataBase } from 'src/app/module-viewer/riverside-step-template/templates/template.interface';
 
 type ModuleContentJson = { inputs: { [key: string]: TemplateInput } };
 
@@ -14,7 +14,7 @@ class ModuleContent extends BaseModel {
   feedback_requested: boolean = false;
   feedback_started: boolean = false;
   template_params_json: TemplateContentDataBase = {};
-  template_component = "";
+  template_component = '';
   is_section_break: boolean = false;
   requires_feedback: boolean = false;
   is_approved: boolean = false;

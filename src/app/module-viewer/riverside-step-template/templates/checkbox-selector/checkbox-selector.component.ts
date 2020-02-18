@@ -1,16 +1,16 @@
-import { Component, forwardRef, Input } from "@angular/core";
-import { TemplateComponent } from "../template-base.class";
-import txt from "!!raw-loader!./index.ts";
-import { Item } from ".";
-import { CheckboxSelectorTemplateData } from ".";
-import { Observable, of } from "rxjs";
-import { Validate } from "src/app/common/validator.class";
-import { MatCheckboxChange } from "@angular/material";
+import { Component, forwardRef, Input } from '@angular/core';
+import { TemplateComponent } from '../template-base.class';
+import txt from '!!raw-loader!./index.ts';
+import { Item } from '.';
+import { CheckboxSelectorTemplateData } from '.';
+import { Observable, of } from 'rxjs';
+import { Validate } from 'src/app/common/validator.class';
+import { MatCheckboxChange } from '@angular/material';
 
 @Component({
-  selector: "app-checkbox-selector",
-  templateUrl: "./checkbox-selector.component.html",
-  styleUrls: ["./checkbox-selector.component.sass"],
+  selector: 'app-checkbox-selector',
+  templateUrl: './checkbox-selector.component.html',
+  styleUrls: ['./checkbox-selector.component.sass'],
   providers: [
     {
       provide: TemplateComponent,
@@ -20,17 +20,17 @@ import { MatCheckboxChange } from "@angular/material";
 })
 export class CheckboxSelectorComponent extends TemplateComponent {
   items: Item[];
-  prefix = "checkbox_";
+  prefix = 'checkbox_';
 
-  contentData: CheckboxSelectorTemplateData["template_params_json"];
+  contentData: CheckboxSelectorTemplateData['template_params_json'];
   params = txt;
 
   getDescription(): string {
-    return "Checkbox selector";
+    return 'Checkbox selector';
   }
 
   getName(): string {
-    return "Checkbox selector";
+    return 'Checkbox selector';
   }
 
   hasInputs(): boolean {
@@ -77,12 +77,12 @@ export class CheckboxSelectorComponent extends TemplateComponent {
 
   protected init() {
     this.contentData = this.data.data
-      .template_params_json as CheckboxSelectorTemplateData["template_params_json"];
+      .template_params_json as CheckboxSelectorTemplateData['template_params_json'];
     this.items = this.contentData.options;
     let index = 0;
 
     for (const input in this.inputs) {
-      this.items[index++].checked = this.inputs[input].content === "1";
+      this.items[index++].checked = this.inputs[input].content === '1';
     }
   }
 
@@ -90,7 +90,7 @@ export class CheckboxSelectorComponent extends TemplateComponent {
     const input = this.getInput(
       `${$event.source.id}_${this.contentData.input_sufix}`
     );
-    input.content = $event.checked ? "1" : "0";
+    input.content = $event.checked ? '1' : '0';
     this.contentChanged(input);
   }
 }

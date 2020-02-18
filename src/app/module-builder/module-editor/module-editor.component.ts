@@ -1,27 +1,27 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
+import { Component, OnInit, OnDestroy } from '@angular/core';
 import {
   Module,
   Step,
   Section
-} from "../../common/interfaces/module.interface";
-import { ActivatedRoute } from "@angular/router";
-import { ModuleService } from "../../common/services/module.service";
+} from '../../common/interfaces/module.interface';
+import { ActivatedRoute } from '@angular/router';
+import { ModuleService } from '../../common/services/module.service';
 import {
   CdkDragDrop,
   moveItemInArray,
   transferArrayItem
-} from "@angular/cdk/drag-drop";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { StepTemplateEditorComponent } from "./step-template-editor/step-template-editor.component";
-import { StepLinkEditorComponent } from "./step-link-editor/step-link-editor.component";
-import { Subscription } from "rxjs";
-import { switchMap, catchError } from "rxjs/operators";
-import { ToastrService } from "ngx-toastr";
+} from '@angular/cdk/drag-drop';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { StepTemplateEditorComponent } from './step-template-editor/step-template-editor.component';
+import { StepLinkEditorComponent } from './step-link-editor/step-link-editor.component';
+import { Subscription } from 'rxjs';
+import { switchMap, catchError } from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: "app-module-editor",
-  templateUrl: "./module-editor.component.html",
-  styleUrls: ["./module-editor.component.sass"]
+  selector: 'app-module-editor',
+  templateUrl: './module-editor.component.html',
+  styleUrls: ['./module-editor.component.sass']
 })
 export class ModuleEditorComponent implements OnInit, OnDestroy {
   moduleData: Module;
@@ -72,7 +72,7 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   onClickRemoveStep(sectionIndex: number, index: number) {
-    if (!confirm("Are you sure you want to remove this step?")) {
+    if (!confirm('Are you sure you want to remove this step?')) {
       return;
     }
     this.sections[sectionIndex].steps.splice(index, 1);
@@ -80,24 +80,24 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
 
   onClickEditStepTemplate(sectionIndex: number, index: number) {
     const modalRef = this.modalService.open(StepTemplateEditorComponent, {
-      windowClass: "step-template-editor-modal",
-      backdrop: "static"
+      windowClass: 'step-template-editor-modal',
+      backdrop: 'static'
     });
     modalRef.componentInstance.step = this.sections[sectionIndex].steps[index];
   }
 
   onClickEditSectionTemplate(sectionIndex: number) {
     const modalRef = this.modalService.open(StepTemplateEditorComponent, {
-      windowClass: "section-template-editor-modal",
-      backdrop: "static"
+      windowClass: 'section-template-editor-modal',
+      backdrop: 'static'
     });
     modalRef.componentInstance.step = this.sections[sectionIndex].section;
   }
 
   onClickLinkStep(sectionIndex: number, index: number) {
     const modalRef = this.modalService.open(StepLinkEditorComponent, {
-      windowClass: "step-link-editor-modal",
-      backdrop: "static"
+      windowClass: 'step-link-editor-modal',
+      backdrop: 'static'
     });
 
     if (index === undefined) {
@@ -120,10 +120,10 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   onClickRemoveSection(sectionIndex: number) {
     if (
       !confirm(
-        "Are you sure you want to remove this section? The following steps it contains will be removed as well: \n* " +
+        'Are you sure you want to remove this section? The following steps it contains will be removed as well: \n* ' +
           this.sections[sectionIndex].steps
             .map(step => step.description)
-            .join("\n* ")
+            .join('\n* ')
       )
     ) {
       return;
@@ -137,7 +137,7 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
       .saveModule(this.moduleData)
       .subscribe(_ => {
         this.setPristineState();
-        this.toastr.success("Saved!");
+        this.toastr.success('Saved!');
       });
   }
 
@@ -155,7 +155,7 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
   }
 
   getSortableListIDs(): string[] {
-    return Array.from(this.sections.keys()).map(id => "drop-" + id);
+    return Array.from(this.sections.keys()).map(id => 'drop-' + id);
   }
 
   getSections(moduleData: Module): Section[] {
@@ -191,14 +191,14 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
     if (
       prompt(
         `Data synchronization is a destructive action which will overwrite your current module and step configuration. Please make sure to export a data backup before proceeding. Are you sure you want to continue with the synchronization? Type "Yes" to confirm.`
-      ) !== "Yes"
+      ) !== 'Yes'
     ) {
       return;
     }
 
     this.moduleService.sync(moduleId).subscribe(res => {
       alert(
-        "Synchronization complete. The application will be reloaded to refresh your data."
+        'Synchronization complete. The application will be reloaded to refresh your data.'
       );
       window.location.reload();
     });
@@ -206,13 +206,13 @@ export class ModuleEditorComponent implements OnInit, OnDestroy {
 
   private newStep(): Step {
     return {
-      description: "",
+      description: '',
       is_section_break: false,
       id: 0,
       module_id: this.moduleData.id,
       requires_feedback: false,
       template_params_json: {},
-      template_component: ""
+      template_component: ''
     };
   }
 }

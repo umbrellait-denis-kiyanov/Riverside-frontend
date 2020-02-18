@@ -5,29 +5,29 @@ import {
   Renderer2,
   OnDestroy,
   OnChanges
-} from "@angular/core";
-import { TemplateContentData } from "../templates/template-data.class";
+} from '@angular/core';
+import { TemplateContentData } from '../templates/template-data.class';
 import {
   interval,
   Observable,
   Subscription,
   combineLatest,
   BehaviorSubject
-} from "rxjs";
-import { tap } from "rxjs/operators";
-import { ResourceFromStorage } from "src/app/common/services/module-nav.service";
+} from 'rxjs';
+import { tap } from 'rxjs/operators';
+import { ResourceFromStorage } from 'src/app/common/services/module-nav.service';
 
 @Component({
-  selector: "template-heading",
-  templateUrl: "./template-heading.component.html",
-  styleUrls: ["./template-heading.component.sass"]
+  selector: 'template-heading',
+  templateUrl: './template-heading.component.html',
+  styleUrls: ['./template-heading.component.sass']
 })
 export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
   @Input() content: TemplateContentData;
 
   @Input() disabled: boolean;
 
-  savedTimer = new ResourceFromStorage<object>("module_timers");
+  savedTimer = new ResourceFromStorage<object>('module_timers');
 
   time = 0;
   timeStart: number;
@@ -39,7 +39,7 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
 
   sub: Subscription;
 
-  contentData: TemplateContentData["data"]["template_params_json"];
+  contentData: TemplateContentData['data']['template_params_json'];
 
   uuid: string;
 
@@ -63,7 +63,7 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
     );
 
     let restartTimer = false;
-    this.renderer.listen("document", "visibilitychange", changeEvt => {
+    this.renderer.listen('document', 'visibilitychange', changeEvt => {
       if (document.hidden) {
         restartTimer = this.isTimerOn;
       }
@@ -87,7 +87,7 @@ export class TemplateHeadingComponent implements OnInit, OnChanges, OnDestroy {
     this.contentData = this.content.data.template_params_json;
 
     const cd = this.content.data;
-    this.uuid = cd.org_id + "-" + cd.module_id + "-" + cd.step_id;
+    this.uuid = cd.org_id + '-' + cd.module_id + '-' + cd.step_id;
 
     this.time = (this.savedTimer.current || {})[this.uuid] || 0;
   }

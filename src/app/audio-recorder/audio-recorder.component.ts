@@ -5,22 +5,22 @@ import {
   EventEmitter,
   ElementRef,
   ViewChild
-} from "@angular/core";
-import { STATUS } from "./status.enum";
+} from '@angular/core';
+import { STATUS } from './status.enum';
 
-import { Recorder } from "vmsg";
-import { HttpClient } from "@angular/common/http";
-import { faRedoAlt } from "@fortawesome/free-solid-svg-icons";
-import { environment } from "../../environments/environment";
+import { Recorder } from 'vmsg';
+import { HttpClient } from '@angular/common/http';
+import { faRedoAlt } from '@fortawesome/free-solid-svg-icons';
+import { environment } from '../../environments/environment';
 
 @Component({
-  selector: "audio-recorder",
-  templateUrl: "./audio-recorder.component.html",
-  styleUrls: ["./audio-recorder.component.sass"]
+  selector: 'audio-recorder',
+  templateUrl: './audio-recorder.component.html',
+  styleUrls: ['./audio-recorder.component.sass']
 })
 export class AudioRecorderComponent implements OnInit {
   @Output() finish = new EventEmitter<string>(false);
-  @ViewChild("audioOption") audioPlayerRef: ElementRef;
+  @ViewChild('audioOption') audioPlayerRef: ElementRef;
 
   STATUS = STATUS;
   status: STATUS;
@@ -28,18 +28,18 @@ export class AudioRecorderComponent implements OnInit {
   recorder: Recorder;
   blob: Blob;
   audioSrc: string;
-  ext = "mp3";
+  ext = 'mp3';
 
   redoIcon = faRedoAlt;
 
-  baseUrl = environment.apiRoot + "/api/modules";
+  baseUrl = environment.apiRoot + '/api/modules';
 
   constructor(private http: HttpClient) {}
 
   ngOnInit() {
     this.status = STATUS.TESTING;
     this.recorder = new Recorder({
-      wasmURL: "/public/ngapp/node_modules/vmsg/vmsg.wasm"
+      wasmURL: '/public/ngapp/node_modules/vmsg/vmsg.wasm'
     });
     this.recorder
       .init()
@@ -75,7 +75,7 @@ export class AudioRecorderComponent implements OnInit {
     });
   }
 
-  blobToDataURL(blob: Blob, callback: (result: FileReader["result"]) => void) {
+  blobToDataURL(blob: Blob, callback: (result: FileReader['result']) => void) {
     const a = new FileReader();
     a.onload = (e: ProgressEvent) => {
       callback(a.result);
@@ -107,7 +107,7 @@ export class AudioRecorderComponent implements OnInit {
 
   getPresignedUrl() {
     return this.http
-      .get(this.baseUrl + "/0/feedback/presignedurl?ext=" + this.ext)
+      .get(this.baseUrl + '/0/feedback/presignedurl?ext=' + this.ext)
       .toPromise();
   }
 

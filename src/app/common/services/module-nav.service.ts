@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
-import { Router, ActivatedRoute, RoutesRecognized } from "@angular/router";
-import { BehaviorSubject, Observable, combineLatest } from "rxjs";
-import { ModuleService } from "./module.service";
+import { Injectable } from '@angular/core';
+import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
+import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
+import { ModuleService } from './module.service';
 import {
   AssessmentType,
   AssessmentGroup
-} from "../interfaces/assessment.interface";
+} from '../interfaces/assessment.interface';
 import {
   filter,
   startWith,
@@ -17,20 +17,20 @@ import {
   map,
   withLatestFrom,
   skip
-} from "rxjs/operators";
-import { AssessmentService } from "./assessment.service";
+} from 'rxjs/operators';
+import { AssessmentService } from './assessment.service';
 
 export class ResourceFromStorage<T extends { toString: () => string }> {
   private _current: T;
   private storageKey: string;
   private defaultObservable: Observable<T>;
-  private type: "json" | "string" | "number";
+  private type: 'json' | 'string' | 'number';
   public onChange = new BehaviorSubject<T>(null);
 
   constructor(
     storageKey: string,
     defaultObservable: Observable<T> = null,
-    type: "json" | "string" | "number" = "json"
+    type: 'json' | 'string' | 'number' = 'json'
   ) {
     this.storageKey = storageKey;
     this.type = type;
@@ -72,14 +72,14 @@ export class ResourceFromStorage<T extends { toString: () => string }> {
   }
 
   processFromStorage(fromStorage: string) {
-    if (this.type === "json") {
+    if (this.type === 'json') {
       try {
         return JSON.parse(fromStorage);
       } catch (e) {
         return null;
       }
     }
-    if (this.type === "number") {
+    if (this.type === 'number') {
       return Number(fromStorage);
     }
 
@@ -87,7 +87,7 @@ export class ResourceFromStorage<T extends { toString: () => string }> {
   }
 
   processToStorage() {
-    if (this.type !== "json") {
+    if (this.type !== 'json') {
       return this._current.toString();
     } else {
       return JSON.stringify(this._current);
@@ -97,7 +97,7 @@ export class ResourceFromStorage<T extends { toString: () => string }> {
 
 @Injectable()
 export class ModuleNavService {
-  assessmentType = new ResourceFromStorage<number>("last_type");
+  assessmentType = new ResourceFromStorage<number>('last_type');
   activeAssessmentType$: Observable<AssessmentType>;
   assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
   activeAssessmentSessionId$ = new BehaviorSubject<number>(null);
@@ -105,9 +105,9 @@ export class ModuleNavService {
   private moveStep$ = new BehaviorSubject<number>(null);
 
   lastOrganization = new ResourceFromStorage<number>(
-    "last_organization_id",
+    'last_organization_id',
     this.moduleService.getDefaultOrganization().pipe(map(org => org.id)),
-    "number"
+    'number'
   );
 
   organization$ = this.lastOrganization.onChange.pipe(
@@ -116,9 +116,9 @@ export class ModuleNavService {
   );
 
   module = new ResourceFromStorage<number>(
-    "last_module_id",
+    'last_module_id',
     this.moduleService.getDefaultModule().pipe(map(mod => mod.id)),
-    "number"
+    'number'
   );
 
   module$ = this.module.onChange.pipe(
@@ -163,11 +163,11 @@ export class ModuleNavService {
   moduleDataReplay$ = this.moduleData$.pipe(shareReplay(1));
 
   step = new ResourceFromStorage<number>(
-    "last_step_id",
+    'last_step_id',
     this.moduleData$.pipe(
       map(mod => mod.steps.find(s => !s.is_section_break).id)
     ),
-    "number"
+    'number'
   );
 
   step$ = this.step.onChange.pipe(
@@ -274,11 +274,11 @@ export class ModuleNavService {
 
   goToStep(id: number) {
     this.router.navigate([
-      "org",
+      'org',
       this.lastOrganization.current,
-      "module",
+      'module',
       this.module.current,
-      "step",
+      'step',
       id
     ]);
   }

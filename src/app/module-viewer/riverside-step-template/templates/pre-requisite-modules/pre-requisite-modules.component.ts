@@ -1,14 +1,14 @@
-import { Component, forwardRef } from "@angular/core";
-import { TemplateComponent } from "../template-base.class";
-import { PreRequisiteModuleTemplateData, TemplateParams } from ".";
-import { map, switchMap, tap } from "rxjs/operators";
-import { Observable } from "rxjs";
-import { Module } from "src/app/common/interfaces/module.interface";
+import { Component, forwardRef } from '@angular/core';
+import { TemplateComponent } from '../template-base.class';
+import { PreRequisiteModuleTemplateData, TemplateParams } from '.';
+import { map, switchMap, tap } from 'rxjs/operators';
+import { Observable } from 'rxjs';
+import { Module } from 'src/app/common/interfaces/module.interface';
 
 @Component({
-  selector: "app-pre-requisite-modules",
-  templateUrl: "./pre-requisite-modules.component.html",
-  styleUrls: ["./pre-requisite-modules.component.sass"],
+  selector: 'app-pre-requisite-modules',
+  templateUrl: './pre-requisite-modules.component.html',
+  styleUrls: ['./pre-requisite-modules.component.sass'],
   providers: [
     {
       provide: TemplateComponent,
@@ -18,7 +18,7 @@ import { Module } from "src/app/common/interfaces/module.interface";
 })
 export class PreRequisiteModulesComponent extends TemplateComponent {
   params = TemplateParams;
-  contentData: PreRequisiteModuleTemplateData["template_params_json"];
+  contentData: PreRequisiteModuleTemplateData['template_params_json'];
 
   modules$: Observable<Module[]>;
 
@@ -26,7 +26,7 @@ export class PreRequisiteModulesComponent extends TemplateComponent {
 
   init() {
     this.contentData = this.data.data
-      .template_params_json as PreRequisiteModuleTemplateData["template_params_json"];
+      .template_params_json as PreRequisiteModuleTemplateData['template_params_json'];
 
     const moduleIDs = this.contentData.modules.map(module =>
       Number(module.module)
@@ -54,11 +54,11 @@ export class PreRequisiteModulesComponent extends TemplateComponent {
   }
 
   getDescription() {
-    return "Require completion of certain modules before allowing access to the next module";
+    return 'Require completion of certain modules before allowing access to the next module';
   }
 
   getName() {
-    return "Pre-requisite Modules";
+    return 'Pre-requisite Modules';
   }
 
   hasInputs() {

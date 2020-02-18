@@ -1,16 +1,16 @@
-import { Component, OnInit, Input, Output, EventEmitter } from "@angular/core";
-import * as InlineEditor from "@ckeditor/ckeditor5-build-inline";
-import { CdkDragDrop, moveItemInArray } from "@angular/cdk/drag-drop";
-import { Observable, of } from "rxjs";
-import { ModuleService } from "../../../../common/services/module.service";
-import { TemplateField } from ".";
-import { map } from "rxjs/operators";
-import { fieldTypes } from "../../../constants/field-types";
+import { Component, OnInit, Input, Output, EventEmitter } from '@angular/core';
+import * as InlineEditor from '@ckeditor/ckeditor5-build-inline';
+import { CdkDragDrop, moveItemInArray } from '@angular/cdk/drag-drop';
+import { Observable, of } from 'rxjs';
+import { ModuleService } from '../../../../common/services/module.service';
+import { TemplateField } from '.';
+import { map } from 'rxjs/operators';
+import { fieldTypes } from '../../../constants/field-types';
 
 @Component({
-  selector: "app-step-template-field",
-  templateUrl: "./step-template-field.component.html",
-  styleUrls: ["./step-template-field.component.sass"]
+  selector: 'app-step-template-field',
+  templateUrl: './step-template-field.component.html',
+  styleUrls: ['./step-template-field.component.sass']
 })
 export class StepTemplateFieldComponent implements OnInit {
   @Input() field: TemplateField;
@@ -32,23 +32,23 @@ export class StepTemplateFieldComponent implements OnInit {
     this.name = this.field[0];
     this.type = this.field[1];
 
-    if ("string" === this.type) {
+    if ('string' === this.type) {
       // in case we still have some JSON data
-      if (typeof this.json === "object" && this.json !== null) {
+      if (typeof this.json === 'object' && this.json !== null) {
         this.json = JSON.stringify(this.json);
-        this.type = "json";
+        this.type = 'json';
       } else if (
         fieldTypes.includes(this.name) ||
-        this.name.toLowerCase().indexOf("url") > -1
+        this.name.toLowerCase().indexOf('url') > -1
       ) {
-        this.type = "text-input";
+        this.type = 'text-input';
       } else {
-        this.json = this.json || "";
+        this.json = this.json || '';
       }
     }
 
-    if (this.type === "Module") {
-      this.type = "select";
+    if (this.type === 'Module') {
+      this.type = 'select';
       this.selectValues$ = this.moduleService
         .getModules()
         .pipe(
@@ -59,9 +59,9 @@ export class StepTemplateFieldComponent implements OnInit {
     }
 
     if (this.type instanceof Array) {
-      if (this.name.substr(-7) === "_select") {
+      if (this.name.substr(-7) === '_select') {
         this.selectValues$ = of(this.type.map(val => [val, val]));
-        this.type = "select";
+        this.type = 'select';
       } else {
         this.hasSubFields = true;
 
@@ -71,10 +71,10 @@ export class StepTemplateFieldComponent implements OnInit {
       }
     }
 
-    if (this.name.substr(0, 11) === "apiResource") {
-      this.type = "select";
+    if (this.name.substr(0, 11) === 'apiResource') {
+      this.type = 'select';
       this.selectValues$ = this.moduleService
-        .getTemplateResources(0, "spreadsheet")
+        .getTemplateResources(0, 'spreadsheet')
         .pipe(
           map(resources => resources.map(resource => [resource, resource]))
         );
@@ -84,15 +84,15 @@ export class StepTemplateFieldComponent implements OnInit {
   fieldTitle(fieldName: string) {
     return fieldName
       .split(/(?=[A-Z])/)
-      .join(" ")
-      .split("_")
+      .join(' ')
+      .split('_')
       .map(word => word[0].toUpperCase() + word.substr(1))
-      .join(" ");
+      .join(' ');
   }
 
   valueChange() {
-    if ("input_sufix" === this.name) {
-      this.json = this.json.replace(/[\W]+/g, "");
+    if ('input_sufix' === this.name) {
+      this.json = this.json.replace(/[\W]+/g, '');
     }
 
     this.jsonChange.emit(this.json);

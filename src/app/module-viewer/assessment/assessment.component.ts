@@ -1,15 +1,15 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { HttpResponse } from "@angular/common/http";
-import { AssessmentService } from "src/app/common/services/assessment.service";
-import { Observable, BehaviorSubject, combineLatest, Subscription } from "rxjs";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { HttpResponse } from '@angular/common/http';
+import { AssessmentService } from 'src/app/common/services/assessment.service';
+import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import {
   AssessmentGroup,
   AssessmentQuestion,
   AssessmentOrgGroup,
   AssessmentAnswer,
   AssessmentType
-} from "src/app/common/interfaces/assessment.interface";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
+} from 'src/app/common/interfaces/assessment.interface';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import {
   switchMap,
   filter,
@@ -17,13 +17,13 @@ import {
   shareReplay,
   tap,
   takeWhile
-} from "rxjs/operators";
-import { ToastrService } from "ngx-toastr";
+} from 'rxjs/operators';
+import { ToastrService } from 'ngx-toastr';
 
 @Component({
-  selector: "app-assessment",
-  templateUrl: "./assessment.component.html",
-  styleUrls: ["./assessment.component.sass"]
+  selector: 'app-assessment',
+  templateUrl: './assessment.component.html',
+  styleUrls: ['./assessment.component.sass']
 })
 export class AssessmentComponent implements OnInit, OnDestroy {
   questions$: Observable<AssessmentQuestion[]>;
@@ -138,14 +138,14 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       .subscribe(_ => this.answerUpdated$.next(true));
   }
 
-  clearAll(g: AssessmentGroup, t: AssessmentType, clear: "answers" | "notes") {
-    if (confirm("Really clear all " + clear + " in " + g.name + "?")) {
-      const sub = clear === "notes" ? "clearNotesSub" : "clearAnswersSub";
+  clearAll(g: AssessmentGroup, t: AssessmentType, clear: 'answers' | 'notes') {
+    if (confirm('Really clear all ' + clear + ' in ' + g.name + '?')) {
+      const sub = clear === 'notes' ? 'clearNotesSub' : 'clearAnswersSub';
       this[sub] = this.asmService
         .answerAll(g, t, this.navService.lastOrganization.current, null, clear)
         .subscribe(_ => {
           this.answerUpdated$.next(true);
-          this.toastr.success(g.name + " answers have been cleared");
+          this.toastr.success(g.name + ' answers have been cleared');
         });
     }
   }
@@ -194,7 +194,7 @@ export class AssessmentComponent implements OnInit, OnDestroy {
     this.markAsDoneSub = this.asmService
       .markAsDone(activeGroup, t, this.navService.lastOrganization.current)
       .subscribe(_ =>
-        this.toastr.success(activeGroup.name + " has been marked as done")
+        this.toastr.success(activeGroup.name + ' has been marked as done')
       );
   }
 
@@ -217,9 +217,9 @@ export class AssessmentComponent implements OnInit, OnDestroy {
       .subscribe(_ => {
         this.toastr.success(
           activeGroup.name +
-            " has been " +
-            (moveToNextStep ? "" : "un") +
-            "marked as Not Applicable"
+            ' has been ' +
+            (moveToNextStep ? '' : 'un') +
+            'marked as Not Applicable'
         );
 
         if (!moveToNextStep) {

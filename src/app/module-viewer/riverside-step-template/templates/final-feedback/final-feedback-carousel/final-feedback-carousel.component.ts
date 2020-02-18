@@ -1,12 +1,12 @@
-import { Component, forwardRef, Input } from "@angular/core";
-import { FinalFeedbackComponent } from "../final-feedback.component";
-import { TemplateComponent } from "../../template-base.class";
-import { OwlOptions } from "ngx-owl-carousel-o";
+import { Component, forwardRef, Input } from '@angular/core';
+import { FinalFeedbackComponent } from '../final-feedback.component';
+import { TemplateComponent } from '../../template-base.class';
+import { OwlOptions } from 'ngx-owl-carousel-o';
 
 @Component({
-  selector: "app-final-feedback-carousel",
-  templateUrl: "./final-feedback-carousel.component.html",
-  styleUrls: ["./final-feedback-carousel.component.sass"],
+  selector: 'app-final-feedback-carousel',
+  templateUrl: './final-feedback-carousel.component.html',
+  styleUrls: ['./final-feedback-carousel.component.sass'],
   providers: [
     {
       provide: TemplateComponent,

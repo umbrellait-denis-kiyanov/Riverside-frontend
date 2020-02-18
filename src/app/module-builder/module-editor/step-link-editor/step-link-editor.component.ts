@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
-import { Step, Module } from "src/app/common/interfaces/module.interface";
+import { Component, OnInit, Input } from '@angular/core';
+import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
+import { Step, Module } from 'src/app/common/interfaces/module.interface';
 
 @Component({
-  selector: "app-step-link-editor",
-  templateUrl: "./step-link-editor.component.html",
-  styleUrls: ["./step-link-editor.component.sass"]
+  selector: 'app-step-link-editor',
+  templateUrl: './step-link-editor.component.html',
+  styleUrls: ['./step-link-editor.component.sass']
 })
 export class StepLinkEditorComponent implements OnInit {
   @Input() step: Step;

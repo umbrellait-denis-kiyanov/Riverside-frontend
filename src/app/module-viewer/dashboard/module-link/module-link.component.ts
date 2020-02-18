@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from "@angular/core";
-import { Module } from "src/app/common/interfaces/module.interface";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
+import { Component, OnInit, Input } from '@angular/core';
+import { Module } from 'src/app/common/interfaces/module.interface';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 
 @Component({
-  selector: "app-module-link",
-  templateUrl: "./module-link.component.html",
-  styleUrls: ["./module-link.component.sass"]
+  selector: 'app-module-link',
+  templateUrl: './module-link.component.html',
+  styleUrls: ['./module-link.component.sass']
 })
 export class ModuleLinkComponent implements OnInit {
   @Input()

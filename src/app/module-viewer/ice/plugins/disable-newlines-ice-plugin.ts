@@ -1,4 +1,4 @@
-import IceInputPlugin from "./ice-input-plugin";
+import IceInputPlugin from './ice-input-plugin';
 
 // disable line breaks in input for single-line inputs
 export class DisableNewlinesPlugin extends IceInputPlugin {
@@ -7,7 +7,7 @@ export class DisableNewlinesPlugin extends IceInputPlugin {
   }
 
   protected replaceInput() {
-    return "";
+    return '';
   }
 
   protected onBlur(html) {

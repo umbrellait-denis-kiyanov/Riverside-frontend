@@ -1,8 +1,8 @@
-import { Injectable } from "@angular/core";
-import { NgbModal } from "@ng-bootstrap/ng-bootstrap";
-import { E3ConfirmationDialogComponent } from "./e3-confirmation-dialog.component";
+import { Injectable } from '@angular/core';
+import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
+import { E3ConfirmationDialogComponent } from './e3-confirmation-dialog.component';
 
-export type DialogType = "warning" | "success";
+export type DialogType = 'warning' | 'success';
 
 export interface OpenDialogOptions {
   ok_text?: string;
@@ -27,7 +27,7 @@ export class E3ConfirmationDialogService {
     options = { ...this.defaults, ...options };
     const modalRef = this.modalService.open(options.component);
     Object.keys(options).forEach(option => {
-      if (!(typeof options[option] === "function")) {
+      if (!(typeof options[option] === 'function')) {
         modalRef.componentInstance[option] = options[option];
       }
     });

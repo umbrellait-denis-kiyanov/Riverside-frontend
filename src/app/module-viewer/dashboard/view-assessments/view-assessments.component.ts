@@ -1,13 +1,13 @@
-import { Component, OnInit, OnDestroy } from "@angular/core";
-import { AssessmentService } from "src/app/common/services/assessment.service";
-import { Observable, BehaviorSubject, combineLatest, Subscription } from "rxjs";
+import { Component, OnInit, OnDestroy } from '@angular/core';
+import { AssessmentService } from 'src/app/common/services/assessment.service';
+import { Observable, BehaviorSubject, combineLatest, Subscription } from 'rxjs';
 import {
   AssessmentType,
   AssessmentGroup,
   AssessmentOrgGroup,
   AssessmentSession
-} from "src/app/common/interfaces/assessment.interface";
-import { ModuleNavService } from "src/app/common/services/module-nav.service";
+} from 'src/app/common/interfaces/assessment.interface';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
 import {
   switchMap,
   filter,
@@ -15,16 +15,16 @@ import {
   distinctUntilChanged,
   withLatestFrom,
   shareReplay
-} from "rxjs/operators";
+} from 'rxjs/operators';
 import {
   AssessmentChartSeries,
   AssessmentChartActiveEntries
-} from "../../assessment-chart";
+} from '../../assessment-chart';
 
 @Component({
-  selector: "app-view-assessments",
-  templateUrl: "./view-assessments.component.html",
-  styleUrls: ["./view-assessments.component.sass"]
+  selector: 'app-view-assessments',
+  templateUrl: './view-assessments.component.html',
+  styleUrls: ['./view-assessments.component.sass']
 })
 export class ViewAssessmentsComponent implements OnInit, OnDestroy {
   types$: Observable<AssessmentType[]>;
@@ -88,17 +88,17 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
     );
 
     const colors = [
-      "red",
-      "green",
-      "#f3e562",
-      "#ff9800",
-      "#ff4514",
-      "#afdf0a",
-      "#00b862",
-      "orange",
-      "blue",
-      "#ff5722",
-      "#58ad3f"
+      'red',
+      'green',
+      '#f3e562',
+      '#ff9800',
+      '#ff4514',
+      '#afdf0a',
+      '#00b862',
+      'orange',
+      'blue',
+      '#ff5722',
+      '#58ad3f'
     ];
 
     this.chartSubscription = this.sessions$
@@ -115,12 +115,12 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
               return {
                 value: Number(group.score),
                 formattedValue:
-                  group.score === null ? "N/A" : String(group.score),
+                  group.score === null ? 'N/A' : String(group.score),
                 name: idx + 1,
                 label: (
                   type.groups.find(
                     g => Number(g.id) === Number(group.group_id)
-                  ) || { shortName: "" }
+                  ) || { shortName: '' }
                 ).shortName
               };
             });
@@ -130,7 +130,7 @@ export class ViewAssessmentsComponent implements OnInit, OnDestroy {
             value: score,
             formattedValue: String(score),
             name: series.length + 1,
-            label: "Average"
+            label: 'Average'
           });
 
           return {

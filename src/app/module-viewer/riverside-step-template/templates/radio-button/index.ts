@@ -1,4 +1,4 @@
-import { TemplateContentDataBase } from "../template.interface";
+import { TemplateContentDataBase } from '../template.interface';
 
 export class Item {
   id?: number;
@@ -14,9 +14,9 @@ export interface RadiobuttonTemplateData extends TemplateContentDataBase {
     description: string;
     require_selection: boolean;
     step_select:
-      | "Title Only"
-      | "Title And Description"
-      | "Title Description And Image";
+      | 'Title Only'
+      | 'Title And Description'
+      | 'Title Description And Image';
     options: Array<{ title: string; image: string; description: string }>;
   };
 }

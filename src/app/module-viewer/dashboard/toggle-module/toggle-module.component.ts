@@ -1,14 +1,14 @@
-import { Component, OnInit, Input } from "@angular/core";
+import { Component, OnInit, Input } from '@angular/core';
 import {
   Module,
   Organization
-} from "src/app/common/interfaces/module.interface";
-import { ModuleService } from "src/app/common/services/module.service";
+} from 'src/app/common/interfaces/module.interface';
+import { ModuleService } from 'src/app/common/services/module.service';
 
 @Component({
-  selector: "app-toggle-module",
-  templateUrl: "./toggle-module.component.html",
-  styleUrls: ["./toggle-module.component.sass"]
+  selector: 'app-toggle-module',
+  templateUrl: './toggle-module.component.html',
+  styleUrls: ['./toggle-module.component.sass']
 })
 export class ToggleModuleComponent implements OnInit {
   @Input()

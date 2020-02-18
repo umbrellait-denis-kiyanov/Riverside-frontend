@@ -1,5 +1,5 @@
-import { BehaviorSubject } from "rxjs";
-import User from "./user.model";
+import { BehaviorSubject } from 'rxjs';
+import User from './user.model';
 
 export interface ModuleStatus {
   org_id: number;

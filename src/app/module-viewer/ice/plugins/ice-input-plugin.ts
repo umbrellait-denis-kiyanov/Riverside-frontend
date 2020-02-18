@@ -1,4 +1,4 @@
-import { IceEditorTracker } from "../ice.component";
+import { IceEditorTracker } from '../ice.component';
 
 // based on IceEmdashPlugin plugin - https://github.com/nytimes/ice/blob/master/src/plugins/IceEmdashPlugin/IceEmdashPlugin.js
 
@@ -27,23 +27,23 @@ export default abstract class IceInputPlugin {
         self.addEventListeners(editor);
 
         editor.addEventListener(
-          "blur",
+          'blur',
           () => (editor.innerHTML = self.onBlur(editor.innerHTML))
         );
 
         // temporarily prevent text drag&drop into <ice> field. @todo: implement
         if (!ice_instance.disableDragDrop) {
           ice_instance.disableDragDrop = true;
-          ice_instance.element.addEventListener("drop", e =>
+          ice_instance.element.addEventListener('drop', e =>
             e.preventDefault()
           );
         }
 
         if (self.forceCleanPaste() && !ice_instance.hasCleanPaste) {
           ice_instance.hasCleanPaste = true;
-          ice_instance.element.addEventListener("paste", e => {
+          ice_instance.element.addEventListener('paste', e => {
             e.preventDefault();
-            const text = e.clipboardData.getData("text/plain");
+            const text = e.clipboardData.getData('text/plain');
 
             const node = this._ice.env.document.createTextNode(text);
 
@@ -91,7 +91,7 @@ export default abstract class IceInputPlugin {
               // Make sure that the start and end containers aren't in different blocks, or that the start isn't in a delete.
               if (
                 startBlock === endBlock &&
-                !this._ice.getIceNode(range.startContainer, "deleteType")
+                !this._ice.getIceNode(range.startContainer, 'deleteType')
               ) {
                 let c = range.toHtml();
                 if (self.matchInput(c)) {
@@ -101,7 +101,7 @@ export default abstract class IceInputPlugin {
                   const replacedInput = self.replaceInput(c);
 
                   const replacedNode =
-                    typeof replacedInput === "string"
+                    typeof replacedInput === 'string'
                       ? this._ice.env.document.createTextNode()
                       : replacedInput;
 
@@ -134,7 +134,7 @@ export default abstract class IceInputPlugin {
       .commonAncestorContainer as HTMLElement;
     while (node && node.parentElement) {
       node = node.parentElement;
-      if (node.contentEditable === "true") {
+      if (node.contentEditable === 'true') {
         return node;
       }
     }
@@ -145,7 +145,7 @@ export default abstract class IceInputPlugin {
   }
 
   protected replaceInput(input: string): string | HTMLElement {
-    return "";
+    return '';
   }
 
   protected onBlur(html) {
@@ -170,17 +170,17 @@ export default abstract class IceInputPlugin {
 
   // remove HTML formatting except for Ice tracker elements
   protected removeFormatting(html: string) {
-    const parser = new DOMParser().parseFromString(html || "", "text/html");
+    const parser = new DOMParser().parseFromString(html || '', 'text/html');
 
     // replace all non-ins/del elements to simple div's
     let toReplace;
     do {
       toReplace = parser.body.querySelectorAll(
-        ":not(.ins):not(.del):not(.ice_replaced)"
+        ':not(.ins):not(.del):not(.ice_replaced)'
       );
       toReplace.forEach(node => {
-        const newNode = document.createElement("div");
-        newNode.className = "ice_replaced";
+        const newNode = document.createElement('div');
+        newNode.className = 'ice_replaced';
         newNode.innerHTML = node.innerHTML;
         node.parentNode.replaceChild(newNode, node);
       });
@@ -188,11 +188,11 @@ export default abstract class IceInputPlugin {
 
     // now strip out the div's and only the Ice tracker elements remain in formatting
     return (
-      "<p>" +
+      '<p>' +
       parser.body.innerHTML
         .trim()
-        .replace(/\<div class\="ice_replaced"\>|\<\/div\>/g, "") +
-      "</p>"
+        .replace(/\<div class\="ice_replaced"\>|\<\/div\>/g, '') +
+      '</p>'
     );
   }
 }

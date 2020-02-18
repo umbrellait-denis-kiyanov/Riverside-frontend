@@ -1,4 +1,4 @@
-import { Injectable, EventEmitter } from "@angular/core";
+import { Injectable, EventEmitter } from '@angular/core';
 
 @Injectable()
 export class IceService {
@@ -6,5 +6,5 @@ export class IceService {
   onUnapprove = new EventEmitter<boolean>(false);
   shouldShowWarning = false;
   warningText =
-    "This has already been approved by the managing director. Editing it will require it to be approved again.";
+    'This has already been approved by the managing director. Editing it will require it to be approved again.';
 }

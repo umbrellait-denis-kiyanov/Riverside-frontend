@@ -1,11 +1,11 @@
-import { Injectable } from "@angular/core";
+import { Injectable } from '@angular/core';
 import {
   SpreadsheetResource,
   TemplateInput
-} from "../interfaces/module.interface";
-import { HttpClient } from "@angular/common/http";
-import { Observable } from "rxjs";
-import { ModuleService } from "./module.service";
+} from '../interfaces/module.interface';
+import { HttpClient } from '@angular/common/http';
+import { Observable } from 'rxjs';
+import { ModuleService } from './module.service';
 
 @Injectable()
 export class SpreadsheetService {
@@ -23,8 +23,8 @@ export class SpreadsheetService {
     return this.httpClient.get<SpreadsheetResource>(
       `${this.moduleServide.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls?xls=` +
         xlsFile +
-        (visibleRows.length ? "&rows=" + JSON.stringify(visibleRows) : "") +
-        (keepFormulas ? "&keepFormulas=true" : "")
+        (visibleRows.length ? '&rows=' + JSON.stringify(visibleRows) : '') +
+        (keepFormulas ? '&keepFormulas=true' : '')
     );
   }
 

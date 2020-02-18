@@ -1,16 +1,16 @@
-import { Injectable } from "@angular/core";
-import { BuyerPersona } from "../interfaces/buyer-persona.interface";
-import { BehaviorSubject, Observable } from "rxjs";
-import { shareReplay, switchMap } from "rxjs/operators";
-import { HttpClient } from "@angular/common/http";
-import { ModuleNavService } from "./module-nav.service";
-import { environment } from "../../../environments/environment";
+import { Injectable } from '@angular/core';
+import { BuyerPersona } from '../interfaces/buyer-persona.interface';
+import { BehaviorSubject, Observable } from 'rxjs';
+import { shareReplay, switchMap } from 'rxjs/operators';
+import { HttpClient } from '@angular/common/http';
+import { ModuleNavService } from './module-nav.service';
+import { environment } from '../../../environments/environment';
 
 @Injectable({
-  providedIn: "root"
+  providedIn: 'root'
 })
 export class BuyerPersonasService {
-  baseUrl = environment.apiRoot + "/api/modules";
+  baseUrl = environment.apiRoot + '/api/modules';
   private buyerPersonas$: Observable<BuyerPersona[]>;
   private dataChanged$ = new BehaviorSubject(true);
 
