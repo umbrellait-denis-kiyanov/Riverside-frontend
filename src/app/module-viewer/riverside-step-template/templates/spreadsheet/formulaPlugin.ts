@@ -103,7 +103,6 @@ export function FormulaPlugin(hotInstance) {
 }
 
 // Inherit the BasePlugin prototype.
-// @ts-ignore
 FormulaPlugin.prototype = Object.create(
   // @ts-ignore
   Handsontable.plugins.BasePlugin.prototype,
@@ -143,7 +142,7 @@ FormulaPlugin.prototype.enablePlugin = function() {
         numericFormat: HotNumericFormat;
       }
     ) => {
-      if (value[0] !== '=') {
+      if (!value || value[0] !== '=') {
         return value;
       }
 

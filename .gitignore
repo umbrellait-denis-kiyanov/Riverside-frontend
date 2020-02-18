@@ -75,3 +75,4 @@ public/img
 composer.phar
 ngapp/dist
 .env
+package-lock.json

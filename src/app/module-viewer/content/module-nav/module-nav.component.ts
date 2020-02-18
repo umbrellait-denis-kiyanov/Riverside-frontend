@@ -15,6 +15,7 @@ import { Subscription } from 'rxjs';
 import { ModuleService } from 'src/app/common/services/module.service';
 import { TemplateContentData } from '../../riverside-step-template/templates/template-data.class';
 import { TemplateComponent } from '../../riverside-step-template/templates/template-base.class';
+import { switchMap, tap, take } from 'rxjs/operators';
 
 type actions =
   | 'mark_as_done'

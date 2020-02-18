@@ -6,13 +6,11 @@ import {
   ViewChildren
 } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import {
-  SegmentCriteria,
-  SegmentCriteriaDefineTemplateData,
-  TemplateParams
-} from '.';
+import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from '.';
 import { IcpInputComponent } from './icp-input/icp-input.component';
 import { Validate } from 'src/app/common/validator.class';
+import txt from '!!raw-loader!./index.ts';
+import { of } from 'rxjs';
 
 const inputs = [
   'on',
@@ -39,9 +37,8 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
   implements OnInit {
   @ViewChildren(IcpInputComponent) icpInputs: QueryList<IcpInputComponent>;
 
-  params = TemplateParams;
-
   contentData: SegmentCriteriaDefineTemplateData['template_params_json'];
+  params = txt;
 
   allSegments = [1, 2, 3, 4, 5];
   activeSegments: number[] = [];
@@ -230,25 +227,27 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent
   }
 
   validate() {
+    let val = false;
+
     if (this.step === 1) {
-      return this.validateBrainstorm();
+      val = this.validateBrainstorm();
     } else if (this.step === 2) {
-      return this.validateBrainstorm(['brainstorm']);
+      val = this.validateBrainstorm(['brainstorm']);
     } else if (this.step === 3) {
-      return this.validateCriteria(['where_mine']);
+      val = this.validateCriteria(['where_mine']);
     } else if (this.step === 4) {
-      return this.validateCriteria();
+      val = this.validateCriteria();
     } else if (this.step === 5) {
-      return true;
+      val = true;
     } else if (this.step === 6) {
-      return this.validateGradeLevels();
+      val = this.validateGradeLevels();
     } else if (this.step === 7) {
-      return this.validateGradeCustomers();
+      val = this.validateGradeCustomers();
     } else if (this.step === 8) {
-      return true;
+      val = true;
     }
 
-    return false;
+    return of(val);
   }
 
   private validateBrainstorm(fields = ['name', 'industries', 'pain_points']) {

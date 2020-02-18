@@ -53,7 +53,7 @@
     "variable-name": false,
     "no-unused-expression": [true, "allow-fast-null-checks"],
     "lines-between-class-members": [true, 1],
-    "no-implicit-dependencies": [true, ["src", "protractor"]],
+    "no-implicit-dependencies": [true, ["src", "protractor", "!!raw-loader!."]],
     "no-submodule-imports": false,
     "newline-before-return": true
   }

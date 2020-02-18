@@ -1,0 +1,65 @@
+<div class="buyer-personas-selector">
+  <div class="d-block" *ngIf="!readonly">
+    <div
+      class="btn btn-default w-100 bpSelect"
+      [class.no-border]="selected.length > 0"
+      *ngIf="buyerPersonasList$ | async as personasList"
+    >
+      <div
+        *ngIf="personasList.length > 0"
+        class="c-pointer"
+        (click)="this.dropdownOpen = !this.dropdownOpen"
+      >
+        <span *ngIf="selected.length == 0">Select Buyer Personas</span>
+        <div *ngIf="selected.length > 0">
+          <span *ngFor="let buyerPersonaSelected of personasList">
+            <img
+              *ngIf="buyerPersonaSelected.isSelected"
+              [e3-tooltip]="
+                buyerPersonaSelected.name + ' - ' + buyerPersonaSelected.title
+              "
+              placement="bottom"
+              class="selectedPersonasImg"
+              src="{{ buyerPersonaSelected.picture }}"
+              alt="{{ buyerPersonaSelected.name }}"
+            />
+          </span>
+        </div>
+      </div>
+      <div *ngIf="personasList.length == 0">
+        No buyer personas to select
+      </div>
+    </div>
+    <div
+      aria-labelledby="grid-sort"
+      class="buyerPersonasList"
+      [class.d-none]="!dropdownOpen && !alwaysOpen"
+      *ngIf="buyerPersonasList$ | async as personasList"
+    >
+      <div
+        class="row buyer-personas-item py-2 align-items-center"
+        *ngFor="let buyerPersona of personasList"
+        [class.selected]="buyerPersona.isSelected"
+        (click)="selectBuyerPersona(buyerPersona.index)"
+      >
+        <div class="col-sm-3 offset-sm-1 buyer-persona-icon">
+          <img
+            src="{{ buyerPersona.picture }}"
+            class="img-fluid"
+            alt="{{ buyerPersona.name }}"
+          />
+        </div>
+        <div class="col-sm-7 buyer-persona-data">
+          <p class="bp-name">{{ buyerPersona.name }}</p>
+          <p class="bp-title">{{ buyerPersona.title }}</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+<div
+  *ngIf="readonly && (readOnlyTitles$ | async) as readOnlyTitles"
+  class="btn btn-default w-100"
+>
+  {{ readOnlyTitles }}
+</div>

@@ -16,6 +16,7 @@ export class LoginComponent implements OnInit {
   submitted: Subscription;
   returnUrl: string;
   isInvalid = false;
+  isSessionExpired = false;
 
   fields = ['username', 'password'];
 

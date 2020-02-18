@@ -1,0 +1,119 @@
+<div class="tabsbar">
+  <div
+    class="tabitem"
+    [ngClass]="{ active: currentSection == persona.title + '_wrapper' }"
+    (click)="scrollTo(persona.title + '_wrapper')"
+    *ngFor="let persona of inputIds.fromPreviousSteps"
+  >
+    <riverside-persona [persona]="persona.title"></riverside-persona>
+  </div>
+</div>
+<div
+  e3-scroll-spy
+  [spiedClassNames]="['persona-wrapper']"
+  (sectionChange)="onSectionChange($event)"
+>
+  <div
+    class="persona-wrapper"
+    id="{{ persona.title + '_wrapper' }}"
+    *ngFor="let persona of inputIds.fromPreviousSteps; let i = index"
+  >
+    <div class="persona-content">
+      <div class="column">
+        <riverside-persona [persona]="persona.title"></riverside-persona>
+        <div style="min-height: 300px;margin-top: 10px" class="CT-hide">
+          <div class="behavior-title" style="padding-left: 0px;">
+            Demographics
+          </div>
+          <div class="previous-behavior">
+            <div class="behavior-subtitle">Gender</div>
+            <div class="behavior-content">
+              Male ({{ textContent(inputs[persona.perc_male].content) }}%) /
+              Female ({{ textContent(inputs[persona.perc_female].content) }}%)
+            </div>
+          </div>
+          <div class="previous-behavior">
+            <div class="behavior-subtitle">Average Age</div>
+            <div class="behavior-content">
+              {{ textContent(inputs[persona.age].content) }}
+            </div>
+          </div>
+          <div class="previous-behavior">
+            <div class="behavior-subtitle">How They Buy</div>
+            <div
+              class="behavior-content no-margin-bottom"
+              [innerHtml]="
+                inputs[persona.how_they_buy].content || '<p></p>' | safehtml
+              "
+            ></div>
+          </div>
+          <div class="previous-behavior">
+            <div class="behavior-subtitle">How They Pay</div>
+            <div
+              class="behavior-content no-margin-bottom"
+              [innerHtml]="
+                inputs[persona.how_they_pay].content || '<p></p>' | safehtml
+              "
+            ></div>
+          </div>
+          <div class="previous-behavior">
+            <div class="behavior-subtitle">Typical Titles</div>
+            <div
+              class="behavior-content no-margin-bottom"
+              [innerHtml]="
+                inputs[persona.titles].content || '<p></p>' | safehtml
+              "
+            ></div>
+          </div>
+          <div
+            class="behavior-title"
+            style="padding-left: 0px;margin-top: 15px"
+          >
+            Watering Holes
+          </div>
+          <div
+            class="behavior-content no-margin-bottom"
+            style="padding-left: 20px"
+            [innerHtml]="
+              inputs[persona.watering_holes].content || '<p></p>' | safehtml
+            "
+          ></div>
+        </div>
+        <div
+          *ngFor="let item of columnBoxes[0]"
+          class="behavior"
+          style="align-items: end"
+        >
+          <div class="behavior-title" style="margin-top: 10px">
+            {{ item.title }}
+          </div>
+          <ice
+            *ngIf="inputs[item.inputId(i)]"
+            [input]="item.inputId(i)"
+            [allowRemoveSelections]="true"
+          ></ice>
+        </div>
+      </div>
+      <div class="column">
+        <div *ngFor="let item of columnBoxes[1]" class="behavior">
+          <div class="behavior-title">{{ item.title }}</div>
+          <ice
+            *ngIf="inputs[item.inputId(i)]"
+            [input]="item.inputId(i)"
+            [allowRemoveSelections]="true"
+          ></ice>
+        </div>
+      </div>
+      <div class="column">
+        <div *ngFor="let item of columnBoxes[2]" class="behavior">
+          <div class="behavior-title">{{ item.title }}</div>
+          <ice
+            *ngIf="inputs[item.inputId(i)]"
+            [input]="item.inputId(i)"
+            [allowRemoveSelections]="true"
+          ></ice>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>

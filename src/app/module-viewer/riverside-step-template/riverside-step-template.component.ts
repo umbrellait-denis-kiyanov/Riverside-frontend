@@ -21,6 +21,7 @@ export class RiversideStepTemplateComponent implements OnChanges {
   @Input() canModify: boolean;
   @Input() template: string;
   @Input() data: TemplateContentData;
+  @Input() embedded = false;
   @ViewChild(RTemplateDirective) templateHost: RTemplateDirective;
 
   templateInstance: TemplateComponent;
@@ -37,5 +38,10 @@ export class RiversideStepTemplateComponent implements OnChanges {
     const componentRef = viewContainerRef.createComponent(componentFactory);
     this.templateInstance = componentRef.instance as TemplateComponent;
     this.templateInstance.data = this.data;
+    this.templateInstance.isEmbedded = this.embedded;
+
+    if (this.embedded) {
+      this.templateInstance.disabled = true;
+    }
   }
 }

@@ -18,7 +18,9 @@
         *ngIf="!inputs[inputIds.personas[i]].content"
         (click)="!disabled && openModal(inputIds.personas[i])"
       >
-        <button mat-icon-button><mat-icon>add</mat-icon></button>
+        <button mat-icon-button>
+          <mat-icon>add</mat-icon>
+        </button>
       </div>
       <img
         class="persona-picture"

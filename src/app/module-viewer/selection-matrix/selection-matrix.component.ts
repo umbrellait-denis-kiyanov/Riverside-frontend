@@ -1,5 +1,6 @@
 import { Component, Input } from '@angular/core';
 import { TemplateComponent } from '../riverside-step-template/templates/template-base.class';
+import { BuyerPersona } from '../../common/interfaces/buyer-persona.interface';
 
 @Component({
   selector: 'app-selection-matrix',
@@ -11,7 +12,7 @@ export class SelectionMatrixComponent {
   question: string;
 
   @Input()
-  personas: string[];
+  personas: BuyerPersona[];
 
   @Input()
   options: Array<{ option: string }>;

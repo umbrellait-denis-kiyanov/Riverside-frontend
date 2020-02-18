@@ -1,0 +1,142 @@
+.persona-content
+  display: flex
+  flex-wrap: wrap
+  margin: 0 15px 0 5px
+  padding: 60px 20px 40px
+  border: 1px solid #333
+  min-height: 650px
+  -webkit-box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, .3)
+  -moz-box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, .3)
+  box-shadow: 4px 4px 10px 0 rgba(0, 0, 0, .3)
+
+  .column
+    padding: 0 20px
+    width: 33%
+    min-width: 350px
+    flex-shrink: 0
+    flex-direction: column
+    display: flex
+
+
+    &:first-child
+      padding-left: 0
+      border-right: 1px solid #ccc
+
+    &:last-child
+      padding-right: 0
+
+    .behavior
+      display: flex
+      flex-direction: column
+      margin-bottom: 10px
+
+      ice
+      \::ng-deep
+        .textbody
+          height: 100%
+          border: none
+          font-size: 13px
+          line-height: 1.4
+
+          &:focus
+            border: 2px solid #ccc
+
+        p
+          margin-bottom: 6px
+
+    \::ng-deep
+      riverside-persona
+        width: 100%
+        margin-top: -35px
+        .persona-name-column
+          width: 100%
+          .persona-name-title
+            font-size: 45px
+            text-transform: uppercase
+            .persona-name
+              font-size: 1em
+            .persona-title
+              font-size: 0.5em
+
+.behavior-title
+  text-transform: uppercase
+  font-size: 20px
+
+.previous-behavior
+  display: flex
+
+  .behavior
+    &-subtitle
+      text-transform: uppercase
+      font-size: 15px
+      line-height: 1.4
+      vertical-align: bottom
+      width: 150px
+      flex-shrink: 0
+    &-content
+      font-size: 12px
+
+.behavior
+  &-title
+    margin-bottom: 3px
+    line-height: 1.6
+
+  &-content
+    font-size: 13px
+
+.no-margin-bottom
+  \::ng-deep
+    p
+      margin-bottom: 0
+
+\:host
+  \::ng-deep
+    .owl-theme
+      .owl-nav.disabled+.owl-dots
+        margin-top: 20px
+
+      .owl-dots
+        .owl-dot
+          span
+            width: 26px
+            height: 26px
+            border: 1px solid #434343
+            border-radius: 13px
+            background-color: transparent
+
+          &.active
+            span
+              padding: 3px
+              background-color: #434343
+              background-clip: content-box
+
+    .owl-carousel
+      .owl-stage
+        display: flex
+
+      .owl-item
+        padding-bottom: 15px
+
+      .owl-item .persona-content
+        height: 100%
+
+.personas-slider-nav
+  display: flex
+  justify-content: center
+  margin: 10px 0 30px
+
+  \::ng-deep
+    riverside-persona.active
+      img.persona-picture
+        border-color: black
+
+    .persona-name-column
+      margin: 0 5px
+      width: auto
+
+      .persona-picture
+        margin-right: 0
+        cursor: pointer
+
+    .persona-name-title
+      display: none

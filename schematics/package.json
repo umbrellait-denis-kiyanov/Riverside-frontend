@@ -1,0 +1,5 @@
+{
+  "description": "Riverside Schematics",
+  "name": "riverside-schematics",
+  "schematics": "./collection.json"
+}

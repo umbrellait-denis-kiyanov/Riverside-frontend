@@ -25,6 +25,7 @@ class ModuleContent extends BaseModel {
   is_checked = false;
   waiting_for_feedback = false;
   feedback_received = false;
+  options: { [key: string]: string } = {};
 
   protected transform() {
     return {

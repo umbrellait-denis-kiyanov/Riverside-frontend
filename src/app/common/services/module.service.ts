@@ -6,6 +6,7 @@ import {
   Template,
   Organization,
   ModuleStatus,
+  SpreadsheetResource,
   ModuleCategory
 } from '../interfaces/module.interface';
 import { HttpClient, HttpResponse } from '@angular/common/http';

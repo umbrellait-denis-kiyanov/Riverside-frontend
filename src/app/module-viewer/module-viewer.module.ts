@@ -61,7 +61,7 @@ import { VideoRecorderModule } from '../video_recorder/video-recorder.module';
 import { FeedbackSourceComponent } from './request-feedback/feedback-source/feedback-source.component';
 import { AudioRecorderModule } from '../audio-recorder/audio-recorder.module';
 import { DashboardComponent } from './dashboard/dashboard.component';
-import { NgbModule, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
+import { NgbDate, NgbModule, NgbDateAdapter } from '@ng-bootstrap/ng-bootstrap';
 import { NgbStringAdapter } from './ngb-string-adapter';
 import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
 import { DashboardProgressBarComponent } from './dashboard-progress-bar/dashboard-progress-bar.component';
@@ -100,6 +100,24 @@ import { SpreadsheetService } from '../common/services/spreadsheet.service';
 import { ToastrModule } from 'ngx-toastr';
 import { LoginComponent } from './login/login.component';
 import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
+import { BuyerPersonasSelectorComponent } from './riverside-step-template/persona/buyer-personas-selector/buyer-personas-selector.component';
+import { PreRequisiteModulesComponent } from './riverside-step-template/templates/pre-requisite-modules/pre-requisite-modules.component';
+import { ModuleResultComponent } from './riverside-step-template/templates/module-result/module-result.component';
+import { BuyerPersonasService } from '../common/services/buyer-personas.service';
+import { CampaignCalendarTemplateComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar-template.component';
+import { CampaignCalendarComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-calendar.component';
+import { ModalAddCampaignComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/modal-add-campaign/modal-add-campaign.component';
+import { StringToDateStructPipe } from '../common/pipes/string-to-date-struct.pipe';
+import { PersonaNamePipe } from '../common/pipes/personaName.pipe';
+import { CampaignDeletionConfirmationComponent } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
+import { SessionExpirationModalComponent } from '../common/components/session-expiration-modal/session-expiration-modal.component';
+import { FinalFeedbackTabsComponent } from './riverside-step-template/templates/final-feedback/final-feedback-tabs/final-feedback-tabs.component';
+import { FinalFeedbackCarouselComponent } from './riverside-step-template/templates/final-feedback/final-feedback-carousel/final-feedback-carousel.component';
+import { CarouselModule } from 'ngx-owl-carousel-o';
+import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
+import { CheckboxSelectorComponent } from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
+import { MatCheckboxModule } from '@angular/material';
+import { PersonaStrategyComponent } from './riverside-step-template/templates/persona-strategy/persona-strategy.component';
 
 @NgModule({
   imports: [
@@ -128,7 +146,9 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ReactiveFormsModule,
     ImageCropperModule,
     HotTableModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    CarouselModule,
+    MatCheckboxModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -141,6 +161,7 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ReadableDatePipe,
     ReadableTimePipe,
     CanModifyPipe,
+    PersonaNamePipe,
     ReversePipe,
     IceComponent,
     RiversideStepTemplateComponent,
@@ -195,7 +216,24 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     ErrorMsgComponent,
     SpinnerComponent,
     SpreadsheetComponent,
-    LoginComponent
+    LoginComponent,
+    SessionExpirationModalComponent,
+    BuyerPersonasSelectorComponent,
+    PreRequisiteModulesComponent,
+    ModuleResultComponent,
+    PersonaStrategyComponent,
+    CampaignCalendarTemplateComponent,
+    CampaignCalendarComponent,
+    ModuleResultComponent,
+    ModalAddCampaignComponent,
+    CampaignDeletionConfirmationComponent,
+    StringToDateStructPipe,
+    CheckboxSelectorComponent,
+    SessionExpirationModalComponent,
+    FinalFeedbackTabsComponent,
+    FinalFeedbackCarouselComponent,
+    RadioButtonComponent,
+    PersonaNamePipe
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -214,7 +252,18 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     TemplateHeadingComponent,
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
-    VideoComponent
+    VideoComponent,
+    BuyerPersonasSelectorComponent,
+    CheckboxSelectorComponent,
+    RadioButtonComponent,
+    PreRequisiteModulesComponent,
+    ModuleResultComponent,
+    CampaignCalendarTemplateComponent,
+    ModuleResultComponent,
+    ModalAddCampaignComponent,
+    CampaignDeletionConfirmationComponent,
+    SessionExpirationModalComponent,
+    PersonaStrategyComponent
   ],
   providers: [
     AssessmentService,
@@ -227,6 +276,7 @@ import { CorsInterceptor } from '../common/interceptors/CorsInterceptor';
     LeftMenuService,
     InboxService,
     CanModifyPipe,
+    BuyerPersonasService,
     ReversePipe,
     { provide: NgbDateAdapter, useClass: NgbStringAdapter },
     { provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true }

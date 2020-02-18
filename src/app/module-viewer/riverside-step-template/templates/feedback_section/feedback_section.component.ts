@@ -2,7 +2,7 @@ import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
 import { data } from './exampleData';
 import { PersonaInputs } from '../persona-ids.class';
-import { TemplateParams } from '.';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-feedback_section',
@@ -16,11 +16,13 @@ import { TemplateParams } from '.';
   ]
 })
 export class FeedbackSectionTemplateComponent extends TemplateComponent {
-  params = TemplateParams;
   inputIds: PersonaInputs;
 
   contentData = data;
+  params = txt;
   currentSection: string;
+
+  isNavCarousel = false;
 
   getDescription() {
     return '';
@@ -32,7 +34,7 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
 
   protected init() {
     this.inputIds = new PersonaInputs({
-      activePersonas: this.activePersonas,
+      buyerPersonasList$: this.buyerPersonasList$,
       previousSteps: {
         title: {
           prefix: 'persona'
@@ -52,6 +54,11 @@ export class FeedbackSectionTemplateComponent extends TemplateComponent {
         ...this.behaviorInputs()
       }
     });
+
+    this.isNavCarousel =
+      this.contentOptions &&
+      this.contentOptions.nav &&
+      this.contentOptions.nav === 'slides';
   }
 
   behaviorInputs() {

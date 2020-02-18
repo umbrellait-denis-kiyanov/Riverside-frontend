@@ -24,7 +24,7 @@
           (change)="updateTextInput(i, option.option, $event)"
           [checked]="
             (
-              template.inputs[inputIds.personas[i]].selections$ | async
+              template.inputs[(inputIds?.personas)[i]]?.selections$ | async
             )?.includes(option.option)
           "
         />

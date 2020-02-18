@@ -40,7 +40,6 @@ export class StepTemplateEditorComponent implements OnInit {
         params_json: inst.getBuilderParams()
       };
     });
-
     this.onTemplateChange(this.stepEdit.template_component);
   }
 
@@ -87,7 +86,7 @@ export class StepTemplateEditorComponent implements OnInit {
       field.length === 2 ? field : [field[0], field.slice(1)]
     );
 
-    if (template.hasInputs) {
+    if (template.hasInputs && !fields.includes('number_of_inputs')) {
       this.templateFields.push(['number_of_inputs', 'number']);
     }
 

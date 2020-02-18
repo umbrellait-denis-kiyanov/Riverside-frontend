@@ -12,9 +12,12 @@ import { ModuleContentService } from 'src/app/common/services/module-content.ser
 import { ModuleService } from 'src/app/common/services/module.service';
 import { UserService } from 'src/app/common/services/user.service';
 import { TemplateInput } from 'src/app/common/interfaces/module.interface';
-import { BehaviorSubject, Observable } from 'rxjs';
+import { BehaviorSubject, Observable, of } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
+import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { BuyerPersona } from '../../../common/interfaces/buyer-persona.interface';
+import { BuyerPersonasService } from '../../../common/services/buyer-personas.service';
 
 @Injectable()
 export abstract class TemplateComponent
@@ -28,9 +31,12 @@ export abstract class TemplateComponent
   disabled: boolean;
   me: User;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
-  activePersonas: string[];
+  buyerPersonasList$: Observable<BuyerPersona[]>;
+  contentChanged$ = new BehaviorSubject<TemplateInput>(null);
   action: string;
   instanceExists = true;
+  isEmbedded = false;
+  contentOptions: { [key: string]: string };
 
   public prefix = '';
 
@@ -38,8 +44,10 @@ export abstract class TemplateComponent
     protected el: ElementRef,
     protected moduleContentService: ModuleContentService,
     protected moduleService: ModuleService,
+    protected navService: ModuleNavService,
     protected userService: UserService,
-    protected injectorObj: Injector
+    protected injectorObj: Injector,
+    protected buyerPersonasService: BuyerPersonasService
   ) {}
 
   abstract getDescription(): string;
@@ -52,18 +60,9 @@ export abstract class TemplateComponent
     this.inputs = this.data.data.inputs;
     this.disabled = this.data.data.disabled;
     this.me = this.data.me;
+    this.contentOptions = this.data.data.options;
 
-    this.activePersonas = Object.values(this.inputs)
-      .filter(i => i)
-      .map(input => {
-        return input.element_key &&
-          input.element_key.match(/^persona_[0-9]+$/) &&
-          input.content &&
-          input.content !== '<p><br></p>'
-          ? input.element_key
-          : null;
-      })
-      .filter(i => i);
+    this.buyerPersonasList$ = this.buyerPersonasService.getBuyerPersonas();
 
     Object.keys(this.inputs).map(key => this.decorateInput(this.inputs[key]));
     this.init();
@@ -84,9 +83,8 @@ export abstract class TemplateComponent
     return takeWhile(() => this.instanceExists);
   }
 
-  // abstract validate(): boolean;
   validate() {
-    return true;
+    return of(true);
   }
 
   protected init() {}
@@ -97,7 +95,9 @@ export abstract class TemplateComponent
 
   contentChanged(data: TemplateInput) {
     if (data) {
-      this.moduleService.saveInput(data).subscribe();
+      this.moduleService
+        .saveInput(data)
+        .subscribe(_ => this.contentChanged$.next(data));
       if (data.observer) {
         data.observer.next(data.getValue());
       }
@@ -182,6 +182,18 @@ export abstract class TemplateComponent
   }
 
   getBuilderParams() {
-    return this.params;
+    const indexStart =
+      this.params.indexOf('template_params_json: ') +
+      'template_params_json: '.length;
+    const closedBrace = this.params.indexOf('}', indexStart);
+    const countBraces = (
+      this.params.substring(indexStart, closedBrace).match(/{/g) || []
+    ).length;
+    let lastBrace = closedBrace;
+    for (let i = 0; i < countBraces - 1; i++) {
+      lastBrace = this.params.indexOf('}', lastBrace + 1);
+    }
+
+    return this.params.substring(indexStart, lastBrace + 1);
   }
 }

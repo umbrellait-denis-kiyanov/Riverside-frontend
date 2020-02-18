@@ -19,7 +19,8 @@ import {
   takeWhile,
   tap,
   skip,
-  debounceTime
+  debounceTime,
+  withLatestFrom
 } from 'rxjs/operators';
 import { Organization } from 'src/app/common/interfaces/module.interface';
 import { Router, ActivatedRoute } from '@angular/router';

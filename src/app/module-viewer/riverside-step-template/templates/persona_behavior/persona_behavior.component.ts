@@ -1,7 +1,9 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { PersonaBehaviorTemplateData, TemplateParams } from '.';
+import { PersonaBehaviorTemplateData } from '.';
+import txt from '!!raw-loader!./index.ts';
+import { take } from 'rxjs/operators';
 
 @Component({
   selector: 'app-persona_behavior',
@@ -16,10 +18,10 @@ import { PersonaBehaviorTemplateData, TemplateParams } from '.';
   ]
 })
 export class PersonaBehaviorTemplateComponent extends TemplateComponent {
-  params = TemplateParams;
   inputIds: {
     personas: string[];
   };
+  params = txt;
 
   contentData: PersonaBehaviorTemplateData['template_params_json'];
 
@@ -39,10 +41,12 @@ export class PersonaBehaviorTemplateComponent extends TemplateComponent {
       ? '_' + this.contentData.input_sufix
       : '';
 
-    this.inputIds = {
-      personas: this.activePersonas.map(
-        persona => persona.split('_').join('_behavior_') + suffix
-      )
-    };
+    this.buyerPersonasList$.pipe(take(1)).subscribe(buyerPersonas => {
+      this.inputIds = {
+        personas: buyerPersonas.map(
+          persona => `persona_behavior_${persona.index}${suffix}`
+        )
+      };
+    });
   }
 }

@@ -1,0 +1,14 @@
+<div class="modules" *ngIf="modules$ | async as modules">
+  <ul class="list-unstyled" [class.highlight-unfinished]="hasError">
+    <li
+      *ngFor="let module of modules"
+      [class.unfinished]="module.status?.progress != 100"
+    >
+      <mat-icon class="icon-finished">check_circle</mat-icon>
+      <mat-icon class="icon-unfinished">block</mat-icon>
+      <app-module-link [module]="module"></app-module-link>
+    </li>
+  </ul>
+</div>
+
+<module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

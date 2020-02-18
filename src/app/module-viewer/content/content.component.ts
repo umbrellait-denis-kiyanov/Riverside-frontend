@@ -26,6 +26,7 @@ export class ContentComponent implements OnInit, OnDestroy {
   templateComponentName: keyof typeof Templates;
   canModify = false;
   leftMenuExpanded = true;
+  styles = '';
 
   routeWatch: Subscription;
 
@@ -171,6 +172,8 @@ export class ContentComponent implements OnInit, OnDestroy {
     });
 
     this.templateComponentName = moduleContent.template_component as keyof typeof Templates;
+
+    this.styles = `module_${moduleContent.module_id} step_${moduleContent.step_id}`;
 
     window.scrollTo(0, 0);
   }

@@ -1,5 +1,16 @@
 <div class="inputs-wrapper">
-  <ice [(data)]="inputs.brainstorm"></ice>
+  <ice *ngIf="contentData.number_of_inputs < 2" input="brainstorm"></ice>
+
+  <div class="container" *ngIf="contentData.number_of_inputs >= 2">
+    <div class="row" *ngFor="let question of contentData.questions; index as i">
+      <div class="col-5">
+        {{ question.question }}
+      </div>
+      <div class="col-7">
+        <ice class="textbox" [input]="inputIds[i]"></ice>
+      </div>
+    </div>
+  </div>
 </div>
 
 <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

@@ -1,8 +1,8 @@
 import { Component, forwardRef, ViewChild, ElementRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
-import { SpreadsheetTemplateData, TemplateParams } from '.';
+import { SpreadsheetTemplateData } from '.';
 import * as Handsontable from 'handsontable';
-import { Subscription } from 'rxjs';
+import { Subscription, of } from 'rxjs';
 import {
   SpreadsheetResource,
   TemplateInput
@@ -12,6 +12,7 @@ import { LeftMenuService } from 'src/app/common/services/left-menu.service';
 import { SpreadsheetService } from 'src/app/common/services/spreadsheet.service';
 import { HotTableComponent, HotTableRegisterer } from '@handsontable/angular';
 import { FormulaPlugin } from './formulaPlugin';
+import txt from '!!raw-loader!./index.ts';
 
 // remove after upgrading to TypeScript 3.5.1+
 type Omit<T, K extends keyof T> = Pick<
@@ -60,10 +61,9 @@ class PercentageEditor extends Handsontable.editors.TextEditor {
   ]
 })
 export class SpreadsheetComponent extends TemplateComponent {
-  params = TemplateParams;
-
   private spreadsheetService: SpreadsheetService;
   private hotRegister = new HotTableRegisterer();
+  params = txt;
 
   contentData: SpreadsheetTemplateData['template_params_json'];
   sheet: SpreadsheetResource;
@@ -213,35 +213,40 @@ export class SpreadsheetComponent extends TemplateComponent {
             })
           );
 
-          this.cellSettings = data.meta.editable.reduce((editable, range) => {
-            const row = this.getRealRow(parseInt(range, 10) - 1);
+          this.cellSettings = (data.meta.editable || []).reduce(
+            (editable, range) => {
+              const row = this.getRealRow(parseInt(range, 10) - 1);
 
-            if (row === null) {
+              if (row === null) {
+                return editable;
+              }
+
+              const cellRange = range
+                .split(/[0-9]/)
+                .join('')
+                .split('-')
+                .filter(r => r);
+
+              for (
+                let idx = cellRange[0].charCodeAt(0) - 65;
+                idx <= cellRange[cellRange.length - 1].charCodeAt(0) - 65;
+                idx++
+              ) {
+                editable[row][idx].editable = true;
+              }
+
               return editable;
-            }
-
-            const cellRange = range
-              .split(/[0-9]/)
-              .join('')
-              .split('-');
-
-            for (
-              let idx = cellRange[0].charCodeAt(0) - 65;
-              idx <= cellRange[cellRange.length - 1].charCodeAt(0) - 65;
-              idx++
-            ) {
-              editable[row][idx].editable = true;
-            }
-
-            return editable;
-          }, this.cellSettings);
+            },
+            this.cellSettings
+          );
 
           const metaConfig = (field: string, callback) => {
-            this.cellSettings = Object.entries(data.meta[field]).reduce(
+            this.cellSettings = Object.entries(data.meta[field] || {}).reduce(
               (settings, [range, value]) => {
                 if ('*' === range.substr(-1)) {
                   range = range.slice(0, -1) + 'A-' + data.meta.maxColumn;
                 }
+
                 const rowRange = range.match(/[\-0-9]+/)[0].split('-');
                 const colRange = range
                   .split(/[0-9]/)
@@ -309,7 +314,7 @@ export class SpreadsheetComponent extends TemplateComponent {
             cells: this.formatCell.bind(this),
             afterRender: (() => {
               this.isRendered = true;
-              setTimeout(() => this.hotInstance.validateCells(() => {}));
+              setTimeout(() => this.hotInstance.validateCells(_ => {}));
             }).bind(this),
             beforeChange: this.beforeChange.bind(this),
             afterChange: this.afterChange.bind(this),
@@ -355,8 +360,10 @@ export class SpreadsheetComponent extends TemplateComponent {
   }
 
   validate() {
-    return !this.hot.container.nativeElement.querySelector(
-      'td.invalidCell:not(.dontValidate)'
+    return of(
+      !this.hot.container.nativeElement.querySelector(
+        'td.invalidCell:not(.dontValidate)'
+      )
     );
   }
 
@@ -364,6 +371,10 @@ export class SpreadsheetComponent extends TemplateComponent {
     const cell: Partial<HotCell> = {};
 
     const settings = this.cellSettings[row][column];
+
+    if (!settings) {
+      return cell;
+    }
 
     cell.readOnly = !settings.editable;
     if (!cell.readOnly) {

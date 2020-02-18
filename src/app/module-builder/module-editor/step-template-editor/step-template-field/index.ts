@@ -7,6 +7,7 @@ export type TemplateField = [
     | 'resource'
     | 'select'
     | 'number'
+    | 'Module'
     | Array<string>
   )
 ];

@@ -3,10 +3,10 @@
     class="tabitem"
     [ngClass]="{ active: currentSection == persona.title + '_wrapper' }"
     (click)="scrollTo(persona.title + '_wrapper')"
-    *ngFor="let persona of inputIds.fromPreviousSteps"
-    title="{{ textContent(inputs[persona.title].content) }}"
+    *ngFor="let persona of buyerPersonasList$ | async"
+    title="{{ persona.title }}"
   >
-    <riverside-persona [persona]="persona.title"></riverside-persona>
+    <riverside-persona [persona]="persona"></riverside-persona>
   </div>
 </div>
 

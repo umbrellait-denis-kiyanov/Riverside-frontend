@@ -40,6 +40,7 @@ const routes: Routes = [
 ];
 
 @NgModule({
+  // imports: [RouterModule.forRoot(routes, {useHash: true, enableTracing: true, urlUpdateStrategy: 'deferred'})],
   imports: [RouterModule.forChild(routes)],
   providers: [ConfirmExitGuard],
   exports: [RouterModule]

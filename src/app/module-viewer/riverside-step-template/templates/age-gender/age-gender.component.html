@@ -1,3 +1,19 @@
+<div class="template-example" *ngIf="contentData.example">
+  <div class="row">
+    <div class="col-lg-6 col-sm-12" style="font-size: large;">
+      <div
+        class="template-example-text"
+        [innerHtml]="contentData.example.text | safehtml"
+      ></div>
+    </div>
+    <div class="col-lg-6 col-sm-12">
+      <div
+        class="template-example-resource"
+        [innerHtml]="contentData.example.resource | safehtml"
+      ></div>
+    </div>
+  </div>
+</div>
 <div
   class="template-instructions"
   [innerHtml]="contentData.instructions | safehtml"

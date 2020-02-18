@@ -1,0 +1,24 @@
+<div class="modal d-block" tabindex="-1" role="dialog">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content">
+      <div class="modal-header">
+        <h5 class="modal-title text-center text-break">
+          Really remove {{campaignName}}?
+        </h5>
+      </div>
+      <div class="modal-footer">
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="modal.dismiss()"
+        >
+          Cancel
+        </button>
+        <button type="button" class="btn btn-danger" (click)="modal.close()">
+          Remove
+        </button>
+      </div>
+    </div>
+  </div>
+</div>

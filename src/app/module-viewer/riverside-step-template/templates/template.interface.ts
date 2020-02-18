@@ -10,6 +10,9 @@ import { QuestionImageTemplateData } from './question-image';
 import { TemplateInput } from 'src/app/common/interfaces/module.interface';
 import { SegmentCriteriaDefineTemplateData } from './segment-criteria-define';
 import { SpreadsheetTemplateData } from './spreadsheet';
+import { PreRequisiteModuleTemplateData } from './pre-requisite-modules';
+import { ModuleResultTemplateData } from './module-result';
+import { CampaignCalendarTemplateData } from './campaign-calendar-template';
 
 export type TemplateContentDataType =
   | AgeGenderTemplateData
@@ -21,7 +24,10 @@ export type TemplateContentDataType =
   | FeedbackSectionTemplateData
   | QuestionImageTemplateData
   | SpreadsheetTemplateData
-  | SegmentCriteriaDefineTemplateData;
+  | SegmentCriteriaDefineTemplateData
+  | PreRequisiteModuleTemplateData
+  | ModuleResultTemplateData
+  | CampaignCalendarTemplateData;
 
 export interface TemplateComponentInterface {
   data: TemplateContentData;
@@ -35,7 +41,13 @@ export interface TemplateContentDataBase {
   resource?: string;
   template_params_json?: {
     description: string;
+    number_of_inputs?: number;
     title: string;
     inputs?: string;
   };
+}
+
+export interface TemplateOption {
+  key?: string;
+  value?: string;
 }

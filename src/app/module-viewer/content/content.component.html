@@ -5,6 +5,7 @@
 >
   <riverside-step-template
     *ngIf="templateData"
+    [ngClass]="styles"
     [canModify]="canModify"
     [template]="templateComponentName"
     [data]="templateData"

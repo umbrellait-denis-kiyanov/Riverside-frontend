@@ -1,0 +1,21 @@
+<div class="modal-header">
+  <h6 class="modal-title">Need more time?</h6>
+  <button type="button" class="close" aria-label="Close">
+    <span aria-hidden="true">&times;</span>
+  </button>
+</div>
+<div class="modal-body">
+  <p>
+    Your session is about to expire. You will be automatically signed out in
+  </p>
+  <h4>{{ timer | date: 'mm:ss' }}</h4>
+  <p style="margin-bottom: 0">
+    To continue your session, select <b>Stay Signed In</b>
+  </p>
+</div>
+<div class="modal-footer">
+  <button mat-button color="accent" (click)="modalRef.close(true)">
+    Stay Signed In
+  </button>
+  <button mat-button (click)="modalRef.close(false)">Sign Out</button>
+</div>

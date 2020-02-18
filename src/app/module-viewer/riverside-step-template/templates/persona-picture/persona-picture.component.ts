@@ -1,9 +1,11 @@
 import { Component, forwardRef } from '@angular/core';
 
 import { TemplateComponent } from '../template-base.class';
-import { PersonaPictureTemplateData, TemplateParams } from '.';
+import { PersonaPictureTemplateData } from '.';
 import { NgbModal } from '@ng-bootstrap/ng-bootstrap';
 import { PersonaPictureListComponent } from './persona-picture-list/persona-picture-list.component';
+import BuyerPersonasConfigTemplateComponent from '../buyer-personas-config-template-component';
+import txt from '!!raw-loader!./index.ts';
 
 @Component({
   selector: 'app-persona-picture',
@@ -17,12 +19,12 @@ import { PersonaPictureListComponent } from './persona-picture-list/persona-pict
     }
   ]
 })
-export class PersonaPictureTemplateComponent extends TemplateComponent {
-  params = TemplateParams;
+export class PersonaPictureTemplateComponent extends BuyerPersonasConfigTemplateComponent {
   inputIds = {
     fromPreviousStep: [],
     personas: []
   };
+  params = txt;
 
   contentData: PersonaPictureTemplateData['template_params_json'];
 
@@ -37,16 +39,24 @@ export class PersonaPictureTemplateComponent extends TemplateComponent {
   }
 
   protected init() {
+    super.init();
     this.modalService = this.injectorObj.get(NgbModal);
-
+    const personas = Object.values(this.inputs)
+      .filter(i => i)
+      .map(input => {
+        return input.element_key &&
+          input.element_key.match(/^persona_[0-9]+$/) &&
+          this.notEmpty(input.content)
+          ? input.element_key
+          : null;
+      })
+      .filter(i => i);
     this.inputIds = {
-      fromPreviousStep: this.activePersonas.map(persona => ({
+      fromPreviousStep: personas.map(persona => ({
         title: persona,
         name: persona.split('_').join('_name_')
       })),
-      personas: this.activePersonas.map(persona =>
-        persona.split('_').join('_picture_')
-      )
+      personas: personas.map(persona => persona.split('_').join('_picture_'))
     };
 
     this.contentData = this.data.data

@@ -8,9 +8,9 @@
 </div>
 
 <div class="inputs-wrapper container-fluid">
-  <div *ngFor="let inputId of activePersonas; let idx = index" class="row">
+  <div *ngFor="let persona of inputIds.personas; let idx = index" class="row">
     <div class="col-sm-6">
-      <ice [disabled]="true" [input]="inputId"></ice>
+      <ice [disabled]="true" [input]="'persona_' + (idx + 1)"></ice>
     </div>
     <div class="col-sm-6">
       <ice [input]="inputIds.personas[idx]" single="true"></ice>

@@ -1,8 +1,9 @@
 <div class="middle-buttons">
   <button
-    *ngIf="is_done"
+    mat-button
     [hidden]="hideActionButton"
-    mat-raised-button
+    [class.mat-raised-button]="is_done"
+    [class.mat-stroked-button]="!is_done"
     color="accent"
     (click)="buttonClicked()"
     e3-async-button
@@ -11,30 +12,10 @@
     {{ actionButtonText }}
   </button>
   <button
-    *ngIf="!is_done"
-    [hidden]="hideActionButton"
-    mat-stroked-button
-    color="accent"
-    (click)="buttonClicked()"
-    e3-async-button
-    [running]="submitting && !submitting.closed"
-  >
-    {{ actionButtonText }}
-  </button>
-
-  <button
-    *ngIf="subaction && is_subaction_done"
-    mat-raised-button
-    color="accent"
-    (click)="buttonClicked(subaction, true)"
-    e3-async-button
-    [running]="submittingSubaction && !submittingSubaction.closed"
-  >
-    {{ subactionButtonText }}
-  </button>
-  <button
-    *ngIf="subaction && !is_subaction_done"
-    mat-stroked-button
+    mat-button
+    *ngIf="subaction"
+    [class.mat-raised-button]="is_subaction_done"
+    [class.mat-stroked-button]="!is_subaction_done"
     color="accent"
     (click)="buttonClicked(subaction, true)"
     e3-async-button
