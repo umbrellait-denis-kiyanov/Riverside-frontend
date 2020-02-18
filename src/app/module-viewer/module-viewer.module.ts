@@ -113,6 +113,9 @@ import {
   CampaignDeletionConfirmationComponent
 } from './riverside-step-template/templates/campaign-calendar-template/campaign-calendar/campaign-deletion-confirmation/campaign-deletion-confirmation';
 import {SessionExpirationModalComponent} from '../common/components/session-expiration-modal/session-expiration-modal.component';
+import {CheckboxSelectorComponent} from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
+import {MatCheckboxModule} from '@angular/material';
+import {PersonaStrategyComponent} from './riverside-step-template/templates/persona-strategy/persona-strategy.component';
 import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
 
 @NgModule({
@@ -142,7 +145,8 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     ReactiveFormsModule,
     ImageCropperModule,
     HotTableModule.forRoot(),
-    ToastrModule.forRoot()
+    ToastrModule.forRoot(),
+    MatCheckboxModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -212,6 +216,7 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
+    SessionExpirationModalComponent,
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
@@ -222,6 +227,7 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
     StringToDateStructPipe,
+    CheckboxSelectorComponent,
     SessionExpirationModalComponent,
     RadioButtonComponent,
     PersonaNamePipe
@@ -244,13 +250,16 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
+    BuyerPersonasSelectorComponent,
+    CheckboxSelectorComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
     CampaignCalendarTemplateComponent,
     ModuleResultComponent,
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
-    SessionExpirationModalComponent
+    SessionExpirationModalComponent,
+    PersonaStrategyComponent
   ],
   providers: [
     AssessmentService,
@@ -265,9 +274,9 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     CanModifyPipe,
     BuyerPersonasService,
     ReversePipe,
-    {provide: NgbDateAdapter, useClass: NgbStringAdapter},
-    {provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true}
+    { provide: NgbDateAdapter, useClass: NgbStringAdapter },
+    { provide: HTTP_INTERCEPTORS, useClass: CorsInterceptor, multi: true }
   ],
   bootstrap: [ModuleViewerRootComponent]
 })
-export class ModuleViewerModule { }
+export class ModuleViewerModule {}

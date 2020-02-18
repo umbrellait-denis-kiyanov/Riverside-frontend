@@ -1,9 +1,9 @@
 import { Component, forwardRef } from '@angular/core';
 import { TemplateComponent } from '../template-base.class';
+import { of } from 'rxjs';
+import { Validate } from 'src/app/common/validator.class';
 import { BrainstormTemplateData } from '.';
 import txt from '!!raw-loader!./index.ts';
-import { Validate } from 'src/app/common/validator.class';
-import { of } from 'rxjs';
 
 @Component({
   selector: 'app-brainstorm',
