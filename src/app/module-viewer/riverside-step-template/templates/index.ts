@@ -16,6 +16,7 @@ import { PreRequisiteModulesComponent } from './pre-requisite-modules/pre-requis
 import { ModuleResultComponent } from './module-result/module-result.component';
 import { PersonaStrategyComponent } from './persona-strategy/persona-strategy.component';
 import { CampaignCalendarTemplateComponent } from './campaign-calendar-template/campaign-calendar-template.component';
+import {RadioButtonComponent} from './radio-button/radio-button.component';
 
 export const Templates = {
   narrow_down: NarrowDownComponent,
@@ -35,5 +36,6 @@ export const Templates = {
   spreadsheet: SpreadsheetComponent,
   video: VideoComponent,
   checkbox: CheckboxSelectorComponent,
-  persona_strategy: PersonaStrategyComponent
+  persona_strategy: PersonaStrategyComponent,
+  radio_button: RadioButtonComponent
 };

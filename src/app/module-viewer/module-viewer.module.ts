@@ -116,6 +116,7 @@ import {SessionExpirationModalComponent} from '../common/components/session-expi
 import {CheckboxSelectorComponent} from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
 import {MatCheckboxModule} from '@angular/material';
 import {PersonaStrategyComponent} from './riverside-step-template/templates/persona-strategy/persona-strategy.component';
+import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
 
 @NgModule({
   imports: [
@@ -228,6 +229,7 @@ import {PersonaStrategyComponent} from './riverside-step-template/templates/pers
     StringToDateStructPipe,
     CheckboxSelectorComponent,
     SessionExpirationModalComponent,
+    RadioButtonComponent,
     PersonaNamePipe
   ],
   entryComponents: [
