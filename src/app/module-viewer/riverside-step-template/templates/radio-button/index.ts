@@ -14,9 +14,9 @@ export interface RadiobuttonTemplateData extends TemplateContentDataBase {
     description: string;
     require_selection: boolean;
     step_select:
-      | 'Title Only'
-      | 'Title And Description'
-      | 'Title Description And Image';
+      | 'TitleOnly'
+      | 'TitleAndDescription'
+      | 'TitleDescriptionAndImage';
     options: Array<{ title: string; image: string; description: string }>;
   };
 }

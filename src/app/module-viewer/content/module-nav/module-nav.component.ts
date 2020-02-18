@@ -35,7 +35,7 @@ export class ModuleNavComponent implements OnInit, OnChanges, OnDestroy {
   @Input() step: TemplateContentData;
   @Input() action: actions;
   @Input() subaction: actions;
-  @Input() submitting: boolean | Subscription;
+  @Input() submitting: Subscription;
   @Input() is_done: boolean;
   @Input() is_subaction_done: boolean;
   @Input() hideActionButton: boolean;
