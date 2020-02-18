@@ -1,17 +1,16 @@
-import { Component, OnInit, Input, ViewEncapsulation } from '@angular/core';
-import { NgbActiveModal } from '@ng-bootstrap/ng-bootstrap';
-import { Step, Template } from 'src/app/common/interfaces/module.interface';
-import { Templates } from '../../../module-viewer/riverside-step-template/templates';
-import { TemplateField } from './step-template-field';
+import { Component, OnInit, Input, ViewEncapsulation } from "@angular/core";
+import { NgbActiveModal } from "@ng-bootstrap/ng-bootstrap";
+import { Step, Template } from "src/app/common/interfaces/module.interface";
+import { Templates } from "../../../module-viewer/riverside-step-template/templates";
+import { TemplateField } from "./step-template-field";
 
 @Component({
-  selector: 'app-step-template-editor',
-  templateUrl: './step-template-editor.component.html',
-  styleUrls: ['./step-template-editor.component.sass'],
-  encapsulation: ViewEncapsulation.None,
+  selector: "app-step-template-editor",
+  templateUrl: "./step-template-editor.component.html",
+  styleUrls: ["./step-template-editor.component.sass"],
+  encapsulation: ViewEncapsulation.None
 })
 export class StepTemplateEditorComponent implements OnInit {
-
   @Input() step: Step;
 
   stepEdit: Step;
@@ -20,13 +19,13 @@ export class StepTemplateEditorComponent implements OnInit {
 
   templateFields: TemplateField[];
 
-  description = '';
+  description = "";
 
   constructor(public modal: NgbActiveModal) {}
 
   ngOnInit() {
     this.stepEdit = JSON.parse(JSON.stringify(this.step));
-    if ('[]' === JSON.stringify(this.stepEdit.template_params_json)) {
+    if ("[]" === JSON.stringify(this.stepEdit.template_params_json)) {
       this.stepEdit.template_params_json = {};
     }
 
@@ -52,29 +51,44 @@ export class StepTemplateEditorComponent implements OnInit {
   onTemplateChange(templateId: string) {
     const template = this.templates.find(tpl => tpl.id === templateId);
 
-    const fields = template ? template.params_json.
-      replace(/\s/g, '').
-      split(/inputs\:\s{0,}\[\]/).join('inputs:Array<{key: string}>').
-      split(';').join(',').
-      split('Array<').join('[').
-      split('>').join(']').
-      replace(/([_a-zA-Z0-9]+)/g, '"$1"').
-      split(',}').join('}').
-      split('{').join('[').
-      split('}').join(']').
-      split(',').join('],[').
-      split(':').join(',').
-      split('?').join('').
-      split('\'').join('').
-      split('|').join(',')
-      : '';
+    const fields = template
+      ? template.params_json
+          .replace(/\s/g, "")
+          .split(/inputs\:\s{0,}\[\]/)
+          .join("inputs:Array<{key: string}>")
+          .split(";")
+          .join(",")
+          .split("Array<")
+          .join("[")
+          .split(">")
+          .join("]")
+          .replace(/([_a-zA-Z0-9]+)/g, '"$1"')
+          .split(",}")
+          .join("}")
+          .split("{")
+          .join("[")
+          .split("}")
+          .join("]")
+          .split(",")
+          .join("],[")
+          .split(":")
+          .join(",")
+          .split("?")
+          .join("")
+          .split("'")
+          .join("")
+          .split("|")
+          .join(",")
+      : "";
 
-    this.templateFields = JSON.parse('[' + fields + ']').map(field => field.length === 2 ? field : [field[0], field.slice(1)]);
+    this.templateFields = JSON.parse("[" + fields + "]").map(field =>
+      field.length === 2 ? field : [field[0], field.slice(1)]
+    );
 
-    if (template.hasInputs && !fields.includes('number_of_inputs')) {
-      this.templateFields.push(['number_of_inputs', 'number']);
+    if (template.hasInputs && !fields.includes("number_of_inputs")) {
+      this.templateFields.push(["number_of_inputs", "number"]);
     }
 
-    this.description = template ? template.description : '';
+    this.description = template ? template.description : "";
   }
 }

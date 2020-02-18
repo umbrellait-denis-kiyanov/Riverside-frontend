@@ -1,4 +1,4 @@
-import { Prompt } from './prompt.interface';
+import { Prompt } from "./prompt.interface";
 
 export interface Source {
   postName: string;

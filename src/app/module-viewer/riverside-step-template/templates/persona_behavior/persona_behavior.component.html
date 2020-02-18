@@ -1,22 +1,28 @@
-<div
-  class="template-example"
-  *ngIf="contentData.example as example"
->
+<div class="template-example" *ngIf="contentData.example as example">
   <div class="row resource-row">
-    <div class="col-md col-sm-12" style="font-size: large;" *ngIf="example.text">
-      <div class="template-example-text"
+    <div
+      class="col-md col-sm-12"
+      style="font-size: large;"
+      *ngIf="example.text"
+    >
+      <div
+        class="template-example-text"
         [innerHtml]="example.text | safehtml"
       ></div>
     </div>
     <div class="col-md col-sm-12" *ngIf="example.resource">
-      <div class="template-example-resource"
+      <div
+        class="template-example-resource"
         [innerHtml]="example.resource | safehtml"
       ></div>
     </div>
   </div>
 </div>
 
-<div class="persona-behavior-wrapper" *ngFor="let matrix of contentData.selection_matrix">
+<div
+  class="persona-behavior-wrapper"
+  *ngFor="let matrix of contentData.selection_matrix"
+>
   <app-selection-matrix
     *ngIf="buyerPersonasList$ | async"
     [disabled]="disabled"
@@ -38,10 +44,13 @@
   <div class="persona-row">
     <div class="persona-name-column"></div>
     <div class="persona-behavior-column behavior-title ">
-      {{contentData.behavior}}
+      {{ contentData.behavior }}
     </div>
   </div>
-  <div class="persona-row" *ngFor="let persona of buyerPersonasList$ | async; let i=index">
+  <div
+    class="persona-row"
+    *ngFor="let persona of buyerPersonasList$ | async; let i = index"
+  >
     <riverside-persona [persona]="persona"></riverside-persona>
     <div class="persona-behavior-column">
       <ice *ngIf="inputIds" [input]="inputIds.personas[i]"></ice>

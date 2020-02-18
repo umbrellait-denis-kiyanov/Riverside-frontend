@@ -1,38 +1,53 @@
-import { Component, forwardRef } from '@angular/core';
-import { TemplateComponent } from '../template-base.class';
-import { of } from 'rxjs';
-import { Validate } from 'src/app/common/validator.class';
-import { BrainstormTemplateData } from '.';
-import txt from '!!raw-loader!./index.ts';
+import { Component, forwardRef } from "@angular/core";
+import { TemplateComponent } from "../template-base.class";
+import { of } from "rxjs";
+import { Validate } from "src/app/common/validator.class";
+import { BrainstormTemplateData } from ".";
+import txt from "!!raw-loader!./index.ts";
 
 @Component({
-  selector: 'app-brainstorm',
-  templateUrl: './brainstorm.component.html',
-  styleUrls: ['./brainstorm.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => BrainstormTemplateComponent) }]
+  selector: "app-brainstorm",
+  templateUrl: "./brainstorm.component.html",
+  styleUrls: ["./brainstorm.component.sass"],
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => BrainstormTemplateComponent)
+    }
+  ]
 })
 export class BrainstormTemplateComponent extends TemplateComponent {
   params = txt;
-  contentData: BrainstormTemplateData['template_params_json'];
+  contentData: BrainstormTemplateData["template_params_json"];
   inputIds: string[];
 
   getDescription() {
-    return '';
+    return "";
   }
 
   getName() {
-    return 'Brainstorm';
+    return "Brainstorm";
   }
 
   protected init() {
-    this.contentData = this.data.data.template_params_json as BrainstormTemplateData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as BrainstormTemplateData["template_params_json"];
 
-    this.inputIds = Object.keys(this.data.data.inputs).slice(0, Number(this.contentData.number_of_inputs));
+    this.inputIds = Object.keys(this.data.data.inputs).slice(
+      0,
+      Number(this.contentData.number_of_inputs)
+    );
   }
 
   validate() {
-    const validator = [Validate.required('Please fill out this field')];
+    const validator = [Validate.required("Please fill out this field")];
 
-    return of(this.inputIds.reduce((isValid, input) => this.validateInput(this.getInput(input), validator) && isValid, true));
+    return of(
+      this.inputIds.reduce(
+        (isValid, input) =>
+          this.validateInput(this.getInput(input), validator) && isValid,
+        true
+      )
+    );
   }
 }

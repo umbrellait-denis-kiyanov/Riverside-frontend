@@ -8,8 +8,8 @@
     (click)="buttonClicked()"
     e3-async-button
     [running]="submitting && !submitting.closed"
-    >
-    {{actionButtonText}}
+  >
+    {{ actionButtonText }}
   </button>
 
   <button
@@ -18,16 +18,17 @@
     [class.mat-raised-button]="is_subaction_done"
     [class.mat-stroked-button]="!is_subaction_done"
     color="accent"
-    (click)="buttonClicked(subaction,true)"
+    (click)="buttonClicked(subaction, true)"
     e3-async-button
     [running]="submittingSubaction && !submittingSubaction.closed"
-    >
-    {{subactionButtonText}}
+  >
+    {{ subactionButtonText }}
   </button>
 </div>
 
 <br />
 
 <div class="alert alert-danger" *ngIf="hasValidationError">
-  This step cannot be marked as done because of missing or invalid inputs. Please check the error messages above.
+  This step cannot be marked as done because of missing or invalid inputs.
+  Please check the error messages above.
 </div>

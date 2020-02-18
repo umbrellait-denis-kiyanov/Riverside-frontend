@@ -1,24 +1,23 @@
-import { Component, OnInit } from '@angular/core';
-import { InboxService } from './inbox.service';
-import { ActivatedRoute } from '@angular/router';
-import { UserService } from 'src/app/common/services/user.service';
-import { map, switchMap, filter } from 'rxjs/operators';
-import { Observable, Subscription } from 'rxjs';
-import Message from './message.model';
-import { ToastrService } from 'ngx-toastr';
+import { Component, OnInit } from "@angular/core";
+import { InboxService } from "./inbox.service";
+import { ActivatedRoute } from "@angular/router";
+import { UserService } from "src/app/common/services/user.service";
+import { map, switchMap, filter } from "rxjs/operators";
+import { Observable, Subscription } from "rxjs";
+import Message from "./message.model";
+import { ToastrService } from "ngx-toastr";
 
 @Component({
-  selector: 'app-inbox',
-  templateUrl: './inbox.component.html',
-  styleUrls: ['./inbox.component.sass']
+  selector: "app-inbox",
+  templateUrl: "./inbox.component.html",
+  styleUrls: ["./inbox.component.sass"]
 })
 export class InboxComponent implements OnInit {
-
-  feedbackMessage: string = '';
+  feedbackMessage: string = "";
   routerLink: string[];
   submitting: Subscription;
   canProvideFeedback = false;
-  currentTab = 'text';
+  currentTab = "text";
 
   message$: Observable<Message>;
 
@@ -27,7 +26,7 @@ export class InboxComponent implements OnInit {
     private route: ActivatedRoute,
     private userService: UserService,
     private toastr: ToastrService
-  ) { }
+  ) {}
 
   ngOnInit() {
     this.canProvideFeedback = this.userService.me.permissions.riversideProvideFeedback;
@@ -57,21 +56,31 @@ export class InboxComponent implements OnInit {
       message.message = `<p>No message was provided.</p>`;
     }
 
-    this.routerLink = ['/org', String(message.to_org_id || message.from_org_id), 'module', String(message.module_id)];
+    this.routerLink = [
+      "/org",
+      String(message.to_org_id || message.from_org_id),
+      "module",
+      String(message.module_id)
+    ];
     if (message.step_id) {
-      this.routerLink = this.routerLink.concat(['step', String(message.step_id)]);
+      this.routerLink = this.routerLink.concat([
+        "step",
+        String(message.step_id)
+      ]);
     }
 
     return message;
   }
 
   provideFeedback(message: Message, text: string) {
-    this.submitting = this.inboxService.save({
-      assessment_session_id: message.assessment_session_id,
-      to_org_id: message.from_org_id,
-      module_id: message.module_id || 0,
-      parent_id: message.id,
-      message: text
-    }).subscribe();
+    this.submitting = this.inboxService
+      .save({
+        assessment_session_id: message.assessment_session_id,
+        to_org_id: message.from_org_id,
+        module_id: message.module_id || 0,
+        parent_id: message.id,
+        message: text
+      })
+      .subscribe();
   }
 }

@@ -1,13 +1,9 @@
 <ul>
   <li class="logo">
-    <img src="/assets/img/riverside_logo.png">
+    <img src="/assets/img/riverside_logo.png" />
   </li>
 
-  <li
-    class="menu-item"
-    e3-tooltip="MENU"
-    placement="right"
-  >
+  <li class="menu-item" e3-tooltip="MENU" placement="right">
     <a (click)="toggleMenu()">
       <div class="menu-item-icon">
         <mat-icon>menu</mat-icon>
@@ -22,11 +18,7 @@
       [e3-tooltip]="menu.label || (menu.labelObservable | async)"
       placement="right"
     >
-      <a
-        [routerLink]="menu.link"
-        routerLinkActive="active"
-        *ngIf="menu.link"
-      >
+      <a [routerLink]="menu.link" routerLinkActive="active" *ngIf="menu.link">
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
 
@@ -39,32 +31,40 @@
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
 
-      <a
-        [href]="menu.href"
-        routerLinkActive="active"
-        *ngIf="menu.href"
-      >
+      <a [href]="menu.href" routerLinkActive="active" *ngIf="menu.href">
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
 
-      <a
-        (click)="openModal(menu.modalComponent)"
-        *ngIf="menu.modalComponent"
-      >
+      <a (click)="openModal(menu.modalComponent)" *ngIf="menu.modalComponent">
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </a>
 
-      <span class="menu-item-inactive" *ngIf="!menu.link && !menu.href && !menu.modalComponent && !(menu.linkObservable | async)">
+      <span
+        class="menu-item-inactive"
+        *ngIf="
+          !menu.link &&
+          !menu.href &&
+          !menu.modalComponent &&
+          !(menu.linkObservable | async)
+        "
+      >
         <ng-container *ngTemplateOutlet="menuItem"></ng-container>
       </span>
 
       <ng-template #menuItem>
-        <div class="menu-item-icon" >
+        <div class="menu-item-icon">
           <span class="menu-item-container" *ngIf="menu['mat-icon']">
-            <mat-icon [ngClass]="menu.className">{{menu['mat-icon']}}</mat-icon>
-            <span class="menu-item-counter" *ngIf="menu.counter"><span class="counter-content">{{menu.counter}}</span></span>
+            <mat-icon [ngClass]="menu.className">{{
+              menu["mat-icon"]
+            }}</mat-icon>
+            <span class="menu-item-counter" *ngIf="menu.counter"
+              ><span class="counter-content">{{ menu.counter }}</span></span
+            >
           </span>
-          <span *ngIf="menu.renderObservable | async as html" [innerHtml]="html | safehtml"></span>
+          <span
+            *ngIf="menu.renderObservable | async as html"
+            [innerHtml]="html | safehtml"
+          ></span>
         </div>
       </ng-template>
     </li>

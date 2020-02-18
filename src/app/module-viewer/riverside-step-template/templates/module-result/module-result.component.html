@@ -13,6 +13,9 @@
   </div>
 </ng-template>
 
-<div *ngIf="contentData.content" [innerHtml]="contentData.content | safehtml"></div>
+<div
+  *ngIf="contentData.content"
+  [innerHtml]="contentData.content | safehtml"
+></div>
 
 <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

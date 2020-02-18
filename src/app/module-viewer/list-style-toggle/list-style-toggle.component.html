@@ -1,5 +1,21 @@
 <div class="btn-group" role="group" aria-label="Grid / list view">
-  <button type="button" class="btn" [class.btn-secondary]="active == 'grid'" [class.btn-default]="active != 'grid'" (click)="active = 'grid'"><mat-icon>apps</mat-icon></button>
-  <button type="button" class="btn" [class.btn-secondary]="active == 'list'" [class.btn-default]="active != 'list'" (click)="active = 'list'"><mat-icon>dehaze</mat-icon></button>
+  <button
+    type="button"
+    class="btn"
+    [class.btn-secondary]="active == 'grid'"
+    [class.btn-default]="active != 'grid'"
+    (click)="active = 'grid'"
+  >
+    <mat-icon>apps</mat-icon>
+  </button>
+  <button
+    type="button"
+    class="btn"
+    [class.btn-secondary]="active == 'list'"
+    [class.btn-default]="active != 'list'"
+    (click)="active = 'list'"
+  >
+    <mat-icon>dehaze</mat-icon>
+  </button>
   <ng-content></ng-content>
 </div>

@@ -1,5 +1,16 @@
-<mat-icon *ngIf="!module.status.due_date" (click)="d.toggle()">calendar_today</mat-icon>
-<input type="text" ngbDatepicker #d="ngbDatepicker" container="body" [minDate]="minDate" [(ngModel)]="module.status.due_date" (dateSelect)="saveDueDate(module)" [footerTemplate]="calendarFooter" />
+<mat-icon *ngIf="!module.status.due_date" (click)="d.toggle()"
+  >calendar_today</mat-icon
+>
+<input
+  type="text"
+  ngbDatepicker
+  #d="ngbDatepicker"
+  container="body"
+  [minDate]="minDate"
+  [(ngModel)]="module.status.due_date"
+  (dateSelect)="saveDueDate(module)"
+  [footerTemplate]="calendarFooter"
+/>
 <ng-template #calendarFooter>
   <div class="calendar-footer text-center" style="padding: 0.5em">
     <button class="btn btn-sm btn-secondary" (click)="d.close()">Cancel</button>

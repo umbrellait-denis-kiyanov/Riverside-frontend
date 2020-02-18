@@ -1,13 +1,27 @@
-<div *ngIf="{all: organizations$ | async, active: active$ | async} as organizations">
-  <div class="organization-select" *ngIf="currentOrg && organizations.all.length > 1">
+<div
+  *ngIf="{
+    all: organizations$ | async,
+    active: active$ | async
+  } as organizations"
+>
+  <div
+    class="organization-select"
+    *ngIf="currentOrg && organizations.all.length > 1"
+  >
     <div ngbDropdown class="d-inline-block" #orgSel="ngbDropdown">
-      <button class="btn btn-primary" ngbDropdownToggle>{{ currentOrg.name }}</button>
+      <button class="btn btn-primary" ngbDropdownToggle>
+        {{ currentOrg.name }}
+      </button>
       <div ngbDropdownMenu aria-labelledby="grid-sort">
-        <button *ngFor="let org of organizations.all"
+        <button
+          *ngFor="let org of organizations.all"
           ngbDropdownItem
           [class.warning]="warning && warning[org.id]"
-          [class.inactive]="organizations.active && !organizations.active[org.id]"
-          (click)="setOrganization(org); orgSel.close();">
+          [class.inactive]="
+            organizations.active && !organizations.active[org.id]
+          "
+          (click)="setOrganization(org); orgSel.close()"
+        >
           {{ org.name }}
         </button>
       </div>

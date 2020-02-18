@@ -1,127 +1,216 @@
-<div class="page-content"
+<div
+  class="page-content"
   *ngIf="{
-    activeGroup: (activeGroup$ | async),
-    answers: (answers$ | async),
-    questions: (questions$ | async),
-    type: (activeType$ | async),
-    canAnswer: (answersRequest$ | async | canModify),
-    canRecord: (answersRequest$ | async | canModify:'X-Can-Record')
-  } as val">
-
+    activeGroup: activeGroup$ | async,
+    answers: answers$ | async,
+    questions: questions$ | async,
+    type: activeType$ | async,
+    canAnswer: answersRequest$ | async | canModify,
+    canRecord: answersRequest$ | async | canModify: 'X-Can-Record'
+  } as val"
+>
   <ng-container *ngIf="val.activeGroup">
-
-  <h2>{{ val.activeGroup.name }}</h2>
-  <div class="description">
+    <h2>{{ val.activeGroup.name }}</h2>
+    <div class="description">
       {{ val.activeGroup.description }}
-  </div>
+    </div>
 
-<table class="table table-borderless table-striped questions" [class.answers-loading]="answersLoading" [class.not-applicable]="val.answers?.isNA" [class.readonly]="!val.canAnswer || answersLoading" *ngIf="val.type as type">
-    <thead>
-      <tr>
-        <th></th>
-        <th class="answer">Yes</th>
-        <th class="answer">No</th>
-        <th>Notes</th>
-      </tr>
-    </thead>
-    <tbody [class.highlight-yes]="highlight == 'yes'" [class.highlight-no]="highlight == 'no'" *ngIf="val.answers as answers">
-      <tr *ngFor="let question of val.questions; trackBy: questionTrack" [class.asm-error]="errors[question.id]">
-        <td class="question">{{ question.position}}. {{ question.question}}</td>
-        <td class="answer answer-yes">
-          <mat-radio-button *ngIf="{checked: (answers && answers.answers && answers.answers[question.id]?.answer == 1)} as c" [name]="question.id" (click)="val.canAnswer && setAnswer(question, type, c && c.checked ? null : 1)" [checked]="c && c.checked"></mat-radio-button>
-        </td>
-        <td class="answer answer-no">
-          <mat-radio-button *ngIf="{checked: (answers && answers.answers && answers.answers[question.id]?.answer == 0)} as c" [name]="question.id" (click)="val.canAnswer && setAnswer(question, type, c && c.checked ? null : 0)" [checked]="answers && answers.answers && answers.answers[question.id]?.answer == 0"></mat-radio-button>
-        </td>
-        <td class="notes">
-          <textarea mat-autosize matAutosizeMaxRows="5"
-            *ngIf="answers?.answers"
-            [disabled]="!val.canAnswer"
-            [ngModel]="answers.answers[question.id]?.notes"
-            (ngModelChange)="answers.answers[question.id] = answers.answers[question.id] || {}; answers.answers[question.id].notes = $event"
-            (change)="saveNotes(question, type, answers.answers[question.id])">
-          </textarea>
-        </td>
-      </tr>
-      <tr class="answer-all" (mouseleave)="highlight = ''">
-        <td class="answer-label">
-          <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'answers')"  *ngIf="val.canRecord">
-            Clear all answers
-            <spinner [sub]="clearAnswersSub"></spinner>
-          </a>
-
-          Select all
-        </td>
-        <td class="answer" (mouseenter)="val.canAnswer && highlight = 'yes'">
-          <mat-radio-button name="answer_all" (click)="val.canAnswer && answerAll(val.activeGroup, type, 1)" *ngIf="!resetSelectAll"></mat-radio-button>
-        </td>
-        <td class="answer" (mouseenter)="val.canAnswer && highlight = 'no'">
-          <mat-radio-button name="answer_all" (click)="val.canAnswer && answerAll(val.activeGroup, type, 0)" *ngIf="!resetSelectAll"></mat-radio-button>
-        </td>
-        <td class="clear-all" *ngIf="val.canRecord">
-          <a tabindex="0" class="clear-all-link" (click)="clearAll(val.activeGroup, type, 'notes')">
-            Clear all notes
-            <spinner [sub]="clearNotesSub"></spinner>
-          </a>
-        </td>
-      </tr>
-      <tr class="importance">
-        <td class="importance-label">
-          On a scale from 1-5, how important is this to your business?
-          (1 = least important, 5 = most important)
-        </td>
-        <td class="importance-select" colspan="2">
-          <select [disabled]="!val.canAnswer" [(ngModel)]="answers.importance" (change)="val.canAnswer && setImportance(val.activeGroup, type, answers.importance)">
-            <option *ngFor="let imp of importance">{{ imp }}</option>
-          </select>
-        </td>
-      </tr>
-    </tbody>
-  </table>
-
-  <table class="summary table table-bordered" *ngIf="val.answers as answers">
-    <tbody>
-      <tr>
-        <td>Sum Total</td>
-        <td class="score">{{ answers.isNA ? 'N/A' : (answers.rawScore || 0) }}</td>
-      </tr>
-      <tr>
-        <td>Weighted Total</td>
-        <td class="score">{{ answers.isNA ? 'N/A' : (answers.score || 0) }}</td>
-      </tr>
-    </tbody>
-  </table>
-
-  <div class="done" *ngIf="val.answers as answers">
-    <button mat-raised-button
-      class="not-applicable"
-      [color]="!answers.isNA || 'accent'"
-      (click)="(val.canAnswer || !answers.isApproved || val.canRecord) && markAsNA(val.activeGroup, val.type, !answers.isNA)"
+    <table
+      class="table table-borderless table-striped questions"
+      [class.answers-loading]="answersLoading"
+      [class.not-applicable]="val.answers?.isNA"
+      [class.readonly]="!val.canAnswer || answersLoading"
+      *ngIf="val.type as type"
     >
-      Not Applicable
-      <spinner [sub]="markAsNASub"></spinner>
-    </button>
+      <thead>
+        <tr>
+          <th></th>
+          <th class="answer">Yes</th>
+          <th class="answer">No</th>
+          <th>Notes</th>
+        </tr>
+      </thead>
+      <tbody
+        [class.highlight-yes]="highlight == 'yes'"
+        [class.highlight-no]="highlight == 'no'"
+        *ngIf="val.answers as answers"
+      >
+        <tr
+          *ngFor="let question of val.questions; trackBy: questionTrack"
+          [class.asm-error]="errors[question.id]"
+        >
+          <td class="question">
+            {{ question.position }}. {{ question.question }}
+          </td>
+          <td class="answer answer-yes">
+            <mat-radio-button
+              *ngIf="{
+                checked:
+                  answers &&
+                  answers.answers &&
+                  answers.answers[question.id]?.answer == 1
+              } as c"
+              [name]="question.id"
+              (click)="
+                val.canAnswer &&
+                  setAnswer(question, type, c && c.checked ? null : 1)
+              "
+              [checked]="c && c.checked"
+            ></mat-radio-button>
+          </td>
+          <td class="answer answer-no">
+            <mat-radio-button
+              *ngIf="{
+                checked:
+                  answers &&
+                  answers.answers &&
+                  answers.answers[question.id]?.answer == 0
+              } as c"
+              [name]="question.id"
+              (click)="
+                val.canAnswer &&
+                  setAnswer(question, type, c && c.checked ? null : 0)
+              "
+              [checked]="
+                answers &&
+                answers.answers &&
+                answers.answers[question.id]?.answer == 0
+              "
+            ></mat-radio-button>
+          </td>
+          <td class="notes">
+            <textarea
+              mat-autosize
+              matAutosizeMaxRows="5"
+              *ngIf="answers?.answers"
+              [disabled]="!val.canAnswer"
+              [ngModel]="answers.answers[question.id]?.notes"
+              (ngModelChange)="
+                answers.answers[question.id] =
+                  answers.answers[question.id] || {};
+                answers.answers[question.id].notes = $event
+              "
+              (change)="saveNotes(question, type, answers.answers[question.id])"
+            >
+            </textarea>
+          </td>
+        </tr>
+        <tr class="answer-all" (mouseleave)="highlight = ''">
+          <td class="answer-label">
+            <a
+              tabindex="0"
+              class="clear-all-link"
+              (click)="clearAll(val.activeGroup, type, 'answers')"
+              *ngIf="val.canRecord"
+            >
+              Clear all answers
+              <spinner [sub]="clearAnswersSub"></spinner>
+            </a>
 
-    <button
-      *ngIf="!answers.isDone || (!answers.isApproved && val.canRecord); else doneButton"
-      mat-raised-button
-      [color]="!(isSectionReady$ | async) || 'accent'"
-      (click)="markAsDone(val.activeGroup, val.type, val.questions, answers)">
+            Select all
+          </td>
+          <td
+            class="answer"
+            (mouseenter)="val.canAnswer && (highlight = 'yes')"
+          >
+            <mat-radio-button
+              name="answer_all"
+              (click)="val.canAnswer && answerAll(val.activeGroup, type, 1)"
+              *ngIf="!resetSelectAll"
+            ></mat-radio-button>
+          </td>
+          <td class="answer" (mouseenter)="val.canAnswer && (highlight = 'no')">
+            <mat-radio-button
+              name="answer_all"
+              (click)="val.canAnswer && answerAll(val.activeGroup, type, 0)"
+              *ngIf="!resetSelectAll"
+            ></mat-radio-button>
+          </td>
+          <td class="clear-all" *ngIf="val.canRecord">
+            <a
+              tabindex="0"
+              class="clear-all-link"
+              (click)="clearAll(val.activeGroup, type, 'notes')"
+            >
+              Clear all notes
+              <spinner [sub]="clearNotesSub"></spinner>
+            </a>
+          </td>
+        </tr>
+        <tr class="importance">
+          <td class="importance-label">
+            On a scale from 1-5, how important is this to your business? (1 =
+            least important, 5 = most important)
+          </td>
+          <td class="importance-select" colspan="2">
+            <select
+              [disabled]="!val.canAnswer"
+              [(ngModel)]="answers.importance"
+              (change)="
+                val.canAnswer &&
+                  setImportance(val.activeGroup, type, answers.importance)
+              "
+            >
+              <option *ngFor="let imp of importance">{{ imp }}</option>
+            </select>
+          </td>
+        </tr>
+      </tbody>
+    </table>
+
+    <table class="summary table table-bordered" *ngIf="val.answers as answers">
+      <tbody>
+        <tr>
+          <td>Sum Total</td>
+          <td class="score">
+            {{ answers.isNA ? "N/A" : answers.rawScore || 0 }}
+          </td>
+        </tr>
+        <tr>
+          <td>Weighted Total</td>
+          <td class="score">{{ answers.isNA ? "N/A" : answers.score || 0 }}</td>
+        </tr>
+      </tbody>
+    </table>
+
+    <div class="done" *ngIf="val.answers as answers">
+      <button
+        mat-raised-button
+        class="not-applicable"
+        [color]="!answers.isNA || 'accent'"
+        (click)="
+          (val.canAnswer || !answers.isApproved || val.canRecord) &&
+            markAsNA(val.activeGroup, val.type, !answers.isNA)
+        "
+      >
+        Not Applicable
+        <spinner [sub]="markAsNASub"></spinner>
+      </button>
+
+      <button
+        *ngIf="
+          !answers.isDone || (!answers.isApproved && val.canRecord);
+          else doneButton
+        "
+        mat-raised-button
+        [color]="!(isSectionReady$ | async) || 'accent'"
+        (click)="markAsDone(val.activeGroup, val.type, val.questions, answers)"
+      >
         <span *ngIf="!val.canRecord">Mark As Done</span>
         <span *ngIf="val.canRecord">Approve</span>
         <spinner [sub]="markAsDoneSub"></spinner>
       </button>
 
-    <ng-template #doneButton>
-      <button mat-raised-button [color]="!answers.isApproved || 'accent'">
-        <span *ngIf="!answers.isApproved">Done</span>
-        <span *ngIf="answers.isApproved">Approved</span>
-      </button>
-    </ng-template>
+      <ng-template #doneButton>
+        <button mat-raised-button [color]="!answers.isApproved || 'accent'">
+          <span *ngIf="!answers.isApproved">Done</span>
+          <span *ngIf="answers.isApproved">Approved</span>
+        </button>
+      </ng-template>
 
-    <div class="alert alert-danger" *ngIf="(errors | keyvalue)?.length">Please answer all questions to mark this section as done</div>
-  </div>
-
+      <div class="alert alert-danger" *ngIf="(errors | keyvalue)?.length">
+        Please answer all questions to mark this section as done
+      </div>
+    </div>
   </ng-container>
-
 </div>

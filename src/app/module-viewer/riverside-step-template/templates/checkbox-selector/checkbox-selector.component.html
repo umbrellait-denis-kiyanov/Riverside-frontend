@@ -1,27 +1,37 @@
 <div class="container">
-
   <div class="row">
     <div class="col-12">
-        <div *ngFor="let item of items; let i = index" class="row">
-          <div class="col-4">
-
-            <div class="row">
-
-              <div class="col-2">
-                <mat-checkbox *ngIf="!disabled" (change)="onChecked($event)" [id]="(i+1)" [(ngModel)]="item.checked"></mat-checkbox>
-                <mat-icon *ngIf="disabled && item.checked">check</mat-icon>
-              </div>
-
-              <div [ngClass]="{'col-10': true, 'text-lg-right': contentData.align_right}"><b>{{item.title | uppercase}}</b></div>
-
+      <div *ngFor="let item of items; let i = index" class="row">
+        <div class="col-4">
+          <div class="row">
+            <div class="col-2">
+              <mat-checkbox
+                *ngIf="!disabled"
+                (change)="onChecked($event)"
+                [id]="i + 1"
+                [(ngModel)]="item.checked"
+              ></mat-checkbox>
+              <mat-icon *ngIf="disabled && item.checked">check</mat-icon>
             </div>
 
+            <div
+              [ngClass]="{
+                'col-10': true,
+                'text-lg-right': contentData.align_right
+              }"
+            >
+              <b>{{ item.title | uppercase }}</b>
+            </div>
           </div>
-          <div class="col-8">
-            <div *ngIf="contentData.show_descriptions" [innerHTML]="item.description | safehtml"></div>
-          </div>
-          <hr class="col-12"/>
         </div>
+        <div class="col-8">
+          <div
+            *ngIf="contentData.show_descriptions"
+            [innerHTML]="item.description | safehtml"
+          ></div>
+        </div>
+        <hr class="col-12" />
+      </div>
     </div>
   </div>
   <module-nav *ngIf="!disabled" [step]="data" [action]="action"></module-nav>

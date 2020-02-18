@@ -1,19 +1,37 @@
-import { Injectable } from '@angular/core';
-import { Router, ActivatedRoute, RoutesRecognized } from '@angular/router';
-import { BehaviorSubject, Observable, combineLatest } from 'rxjs';
-import { ModuleService } from './module.service';
-import { AssessmentType, AssessmentGroup } from '../interfaces/assessment.interface';
-import { filter, startWith, distinctUntilChanged, switchMap, shareReplay, share, take, map, withLatestFrom, skip } from 'rxjs/operators';
-import { AssessmentService } from './assessment.service';
+import { Injectable } from "@angular/core";
+import { Router, ActivatedRoute, RoutesRecognized } from "@angular/router";
+import { BehaviorSubject, Observable, combineLatest } from "rxjs";
+import { ModuleService } from "./module.service";
+import {
+  AssessmentType,
+  AssessmentGroup
+} from "../interfaces/assessment.interface";
+import {
+  filter,
+  startWith,
+  distinctUntilChanged,
+  switchMap,
+  shareReplay,
+  share,
+  take,
+  map,
+  withLatestFrom,
+  skip
+} from "rxjs/operators";
+import { AssessmentService } from "./assessment.service";
 
-export class ResourceFromStorage<T extends {toString: () => string}> {
+export class ResourceFromStorage<T extends { toString: () => string }> {
   private _current: T;
   private storageKey: string;
   private defaultObservable: Observable<T>;
-  private type: 'json' | 'string' | 'number';
-  public onChange =  new BehaviorSubject<T>(null);
+  private type: "json" | "string" | "number";
+  public onChange = new BehaviorSubject<T>(null);
 
-  constructor(storageKey: string,  defaultObservable: Observable<T> = null, type: 'json' | 'string' | 'number' = 'json') {
+  constructor(
+    storageKey: string,
+    defaultObservable: Observable<T> = null,
+    type: "json" | "string" | "number" = "json"
+  ) {
     this.storageKey = storageKey;
     this.type = type;
     this.onChange.next(this.current);
@@ -54,14 +72,14 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
   }
 
   processFromStorage(fromStorage: string) {
-    if (this.type === 'json') {
+    if (this.type === "json") {
       try {
         return JSON.parse(fromStorage);
       } catch (e) {
         return null;
       }
     }
-    if (this.type === 'number') {
+    if (this.type === "number") {
       return Number(fromStorage);
     }
 
@@ -69,7 +87,7 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
   }
 
   processToStorage() {
-    if (this.type !== 'json') {
+    if (this.type !== "json") {
       return this._current.toString();
     } else {
       return JSON.stringify(this._current);
@@ -79,71 +97,83 @@ export class ResourceFromStorage<T extends {toString: () => string}> {
 
 @Injectable()
 export class ModuleNavService {
-  assessmentType = new ResourceFromStorage<number>('last_type');
+  assessmentType = new ResourceFromStorage<number>("last_type");
   activeAssessmentType$: Observable<AssessmentType>;
   assessmentGroup$ = new BehaviorSubject<AssessmentGroup>(null);
   activeAssessmentSessionId$ = new BehaviorSubject<number>(null);
 
   private moveStep$ = new BehaviorSubject<number>(null);
 
-  lastOrganization = new ResourceFromStorage<number>('last_organization_id',
-                        this.moduleService.getDefaultOrganization().pipe(map(org => org.id)),
-                        'number');
+  lastOrganization = new ResourceFromStorage<number>(
+    "last_organization_id",
+    this.moduleService.getDefaultOrganization().pipe(map(org => org.id)),
+    "number"
+  );
 
   organization$ = this.lastOrganization.onChange.pipe(
-      filter(org => !!org),
-      distinctUntilChanged()
-    );
+    filter(org => !!org),
+    distinctUntilChanged()
+  );
 
-  module = new ResourceFromStorage<number>('last_module_id',
-              this.moduleService.getDefaultModule().pipe(map(mod => mod.id)),
-              'number');
+  module = new ResourceFromStorage<number>(
+    "last_module_id",
+    this.moduleService.getDefaultModule().pipe(map(mod => mod.id)),
+    "number"
+  );
 
   module$ = this.module.onChange.pipe(
-      filter(m => !!m),
-      distinctUntilChanged()
-    );
+    filter(m => !!m),
+    distinctUntilChanged()
+  );
 
-  moduleData$ = combineLatest(this.organization$,
-                              this.module$,
-                              this.moduleService.moduleChanged$
-                             )
-                .pipe(
-                  switchMap(([orgId, module]) => this.moduleService.getOrgModule(module, orgId)),
-                  map(moduleData => {
-                    const sortedSteps = moduleData.steps.reduce((steps, step) => {
-                      steps[step.id] = step;
+  moduleData$ = combineLatest(
+    this.organization$,
+    this.module$,
+    this.moduleService.moduleChanged$
+  ).pipe(
+    switchMap(([orgId, module]) =>
+      this.moduleService.getOrgModule(module, orgId)
+    ),
+    map(moduleData => {
+      const sortedSteps = moduleData.steps.reduce((steps, step) => {
+        steps[step.id] = step;
 
-                      return steps;
-                    }, {});
+        return steps;
+      }, {});
 
-                    const isLocked = moduleData.steps.reduce((locked, step) => {
-                      const pendingSteps = step.linked_ids.filter(
-                        id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved
-                      ).map(id => sortedSteps[id].description);
+      const isLocked = moduleData.steps.reduce((locked, step) => {
+        const pendingSteps = step.linked_ids
+          .filter(
+            id => !sortedSteps[id].is_checked && !sortedSteps[id].is_approved
+          )
+          .map(id => sortedSteps[id].description);
 
-                      locked[step.id] = pendingSteps.length ? pendingSteps : false;
+        locked[step.id] = pendingSteps.length ? pendingSteps : false;
 
-                      return locked;
-                    }, {});
+        return locked;
+      }, {});
 
-                    moduleData.steps.forEach(step => step.isLocked = isLocked[step.id]);
+      moduleData.steps.forEach(step => (step.isLocked = isLocked[step.id]));
 
-                    return moduleData;
-                  }),
-                  share()
-                );
+      return moduleData;
+    }),
+    share()
+  );
 
   moduleDataReplay$ = this.moduleData$.pipe(shareReplay(1));
 
-  step = new ResourceFromStorage<number>('last_step_id',
-            this.moduleData$.pipe(map(mod => mod.steps.find(s => !s.is_section_break).id)),
-            'number');
+  step = new ResourceFromStorage<number>(
+    "last_step_id",
+    this.moduleData$.pipe(
+      map(mod => mod.steps.find(s => !s.is_section_break).id)
+    ),
+    "number"
+  );
 
   step$ = this.step.onChange.pipe(
-      filter(m => !!m),
-      distinctUntilChanged()
-    );
+    filter(m => !!m),
+    distinctUntilChanged()
+  );
 
   get assessmentType$() {
     if (!this.activeAssessmentType$) {
@@ -151,7 +181,7 @@ export class ModuleNavService {
         startWith(this.assessmentType.current || 1),
         distinctUntilChanged(),
         filter(t => !!t),
-        switchMap((type_id) => this.asmService.getType(type_id))
+        switchMap(type_id => this.asmService.getType(type_id))
       );
     }
 
@@ -165,8 +195,12 @@ export class ModuleNavService {
     private asmService: AssessmentService
   ) {
     this.moduleService.getOrganizations().subscribe(organizations => {
-      const currentOrg = parseInt(this.route.snapshot.params.orgId, 10) || this.lastOrganization.current;
-      this.lastOrganization.current = Number(currentOrg) ? Number(currentOrg) : Number(organizations[0].id);
+      const currentOrg =
+        parseInt(this.route.snapshot.params.orgId, 10) ||
+        this.lastOrganization.current;
+      this.lastOrganization.current = Number(currentOrg)
+        ? Number(currentOrg)
+        : Number(organizations[0].id);
 
       this.router.events.subscribe(val => {
         if (val instanceof RoutesRecognized) {
@@ -180,26 +214,42 @@ export class ModuleNavService {
     });
 
     // move to next (or previous) step
-    this.moveStep$.pipe(
-      filter(offset => !!offset),
-      switchMap(_ => this.moduleDataReplay$.pipe(skip(1), take(1), withLatestFrom(this.moveStep$)))
-    ).subscribe(([module, offset]) => {
-      let index = module.steps.findIndex(s => s.id === this.step.current);
-      let step = null;
+    this.moveStep$
+      .pipe(
+        filter(offset => !!offset),
+        switchMap(_ =>
+          this.moduleDataReplay$.pipe(
+            skip(1),
+            take(1),
+            withLatestFrom(this.moveStep$)
+          )
+        )
+      )
+      .subscribe(([module, offset]) => {
+        let index = module.steps.findIndex(s => s.id === this.step.current);
+        let step = null;
 
-      do {
-        index = Math.min(Math.max(0, index + offset), module.steps.length - 1);
-        step = module.steps[index];
-      } while ((index !== module.steps.length - 1) && (step.is_section_break || step.isLocked || !index));
+        do {
+          index = Math.min(
+            Math.max(0, index + offset),
+            module.steps.length - 1
+          );
+          step = module.steps[index];
+        } while (
+          index !== module.steps.length - 1 &&
+          (step.is_section_break || step.isLocked || !index)
+        );
 
-      if (step.is_section_break) {
-        step = module.steps.find(step => !step.is_section_break && !step.isLocked);
-      }
+        if (step.is_section_break) {
+          step = module.steps.find(
+            step => !step.is_section_break && !step.isLocked
+          );
+        }
 
-      if (!step.isLocked) {
-        this.goToStep(step.id);
-      }
-    });
+        if (!step.isLocked) {
+          this.goToStep(step.id);
+        }
+      });
   }
 
   getActivatedRoute(): ActivatedRoute {
@@ -223,7 +273,14 @@ export class ModuleNavService {
   }
 
   goToStep(id: number) {
-    this.router.navigate(['org', this.lastOrganization.current, 'module', this.module.current, 'step', id]);
+    this.router.navigate([
+      "org",
+      this.lastOrganization.current,
+      "module",
+      this.module.current,
+      "step",
+      id
+    ]);
   }
 
   getModuleService() {

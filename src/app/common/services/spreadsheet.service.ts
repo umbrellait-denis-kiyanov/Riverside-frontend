@@ -1,26 +1,37 @@
-import { Injectable } from '@angular/core';
-import { SpreadsheetResource, TemplateInput } from '../interfaces/module.interface';
-import { HttpClient } from '@angular/common/http';
-import { Observable } from 'rxjs';
-import { ModuleService } from './module.service';
+import { Injectable } from "@angular/core";
+import {
+  SpreadsheetResource,
+  TemplateInput
+} from "../interfaces/module.interface";
+import { HttpClient } from "@angular/common/http";
+import { Observable } from "rxjs";
+import { ModuleService } from "./module.service";
 
 @Injectable()
 export class SpreadsheetService {
+  constructor(
+    private httpClient: HttpClient,
+    private moduleServide: ModuleService
+  ) {}
 
-    constructor(
-        private httpClient: HttpClient,
-        private moduleServide: ModuleService
-    ) { }
+  getSpreadsheet(
+    input: TemplateInput,
+    xlsFile: string,
+    visibleRows?: number[],
+    keepFormulas?: boolean
+  ): Observable<SpreadsheetResource> {
+    return this.httpClient.get<SpreadsheetResource>(
+      `${this.moduleServide.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls?xls=` +
+        xlsFile +
+        (visibleRows.length ? "&rows=" + JSON.stringify(visibleRows) : "") +
+        (keepFormulas ? "&keepFormulas=true" : "")
+    );
+  }
 
-    getSpreadsheet(input: TemplateInput, xlsFile: string, visibleRows?: number[], keepFormulas?: boolean): Observable<SpreadsheetResource> {
-        return this.httpClient.get<SpreadsheetResource>(
-            `${this.moduleServide.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls?xls=` + xlsFile
-            + (visibleRows.length ? '&rows=' + JSON.stringify(visibleRows) : '')
-            + (keepFormulas ? '&keepFormulas=true' : '')
-            );
-    }
-
-    exportXlsUrl(input: TemplateInput, xlsFile: string) {
-        return `${this.moduleServide.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls-export?xls=` + xlsFile;
-    }
+  exportXlsUrl(input: TemplateInput, xlsFile: string) {
+    return (
+      `${this.moduleServide.baseUrl}/${input.module_id}/org/${input.org_id}/input/${input.id}/xls-export?xls=` +
+      xlsFile
+    );
+  }
 }

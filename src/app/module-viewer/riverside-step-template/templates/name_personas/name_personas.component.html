@@ -1,17 +1,16 @@
 <div class="template-description">
-  <p>In the previous step, you narrowed the personas down these 4 to 6 titles</p>
+  <p>
+    In the previous step, you narrowed the personas down these 4 to 6 titles
+  </p>
 </div>
 <div class="template-description">
   <p>Based on the instructions in the video above, give each persona a name.</p>
 </div>
 
 <div class="inputs-wrapper container-fluid">
-  <div *ngFor="let persona of inputIds.personas let idx = index" class="row">
+  <div *ngFor="let persona of inputIds.personas; let idx = index" class="row">
     <div class="col-sm-6">
-      <ice
-        [disabled]="true"
-        [input]="'persona_' + (idx + 1)"
-      ></ice>
+      <ice [disabled]="true" [input]="'persona_' + (idx + 1)"></ice>
     </div>
     <div class="col-sm-6">
       <ice [input]="inputIds.personas[idx]" single="true"></ice>

@@ -1,8 +1,7 @@
 <div class="tabsbar">
-
   <div
     class="tabitem"
-    [ngClass]="{'active': currentSection == persona.title + '_wrapper'}"
+    [ngClass]="{ active: currentSection == persona.title + '_wrapper' }"
     (click)="scrollTo(persona.title + '_wrapper')"
     *ngFor="let persona of buyerPersonasList$ | async"
     title="{{ persona.title }}"
@@ -12,46 +11,62 @@
 </div>
 
 <div class="page-wrapper">
+  <div
+    e3-scroll-spy
+    [spiedClassNames]="['persona-wrapper']"
+    (sectionChange)="onSectionChange($event)"
+  >
     <div
-        e3-scroll-spy
-        [spiedClassNames]="['persona-wrapper']"
-        (sectionChange)="onSectionChange($event)"
-      >
-        <div class="persona-wrapper" id="{{persona.title+'_wrapper'}}" *ngFor="let persona of inputIds.fromPreviousSteps; let i=index">
-          <div class="persona-content">
-            <div class="column">
-                <riverside-persona [persona]="persona.title"></riverside-persona>
-              <div style="min-height: 300px;margin-top: 10px" >
-                <div class="behavior-title" style="padding-left: 0px;" >Demographics</div>
-                <div class="previous-behavior ">
-                  <div class="behavior-subtitle">Gender</div>
-                  <div class="behavior-content no-color inline">
-                    Male (<ice [input]="persona.perc_male" [numeric]="true"></ice>%) /
-                    Female (<ice [input]="persona.perc_female" [numeric]="true"></ice>%)</div>
-                </div>
-                <div class="previous-behavior">
-                  <div class="behavior-subtitle">Average Age</div>
-                  <ice [input]="persona.age" single="true"></ice>
-                </div>
-                <div class="previous-behavior">
-                  <div class="behavior-subtitle">How They Buy</div>
-                  <ice [input]="persona.how_they_buy"></ice>
-                </div>
-                <div class="previous-behavior">
-                  <div class="behavior-subtitle">How They Pay</div>
-                  <ice [input]="persona.how_they_pay"></ice>
-                </div>
-                <div class="previous-behavior">
-                  <div class="behavior-subtitle">Typical Titles</div>
-                  <ice [input]="persona.titles"></ice>
-                </div>
-                <div class="behavior-title" style="padding-left: 0px;margin-top: 15px" >Watering Holes</div>
-                <div class="previous-behavior">
-                  <ice [input]="persona.watering_holes"></ice>
-                </div>
+      class="persona-wrapper"
+      id="{{ persona.title + '_wrapper' }}"
+      *ngFor="let persona of inputIds.fromPreviousSteps; let i = index"
+    >
+      <div class="persona-content">
+        <div class="column">
+          <riverside-persona [persona]="persona.title"></riverside-persona>
+          <div style="min-height: 300px;margin-top: 10px">
+            <div class="behavior-title" style="padding-left: 0px;">
+              Demographics
+            </div>
+            <div class="previous-behavior ">
+              <div class="behavior-subtitle">Gender</div>
+              <div class="behavior-content no-color inline">
+                Male (<ice [input]="persona.perc_male" [numeric]="true"></ice>%)
+                / Female (<ice
+                  [input]="persona.perc_female"
+                  [numeric]="true"
+                ></ice
+                >%)
               </div>
+            </div>
+            <div class="previous-behavior">
+              <div class="behavior-subtitle">Average Age</div>
+              <ice [input]="persona.age" single="true"></ice>
+            </div>
+            <div class="previous-behavior">
+              <div class="behavior-subtitle">How They Buy</div>
+              <ice [input]="persona.how_they_buy"></ice>
+            </div>
+            <div class="previous-behavior">
+              <div class="behavior-subtitle">How They Pay</div>
+              <ice [input]="persona.how_they_pay"></ice>
+            </div>
+            <div class="previous-behavior">
+              <div class="behavior-subtitle">Typical Titles</div>
+              <ice [input]="persona.titles"></ice>
+            </div>
+            <div
+              class="behavior-title"
+              style="padding-left: 0px;margin-top: 15px"
+            >
+              Watering Holes
+            </div>
+            <div class="previous-behavior">
+              <ice [input]="persona.watering_holes"></ice>
+            </div>
           </div>
         </div>
+      </div>
     </div>
   </div>
 </div>

@@ -6,7 +6,13 @@ export interface E3TableHeaderCol {
 
 export type E3TableHeader = E3TableHeaderCol[];
 
-export type onClickFn = (cell: E3TableCell, col: E3TableHeaderCol, row: E3TableDataRow, rowIndex: number, colIndex: number) => void;
+export type onClickFn = (
+  cell: E3TableCell,
+  col: E3TableHeaderCol,
+  row: E3TableDataRow,
+  rowIndex: number,
+  colIndex: number
+) => void;
 
 export interface E3TableCell {
   value: any;

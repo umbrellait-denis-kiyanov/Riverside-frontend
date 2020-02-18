@@ -1,7 +1,7 @@
 <ul class="nav nav-tabs font-size-12">
   <li
     [ngClass]="{
-      'active':  rla.isActive
+      active: rla.isActive
     }"
     *ngFor="let tab of tabs"
   >
@@ -11,10 +11,8 @@
       [routerLink]="['/' + tab.key]"
       routerLinkActive="routerLinkActive"
       #rla="routerLinkActive"
-    >{{tab.display}}</a>
+      >{{ tab.display }}</a
+    >
   </li>
 </ul>
 <router-outlet></router-outlet>
-
-
-

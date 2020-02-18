@@ -1,37 +1,37 @@
-import { Component, OnInit } from '@angular/core';
-import { TemplateComponent } from '../templates/template-base.class';
-import Message from '../../inbox/message.model';
-import { InboxService } from '../../inbox/inbox.service';
-import { ModuleNavService } from 'src/app/common/services/module-nav.service';
-import { ModuleService } from 'src/app/common/services/module.service';
-import { UserService } from 'src/app/common/services/user.service';
-import { Subscription } from 'rxjs';
+import { Component, OnInit } from "@angular/core";
+import { TemplateComponent } from "../templates/template-base.class";
+import Message from "../../inbox/message.model";
+import { InboxService } from "../../inbox/inbox.service";
+import { ModuleNavService } from "src/app/common/services/module-nav.service";
+import { ModuleService } from "src/app/common/services/module.service";
+import { UserService } from "src/app/common/services/user.service";
+import { Subscription } from "rxjs";
 
 @Component({
-  selector: 'module-feedback',
-  templateUrl: './module-feedback.component.html',
-  styleUrls: ['./module-feedback.component.sass']
+  selector: "module-feedback",
+  templateUrl: "./module-feedback.component.html",
+  styleUrls: ["./module-feedback.component.sass"]
 })
 export class ModuleFeedbackComponent implements OnInit {
-
-  action = 'feedback';
-  subaction = '';
-  message = '';
-  currentTab = 'text';
+  action = "feedback";
+  subaction = "";
+  message = "";
+  currentTab = "text";
   submitting: Subscription;
   submittingSubaction: Subscription;
 
-  constructor(private template: TemplateComponent,
-              private navService: ModuleNavService,
-              private moduleService: ModuleService,
-              private userService: UserService,
-              private inboxService: InboxService
-    ) { }
+  constructor(
+    private template: TemplateComponent,
+    private navService: ModuleNavService,
+    private moduleService: ModuleService,
+    private userService: UserService,
+    private inboxService: InboxService
+  ) {}
 
   ngOnInit() {
     if (this.userService.me.permissions.riversideProvideFeedback) {
-      this.action = 'provide_feedback';
-      this.subaction = 'approve';
+      this.action = "provide_feedback";
+      this.subaction = "approve";
     }
   }
 

@@ -1,13 +1,16 @@
-<div
-  class="template-example"
-  *ngIf="contentData.example"
->
+<div class="template-example" *ngIf="contentData.example">
   <div class="row">
     <div class="col-lg-6 col-sm-12" style="font-size: large;">
-        <div class="template-example-text" [innerHtml]="contentData.example.text | safehtml"></div>
+      <div
+        class="template-example-text"
+        [innerHtml]="contentData.example.text | safehtml"
+      ></div>
     </div>
     <div class="col-lg-6 col-sm-12">
-        <div class="template-example-resource" [innerHtml]="contentData.example.resource | safehtml"></div>
+      <div
+        class="template-example-resource"
+        [innerHtml]="contentData.example.resource | safehtml"
+      ></div>
     </div>
   </div>
 </div>
@@ -19,15 +22,25 @@
 
 <div class="persona-behavior-wrapper">
   <div class="persona-row">
-      <div class="persona-name-column"></div>
-      <div class="persona-behavior-column behavior-title " *ngFor="let trait of traits">
-        {{trait.title}}
-      </div>
+    <div class="persona-name-column"></div>
+    <div
+      class="persona-behavior-column behavior-title "
+      *ngFor="let trait of traits"
+    >
+      {{ trait.title }}
+    </div>
   </div>
-  <div class="persona-row" *ngFor="let persona of inputIds.fromPreviousSteps; let i=index">
-      <riverside-persona [persona]="persona.title"></riverside-persona>
-      <div class="persona-behavior-column" *ngFor="let trait of traits">
-        <ice [input]="'persona_' + trait.id + '_' + (i+1)" single="true" [numeric]="trait.numeric"></ice>
+  <div
+    class="persona-row"
+    *ngFor="let persona of inputIds.fromPreviousSteps; let i = index"
+  >
+    <riverside-persona [persona]="persona.title"></riverside-persona>
+    <div class="persona-behavior-column" *ngFor="let trait of traits">
+      <ice
+        [input]="'persona_' + trait.id + '_' + (i + 1)"
+        single="true"
+        [numeric]="trait.numeric"
+      ></ice>
     </div>
   </div>
 </div>

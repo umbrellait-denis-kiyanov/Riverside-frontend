@@ -1,4 +1,4 @@
-import { TemplateContentDataBase } from '../template.interface';
+import { TemplateContentDataBase } from "../template.interface";
 
 export interface NarrowDownData extends TemplateContentDataBase {
   template_params_json: {

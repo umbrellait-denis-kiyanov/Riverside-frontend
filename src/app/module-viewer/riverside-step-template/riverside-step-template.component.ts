@@ -1,16 +1,22 @@
-import { Component, OnInit, OnChanges, ViewChild, Input, ComponentFactoryResolver } from '@angular/core';
-import { RTemplateDirective } from './riverside-step-template-host.directive';
-import { Templates } from './templates';
-import { TemplateContentData } from './templates/template-data.class';
-import { TemplateComponent } from './templates/template-base.class';
+import {
+  Component,
+  OnInit,
+  OnChanges,
+  ViewChild,
+  Input,
+  ComponentFactoryResolver
+} from "@angular/core";
+import { RTemplateDirective } from "./riverside-step-template-host.directive";
+import { Templates } from "./templates";
+import { TemplateContentData } from "./templates/template-data.class";
+import { TemplateComponent } from "./templates/template-base.class";
 
 @Component({
-  selector: 'riverside-step-template',
-  templateUrl: './riverside-step-template.component.html',
-  styleUrls: ['./riverside-step-template.component.sass']
+  selector: "riverside-step-template",
+  templateUrl: "./riverside-step-template.component.html",
+  styleUrls: ["./riverside-step-template.component.sass"]
 })
 export class RiversideStepTemplateComponent implements OnChanges {
-
   templates = Templates;
   @Input() canModify: boolean;
   @Input() template: string;
@@ -20,15 +26,17 @@ export class RiversideStepTemplateComponent implements OnChanges {
 
   templateInstance: TemplateComponent;
 
-  constructor(private componentFactoryResolver: ComponentFactoryResolver) { }
+  constructor(private componentFactoryResolver: ComponentFactoryResolver) {}
 
   ngOnChanges() {
-    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(this.templates[this.template]);
+    const componentFactory = this.componentFactoryResolver.resolveComponentFactory(
+      this.templates[this.template]
+    );
     const viewContainerRef = this.templateHost.viewContainerRef;
     viewContainerRef.clear();
 
     const componentRef = viewContainerRef.createComponent(componentFactory);
-    this.templateInstance = (componentRef.instance as TemplateComponent);
+    this.templateInstance = componentRef.instance as TemplateComponent;
     this.templateInstance.data = this.data;
     this.templateInstance.isEmbedded = this.embedded;
 

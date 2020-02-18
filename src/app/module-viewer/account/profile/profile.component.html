@@ -8,7 +8,6 @@
         (ngSubmit)="save()"
       >
         <div formGroupName="meta">
-          
           <profile-picture-input
             [(fileUrl)]="form.controls.meta.controls.profile_picture"
           ></profile-picture-input>
@@ -27,12 +26,7 @@
 
         <div class="form-group">
           <label for="email">Email</label>
-          <input
-            id="email"
-            class="site-tbox"
-            formControlName="email"
-          />
-          
+          <input id="email" class="site-tbox" formControlName="email" />
         </div>
         <button
           class="btn btn-primary"

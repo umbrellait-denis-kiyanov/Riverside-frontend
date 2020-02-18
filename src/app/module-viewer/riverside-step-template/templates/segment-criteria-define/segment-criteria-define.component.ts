@@ -1,24 +1,43 @@
-import { Component, OnInit, forwardRef, QueryList, ViewChildren } from '@angular/core';
-import { TemplateComponent } from '../template-base.class';
-import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from '.';
-import { IcpInputComponent } from './icp-input/icp-input.component';
-import { Validate } from 'src/app/common/validator.class';
-import txt from '!!raw-loader!./index.ts';
-import { of } from 'rxjs';
+import {
+  Component,
+  OnInit,
+  forwardRef,
+  QueryList,
+  ViewChildren
+} from "@angular/core";
+import { TemplateComponent } from "../template-base.class";
+import { SegmentCriteria, SegmentCriteriaDefineTemplateData } from ".";
+import { IcpInputComponent } from "./icp-input/icp-input.component";
+import { Validate } from "src/app/common/validator.class";
+import txt from "!!raw-loader!./index.ts";
+import { of } from "rxjs";
 
-const inputs = ['on', 'name', 'industries', 'pain_points', 'brainstorm', 'where_mine', 'criteria'];
+const inputs = [
+  "on",
+  "name",
+  "industries",
+  "pain_points",
+  "brainstorm",
+  "where_mine",
+  "criteria"
+];
 
 @Component({
-  selector: 'app-segment-criteria-define',
-  templateUrl: './segment-criteria-define.component.html',
-  styleUrls: ['./segment-criteria-define.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => SegmentCriteriaDefineComponent) }]
+  selector: "app-segment-criteria-define",
+  templateUrl: "./segment-criteria-define.component.html",
+  styleUrls: ["./segment-criteria-define.component.sass"],
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => SegmentCriteriaDefineComponent)
+    }
+  ]
 })
-export class SegmentCriteriaDefineComponent extends TemplateComponent implements OnInit {
-
+export class SegmentCriteriaDefineComponent extends TemplateComponent
+  implements OnInit {
   @ViewChildren(IcpInputComponent) icpInputs: QueryList<IcpInputComponent>;
 
-  contentData: SegmentCriteriaDefineTemplateData['template_params_json'];
+  contentData: SegmentCriteriaDefineTemplateData["template_params_json"];
   params = txt;
 
   allSegments = [1, 2, 3, 4, 5];
@@ -26,38 +45,38 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   step: number;
 
-  criterias: {[key: number]: SegmentCriteria[]};
+  criterias: { [key: number]: SegmentCriteria[] };
 
-  public prefix = 'segment_criteria_define_';
+  public prefix = "segment_criteria_define_";
 
-  gradePrefix = '';
+  gradePrefix = "";
 
   grades: number[] = [];
 
-  gradeSections: {prefix: string, title: string, grades: number[]}[];
+  gradeSections: { prefix: string; title: string; grades: number[] }[];
 
   gradeLevels = [
-    {grade: 'A', i: 1, level: 88},
-    {grade: 'B', i: 2, level: 75},
-    {grade: 'C', i: 3, level: 65},
-    {grade: 'D', i: 4, level: 55}
+    { grade: "A", i: 1, level: 88 },
+    { grade: "B", i: 2, level: 75 },
+    { grade: "C", i: 3, level: 65 },
+    { grade: "D", i: 4, level: 55 }
   ];
   lastGradeLevel = this.gradeLevels[this.gradeLevels.length - 1];
 
-  userGradeLevels: {[key: string]: string} = {};
+  userGradeLevels: { [key: string]: string } = {};
 
   getDescription() {
-    return 'Ideal Customer Profiles';
+    return "Ideal Customer Profiles";
   }
 
   getName() {
-    return 'ICP: Segment-Criteria';
+    return "ICP: Segment-Criteria";
   }
 
   protected init() {
-
     // @ts-ignore - template_params_json.inputs property causes error with TypeScript 3.1
-    this.contentData = this.data.data.template_params_json as SegmentCriteriaDefineTemplateData['template_params_json'];
+    this.contentData = this.data.data
+      .template_params_json as SegmentCriteriaDefineTemplateData["template_params_json"];
 
     this.initSegments();
     this.condenseSegments();
@@ -65,8 +84,16 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
     // grade customers
     if (7 === this.step) {
-      this.gradePrefix = this.prefix + this.contentData.inputs.split(',').map(s => s.trim()).find(s => s.substr(-5) === '_name').slice(0, -5);
-      this.grades = Array.from(Array(this.contentData.number_of_inputs + 1).keys()).slice(1);
+      this.gradePrefix =
+        this.prefix +
+        this.contentData.inputs
+          .split(",")
+          .map(s => s.trim())
+          .find(s => s.substr(-5) === "_name")
+          .slice(0, -5);
+      this.grades = Array.from(
+        Array(this.contentData.number_of_inputs + 1).keys()
+      ).slice(1);
       this.userGradeLevels = this.getUserGradeLevels();
     }
 
@@ -81,18 +108,22 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
           }
         }
 
-        return {prefix, title, grades};
+        return { prefix, title, grades };
       };
 
-      this.gradeSections = [getSection('grade_customers', 'Existing Customers'),
-                            getSection('grade_new_customers', 'New Customers')];
+      this.gradeSections = [
+        getSection("grade_customers", "Existing Customers"),
+        getSection("grade_new_customers", "New Customers")
+      ];
 
       this.userGradeLevels = this.getUserGradeLevels();
     }
   }
 
   initSegments() {
-    this.activeSegments = this.allSegments.filter(num => this.getInput('on', num).content);
+    this.activeSegments = this.allSegments.filter(
+      num => this.getInput("on", num).content
+    );
 
     if (!this.activeSegments.length) {
       this.addSegment();
@@ -102,8 +133,12 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
   }
 
   getEmptyCriteria() {
-    const emptyDef = JSON.stringify({content: '', comments_json: ''});
-    return {name: JSON.parse(emptyDef), description: JSON.parse(emptyDef), weight: 0};
+    const emptyDef = JSON.stringify({ content: "", comments_json: "" });
+    return {
+      name: JSON.parse(emptyDef),
+      description: JSON.parse(emptyDef),
+      weight: 0
+    };
   }
 
   initCriterias() {
@@ -112,8 +147,10 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     };
 
     this.criterias = this.activeSegments.reduce((segments, num) => {
-      const segData = this.getInput('criteria', num);
-      segments[num] = segData.content ? JSON.parse(segData.content) : defaultSegments();
+      const segData = this.getInput("criteria", num);
+      segments[num] = segData.content
+        ? JSON.parse(segData.content)
+        : defaultSegments();
 
       return segments;
     }, {});
@@ -141,7 +178,9 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     if (needsRefresh) {
       const l = this.activeSegments.length;
       if (l && this.activeSegments[l - 1] !== l) {
-        this.moduleService.saveMultipleInputs(Object.values(this.inputs)).subscribe();
+        this.moduleService
+          .saveMultipleInputs(Object.values(this.inputs))
+          .subscribe();
       }
 
       this.initSegments();
@@ -149,7 +188,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
       // force input re-render
       const seg = this.activeSegments;
       this.activeSegments = [];
-      setTimeout(_ => this.activeSegments = seg, 1);
+      setTimeout(_ => (this.activeSegments = seg), 1);
     }
   }
 
@@ -158,7 +197,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
       const num = this.activeSegments.length + 1;
       this.activeSegments.push(num);
 
-      const inp = this.getInput('on', num);
+      const inp = this.getInput("on", num);
       inp.content = num.toString();
 
       this.moduleService.saveInput(inp).subscribe();
@@ -170,7 +209,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
       return;
     }
 
-    const inp = this.getInput('on', this.activeSegments[idx]);
+    const inp = this.getInput("on", this.activeSegments[idx]);
     inp.content = null;
     this.moduleService.saveInput(inp).subscribe();
 
@@ -180,7 +219,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   private getUserGradeLevels() {
     return this.gradeLevels.reduce((levels, entry) => {
-      levels[entry.grade] = this.getInput('grade_pct', entry.i).getValue();
+      levels[entry.grade] = this.getInput("grade_pct", entry.i).getValue();
       return levels;
     }, {});
   }
@@ -191,9 +230,9 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     if (this.step === 1) {
       val = this.validateBrainstorm();
     } else if (this.step === 2) {
-      val = this.validateBrainstorm(['brainstorm']);
+      val = this.validateBrainstorm(["brainstorm"]);
     } else if (this.step === 3) {
-      val = this.validateCriteria(['where_mine']);
+      val = this.validateCriteria(["where_mine"]);
     } else if (this.step === 4) {
       val = this.validateCriteria();
     } else if (this.step === 5) {
@@ -207,20 +246,22 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     }
 
     return of(val);
-
   }
 
-  private validateBrainstorm(fields = ['name', 'industries', 'pain_points']) {
-    return this.activeSegments.reduce((isValid, segment) =>
-      fields.reduce((isValidField, field) => {
-        const inp = this.getInput(field, segment);
+  private validateBrainstorm(fields = ["name", "industries", "pain_points"]) {
+    return this.activeSegments.reduce(
+      (isValid, segment) =>
+        fields.reduce((isValidField, field) => {
+          const inp = this.getInput(field, segment);
 
-        if (!this.validateInput(inp)) {
-          isValidField = false;
-        }
+          if (!this.validateInput(inp)) {
+            isValidField = false;
+          }
 
-        return isValidField;
-      }, isValid), true);
+          return isValidField;
+        }, isValid),
+      true
+    );
   }
 
   private validateCriteria(extraInputs: string[] = []) {
@@ -242,16 +283,24 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   private validateGradeLevels() {
     return this.gradeLevels.reduce((isValid, level) => {
-      const inp = this.getInput('grade_pct', level.i);
+      const inp = this.getInput("grade_pct", level.i);
 
-      const max = level.i === 1 ? 100 : Math.min(Number(this.getInput('grade_pct', level.i - 1).getValue()) - 1, 100);
+      const max =
+        level.i === 1
+          ? 100
+          : Math.min(
+              Number(this.getInput("grade_pct", level.i - 1).getValue()) - 1,
+              100
+            );
 
-      if (!this.validateInput(inp, [
-        Validate.required('Please enter the grade level'),
-        Validate.number(),
-        Validate.max(max),
-        Validate.min(0)
-      ])) {
+      if (
+        !this.validateInput(inp, [
+          Validate.required("Please enter the grade level"),
+          Validate.number(),
+          Validate.max(max),
+          Validate.min(0)
+        ])
+      ) {
         isValid = false;
       }
 
@@ -261,9 +310,17 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
 
   private validateGradeCustomers() {
     return this.grades.reduce((isValid, segment, idx) => {
-      ['name', 'segment'].forEach(field => {
-        const validator = 'segment' === field ? [Validate.required('Please select the customer segment')] : undefined;
-        if (!this.validateInput(this.getInput(this.gradePrefix + '_' + field, segment), validator)) {
+      ["name", "segment"].forEach(field => {
+        const validator =
+          "segment" === field
+            ? [Validate.required("Please select the customer segment")]
+            : undefined;
+        if (
+          !this.validateInput(
+            this.getInput(this.gradePrefix + "_" + field, segment),
+            validator
+          )
+        ) {
           isValid = false;
         }
       });
@@ -277,4 +334,3 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     }, true);
   }
 }
-

@@ -1,88 +1,78 @@
-<div
-  class="page-container"
->
-  <div
-    class="buttons-wrapper"
-    *ngIf="!message$"
-  >
+<div class="page-container">
+  <div class="buttons-wrapper" *ngIf="!message$">
     <div>
       Select a message from the menu on the left.
     </div>
   </div>
 
   <div *ngIf="message$ | async as message">
-  <div
-    class="page-content"
-    style="margin-top: 20px"
-    >
-    <h3 *ngIf="message.moduleName">{{message.moduleName}}
-      <span *ngIf="message.step_id"> - {{message.stepName}}</span>
-    </h3>
+    <div class="page-content" style="margin-top: 20px">
+      <h3 *ngIf="message.moduleName">
+        {{ message.moduleName }}
+        <span *ngIf="message.step_id"> - {{ message.stepName }}</span>
+      </h3>
 
-    <div class="sender">
-      <div>
-        <letter-image
-          [letter]="message.orgName"
-          className="bcts-1"
-        ></letter-image>
+      <div class="sender">
+        <div>
+          <letter-image
+            [letter]="message.orgName"
+            className="bcts-1"
+          ></letter-image>
 
-        {{message.orgName}}
+          {{ message.orgName }}
+        </div>
+
+        <div>{{ message.sent_on | readabletime: "LLL" }}</div>
       </div>
 
-      <div >{{message.sent_on | readabletime:'LLL'}}</div>
+      <div class="content">
+        <div [innerHtml]="message.message | safehtml"></div>
+      </div>
     </div>
 
-    <div class="content">
-      <div
-        [innerHtml]="message.message | safehtml"
-      ></div>
+    <div class="buttons-wrapper">
+      <a [routerLink]="routerLink" *ngIf="message.module_id">
+        <button mat-flat-button="mat-stroked-button" color="primary">
+          Review module content
+        </button>
+      </a>
+      <a
+        [routerLink]="
+          '/org/' + (message.from_org_id || message.to_org_id) + '/assessment'
+        "
+        *ngIf="message.assessment_session_id"
+      >
+        <button mat-flat-button="mat-stroked-button" color="primary">
+          Review assessment
+        </button>
+      </a>
     </div>
-  </div>
 
-  <div
-    class="buttons-wrapper"
-  >
-    <a [routerLink]="routerLink" *ngIf="message.module_id">
-      <button
-        mat-flat-button="mat-stroked-button"
-        color="primary"
-      >Review module content</button>
-    </a>
-    <a [routerLink]="'/org/' + (message.from_org_id || message.to_org_id) + '/assessment'" *ngIf="message.assessment_session_id">
-      <button
-        mat-flat-button="mat-stroked-button"
-        color="primary"
-      >Review assessment</button>
-    </a>
-  </div>
+    <div class="page-content" *ngIf="!message.step_id && canProvideFeedback">
+      <div class="feedback">
+        <p class="instructions">
+          Provide feedback for the company
+        </p>
 
-  <div
-    class="page-content"
-    *ngIf="!message.step_id && canProvideFeedback"
-  >
-    <div class="feedback">
-      <p class="instructions">
-        Provide feedback for the company
-      </p>
-
-      <feedback-source
+        <feedback-source
           (submit)="provideFeedback(message, $event)"
-          (messageChanged)="feedbackMessage=$event"
-          (currentTabChanged)="currentTab=$event"
-          >
-      </feedback-source>
+          (messageChanged)="feedbackMessage = $event"
+          (currentTabChanged)="currentTab = $event"
+        >
+        </feedback-source>
+      </div>
 
+      <div class="footer" [hidden]="currentTab == 'video'">
+        <button
+          mat-stroked-button="mat-stroked-button"
+          color="accent"
+          (click)="provideFeedback(message, feedbackMessage)"
+          e3-async-button
+          [running]="submitting && !submitting.closed"
+        >
+          Submit Feedback
+        </button>
+      </div>
     </div>
-
-    <div class="footer" [hidden]="currentTab == 'video'">
-      <button
-        mat-stroked-button="mat-stroked-button"
-        color="accent"
-        (click)="provideFeedback(message, feedbackMessage)"
-        e3-async-button
-        [running]="submitting && !submitting.closed"
-      >Submit Feedback</button>
-    </div>
-  </div>
   </div>
 </div>

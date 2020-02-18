@@ -1,8 +1,13 @@
 <div class="persona-name-column CT-hide">
   <div class="persona-picture" [ngStyle]="style" *ngIf="!persona.picture"></div>
-  <img class="persona-picture" [ngStyle]="style" [src]="persona.picture | safeurl" *ngIf="persona.picture">
+  <img
+    class="persona-picture"
+    [ngStyle]="style"
+    [src]="persona.picture | safeurl"
+    *ngIf="persona.picture"
+  />
   <div class="persona-name-title">
-    <div class="persona-name" >{{ persona.name }}</div>
+    <div class="persona-name">{{ persona.name }}</div>
     <div class="persona-title">{{ persona.title }}</div>
   </div>
 </div>

@@ -2,26 +2,29 @@
   <div class="modal-dialog" role="document">
     <div class="modal-content">
       <div class="modal-header">
-        <h5 class="modal-title">{{!isEdit ? 'Add Campaign' : 'Edit Campaign'}}</h5>
-        <button type="button"
-                class="close"
-                data-dismiss="modal"
-                aria-label="Close"
-                (click)="modal.dismiss('Cross click')"
+        <h5 class="modal-title">
+          {{ !isEdit ? "Add Campaign" : "Edit Campaign" }}
+        </h5>
+        <button
+          type="button"
+          class="close"
+          data-dismiss="modal"
+          aria-label="Close"
+          (click)="modal.dismiss('Cross click')"
         >
           <span aria-hidden="true">&times;</span>
         </button>
       </div>
       <div class="modal-body">
-
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Theme</label>
           <div class="col-sm-10">
-            <input type="text"
-                   class="form-control"
-                   [(ngModel)]="campaign.theme"
-                   [class.invalid]="isValidationError"
-            >
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="campaign.theme"
+              [class.invalid]="isValidationError"
+            />
             <div class="invalid-feedback d-block" *ngIf="isValidationError">
               This is a required field
             </div>
@@ -32,9 +35,11 @@
           <label class="col-sm-2 col-form-label">Persona</label>
           <div class="col-sm-10">
             <buyer-personas-selector
-                    [selected]="campaign.persona || []"
-                    #buyerPersonasSelectorComponent
-                    (onChange)="personaChange(buyerPersonasSelectorComponent.selected)"
+              [selected]="campaign.persona || []"
+              #buyerPersonasSelectorComponent
+              (onChange)="
+                personaChange(buyerPersonasSelectorComponent.selected)
+              "
             ></buyer-personas-selector>
           </div>
         </div>
@@ -42,14 +47,22 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Messaging</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" [(ngModel)]="campaign.messaging">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="campaign.messaging"
+            />
           </div>
         </div>
 
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Tactical Map</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" [(ngModel)]="campaign.tacticalMap">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="campaign.tacticalMap"
+            />
           </div>
         </div>
 
@@ -57,18 +70,24 @@
           <label class="col-sm-2 col-form-label">Start Date</label>
           <div class="col-sm-10 date-picker d-flex align-items-center">
             <input
-                class="form-control"
-                type="text"
-                ngbDatepicker
-                #pickerStart="ngbDatepicker"
-                container="body"
-                (click)="pickerStart.toggle()"
-                [maxDate]="campaign.endDate | stringToDateStruct"
-                [(ngModel)]="campaign.startDate"
+              class="form-control"
+              type="text"
+              ngbDatepicker
+              #pickerStart="ngbDatepicker"
+              container="body"
+              (click)="pickerStart.toggle()"
+              [maxDate]="campaign.endDate | stringToDateStruct"
+              [(ngModel)]="campaign.startDate"
             />
-            <i class="material-icons ml-1" (click)="pickerStart.toggle()">date_range</i>
+            <i class="material-icons ml-1" (click)="pickerStart.toggle()"
+              >date_range</i
+            >
           </div>
-          <button *ngIf="campaign.startDate" mat-icon-button (click)="campaign.startDate = null">
+          <button
+            *ngIf="campaign.startDate"
+            mat-icon-button
+            (click)="campaign.startDate = null"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -77,18 +96,24 @@
           <label class="col-sm-2 col-form-label">End Date</label>
           <div class="col-sm-10 date-picker d-flex align-items-center">
             <input
-                class="form-control"
-                type="text"
-                ngbDatepicker
-                #pickerEnd="ngbDatepicker"
-                container="body"
-                (click)="pickerEnd.toggle()"
-                [minDate]="campaign.startDate | stringToDateStruct"
-                [(ngModel)]="campaign.endDate"
+              class="form-control"
+              type="text"
+              ngbDatepicker
+              #pickerEnd="ngbDatepicker"
+              container="body"
+              (click)="pickerEnd.toggle()"
+              [minDate]="campaign.startDate | stringToDateStruct"
+              [(ngModel)]="campaign.endDate"
             />
-            <i class="material-icons ml-1" (click)="pickerEnd.toggle()">date_range</i>
+            <i class="material-icons ml-1" (click)="pickerEnd.toggle()"
+              >date_range</i
+            >
           </div>
-          <button *ngIf="campaign.endDate" mat-icon-button (click)="campaign.endDate = null">
+          <button
+            *ngIf="campaign.endDate"
+            mat-icon-button
+            (click)="campaign.endDate = null"
+          >
             <mat-icon>delete</mat-icon>
           </button>
         </div>
@@ -96,23 +121,24 @@
         <div class="form-group row">
           <label class="col-sm-2 col-form-label">Assigned</label>
           <div class="col-sm-10">
-            <input type="text" class="form-control" [(ngModel)]="campaign.assigned">
+            <input
+              type="text"
+              class="form-control"
+              [(ngModel)]="campaign.assigned"
+            />
           </div>
         </div>
-
       </div>
       <div class="modal-footer">
-        <button type="button"
-                class="btn btn-secondary"
-                data-dismiss="modal"
-                (click)="modal.dismiss('Cancel click')"
+        <button
+          type="button"
+          class="btn btn-secondary"
+          data-dismiss="modal"
+          (click)="modal.dismiss('Cancel click')"
         >
           Close
         </button>
-        <button type="button"
-                class="btn btn-primary"
-                (click)="submit()"
-        >
+        <button type="button" class="btn btn-primary" (click)="submit()">
           Save changes
         </button>
       </div>

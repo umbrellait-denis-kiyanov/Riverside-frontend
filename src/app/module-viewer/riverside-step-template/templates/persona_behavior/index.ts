@@ -1,4 +1,4 @@
-import { TemplateContentDataBase } from '../template.interface';
+import { TemplateContentDataBase } from "../template.interface";
 
 export interface PersonaBehaviorTemplateData extends TemplateContentDataBase {
   template_params_json: {
@@ -11,8 +11,8 @@ export interface PersonaBehaviorTemplateData extends TemplateContentDataBase {
     behavior: string;
     formatAsList: boolean;
     selection_matrix: Array<{
-      question: string,
-      options: Array<{option: string}>
-    }>
+      question: string;
+      options: Array<{ option: string }>;
+    }>;
   };
 }

@@ -1,142 +1,140 @@
-import { NgModule } from '@angular/core';
-import {
-  RouterModule,
-  Routes
-} from '@angular/router';
-import { MainComponent } from './main/main.component';
-import { ContentComponent } from './content/content.component';
-import { InboxComponent } from './inbox/inbox.component';
-import { LeftMenuComponent } from './left-menu/module/module-left-menu.component';
-import { InboxLeftMenuComponent } from './left-menu/inbox/inbox-left-menu.component';
-import { AccountLeftMenuComponent } from './left-menu/account/account-left-menu.component';
-import { DashboardComponent } from './dashboard/dashboard.component';
-import { MasterDashboardComponent } from './master-dashboard/master-dashboard.component';
-import { AssessmentComponent } from './assessment/assessment.component';
-import { AssessmentMenuComponent } from './left-menu/assessment-menu/assessment-menu.component';
-import { AssessmentFinishComponent } from './assessment/assessment-finish/assessment-finish.component';
-import { ProfileComponent } from './account/profile/profile.component';
-import { ChangePasswordComponent } from './account/change-password/change-password.component';
-import { LoginComponent } from './login/login.component';
+import { NgModule } from "@angular/core";
+import { RouterModule, Routes } from "@angular/router";
+import { MainComponent } from "./main/main.component";
+import { ContentComponent } from "./content/content.component";
+import { InboxComponent } from "./inbox/inbox.component";
+import { LeftMenuComponent } from "./left-menu/module/module-left-menu.component";
+import { InboxLeftMenuComponent } from "./left-menu/inbox/inbox-left-menu.component";
+import { AccountLeftMenuComponent } from "./left-menu/account/account-left-menu.component";
+import { DashboardComponent } from "./dashboard/dashboard.component";
+import { MasterDashboardComponent } from "./master-dashboard/master-dashboard.component";
+import { AssessmentComponent } from "./assessment/assessment.component";
+import { AssessmentMenuComponent } from "./left-menu/assessment-menu/assessment-menu.component";
+import { AssessmentFinishComponent } from "./assessment/assessment-finish/assessment-finish.component";
+import { ProfileComponent } from "./account/profile/profile.component";
+import { ChangePasswordComponent } from "./account/change-password/change-password.component";
+import { LoginComponent } from "./login/login.component";
 
 const moduleContentRoute = [
   {
-    path: 'step/:stepId',
+    path: "step/:stepId",
     component: ContentComponent
   },
   {
-    path: '',
+    path: "",
     component: LeftMenuComponent,
-    outlet: 'left-menu'
+    outlet: "left-menu"
   }
 ];
 
 const routes: Routes = [
   {
-    path: 'login',
+    path: "login",
     component: LoginComponent
   },
   {
-    path: '',
-    pathMatch: 'full',
-    redirectTo: 'dashboard'
+    path: "",
+    pathMatch: "full",
+    redirectTo: "dashboard"
   },
   {
-    path: 'org/:orgId/module/:moduleId',
+    path: "org/:orgId/module/:moduleId",
     component: MainComponent,
     children: moduleContentRoute
   },
   {
-    path: 'module/:moduleId',
+    path: "module/:moduleId",
     component: MainComponent,
     children: moduleContentRoute
   },
   {
-    path: 'inbox',
+    path: "inbox",
     component: MainComponent,
     children: [
       {
-        path: '',
+        path: "",
         component: InboxComponent
       },
       {
-        path: ':id',
+        path: ":id",
         component: InboxComponent
       },
       {
-        path: '',
+        path: "",
         component: InboxLeftMenuComponent,
-        outlet: 'left-menu'
-      },
+        outlet: "left-menu"
+      }
     ]
   },
   {
-    path: 'account',
+    path: "account",
     component: MainComponent,
     children: [
       {
-        path: '',
-        redirectTo: 'profile', pathMatch: 'full'
+        path: "",
+        redirectTo: "profile",
+        pathMatch: "full"
       },
       {
-        path: 'profile',
+        path: "profile",
         component: ProfileComponent
       },
       {
-        path: 'password',
+        path: "password",
         component: ChangePasswordComponent
       },
       {
-        path: '',
+        path: "",
         component: AccountLeftMenuComponent,
-        outlet: 'left-menu'
+        outlet: "left-menu"
       }
     ]
   },
   {
-    path: 'dashboard',
+    path: "dashboard",
     component: MainComponent,
     children: [
       {
-        path: '',
+        path: "",
         component: DashboardComponent
       }
     ]
   },
   {
-    path: 'dashboard/:orgId',
+    path: "dashboard/:orgId",
     component: MainComponent,
     children: [
       {
-        path: '',
+        path: "",
         component: DashboardComponent
       }
     ]
   },
   {
-    path: 'master-dashboard',
+    path: "master-dashboard",
     component: MainComponent,
     children: [
       {
-        path: '',
+        path: "",
         component: MasterDashboardComponent
       }
     ]
   },
   {
-    path: 'org/:orgId/assessment',
+    path: "org/:orgId/assessment",
     component: MainComponent,
     children: [
       {
-        path: '',
+        path: "",
         component: AssessmentComponent
       },
       {
-        path: '',
+        path: "",
         component: AssessmentMenuComponent,
-        outlet: 'left-menu'
+        outlet: "left-menu"
       },
       {
-        path: 'finish',
+        path: "finish",
         component: AssessmentFinishComponent
       }
     ]
@@ -149,4 +147,4 @@ const routes: Routes = [
 
   exports: [RouterModule]
 })
-export class AppRoutingModule { }
+export class AppRoutingModule {}

@@ -17,16 +17,16 @@
   </div>
 
   <div class="form-group">
-      <label class="control-label module-title">Module Name</label>
+    <label class="control-label module-title">Module Name</label>
 
-      <input
-        type="text"
-        class="site-tbox margin_0"
-        [ngModelOptions]="{standalone: true}"
-        [(ngModel)]="moduleData.name"
-        required="required"
-      />
-    </div>
+    <input
+      type="text"
+      class="site-tbox margin_0"
+      [ngModelOptions]="{ standalone: true }"
+      [(ngModel)]="moduleData.name"
+      required="required"
+    />
+  </div>
 
   <div class="form-group">
     <label class="control-label module-title">Short Name</label>
@@ -34,97 +34,110 @@
     <input
       type="text"
       class="site-tbox margin_0"
-      [ngModelOptions]="{standalone: true}"
+      [ngModelOptions]="{ standalone: true }"
       [(ngModel)]="moduleData.shortName"
       required="required"
     />
   </div>
 
   <div cdkDropList (cdkDropListDropped)="onSectionDrop($event)">
-  <div class="steps-wrapper card" *ngFor="let section of sections; index as sectionIndex" cdkDrag cdkDragLockAxis="y">
+    <div
+      class="steps-wrapper card"
+      *ngFor="let section of sections; index as sectionIndex"
+      cdkDrag
+      cdkDragLockAxis="y"
+    >
+      <div class="card-header section-title steps-row" cdkDragHandle>
+        <span
+          class="fa fa-file-text-o"
+          (click)="onClickEditSectionTemplate(sectionIndex)"
+          title="Configure section template"
+        ></span>
 
-    <div class="card-header section-title steps-row" cdkDragHandle>
+        <span
+          class="fa fa-link"
+          (click)="onClickLinkStep(sectionIndex)"
+          title="Link to another step"
+        ></span>
 
-      <span
-        class="fa fa-file-text-o"
-        (click)="onClickEditSectionTemplate(sectionIndex)"
-        title="Configure section template"
-      ></span>
+        <span
+          class="fa fa-trash-o"
+          (click)="onClickRemoveSection(sectionIndex)"
+        ></span>
 
-      <span
-        class="fa fa-link"
-        (click)="onClickLinkStep(sectionIndex)"
-        title="Link to another step"
-      ></span>
+        <input
+          class="site-tbox"
+          [ngModelOptions]="{ standalone: true }"
+          [(ngModel)]="section.section.description"
+          placeholder="Section Description"
+        />
+      </div>
 
-      <span
-        class="fa fa-trash-o"
-        (click)="onClickRemoveSection(sectionIndex)"
-      ></span>
+      <div class="card-body">
+        <div
+          id="drop-{{ sectionIndex }}"
+          cdkDropList
+          [cdkDropListData]="section.steps"
+          (cdkDropListDropped)="onStepDrop($event)"
+          [cdkDropListConnectedTo]="getSortableListIDs()"
+        >
+          <div
+            *ngFor="let step of section.steps; index as s"
+            cdkDrag
+            cdkDragLockAxis="y"
+            class="steps-item"
+          >
+            <div class="step">
+              <div class="step-input-wrapper step-name">
+                <span
+                  class="fa fa-file-text-o"
+                  (click)="onClickEditStepTemplate(sectionIndex, s)"
+                  title="Configure step template"
+                ></span>
 
-      <input
-        class="site-tbox"
-        [ngModelOptions]="{standalone: true}"
-        [(ngModel)]="section.section.description"
-        placeholder="Section Description"
-      />
-    </div>
+                <span
+                  class="fa fa-link"
+                  (click)="onClickLinkStep(sectionIndex, s)"
+                  title="Link to another step"
+                ></span>
 
-    <div class="card-body">
+                <span
+                  class="fa fa-trash-o"
+                  (click)="onClickRemoveStep(sectionIndex, s)"
+                  title="Delete step"
+                ></span>
 
-      <div id="drop-{{ sectionIndex }}" cdkDropList [cdkDropListData]="section.steps" (cdkDropListDropped)="onStepDrop($event)" [cdkDropListConnectedTo]="getSortableListIDs()">
-      <div *ngFor="let step of section.steps; index as s" cdkDrag cdkDragLockAxis="y" class="steps-item">
-        <div class="step">
-          <div class="step-input-wrapper step-name">
+                <input
+                  class="site-tbox"
+                  [ngModelOptions]="{ standalone: true }"
+                  [(ngModel)]="step.description"
+                  placeholder="Step Description"
+                />
+              </div>
+            </div>
 
-            <span
-              class="fa fa-file-text-o"
-              (click)="onClickEditStepTemplate(sectionIndex, s)"
-              title="Configure step template"
-            ></span>
-
-            <span
-              class="fa fa-link"
-              (click)="onClickLinkStep(sectionIndex, s)"
-              title="Link to another step"
-            ></span>
-
-            <span
-              class="fa fa-trash-o"
-              (click)="onClickRemoveStep(sectionIndex, s)"
-              title="Delete step"
-            ></span>
-
-            <input
-              class="site-tbox"
-              [ngModelOptions]="{standalone: true}"
-              [(ngModel)]="step.description"
-              placeholder="Step Description"
-            />
+            <div class="divider"></div>
           </div>
         </div>
 
-        <div class="divider"></div>
-      </div>
-      </div>
-
-      <div class="add-new">
-        <button
-          class="btn btn-primary btn-lg"
-          (click)="onClickAddStep(sectionIndex)"
-        >Add new step</button>
+        <div class="add-new">
+          <button
+            class="btn btn-primary btn-lg"
+            (click)="onClickAddStep(sectionIndex)"
+          >
+            Add new step
+          </button>
+        </div>
       </div>
     </div>
-  </div>
   </div>
 
   <div class="row">
     <div class="col-sm-6">
       <div class="add-new">
-        <button
-          class="btn btn-primary btn-lg"
-          (click)="onClickAddSection()"
-        >Add new section</button>
+        <button class="btn btn-primary btn-lg" (click)="onClickAddSection()">
+          Add new section
+        </button>
       </div>
     </div>
     <div class="col-sm-6 import-export">
@@ -145,5 +158,4 @@
       </button>
     </div>
   </div>
-
 </ng-container>

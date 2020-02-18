@@ -1,5 +1,5 @@
-import { BehaviorSubject } from 'rxjs';
-import User from './user.model';
+import { BehaviorSubject } from "rxjs";
+import User from "./user.model";
 
 export interface ModuleStatus {
   org_id: number;
@@ -42,10 +42,10 @@ export interface TemplateInput {
 }
 
 export type InputComment = {
-  content: string,
-  user: User,
-  time: number,
-  formattedTime: string
+  content: string;
+  user: User;
+  time: number;
+  formattedTime: string;
 };
 
 export interface Organization {
@@ -87,12 +87,17 @@ export interface Template {
 export interface SpreadsheetResource {
   data: string[][];
   meta: {
-    mergeCells: {col: number, row: number, colspan: number, rowspan: number}[],
-    colWidths: number[],
-    formatting: {[cells: string]: string},
-    requireValue: {[cells: string]: string},
-    editable: string[],
-    maxColumn: string
-  },
+    mergeCells: {
+      col: number;
+      row: number;
+      colspan: number;
+      rowspan: number;
+    }[];
+    colWidths: number[];
+    formatting: { [cells: string]: string };
+    requireValue: { [cells: string]: string };
+    editable: string[];
+    maxColumn: string;
+  };
   types: string[][];
 }

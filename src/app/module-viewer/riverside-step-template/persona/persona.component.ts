@@ -1,11 +1,11 @@
-import { Component, OnInit, Input } from '@angular/core';
-import { TemplateComponent } from '../templates/template-base.class';
-import { BuyerPersona } from '../../../common/interfaces/buyer-persona.interface';
+import { Component, OnInit, Input } from "@angular/core";
+import { TemplateComponent } from "../templates/template-base.class";
+import { BuyerPersona } from "../../../common/interfaces/buyer-persona.interface";
 
 @Component({
-  selector: 'riverside-persona',
-  templateUrl: './persona.component.html',
-  styleUrls: ['./persona.component.sass']
+  selector: "riverside-persona",
+  templateUrl: "./persona.component.html",
+  styleUrls: ["./persona.component.sass"]
 })
 export class PersonaComponent implements OnInit {
   @Input() persona: BuyerPersona;
@@ -13,15 +13,13 @@ export class PersonaComponent implements OnInit {
 
   style: {};
 
-  constructor(
-    private template: TemplateComponent
-  ) {}
+  constructor(private template: TemplateComponent) {}
 
   ngOnInit() {
     if (this.size) {
       this.style = {
-        width: this.size + 'px',
-        height: this.size + 'px'
+        width: this.size + "px",
+        height: this.size + "px"
       };
     }
   }

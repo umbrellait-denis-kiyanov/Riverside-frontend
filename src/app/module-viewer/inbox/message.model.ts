@@ -1,4 +1,4 @@
-import BaseModel from 'src/app/common/interfaces/base.model';
+import BaseModel from "src/app/common/interfaces/base.model";
 
 class Message extends BaseModel {
   id: number = null;

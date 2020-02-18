@@ -8,9 +8,8 @@
     <span aria-hidden="true">&times;</span>
   </button>
 
-  <h3>{{title}}</h3>
+  <h3>{{ title }}</h3>
 </div>
-
 
 <div class="modal-body">
   <div [innerHtml]="content | safehtml"></div>
@@ -18,14 +17,14 @@
 
 <div class="modal-footer">
   <button
-   *ngIf="!noCancel"
+    *ngIf="!noCancel"
     color="primary"
     mat-button
     (click)="modal.dismiss()"
-  >{{cancel_text}}</button>
-  <button
-    mat-raised-button
-    color="accent"
-    (click)="modal.close()"
-  >{{ok_text}}</button>
+  >
+    {{ cancel_text }}
+  </button>
+  <button mat-raised-button color="accent" (click)="modal.close()">
+    {{ ok_text }}
+  </button>
 </div>

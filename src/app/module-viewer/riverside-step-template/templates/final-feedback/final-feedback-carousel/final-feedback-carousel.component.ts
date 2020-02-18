@@ -1,13 +1,18 @@
-import { Component, forwardRef, Input } from '@angular/core';
-import { FinalFeedbackComponent } from '../final-feedback.component';
-import { TemplateComponent } from '../../template-base.class';
-import { OwlOptions } from 'ngx-owl-carousel-o';
+import { Component, forwardRef, Input } from "@angular/core";
+import { FinalFeedbackComponent } from "../final-feedback.component";
+import { TemplateComponent } from "../../template-base.class";
+import { OwlOptions } from "ngx-owl-carousel-o";
 
 @Component({
-  selector: 'app-final-feedback-carousel',
-  templateUrl: './final-feedback-carousel.component.html',
-  styleUrls: ['./final-feedback-carousel.component.sass'],
-  providers: [{ provide: TemplateComponent, useExisting: forwardRef(() => FinalFeedbackCarouselComponent) }]
+  selector: "app-final-feedback-carousel",
+  templateUrl: "./final-feedback-carousel.component.html",
+  styleUrls: ["./final-feedback-carousel.component.sass"],
+  providers: [
+    {
+      provide: TemplateComponent,
+      useExisting: forwardRef(() => FinalFeedbackCarouselComponent)
+    }
+  ]
 })
 export class FinalFeedbackCarouselComponent extends FinalFeedbackComponent {
   @Input() inputIds;
@@ -23,7 +28,7 @@ export class FinalFeedbackCarouselComponent extends FinalFeedbackComponent {
     mouseDrag: false,
     touchDrag: false,
     pullDrag: false,
-    dots: false,
+    dots: false
   };
 
   onSlideChange() {

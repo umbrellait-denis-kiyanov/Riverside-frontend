@@ -2,15 +2,18 @@
 
 <div *ngIf="sheet" class="hot-container" [hidden]="!isRendered">
   <div class="download-xls" *ngIf="contentData.requireFeedback">
-    <a (click)="exportXls()" download><i class="fa" [class.fa-file-excel-o]="!downloadProgress" [class.fa-spinner]="downloadProgress" [class.fa-spin]="downloadProgress" aria-hidden="true"></i> Download Excel file</a>
+    <a (click)="exportXls()" download
+      ><i
+        class="fa"
+        [class.fa-file-excel-o]="!downloadProgress"
+        [class.fa-spinner]="downloadProgress"
+        [class.fa-spin]="downloadProgress"
+        aria-hidden="true"
+      ></i>
+      Download Excel file</a
+    >
   </div>
-  <hot-table
-    #hot
-    class="hot"
-    hotId="hot"
-    [settings]="settings"
-   >
-  </hot-table>
+  <hot-table #hot class="hot" hotId="hot" [settings]="settings"> </hot-table>
 </div>
 
 <div class="render-preview" *ngIf="!isRendered">
@@ -19,6 +22,7 @@
       <td *ngFor="let col of previewCols"></td>
     </tr>
   </table>
+
   <div class="loading-overlay">
     <div class="overlay-content">
       Loading spreadsheet <span class="fa fa-pulse fa-spinner"></span>
@@ -26,7 +30,13 @@
   </div>
 </div>
 
-<module-feedback *ngIf="contentData.requireFeedback; else nav"></module-feedback>
+<module-feedback
+  *ngIf="contentData.requireFeedback; else nav"
+></module-feedback>
 <ng-template #nav>
-  <module-nav *ngIf="!disabled && action" [step]="data" [action]="action"></module-nav>
+  <module-nav
+    *ngIf="!disabled && action"
+    [step]="data"
+    [action]="action"
+  ></module-nav>
 </ng-template>

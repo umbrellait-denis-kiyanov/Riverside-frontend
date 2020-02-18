@@ -1,4 +1,4 @@
-import { TemplateContentDataBase } from '../template.interface';
+import { TemplateContentDataBase } from "../template.interface";
 
 export interface FinalFeedbackTemplateData extends TemplateContentDataBase {
   template_params_json: {
@@ -6,8 +6,8 @@ export interface FinalFeedbackTemplateData extends TemplateContentDataBase {
     title: string;
     instructions: string;
     steps: Array<{
-      sufix: string,
+      sufix: string;
       title: string;
-    }>
+    }>;
   };
 }

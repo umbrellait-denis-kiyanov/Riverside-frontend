@@ -1,7 +1,6 @@
-import { BehaviorSubject } from 'rxjs';
-import User from 'src/app/common/interfaces/user.model';
-import ModuleContent from 'src/app/common/interfaces/module-content.model';
-
+import { BehaviorSubject } from "rxjs";
+import User from "src/app/common/interfaces/user.model";
+import ModuleContent from "src/app/common/interfaces/module-content.model";
 
 interface TemplateContentDataProps {
   data: ModuleContent;
@@ -13,7 +12,7 @@ export class TemplateContentData {
   me: User;
   canModify: boolean;
 
-  constructor({data, me}: TemplateContentDataProps) {
+  constructor({ data, me }: TemplateContentDataProps) {
     this.data = data;
     this.me = me;
   }
@@ -26,5 +25,4 @@ export class TemplateContentData {
   set hideChanges(val: boolean) {
     this.onHideChanges.next(val);
   }
-
 }

@@ -1,5 +1,5 @@
-import { TemplateContentDataBase, TemplateOption } from '../template.interface';
-import { Module } from 'src/app/common/interfaces/module.interface';
+import { TemplateContentDataBase, TemplateOption } from "../template.interface";
+import { Module } from "src/app/common/interfaces/module.interface";
 
 export interface ModuleResultTemplateData extends TemplateContentDataBase {
   template_params_json: {

@@ -1,8 +1,8 @@
-import { Directive, ViewContainerRef } from '@angular/core';
+import { Directive, ViewContainerRef } from "@angular/core";
 
 @Directive({
-  selector: '[riverside-step-template-host]',
+  selector: "[riverside-step-template-host]"
 })
 export class RTemplateDirective {
-  constructor(public viewContainerRef: ViewContainerRef) { }
+  constructor(public viewContainerRef: ViewContainerRef) {}
 }
