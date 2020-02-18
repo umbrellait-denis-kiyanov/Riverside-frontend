@@ -31,7 +31,7 @@ export class PersonaInputs {
     this.fromPreviousSteps = [];
     buyerPersonasList$
         .pipe(take(1))
-        .subscribe (personas => this.fromPreviousSteps.push(...personas.map(persona => {
+        .subscribe (personas => this.fromPreviousSteps = this.fromPreviousSteps.concat(personas.map(persona => {
             const personaDefs = {};
             Object.keys(previousSteps).forEach(stepKey => {
               if (stepKey === 'title') {
@@ -52,7 +52,7 @@ prepareCurrentInputIds() {
     if (!stepPrefix) { return; }
     buyerPersonasList$
         .pipe(take(1))
-        .subscribe (personas => this.personas.push(...personas.map(persona =>
+        .subscribe (personas => this.personas = this.personas.concat(personas.map(persona =>
             `${stepPrefix}_${persona.index}${stepSufix ? '_' + stepSufix : ''}`)));
   }
 }

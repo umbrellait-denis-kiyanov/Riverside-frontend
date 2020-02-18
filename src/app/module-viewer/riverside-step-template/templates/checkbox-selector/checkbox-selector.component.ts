@@ -16,7 +16,6 @@ import {MatCheckboxChange} from '@angular/material';
 export class CheckboxSelectorComponent extends TemplateComponent {
 
   items: Item[];
-  checkedItemsAmount = 0;
   prefix = 'checkbox_';
 
   contentData: CheckboxSelectorTemplateData['template_params_json'];
@@ -36,20 +35,21 @@ export class CheckboxSelectorComponent extends TemplateComponent {
 
   validate(): Observable<boolean> {
 
+    // @todo: refactor
     const minValidator = Validate.min( this.contentData.minimum_of_required_selections );
     const maxValidator = Validate.max( this.contentData.maximum_of_required_selections );
-    this.checkedItemsAmount = this.items.filter( (item: Item) => item.checked ).length;
+    const checkedItemsAmount = this.items.filter( (item: Item) => item.checked ).length;
 
     if ( this.contentData.minimum_of_required_selections && this.contentData.maximum_of_required_selections ) {
-      return of(minValidator.isValid(this.checkedItemsAmount) && maxValidator.isValid(this.checkedItemsAmount));
+      return of(minValidator.isValid(checkedItemsAmount) && maxValidator.isValid(checkedItemsAmount));
     }
 
     if ( this.contentData.minimum_of_required_selections && !this.contentData.maximum_of_required_selections ) {
-      return of(minValidator.isValid(this.checkedItemsAmount));
+      return of(minValidator.isValid(checkedItemsAmount));
     }
 
     if ( !this.contentData.minimum_of_required_selections && this.contentData.maximum_of_required_selections ) {
-      return of(maxValidator.isValid(this.checkedItemsAmount));
+      return of(maxValidator.isValid(checkedItemsAmount));
     }
 
     return of(true);
@@ -69,14 +69,8 @@ export class CheckboxSelectorComponent extends TemplateComponent {
 
   onChecked($event: MatCheckboxChange) {
 
-    const inputRadio = this.getInput( `${$event.source.id}_${this.contentData.input_sufix}`);
-    if ( $event.checked ) {
-      inputRadio.content = '1';
-      this.checkedItemsAmount++;
-    } else {
-      inputRadio.content = '0';
-      this.checkedItemsAmount--;
-    }
-    this.contentChanged(inputRadio);
+    const input = this.getInput( `${$event.source.id}_${this.contentData.input_sufix}`);
+    input.content = $event.checked ? '1' : '0';
+    this.contentChanged(input);
   }
 }
