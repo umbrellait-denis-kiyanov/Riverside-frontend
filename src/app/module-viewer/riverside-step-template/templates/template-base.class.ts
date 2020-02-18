@@ -11,6 +11,8 @@ import { BehaviorSubject, Observable, of } from 'rxjs';
 import { takeWhile } from 'rxjs/operators';
 import { Validation, Validate } from 'src/app/common/validator.class';
 import { ModuleNavService } from 'src/app/common/services/module-nav.service';
+import { BuyerPersona } from '../../../common/interfaces/buyer-persona.interface';
+import { BuyerPersonasService } from '../../../common/services/buyer-personas.service';
 
 @Component({})
 export abstract class TemplateComponent implements TemplateComponentInterface, OnInit, OnDestroy {
@@ -24,7 +26,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
   disabled: boolean;
   me: User;
   defaultListContent: '<ul style="padding-left: 20px"><li><p></p></li></ul>';
-  activePersonas: string[];
+  buyerPersonasList$: Observable<BuyerPersona[]>;
+  contentChanged$ = new BehaviorSubject<TemplateInput>(null);
   action: string;
   instanceExists = true;
   isEmbedded = false;
@@ -37,7 +40,8 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
       protected moduleService: ModuleService,
       protected navService: ModuleNavService,
       protected userService: UserService,
-      protected injectorObj: Injector
+      protected injectorObj: Injector,
+      protected buyerPersonasService: BuyerPersonasService
     ) {}
 
   abstract getDescription(): string;
@@ -52,12 +56,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
     this.me = this.data.me;
     this.contentOptions = this.data.data.options;
 
-    this.activePersonas = Object.values(this.inputs).filter(i => i).map(input => {
-      return input.element_key &&
-             input.element_key.match(/^persona_[0-9]+$/) &&
-             input.content && input.content !== '<p><br></p>' ?
-          input.element_key : null;
-    }).filter(i => i);
+    this.buyerPersonasList$ = this.buyerPersonasService.getBuyerPersonas();
 
     Object.keys(this.inputs).map(key => this.decorateInput(this.inputs[key]));
     this.init();
@@ -88,7 +87,7 @@ export abstract class TemplateComponent implements TemplateComponentInterface, O
 
   contentChanged(data: TemplateInput) {
     if (data) {
-      this.moduleService.saveInput(data).subscribe();
+      this.moduleService.saveInput(data).subscribe( _ => this.contentChanged$.next(data));
       if (data.observer) {
         data.observer.next(data.getValue());
       }

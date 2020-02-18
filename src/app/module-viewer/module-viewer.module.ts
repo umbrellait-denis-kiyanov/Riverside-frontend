@@ -1,3 +1,4 @@
+
 import { NgModule } from '@angular/core';
 import { HttpClientModule, HTTP_INTERCEPTORS } from '@angular/common/http';
 import { BrowserModule } from '@angular/platform-browser';
@@ -117,6 +118,10 @@ import { FinalFeedbackTabsComponent } from './riverside-step-template/templates/
 import { FinalFeedbackCarouselComponent } from './riverside-step-template/templates/final-feedback/final-feedback-carousel/final-feedback-carousel.component';
 import { CarouselModule } from 'ngx-owl-carousel-o';
 import { RadioButtonComponent } from './riverside-step-template/templates/radio-button/radio-button.component';
+import {CheckboxSelectorComponent} from './riverside-step-template/templates/checkbox-selector/checkbox-selector.component';
+import {MatCheckboxModule} from '@angular/material';
+import {PersonaStrategyComponent} from './riverside-step-template/templates/persona-strategy/persona-strategy.component';
+
 
 @NgModule({
   imports: [
@@ -147,6 +152,7 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     HotTableModule.forRoot(),
     ToastrModule.forRoot(),
     CarouselModule,
+    MatCheckboxModule
   ],
   declarations: [
     ModuleViewerRootComponent,
@@ -216,19 +222,23 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     SpinnerComponent,
     SpreadsheetComponent,
     LoginComponent,
+    SessionExpirationModalComponent,
     BuyerPersonasSelectorComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
+    PersonaStrategyComponent,
     CampaignCalendarTemplateComponent,
     CampaignCalendarComponent,
     ModuleResultComponent,
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
     StringToDateStructPipe,
+    CheckboxSelectorComponent,
     SessionExpirationModalComponent,
     FinalFeedbackTabsComponent,
     FinalFeedbackCarouselComponent,
-    RadioButtonComponent
+    RadioButtonComponent,
+    PersonaNamePipe
   ],
   entryComponents: [
     ModuleViewerRootComponent,
@@ -248,6 +258,8 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     SegmentCriteriaDefineComponent,
     SpreadsheetComponent,
     VideoComponent,
+    BuyerPersonasSelectorComponent,
+    CheckboxSelectorComponent,
     RadioButtonComponent,
     PreRequisiteModulesComponent,
     ModuleResultComponent,
@@ -255,7 +267,8 @@ import { RadioButtonComponent } from './riverside-step-template/templates/radio-
     ModuleResultComponent,
     ModalAddCampaignComponent,
     CampaignDeletionConfirmationComponent,
-    SessionExpirationModalComponent
+    SessionExpirationModalComponent,
+    PersonaStrategyComponent
   ],
   providers: [
     AssessmentService,

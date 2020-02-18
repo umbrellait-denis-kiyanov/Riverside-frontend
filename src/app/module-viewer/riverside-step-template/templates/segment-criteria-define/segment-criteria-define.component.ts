@@ -207,6 +207,7 @@ export class SegmentCriteriaDefineComponent extends TemplateComponent implements
     }
 
     return of(val);
+
   }
 
   private validateBrainstorm(fields = ['name', 'industries', 'pain_points']) {

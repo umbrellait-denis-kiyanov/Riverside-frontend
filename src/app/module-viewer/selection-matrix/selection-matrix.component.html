@@ -13,7 +13,7 @@
         <riverside-persona [persona]="persona"></riverside-persona>
       </td>
       <td class="checkbox-container" *ngFor="let option of options" (click)="!disabled && toggleSelection(i, option.option, $event)">
-        <input type="checkbox" class="checkbox" [disabled]="disabled" (change)="updateTextInput(i, option.option, $event)" [checked]="(template.inputs[inputIds.personas[i]].selections$ | async)?.includes(option.option)" />
+        <input type="checkbox" class="checkbox" [disabled]="disabled" (change)="updateTextInput(i, option.option, $event)" [checked]="(template.inputs[inputIds?.personas[i]]?.selections$ | async)?.includes(option.option)" />
       </td>
     </tr>
   </ng-container>
